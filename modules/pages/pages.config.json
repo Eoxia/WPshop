@@ -1,0 +1,10 @@
+{
+	"name": "Pages",
+	"slug": "pages",
+	"since": "2.0.0",
+	"path": "modules/pages",
+	"dependencies": {
+    "filter": {},
+    "class": {}
+	}
+}

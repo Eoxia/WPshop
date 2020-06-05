@@ -1,0 +1,10 @@
+{
+	"name": "Settings",
+	"slug": "settings",
+	"since": "2.0.0",
+	"path": "modules/settings",
+	"dependencies": {
+		"class": {},
+		"action": {}
+	}
+}

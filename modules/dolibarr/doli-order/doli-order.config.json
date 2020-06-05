@@ -1,0 +1,13 @@
+{
+	"name": "Gestion des commandes clients",
+	"slug": "doli-order",
+	"since": "2.0.0",
+	"description": "Le module gérant les commandes clients",
+	"path": "modules/dolibarr/doli-order/",
+	"dependencies": {
+    "class": {},
+    "action": {},
+    "filter": {},
+    "model": {}
+	}
+}

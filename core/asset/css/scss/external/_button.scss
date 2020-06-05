@@ -1,0 +1,11 @@
+.wpeo-button {
+	box-sizing: border-box;
+}
+
+.wpeo-button {
+	&.button-square-30 {
+		width: 30px;
+		height: 30px;
+		line-height: 24px;
+	}
+}

@@ -1,0 +1,11 @@
+{
+	"name": "doli-products",
+	"slug": "doli-products",
+	"since": "2.0.0",
+	"path": "modules/dolibarr/doli-products",
+	"dependencies": {
+        "action": {},
+        "class": {},
+        "filter": {}
+	}
+}

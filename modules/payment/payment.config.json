@@ -1,0 +1,9 @@
+{
+	"name": "Payment",
+	"slug": "payment",
+	"since": "2.0.0",
+	"path": "modules/payment",
+	"dependencies": {
+		"class": {}
+	}
+}

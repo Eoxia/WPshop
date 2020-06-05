@@ -1,0 +1,24 @@
+.wps-cart, .wps-checkout {
+	.wps-process-checkout-button {
+		display: block;
+		float: none;
+		width: 100%;
+		text-align: center;
+		border-radius: 6px;
+		margin: 1em 0;
+		text-decoration: none !important;
+	}
+
+	.wps-checkout-quotation-button {
+		display: block;
+		text-align: center;
+		font-weight: 700;
+		text-decoration: underline;
+		color: rgba(0,0,0,0.8);
+
+		&:hover {
+			color: $color__primary;
+			cursor: pointer;
+		}
+	}
+}

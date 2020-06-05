@@ -1,0 +1,11 @@
+{
+	"name": "Third Party avec dolibarr",
+	"slug": "doli-third-parties",
+	"since": "2.0.0",
+	"path": "modules/dolibarr/doli-third-parties",
+	"dependencies": {
+        "filter": {},
+		"class": {},
+		"action": {}
+	}
+}

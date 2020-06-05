@@ -1,0 +1,9 @@
+{
+	"name": "Order",
+	"slug": "order",
+	"since": "2.0.0",
+	"path": "modules/order",
+	"dependencies": {
+    "action": {}
+	}
+}

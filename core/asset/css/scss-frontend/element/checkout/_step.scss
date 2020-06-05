@@ -1,0 +1,48 @@
+.wps-checkout {
+	.wps-checkout-subtitle {
+		font-weight: 700;
+		font-size: 18px;
+		margin-bottom: 0.8em;
+		color: rgba(0,0,0,0.8);
+
+		&::before {
+			display: inline-block;
+			content: '';
+			font-weight: 900;
+			color: $color__primary;
+			margin-right: 0.4em;
+		}
+	}
+
+	.wps-checkout-step-1 .wps-checkout-subtitle::before {
+		content: '01.';
+	}
+	.wps-checkout-step-2 .wps-checkout-subtitle::before {
+		content: '02.';
+	}
+	.wps-checkout-step-3 .wps-checkout-subtitle::before {
+		content: '03.';
+	}
+}
+
+.wps-checkout {
+	[class*="wps-checkout-step"] {
+		margin-bottom: 1em;
+	}
+}
+
+/** Etape 3 */
+.wps-checkout .wps-checkout-step-3 {
+	.wps-checkout-subtitle {
+		float: left;
+	}
+	.wps-checkout-edit-order {
+		float: right;
+		font-size: 14px;
+		line-height: 2.3;
+		color: $color__primary;
+	}
+	.wps-checkout-review-order {
+		clear: both;
+	}
+}

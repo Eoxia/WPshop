@@ -1,0 +1,10 @@
+{
+	"name": "Tools",
+	"slug": "tools",
+	"since": "2.0.0",
+	"path": "modules/tools",
+	"dependencies": {
+		"class": {},
+		"action": {}
+	}
+}

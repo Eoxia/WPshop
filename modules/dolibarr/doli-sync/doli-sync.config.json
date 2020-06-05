@@ -1,0 +1,11 @@
+{
+	"name": "Gestion de la synchronisation avec les entitées de dolibarr",
+	"slug": "doli-sync",
+	"since": "2.0.0",
+	"path": "modules/dolibarr/doli-sync",
+	"dependencies": {
+		"class": {},
+        "filter": {},
+		"action": {}
+	}
+}

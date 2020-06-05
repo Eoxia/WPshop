@@ -1,0 +1,11 @@
+{
+	"name": "Gestion des prospets",
+	"slug": "doli-proposals",
+	"since": "2.0.0",
+	"description": "Le module gérant les prospets",
+	"path": "modules/dolibarr/doli-proposals/",
+	"dependencies": {
+    "class": {},
+    "action": {}
+	}
+}

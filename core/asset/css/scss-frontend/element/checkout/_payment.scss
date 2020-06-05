@@ -1,0 +1,48 @@
+.wps-checkout-payment {
+
+	.wps-payment-list, .wps-payment {
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
+	}
+	.wps-payment-title {
+		font-size: 16px;
+		font-weight: 700;
+		color: rgba(0,0,0,0.8);
+		line-height: 1.4;
+		margin-bottom: 0.4em;
+		user-select: none;
+
+		.wps-payement-icon {
+			font-weight: 400;
+			color: $color__primary;
+		}
+	}
+	.wps-payment-description {
+		font-size: 14px;
+		color: rgba(0,0,0,0.5);
+		line-height: 1.4;
+		user-select: none;
+	}
+
+	.wps-payment {
+		@include transition;
+
+		&.checked {
+			background: $color__primary;
+			color: #fff;
+
+			.wps-payment-title, .wps-payment-description, .wps-payement-icon {
+				color: #fff;
+			}
+		}
+		.wps-payment-container {
+			padding: 0.6em;
+			display: block;
+
+			&:hover {
+				cursor: pointer;
+			}
+		}
+	}
+}

@@ -1,0 +1,158 @@
+.eo-custom-page #adminmenuwrap,
+.eo-custom-page #wpadminbar,
+.eo-custom-page #adminmenumain,
+.eo-custom-page #screen-meta-links,
+.eo-custom-page #wpfooter {
+	display: none !important;
+}
+
+body.eo-custom-page {
+	&.admin-bar {
+		position: relative;
+		top: -32px;
+	}
+
+	#wpcontent {
+		margin-left: 0 !important;
+		padding-left: 0;
+	}
+	.nav-wrap {
+		display: flex;
+		flex-direction: column;
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 200px;
+		height: 100%;
+		transition: all 0.2s ease-out;
+
+		&::before {
+			display: block;
+			content: '';
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 200px;
+			height: 100%;
+			background: #1c1d1b;
+			z-index: -1;
+			transition: all 0.2s ease-out;
+		}
+
+		#logo {
+			padding: 0.5em;
+			text-align: center;
+			border-bottom: 1px solid rgba(255,255,255,0.1);
+
+			h1 {
+				height: 100px;
+				display: flex;
+				margin: 0;
+			}
+			a {
+				margin: auto;
+			}
+			img {
+				max-width: 50px;
+				width: 100%;
+				transition: all 0.2s ease-out;
+			}
+		}
+
+		.nav-menu.nav-bottom {
+			margin-top: 2em;
+		}
+
+		&.wrap-reduce {
+			width: 40px;
+			&::before {
+				width: 40px;
+			}
+			.nav-menu.nav-bottom .item {
+				padding: 0;
+			}
+		}
+
+	}
+}
+
+/** Menu elements */
+body.eo-custom-page .nav-menu .item {
+	color: #fff;
+	text-decoration: none;
+	font-size: 14px;
+
+	&:focus {
+		outline: none;
+	}
+
+	&:hover > div {
+		background: rgba(255,255,255,0.2);
+	}
+
+	&.item-active > div {
+		background: rgba(255,255,255,0.2);
+	}
+
+	> div {
+		padding: 0.7em;
+		border-bottom: 1px solid rgba(255,255,255,0.1);
+		transition: all 0.2s ease-out;
+		display: flex;
+	}
+	.nav-icon {
+		margin-right: 0.6em;
+		min-width: 20px;
+		line-height: 1.3;
+	}
+	.item-label {
+		transition: all 0.2s ease-out;
+		white-space: nowrap;
+	}
+}
+body.eo-custom-page .nav-wrap.wrap-reduce .nav-menu .item {
+	> div {
+		text-align: center;
+	}
+	.item-label {
+		opacity: 0;
+		pointer-events: none;
+		transform: translateX(-10px);
+	}
+	.nav-icon {
+		margin-right: 0;
+	}
+}
+
+/** Menu du bas */
+body.eo-custom-page .nav-menu.nav-bottom .item {
+	padding: 0 0.6em;
+	display: block;
+	margin-bottom: 0.5em;
+
+	> div {
+		border-bottom: 0;
+	}
+	&:not(.minimize-menu) {
+		> div {
+			background: rgba(255, 255, 255, 0.2);
+			color: #fff;
+			border-radius: 6px;
+		}
+		&:hover > div {
+			background: rgba(255,255,255,0.4);
+		}
+	}
+	&.minimize-menu {
+		> div {
+			color: rgba(255,255,255,0.6);
+		}
+		&:hover > div {
+			background: none;
+			color: rgba(255,255,255,1);
+		}
+		.item-label {
+			transition: none;
+		}
+	}
+}

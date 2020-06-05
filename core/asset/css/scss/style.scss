@@ -1,0 +1,139 @@
+/**
+ * CSS générer par GULP grâce à la cmd "npm-start".
+ *
+ * Toute modification sur un fichier *.scss lance la compilation de tous les *.scss vers ce fichier.
+ *
+ * @since 2.0.0
+ */
+
+@import "mixins/mixins-master";
+@import "variables/variables";
+
+@import "external/external";
+@import "element-global/element-global";
+
+@import "page/status";
+
+.wpeo-wrap {
+	@import "element/element";
+	@import "page/page";
+}
+
+.notification-add-to-cart {
+	width: 90%;
+    right: 0;
+    left: 0;
+    margin-right: auto;
+    margin-left: auto;
+	top: 3em;
+	bottom: auto;
+}
+
+.wpshop_page_wps-third-party .wpeo-wrap .page-header h2 {
+	display: flex;
+}
+
+.wpshop_page_wps-order .wpeo-wrap .page-header h2 {
+	display: flex;
+}
+
+
+/** Temporaire **/
+.wp-admin select {
+	height: auto !important;
+}
+
+.post-type-wps-order #post-body-content, .post-type-wps-order #titlediv { display:none }
+.post-type-wps-proposal #post-body-content, .post-type-wps-proposal #titlediv { display:none }
+
+#toplevel_page_wps-order .wp-first-item {
+	display: none;
+}
+
+.synchro-single .filter-entry {
+	width: 99.8%;
+	padding: 10px;
+}
+
+.synchro-single .select {
+	margin: 0;
+	height: 280px;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	border: solid black 1px;
+}
+
+.synchro-single .select li {
+	display: block;
+	padding: 10px;
+	margin: 0;
+}
+
+
+.synchro-single .select li:nth-child(odd) {
+	background-color: rgba(0, 0, 0, 0);
+}
+
+
+.synchro-single .select li:nth-child(even) {
+	background-color: rgba(0, 0, 0, 0.1);
+}
+
+.synchro-single .select li:hover {
+	color: white;
+	background-color: $color__primary;
+	cursor: pointer;
+}
+
+.synchro-single .select li.active {
+	color: white;
+	background-color: $color__primary;
+}
+
+.need-to-confirm .modal-container {
+	max-width: 600px;
+	max-height: 420px;
+}
+
+.need-to-confirm .modal-container .modal-content {
+	height: 68%;
+}
+
+
+.choose {
+	padding: 10px;
+	@include transition;
+}
+
+.choose:hover {
+	background-color: $color__grey;
+}
+
+.choose .wpeo-button.button-main {
+	background-color: $color__secondary;
+}
+.mask {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	background-color: rgba(0, 0, 0, 0.8);
+	z-index: 999999;
+	text-align: center;
+}
+
+.mask h3 {
+	font-size: 30px;
+	color: white;
+}
+
+.mask .content {
+	position: relative;
+	top: 50%;
+	transform: translateY(-70%);
+}
+
+.fa-toggle-on {
+	color: green;
+}

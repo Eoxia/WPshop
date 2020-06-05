@@ -1,0 +1,13 @@
+{
+	"name": "Core",
+	"slug": "core",
+	"since": "2.0.0",
+	"description": "Main files of my_plugin",
+	"path": "core/",
+	"dependencies": {
+    "class": {},
+		"action": {},
+    "filter": {},
+    "util": {}
+	}
+}

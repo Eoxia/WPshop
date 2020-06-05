@@ -1,0 +1,9 @@
+{
+	"name": "Health",
+	"slug": "health",
+	"since": "2.0.0",
+	"path": "modules/health",
+	"dependencies": {
+    "filter": {}
+	}
+}

@@ -1,0 +1,136 @@
+/**
+ * Interface de mise à jour des données
+ */
+
+.wpeo-modal {
+	.notice {
+		margin-left: 0;
+	}
+	.wpeo-grid {
+		width: 100%;
+	}
+
+	.item {
+		display: block;
+		background-color: #fff;
+		font-size: 14px;
+		display: flex;
+		height: 100%;
+		transition: all 0.2s ease-out;
+
+		&::after {
+			display: block;
+			content: '';
+			clear: both;
+		}
+
+		.item-spin {
+			width: 80px;
+			position: relative;
+			border-left: 6px solid #4c4c4c;
+
+			.wps-spinner, .icon {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				margin: 0;
+				padding: 0;
+				font-size: 20px;
+			}
+			.wps-spinner {
+				opacity: 0;
+				transform: translate(-50%, -120%);
+				transition: all 0.2s ease-out;
+			}
+			.icon {
+				transform: translate(-50%, -50%);
+				transition: all 0.2s ease-out;
+
+				&::before {
+				}
+			}
+		}
+
+		.item-container {
+			width: 100%;
+			margin: auto 0;
+			padding: 2em 2em 2em 0em;
+		}
+
+		.item-content {
+			.item-title {
+				font-size: 12px;
+				text-transform: uppercase;
+				color: rgba(0,0,0,0.8);
+				font-weight: 900;
+				margin-bottom: 0.4em;
+			}
+			.item-description {
+				font-size: 14px;
+				color: rgba(0,0,0,0.5);
+			}
+		}
+
+		.item-progress {
+			background: rgba(0,0,0,0.1);
+			position: relative;
+			display: block;
+			padding: 0 1em;
+			height: 26px;
+			line-height: 26px;
+			border-radius: 20px;
+			overflow: hidden;
+			margin-top: 2em;
+
+			.item-progression {
+				position: absolute;
+				background-color: $color__green;
+				top: 0;
+				left: 0;
+				width: 0%;
+				height: 100%;
+				transition: all 0.2s ease-out;
+			}
+			.item-stats {
+				position: relative;
+				font-size: 12px;
+			}
+		}
+
+		&.in-progress-item {
+			transform: translateX(-10px);
+
+			.item-spin {
+				border-left: 6px solid $color__blue;
+
+				.fa-spin {
+					color: $color__blue;
+				}
+			}
+			.wps-spinner {
+				opacity: 1;
+				transform: translate(-50%, -50%);
+			}
+			.icon {
+				transform: translate(-50%, 0%);
+				opacity: 0;
+			}
+		}
+
+		&.done-item {
+			.item-spin {
+				border-left: 6px solid $color__green;
+			}
+			.icon::before {
+				color: $color__green;
+			}
+		}
+	}
+
+	.general-message {
+		width: 80%;
+		margin: 0 auto;
+		font-size: 14px;
+		text-align: center;
+	}
+}

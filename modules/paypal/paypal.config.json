@@ -1,0 +1,11 @@
+{
+	"name": "Gestion de PayPal",
+	"slug": "paypal",
+	"since": "2.0.0",
+	"path": "modules/paypal",
+	"dependencies": {
+    "filter": {},
+		"class": {},
+    "action": {}
+	}
+}

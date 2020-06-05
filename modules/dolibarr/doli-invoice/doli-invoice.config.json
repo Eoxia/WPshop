@@ -1,0 +1,12 @@
+{
+	"name": "Invoice",
+	"slug": "doli-invoice",
+	"since": "2.0.0",
+	"path": "modules/dolibarr/doli-invoice",
+	"dependencies": {
+    "filter": {},
+    "action": {},
+    "class": {},
+    "model": {}
+	}
+}

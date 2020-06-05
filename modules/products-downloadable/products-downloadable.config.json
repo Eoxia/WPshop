@@ -1,0 +1,11 @@
+{
+	"name": "Product Downloadable",
+	"slug": "products-downloadable",
+	"since": "2.0.0",
+	"path": "modules/products-downloadable",
+	"dependencies": {
+		"class": {},
+		"action": {},
+    "model": {}
+	}
+}

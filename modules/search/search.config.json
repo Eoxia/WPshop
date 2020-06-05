@@ -1,0 +1,10 @@
+{
+	"name": "search",
+	"slug": "search",
+	"since": "2.0.0",
+	"path": "modules/search",
+	"dependencies": {
+    "widget": {},
+		"action": {}
+	}
+}

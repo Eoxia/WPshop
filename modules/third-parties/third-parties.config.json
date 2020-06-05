@@ -1,0 +1,12 @@
+{
+	"name": "Third Party",
+	"slug": "third-parties",
+	"since": "2.0.0",
+	"path": "modules/third-parties",
+	"dependencies": {
+		"class": {},
+    "filter": {},
+		"action": {},
+    "model": {}
+	}
+}

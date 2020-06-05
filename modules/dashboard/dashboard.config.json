@@ -1,0 +1,11 @@
+{
+	"name": "Page de vue d'ensemble",
+	"slug": "dashboard",
+	"since": "2.0.0",
+	"path": "modules/dashboard",
+	"dependencies": {
+		"action": {},
+    "class": {},
+    "filter": {}
+	}
+}

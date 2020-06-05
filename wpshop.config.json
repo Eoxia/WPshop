@@ -1,0 +1,51 @@
+{
+	"name": "wpshop",
+	"slug": "wpshop",
+	"modules": [
+		"core/core.config.json",
+
+        "modules/transfert-data/transfert-data.config.json",
+    
+        "modules/api/api.config.json",
+    
+        "modules/settings/settings.config.json",
+        "modules/tools/tools.config.json",
+        "modules/health/health.config.json",
+    
+        "modules/order/order.config.json",
+        "modules/products/products.config.json",
+        "modules/products-downloadable/products-downloadable.config.json",
+        "modules/third-parties/third-parties.config.json",
+        "modules/user/user.config.json",
+        "modules/proposals/proposals.config.json",
+    
+        "modules/cart/cart.config.json",
+        "modules/checkout/checkout.config.json",
+    
+        "modules/payment/payment.config.json",
+        "modules/paypal/paypal.config.json",
+        "modules/stripe/stripe.config.json",
+    
+        "modules/my-account/my-account.config.json",
+        "modules/pages/pages.config.json",
+        "modules/emails/emails.config.json",
+    
+        "modules/dashboard/dashboard.config.json",
+    
+        "modules/search/search.config.json",
+    
+        "modules/dolibarr/doli-shipping-cost/doli-shipping-cost.config.json",
+        "modules/dolibarr/doli-statut/doli-statut.config.json",
+        "modules/dolibarr/doli-proposals/doli-proposals.config.json",
+        "modules/dolibarr/doli-order/doli-order.config.json",
+        "modules/dolibarr/doli-third-parties/doli-third-parties.config.json",
+        "modules/dolibarr/doli-user/doli-user.config.json",
+        "modules/dolibarr/doli-invoice/doli-invoice.config.json",
+        "modules/dolibarr/doli-payment/doli-payment.config.json",
+        "modules/dolibarr/doli-products/doli-products.config.json",
+        "modules/dolibarr/doli-sync/doli-sync.config.json",
+        "modules/dolibarr/doli-associate/doli-associate.config.json"
+	],
+	"version": "2.0.0",
+    "use_global_sync": true
+}

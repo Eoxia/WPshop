@@ -1,0 +1,12 @@
+@import "table/table";
+@import "filter-bar";
+@import "sync-element";
+@import "metabox";
+@import "page-header";
+@import "metabox-list";
+@import "status";
+
+a:not(.wpeo-button) {
+	color: $color__primary;
+	text-decoration: none;
+}

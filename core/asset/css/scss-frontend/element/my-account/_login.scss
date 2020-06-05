@@ -1,0 +1,10 @@
+.checkout-login {
+	.checkout-login-toggle span {
+		color: $color__primary;
+
+		&:hover {
+			cursor: pointer;
+			text-decoration: underline;
+		}
+	}
+}

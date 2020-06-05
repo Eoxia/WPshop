@@ -1,0 +1,10 @@
+{
+	"name": "Gestion des assocations avec les entitées de dolibarr",
+	"slug": "doli-associate",
+	"since": "2.0.0",
+	"path": "modules/dolibarr/doli-associate",
+	"dependencies": {
+    "filter": {},
+		"action": {}
+	}
+}

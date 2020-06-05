@@ -1,0 +1,55 @@
+.wps-account-page .wps-account-navigation {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+
+	.wps-account-navigation-item {
+		background: rgba(0,0,0,0.075);
+		font-size: 16px;
+		margin-bottom: 1px;
+
+		a {
+			text-decoration: none;
+			color: rgba(0,0,0,0.8);
+			display: block;
+			padding: 0.8em 0.8em 0.8em 1.4em;
+			position: relative;
+
+			&::after, &::before {
+				display: block;
+				content: '';
+				background: $color__primary;
+				width: 6px;
+				height: 100%;
+				position: absolute;
+				top: 0;
+				left: 0;
+				opacity: 0;
+				z-index: -1;
+				opacity: 0;
+			}
+			&::after {
+				width: 0;
+				transition: all 0.2s ease-out;
+			}
+		}
+		a.active {
+			font-weight: 700;
+
+			&::before {
+				opacity: 1;
+			}
+		}
+		a:hover {
+			&::after {
+				width: 6px;
+				opacity: 1;
+			}
+		}
+		.navigation-icon {
+			font-size: 14px;
+			margin-right: 0.4em;
+			color: $color__primary;
+		}
+	}
+}

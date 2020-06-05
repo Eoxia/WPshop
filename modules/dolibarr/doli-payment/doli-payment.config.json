@@ -1,0 +1,11 @@
+{
+	"name": "Payment",
+	"slug": "doli-payment",
+	"since": "2.0.0",
+	"path": "modules/dolibarr/doli-payment",
+	"dependencies": {
+    "class": {},
+    "filter": {},
+    "model": {}
+	}
+}

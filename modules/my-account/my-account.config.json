@@ -1,0 +1,12 @@
+{
+	"name": "My Account",
+	"slug": "my-account",
+	"since": "2.0.0",
+	"path": "modules/my-account",
+	"dependencies": {
+      "class": {},
+      "shortcode": {},
+      "action": {},
+      "filter": {}
+	}
+}

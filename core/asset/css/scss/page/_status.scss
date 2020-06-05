@@ -1,0 +1,25 @@
+.wpshop_page_wps-status .wpeo-wrap {
+	table {
+		width: 100%;
+
+		tr {
+			td {
+				padding: 10px;
+			}
+			td:first-child {
+				width: 30%;
+			}
+			td:last-child {
+				width: 70%;
+			}
+
+			.fa-check {
+				color: green !important;
+			}
+
+			.fa-times {
+				color: red !important;
+			}
+		}
+	}
+}

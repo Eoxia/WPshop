@@ -1,0 +1,32 @@
+.wps-checkout-review-order .wps-list-product {
+	margin-bottom: 30px;
+}
+
+.wps-checkout-review-order .wps-list-product .wps-product {
+	padding: 0;
+	background: transparent;
+
+	&:last-child {
+		margin-bottom: 1em;
+	}
+
+	.wps-product-content {
+		.wps-product-title {
+			font-size: 16px;
+		}
+		.wps-product-attributes {
+			display: none;
+		}
+		.wps-product-footer {
+			margin-top: 0;
+
+			.wps-product-quantity {
+				color: rgba(0,0,0,0.4);
+				font-weight: 400;
+			}
+			.wps-product-price {
+				color: inherit;
+			}
+		}
+	}
+}

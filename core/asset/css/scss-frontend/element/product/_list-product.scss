@@ -1,0 +1,91 @@
+.wps-list-product .wps-product {
+	display: flex;
+	background: #fff;
+	padding: 1em;
+	margin-bottom: 0.6em;
+	position: relative;
+
+	&:last-child {
+		margin-bottom: 0;
+	}
+
+	.wps-product-thumbnail, .wps-product-content {
+		margin: auto 0;
+	}
+	.wps-product-thumbnail {
+		min-width: 20%;
+		width: 20%;
+		margin-right: 0.6em;
+
+		.attachment-wps-product-thumbnail {
+			width: 100%;
+			height: auto;
+			display: block;
+		}
+	}
+
+	.wps-delete-product {
+		position: absolute;
+		top: 0.6em;
+		right: 0.6em;
+		color: rgba(0,0,0,0.4);
+		@include transition();
+
+		&:hover {
+			cursor: pointer;
+			color: rgba(0,0,0,0.9);
+		}
+	}
+
+	.wps-product-content {
+		width: 100%;
+		line-height: 1.2;
+
+		.wps-product-title {
+			font-size: 20px;
+			color: rgba(0,0,0,0.9);
+			line-height: 1.2;
+		}
+		.wps-product-attributes {
+			display: flex;
+			margin: 0;
+			padding: 0;
+
+			.wps-product-attributes-item {
+				list-style-type: none;
+				margin: 0 0.2em 0 0;
+				color: rgba(0,0,0,0.4);
+				font-size: 14px;
+			}
+			.wps-product-attributes-icon {
+				margin-right: 0.2em;
+			}
+		}
+		.wps-product-footer {
+			display: flex;
+			margin-top: 0.8em;
+
+			.wps-product-price, .wps-product-quantity {
+				font-size: 16px;
+				font-weight: 700;
+				color: rgba(0,0,0,0.8);
+
+				.wps-quantity-plus, .wps-quantity-minus {
+					position: relative;
+					@include transition(opacity, 0.2s, ease-out);
+
+					&:focus, &:active {
+						top: 2px;
+					}
+					&:hover {
+						opacity: 0.6;
+						cursor: pointer;
+					}
+				}
+			}
+			.wps-product-price {
+				margin-left: auto;
+			}
+		}
+	}
+}

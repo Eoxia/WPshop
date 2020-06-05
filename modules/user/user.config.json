@@ -1,0 +1,11 @@
+{
+  "name": "User",
+  "slug": "user",
+  "since": "2.0.0",
+  "path": "modules/user",
+  "dependencies": {
+    "filter": {},
+    "class": {},
+    "model": {}
+	}
+}

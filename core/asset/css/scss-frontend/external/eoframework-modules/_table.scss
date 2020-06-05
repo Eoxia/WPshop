@@ -1,0 +1,10 @@
+.wpeo-table.table-flex .table-cell {
+	$w: 25;
+	@for $i from 1 through 16 {
+		$y: $w*$i;
+		&.table-#{$y} {
+		    max-width: #{$y}px;
+		    min-width: #{$y}px;
+		}
+	}
+}

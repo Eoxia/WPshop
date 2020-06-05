@@ -1,0 +1,11 @@
+{
+	"name": "User avec dolibarr",
+	"slug": "doli-user",
+	"since": "2.0.0",
+	"path": "modules/dolibarr/doli-user",
+	"dependencies": {
+		"class": {},
+		"action": {},
+        "filter": {}
+	}
+}

@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<ruleset name="WordPress Coding Standards">
+	<description>WPshop dev PHP_CodeSniffer ruleset.</description>
+
+	<!-- Exclude paths -->
+	<exclude-pattern>test/</exclude-pattern>
+	<exclude-pattern>*/node_modules/*</exclude-pattern>
+	<exclude-pattern>*/vendor/*</exclude-pattern>
+	<exclude-pattern>core/external/*</exclude-pattern>
+	<exclude-pattern>**/*.js</exclude-pattern>
+	<exclude-pattern>**/*.css</exclude-pattern>
+	<exclude-pattern>**/index.php</exclude-pattern>
+	<exclude-pattern>**/need-to-confirm-header.view.php</exclude-pattern>
+	<exclude-pattern>**/class-doli-sync-action.php</exclude-pattern>
+	<exclude-pattern>**/class-checkout.php</exclude-pattern>
+	<exclude-pattern>**/class-doli-associate-action.php</exclude-pattern>
+	<exclude-pattern>**/my-account-*.php</exclude-pattern>
+	<exclude-pattern>**/dashboard/view/metaboxes/*.php</exclude-pattern>
+
+	<!-- Configs -->
+	<config name="minimum_supported_wp_version" value="4.4" />
+	<config name="testVersion" value="5.2-"/>
+
+	<rule ref="WordPress-Core">
+		<exclude name="WordPress.NamingConventions.ValidVariableName" />
+	</rule>
+	<rule ref="WordPress-Docs"></rule>
+
+	<rule ref="PEAR.Functions.FunctionCallSignature">
+		<severity>0</severity>
+	</rule>
+</ruleset>

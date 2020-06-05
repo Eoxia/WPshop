@@ -1,0 +1,67 @@
+body.eo-custom-page .content-wrap {
+	margin-left: 200px;
+	padding: 0;
+	transition: all 0.2s ease-out;
+
+	&.content-reduce {
+		margin-left: 40px;
+	}
+
+	#top-header {
+		display: flex;
+		flex-wrap: wrap;
+		padding: 1em;
+		border-bottom: 1px solid rgba(0,0,0,0.2);
+
+		ul, li {
+			margin: 0;
+		}
+		.nav-left {
+			display: flex;
+			max-width: 70%;
+			margin: auto 0 auto 0;
+
+			> * {
+				margin-top: auto;
+				margin-bottom: auto;
+			}
+		}
+		.nav-right {
+			max-width: 30%;
+			margin: auto 0 auto auto;
+		}
+		.nav-bottom {
+			width: 100%;
+			margin-top: 0.5em;
+		}
+	}
+	#top-header .nav-left {
+		.page-title {
+			font-size: 22px;
+			margin-right: 0.6em;
+		}
+		.nav-header {
+			li {
+				margin: 0;
+			}
+		}
+	}
+
+	#top-header .nav-right {
+		.navigation-avatar img {
+			border-radius: 50%;
+		}
+	}
+
+	.eo-wrap {
+		margin: 0;
+	}
+	.wpeo-wrap {
+		margin: 0;
+		padding: 1em;
+	}
+	.wpeo-box {
+		background: #fff;
+		padding: 1.4em;
+	}
+}

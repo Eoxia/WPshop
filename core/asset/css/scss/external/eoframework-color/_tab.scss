@@ -1,0 +1,31 @@
+.wpeo-tab .tab-list {
+	.tab-element {
+
+		&::before {
+			background: $color__primary;
+		}
+		/* Active */
+		&.tab-active {
+			color: $color__primary;
+
+			> a {
+				color: $color__primary;
+			}
+		}
+	}
+}
+
+/* Vertical */
+.wpeo-tab.tab-vertical {
+	.tab-list {
+		.tab-element {
+			/* Active */
+			&.tab-active {
+				color: $color__primary;
+				a {
+					color: $color__primary;
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,35 @@
+@import "reference";
+@import "list-product";
+@import "list-contact";
+@import "commercial";
+@import "flex";
+
+.wpeo-table {
+	td, th {
+		border: 0;
+	}
+
+	td.table-end, th.table-end {
+		text-align: right;
+	}
+
+	> tfoot {
+		background: rgba(0,0,0,0.05);
+		color: rgba(0,0,0,0.8);
+
+		td {
+			padding: .2em .6em;
+			border: 1px solid rgba(0,0,0,0.1);
+		}
+	}
+	a:not(.wpeo-button) {
+		color: $color__primary;
+		text-decoration: none;
+	}
+}
+
+.wps-checkout-review-order-table {
+	tbody tr td:last-child, tfoot tr td:last-child {
+		text-align: right;
+	}
+}

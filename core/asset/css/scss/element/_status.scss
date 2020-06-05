@@ -1,0 +1,16 @@
+.wps-status {
+	font-weight: 600;
+
+	&.status-grey {
+		color: #ababab;
+	}
+	&.status-green {
+		color: #19d854;
+	}
+	&.status-orange {
+		color: #ffa500;
+	}
+	&.status-red {
+		color: #ff1818;
+	}
+}
