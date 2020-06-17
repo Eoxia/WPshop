@@ -6,12 +6,12 @@
 </p>
 
 WpShop 2.X will turn your WordPress into a simple, fast and intuitive Ecommerce for your customers.
-WpShop 2.X will be connected to your PGI.
+WpShop 2.X will be connected to your ERP.
 Say hello, simplicity and goodbye to duplicate content.
-Synchronization with the Dolibarr PGI will be installed by default and completely free.
+Synchronization with the Dolibarr ERP will be installed by default and completely free.
 
 WpShop 2.X transformera votre WordPress en un Ecommerce simple, rapide et intuitif pour vos clients. 
-WpShop 2.X sera connecté à votre PGI. 
+WpShop 2.X sera connecté à votre ERP. 
 Dites Bonjour, à la simplicité et au revoir au contenu dupliqué. 
 La synchronisation avec le ERP - CRM Dolibarr sera installée par défaut et totalement gratuite.
 
