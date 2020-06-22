@@ -36,7 +36,7 @@ defined( 'ABSPATH' ) || exit; ?>
 					<div class="table-cell"><a href="<?php echo esc_attr( $dolibarr_url . '/commande/card.php?id=' . $order->data['external_id'] ); ?>"><?php echo esc_html( $order->data['title'] ); ?></a></div>
 					<div class="table-cell"><a href="<?php echo esc_attr( admin_url( 'admin.php?page=wps-third-party&id=' . $order->data['third_party']->data['id'] ) ); ?>"><?php echo esc_html( $order->data['third_party']->data['title'] ); ?></a></div>
 					<div class="table-cell"><?php echo esc_html( number_format( $order->data['total_ttc'], 2, ',', '' ) ); ?>€</div>
-					<div class="table-cell"><?php echo esc_html( $order->data['date']['rendered']['date_time'] ); ?></div>
+					<div class="table-cell"><?php echo esc_html( date( 'd/m/Y H:i', strtotime( $order->data['datec'] ) ) ); ?></div>
 				</div>
 				<?php
 			endforeach;
