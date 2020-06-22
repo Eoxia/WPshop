@@ -29,7 +29,7 @@ class Product_Action {
 	 * @since 2.0.0
 	 */
 	public function __construct() {
-		add_action( 'admin_menu', array( $this, 'callback_admin_menu' ), 0 );
+		add_action( 'admin_menu', array( $this, 'callback_admin_menu' ) );
 		add_action( 'save_post', array( $this, 'callback_save_post' ), 10, 2 );
 
 		add_action( 'template_redirect', array( $this, 'init_product_archive_page' ) );
@@ -45,12 +45,12 @@ class Product_Action {
 	 * @since 2.0.0
 	 */
 	public function callback_admin_menu() {
-		add_menu_page( __( 'Products', 'wpshop' ), __( 'Products', 'wpshop' ), 'manage_options', 'wps-product', '', 'dashicons-cart' );
-		$hook = add_submenu_page( 'wps-product', __( 'Products', 'wpshop' ), __( 'Products', 'wpshop' ), 'manage_options', 'wps-product', array( $this, 'callback_add_menu_page' ) );
+		//add_menu_page( __( 'Products', 'wpshop' ), __( 'Products', 'wpshop' ), 'manage_options', 'wps-product', '', 'dashicons-cart' );
+		$hook = add_submenu_page( 'wpshop', __( 'Products', 'wpshop' ), __( 'Products', 'wpshop' ), 'manage_options', 'wps-product', array( $this, 'callback_add_menu_page' ) );
 		if ( ! Settings::g()->dolibarr_is_active() ) {
-			add_submenu_page( 'wps-product', __( 'Add', 'wpshop' ), __( 'Add', 'wpshop' ), 'manage_options', 'post-new.php?post_type=wps-product' );
+			add_submenu_page( 'wpshop', __( 'Add', 'wpshop' ), __( 'Add', 'wpshop' ), 'manage_options', 'post-new.php?post_type=wps-product' );
 		}
-		add_submenu_page( 'wps-product', __( 'Products Category', 'wpshop' ), __( 'Products Category', 'wpshop' ), 'manage_options', 'edit-tags.php?taxonomy=wps-product-cat&post_type=wps-product' );
+		add_submenu_page( 'wpshop', __( 'Products Category', 'wpshop' ), __( 'Products Category', 'wpshop' ), 'manage_options', 'edit-tags.php?taxonomy=wps-product-cat&post_type=wps-product' );
 		add_action( 'load-' . $hook, array( $this, 'callback_add_screen_option' ) );
 	}
 
