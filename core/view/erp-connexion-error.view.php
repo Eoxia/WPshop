@@ -23,7 +23,7 @@ defined( 'ABSPATH' ) || exit; ?>
 
 		<p>
 			<?php esc_html_e( 'Your ERP is not connected. Maybe your ERP is not connected or your configuration is not correct', 'wpshop' ); ?>
-			<a href="https://github.com/Eoxia/wpshop/tree/2.0.0"><?php _e( 'Need help ? Follow this guide', 'wpshop' ); ?></a>
+			<a href="https://wpshop.fr/documentation/" target="_blank"><?php _e( 'Need help ? Follow this guide', 'wpshop' ); ?></a>
 		</p>
 	</div>
 	<div class="notification-close"><i class="far fa-times"></i></div>

@@ -19,7 +19,7 @@ defined( 'ABSPATH' ) || exit; ?>
 <div class="notice notice-warning is-dismissible notice-erp">
 	<p>
 		<?php echo esc_attr( $error ); ?>
-		<a class="wpeo-button button-main" target="_blank" href="https://wpshop.fr/documentation/pages/installation/erp-dolibarr/"><span><?php _e( 'Follow this guide', 'wpshop' ); ?></span></a>
+		<a class="wpeo-button button-main" target="_blank" href="https://wpshop.fr/documentation/"><span><?php _e( 'Follow this guide', 'wpshop' ); ?></span></a>
 
 		<a href="#" style="float: right;" class="action-attribute" data-action="wps_hide_notice_erp"
 			data-nonce="<?php echo wp_create_nonce( 'wps_hide_notice_erp' ); ?>"
