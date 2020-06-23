@@ -29,7 +29,7 @@ defined( 'ABSPATH' ) || exit; ?>
 	</div>
 
 	<div>
-		<div class="form-element form-element-required">
+		<div class="form-element">
 			<span class="form-label"><?php esc_html_e( 'WPshop width size', 'wpshop' ); ?></span>
 			<label class="form-field-container">
 				<input type="text" class="form-field" name="thumbnail_size[width]" value="<?php echo esc_attr( $dolibarr_option['thumbnail_size']['width'] ); ?>" />
@@ -38,7 +38,7 @@ defined( 'ABSPATH' ) || exit; ?>
 	</div>
 
 	<div>
-		<div class="form-element form-element-required">
+		<div class="form-element">
 			<span class="form-label"><?php esc_html_e( 'WPshop height size', 'wpshop' ); ?></span>
 			<label class="form-field-container">
 				<input type="text" class="form-field" name="thumbnail_size[height]" value="<?php echo esc_attr( $dolibarr_option['thumbnail_size']['height'] ); ?>" />
@@ -46,12 +46,12 @@ defined( 'ABSPATH' ) || exit; ?>
 		</div>
 	</div>
 
-<!--	<div class="form-element form-align-horizontal">-->
-<!--		<div class="form-field-inline">-->
-<!--			<input type="checkbox" id="use_quotation" class="form-field" name="use_quotation" --><?php //echo $dolibarr_option['use_quotation'] ? 'checked="checked"' : ''; ?>
-<!--			<label for="use_quotation">--><?php //esc_html_e( 'Use quotation', 'wpshop' ); ?><!--</label>-->
-<!--		</div>-->
-<!--	</div>-->
+	<div class="form-element">
+		<label class="form-field-container">
+			<input type="checkbox" id="use_quotation" class="form-field" name="use_quotation" <?php echo $dolibarr_option['use_quotation'] ? 'checked="checked"' : ''; ?> />
+			<label for="use_quotation"><?php esc_html_e( 'enable quotations', 'wpshop' ); ?></label>
+		</label>
+	</div>
 
 	<div>
 		<input type="submit" class="wpeo-button button-main" value="<?php esc_html_e( 'Save Changes', 'wpshop' ); ?>" />
