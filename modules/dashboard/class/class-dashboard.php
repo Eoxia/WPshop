@@ -55,6 +55,9 @@ class Dashboard extends \eoxia\Singleton_Util {
 			'wps-dashboard-payments'   => array(
 				'callback' => array( $this, 'metabox_payments' ),
 			),
+			'wps-dashboard-proposals'   => array(
+				'callback' => array( $this, 'metabox_proposals' ),
+			),
 		) );
 	}
 
@@ -232,6 +235,32 @@ class Dashboard extends \eoxia\Singleton_Util {
 			'dolibarr_payments_lists' => $dolibarr_payments_lists,
 			'dolibarr_url' => $dolibarr_url,
 
+		) );
+	}
+
+	/**
+	 * La metabox de synchronisation.
+	 *
+	 * @since 2.0.0
+	 */
+	public function metabox_proposals() {
+		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
+		$dolibarr_url    = $dolibarr_option['dolibarr_url'];
+		$dolibarr_proposals_lists = $dolibarr_option['dolibarr_proposals_lists'];
+
+		$doli_proposals = Request_Util::get( 'proposals?sortfield=t.rowid&sortorder=DESC&limit=3' );
+		$proposals      = Doli_Proposals::g()->convert_to_wp_proposal_format( $doli_proposals );
+
+		if ( ! empty( $proposals ) ) {
+			foreach ( $proposals as &$proposal ) {
+				$proposal->data['third_party'] = Third_Party::g()->get( array( 'id' => $proposal->data['parent_id'] ), true );
+			}
+		}
+
+		\eoxia\View_Util::exec( 'wpshop', 'dashboard', 'metaboxes/metabox-proposals', array(
+			'proposals'                => $proposals,
+			'dolibarr_url'             => $dolibarr_url,
+			'dolibarr_proposals_lists' => $dolibarr_proposals_lists,
 		) );
 	}
 }
