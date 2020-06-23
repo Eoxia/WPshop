@@ -24,7 +24,7 @@ defined( 'ABSPATH' ) || exit; ?>
 			<div class="wps-order wps-box">
 				<div class="wps-box-resume">
 					<div class="wps-box-primary">
-						<div class="wps-box-title"><?php echo esc_html( $proposal->data['datec'] ); ?></div>
+						<div class="wps-box-title"><?php echo esc_html( $proposal->data['datec']['rendered']['mysql'] ); ?></div>
 						<ul class="wps-box-attributes">
 							<li class="wps-box-subtitle-item"><i class="wps-box-subtitle-icon fas fa-shopping-cart"></i> <?php echo esc_attr( $proposal->data['title'] ); ?></li>
 						</ul>
@@ -33,9 +33,9 @@ defined( 'ABSPATH' ) || exit; ?>
 							<span class="wps-box-display-more-text"><?php esc_html_e( 'View details', 'wpshop' ); ?></span>
 						</div>
 					</div>
-					<div class="wps-box-secondary">
-						<div class="wps-box-price"><?php echo esc_html( number_format( $proposal->data['total_ttc'], 2, ',', '' ) ); ?>€</div>
-					</div>
+<!--					<div class="wps-box-secondary">-->
+<!--						<div class="wps-box-price">--><?php //echo esc_html( number_format( $proposal->data['total_ttc'], 2, ',', '' ) ); ?><!--€</div>-->
+<!--					</div>-->
 					<div class="wps-box-action">
 						<?php do_action( 'wps_my_account_proposals_actions', $proposal ); ?>
 					</div>
