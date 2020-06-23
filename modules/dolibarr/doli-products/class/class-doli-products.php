@@ -64,13 +64,14 @@ class Doli_Products extends \eoxia\Singleton_Util {
 			if ( $save ) {
 				$data_sha = array();
 
-				$data_sha['doli_id']   = $doli_product->id;
-				$data_sha['wp_id']     = $wp_product->data['id'];
-				$data_sha['label']     = $wp_product->data['title'];
-				$data_sha['price']     = $wp_product->data['price'];
-				$data_sha['price_ttc'] = $wp_product->data['price_ttc'];
-				$data_sha['tva_tx']    = $wp_product->data['tva_tx'];
-				$data_sha['status']    = $wp_product->data['status'];
+				$data_sha['doli_id']     = $doli_product->id;
+				$data_sha['wp_id']       = $wp_product->data['id'];
+				$data_sha['label']       = $wp_product->data['title'];
+				$data_sha['description'] = $wp_product->data['content'];
+				$data_sha['price']       = $wp_product->data['price'];
+				$data_sha['price_ttc']   = $wp_product->data['price_ttc'];
+				$data_sha['tva_tx']      = $wp_product->data['tva_tx'];
+				$data_sha['status']      = $wp_product->data['status'];
 
 				$wp_product->data['sync_sha_256'] = hash( 'sha256', implode( ',', $data_sha ) );
 
