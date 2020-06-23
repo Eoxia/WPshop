@@ -18,22 +18,22 @@ defined( 'ABSPATH' ) || exit; ?>
 
 <div class="wrap wpeo-wrap">
 	<h2>
-		<?php esc_html_e( 'Proposals', 'wpshop' ); ?>
+		<?php esc_html_e( 'Quotations', 'wpshop' ); ?>
 
 		<?php
-		if ( Settings::g()->dolibarr_is_active() && \eoxia\Config_Util::$init['wpshop']->use_global_sync ) :
-			?>
+		/*		if ( Settings::g()->dolibarr_is_active() && \eoxia\Config_Util::$init['wpshop']->use_global_sync ) :
+					*/?><!--
 			<div class="wpeo-button button-main wpeo-modal-event"
 				data-action="load_modal_synchro"
-				data-nonce="<?php echo esc_attr( wp_create_nonce( 'load_modal_synchro' ) ); ?>"
+				data-nonce="<?php /*echo esc_attr( wp_create_nonce( 'load_modal_synchro' ) ); */?>"
 				data-class="modal-sync modal-force-display"
 				data-sync="third-parties,contacts,products,proposals,orders,invoices,payments"
-				data-title="<?php echo esc_attr_e( 'Data synchronization', 'wpshop' ); ?>">
-				<span><?php esc_html_e( 'All Proposals Sync', 'wpshop' ); ?></span>
+				data-title="<?php /*echo esc_attr_e( 'Data synchronization', 'wpshop' ); */?>">
+				<span><?php /*esc_html_e( 'All Proposals Sync', 'wpshop' ); */?></span>
 			</div>
-			<?php
-		endif;
-		?>
+			--><?php
+		/*		endif;
+				*/?>
 	</h2>
 
 	<div class="wpeo-gridlayout wpeo-form form-light grid-4 alignleft" style="margin-bottom: 20px; margin-top: 15px;">
@@ -54,7 +54,7 @@ defined( 'ABSPATH' ) || exit; ?>
 	<?php
 	if ( ! empty( $s ) ) :
 		?>
-		<p>Résultats de recherche pour « <?php echo $s; ?> »</p>
+		<p> <?php echo esc_html_e( 'Search result for « ' . $s . ' »' ) ?> </p>
 		<?php
 	endif;
 	?>

@@ -58,7 +58,7 @@ class Proposals_Action {
 	public function callback_admin_menu() {
 		if ( Settings::g()->use_quotation() ) {
 
-			$hook = add_submenu_page( 'wpshop', __( 'Proposals', 'wpshop' ), __( 'Proposals', 'wpshop' ), 'manage_options', 'wps-proposal', array( $this, 'callback_add_menu_page' ) );
+			$hook = add_submenu_page( 'wpshop', __( 'Quotation', 'wpshop' ), __( 'Quotation', 'wpshop' ), 'manage_options', 'wps-proposal', array( $this, 'callback_add_menu_page' ) );
 
 			if ( ! isset( $_GET['id'] ) ) {
 				add_action( 'load-' . $hook, array( $this, 'callback_add_screen_option' ) );
@@ -75,7 +75,7 @@ class Proposals_Action {
 		add_screen_option(
 			'per_page',
 			array(
-				'label'   => _x( 'Proposals', 'Proposal per page', 'wpshop' ),
+				'label'   => __( 'Quotation', 'Quotation per page', 'wpshop' ),
 				'default' => Proposals::g()->limit,
 				'option'  => Proposals::g()->option_per_page,
 			)
