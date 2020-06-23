@@ -168,7 +168,7 @@ class Product extends \eoxia\Post_Class {
 	public function callback_register_meta_box() {
 		add_meta_box(
 			'wps_product_configuration',
-			'Product configuration',
+			__( 'Product configuration', 'wpshop'),
 			array( $this, 'callback_add_meta_box' ),
 			'wps-product'
 		);
@@ -206,6 +206,7 @@ class Product extends \eoxia\Post_Class {
 			'product'          => $product,
 			'doli_url'         => $dolibarr_option['dolibarr_url'],
 			'similar_products' => $similar_products,
+			'sync_status'      => false,
 		) );
 	}
 

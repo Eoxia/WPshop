@@ -17,7 +17,7 @@ namespace wpshop;
 defined( 'ABSPATH' ) || exit; ?>
 
 <div class="wpeo-wrap">
-	<h2 style="font-size: 1.6em; font-weight: bold;">Modification du produit <?php echo $product->data['title']; ?></h2>
+	<h2 style="font-size: 1.6em; font-weight: bold; display: inline-flex;">Modification du produit <?php echo $product->data['title']; ?> 	</h2><span style="display: inline-flex; position: relative; left: 35%"> <?php do_action( 'wps_listing_table_end', $product, $sync_status ); ?> </span>
 	<?php
 	if ( ! empty( $product->data['external_id'] ) ) :
 		?>
