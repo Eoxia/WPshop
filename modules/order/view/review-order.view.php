@@ -1,4 +1,4 @@
-5<?php
+<?php
 /**
  * La vue principale de la page des produits (wps-third-party)
  *

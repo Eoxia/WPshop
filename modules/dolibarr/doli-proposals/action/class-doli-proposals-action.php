@@ -97,18 +97,22 @@ class Doli_Proposals_Action {
 	public function callback_add_menu_page() {
 		if ( isset( $_GET['id'] ) ) {
 			$id = ! empty( $_GET['id'] ) ? (int) $_GET['id'] : 0;
-			$proposal    = Proposals::g()->get( array( 'id' => $id ), true );
-			$third_party = Third_Party::g()->get( array( 'id' => $proposal->data['parent_id'] ), true );
+			$doli_proposal = Request_Util::get( 'proposals/' . $id );
+			$wp_proposal   = Proposals::g()->get( array( 'schema' => true ), true );
+			$wp_proposal   = Doli_Proposals::g()->doli_to_wp( $doli_proposal, $wp_proposal, true );
+			//$proposal    = Proposals::g()->get( array( 'id' => $id ), true );
+
+			$third_party = Third_Party::g()->get( array( 'id' => $wp_proposal->data['parent_id'] ), true );
 
 			if ( ! empty( $this->metaboxes ) ) {
 				foreach ( $this->metaboxes as $key => $metabox ) {
-					add_action( 'wps_doli_proposal', $metabox['callback'], 10, 1 );
+					add_action( 'wps_proposal', $metabox['callback'], 10, 1 );
 				}
 			}
 
-			\eoxia\View_Util::exec( 'wpshop', 'doli-proposals', 'single', array(
+			\eoxia\View_Util::exec( 'wpshop', 'proposals', 'single', array(
 				'third_party' => $third_party,
-				'proposal'    => $proposal,
+				'proposal'    => $wp_proposal,
 			) );
 		} else {
 			$per_page = get_user_meta( get_current_user_id(), Doli_Proposals::g()->option_per_page, true );
@@ -180,7 +184,7 @@ class Doli_Proposals_Action {
 			}
 		}
 
-		\eoxia\View_Util::exec( 'wpshop', 'doli-proposals', 'metabox-proposal-details', array(
+		\eoxia\View_Util::exec( 'wpshop', 'proposals', 'metabox-proposal-details', array(
 			'proposal'     => $proposal,
 			'third_party'  => $third_party,
 			'invoice'      => $invoice,
@@ -211,7 +215,7 @@ class Doli_Proposals_Action {
 			}
 		}
 
-		\eoxia\View_Util::exec( 'wpshop', 'doli-proposals', 'metabox-proposal-address', array(
+		\eoxia\View_Util::exec( 'wpshop', 'proposals', 'metabox-proposal-address', array(
 			'proposal'     => $proposal,
 			'third_party'  => $third_party,
 			'invoice'      => $invoice,
@@ -257,7 +261,7 @@ class Doli_Proposals_Action {
 				'tva_lines' => $tva_lines,
 			) );
 		} else {
-			\eoxia\View_Util::exec( 'wpshop', 'doli-proposals', 'metabox-proposal-products', array(
+			\eoxia\View_Util::exec( 'wpshop', 'proposals', 'metabox-proposal-products', array(
 				'proposal'  => $proposal,
 				'tva_lines' => $tva_lines,
 			) );
