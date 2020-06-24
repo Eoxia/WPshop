@@ -29,7 +29,7 @@ class Product_Action {
 	 * @since 2.0.0
 	 */
 	public function __construct() {
-		add_action( 'admin_menu', array( $this, 'callback_admin_menu' ) );
+		add_action( 'admin_menu', array( $this, 'callback_admin_menu' ), 30 );
 		add_action( 'save_post', array( $this, 'callback_save_post' ), 10, 2 );
 
 		add_action( 'template_redirect', array( $this, 'init_product_archive_page' ) );

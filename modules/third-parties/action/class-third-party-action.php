@@ -38,7 +38,7 @@ class Third_Party_Action {
 	 * @since 2.0.0
 	 */
 	public function __construct() {
-		add_action( 'admin_menu', array( $this, 'callback_admin_menu' ), 11 );
+		add_action( 'admin_menu', array( $this, 'callback_admin_menu' ), 20 );
 
 		$this->metaboxes = apply_filters( 'wps_third_party_metaboxes', array(
 			'wps-third-party-billing'  => array(

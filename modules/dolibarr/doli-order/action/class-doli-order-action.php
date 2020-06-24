@@ -44,7 +44,7 @@ class Doli_Order_Action {
 
 		add_action( 'admin_init', array( $this, 'callback_admin_init' ) );
 
-		add_action( 'admin_menu', array( $this, 'callback_admin_menu' ), 12 );
+		add_action( 'admin_menu', array( $this, 'callback_admin_menu' ), 60 );
 
 		add_action( 'wps_checkout_create_order', array( $this, 'create_order' ), 10, 1 );
 		add_action( 'wps_payment_complete', array( $this, 'set_to_billed' ), 30, 1 );

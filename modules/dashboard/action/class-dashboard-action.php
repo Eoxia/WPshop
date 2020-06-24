@@ -27,7 +27,7 @@ class Dashboard_Action {
 	 * @since 2.0.0
 	 */
 	public function __construct() {
-		add_action( 'load-toplevel_page_wps-third-party', array( $this, 'callback_load' ) );
+		add_action( 'load-toplevel_page_wps-third-party', array( $this, 'callback_load' ), 10 );
 	}
 
 	/**

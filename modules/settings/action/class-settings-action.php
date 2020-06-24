@@ -27,7 +27,7 @@ class Settings_Action {
 	 * @since 2.0.0
 	 */
 	public function __construct() {
-		add_action( 'admin_menu', array( $this, 'callback_admin_menu' ), 14 );
+		add_action( 'admin_menu', array( $this, 'callback_admin_menu' ), 70 );
 		add_action( 'admin_notices', array( $this, 'notice_activate_erp' ) );
 
 		add_action( 'admin_post_wps_load_settings_tab', array( $this, 'callback_load_tab' ) );

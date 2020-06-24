@@ -35,7 +35,7 @@ class Proposals_Action {
 	 * @since 2.0.0
 	 */
 	public function __construct() {
-		add_action( 'admin_menu', array( $this, 'callback_admin_menu' ) );
+		add_action( 'admin_menu', array( $this, 'callback_admin_menu' ), 40 );
 
 		$this->metaboxes = array(
 			'wps-proposal-details' => array(
