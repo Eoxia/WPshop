@@ -63,11 +63,10 @@ class Doli_Third_Parties extends \eoxia\Singleton_Util {
 			$notices['messages'][] = sprintf(__('Erase data for the third party <strong>%s</strong> with the <strong>dolibarr</strong> data', 'wpshop'), $wp_third_party->data['title']);
 
 			$data_sha = array();
-            //@todo 2 fois Town ligne 70 et 74 !!
+
 			$data_sha['doli_id'] = (int)$doli_third_party->id;
 			$data_sha['wp_id'] = (int)$wp_third_party->data['id'];
 			$data_sha['title'] = $wp_third_party->data['title'];
-			$data_sha['town'] = $wp_third_party->data['town'];
 			$data_sha['zip'] = $wp_third_party->data['zip'];
 			$data_sha['state'] = $wp_third_party->data['state'];
 			$data_sha['country'] = $wp_third_party->data['country'];
