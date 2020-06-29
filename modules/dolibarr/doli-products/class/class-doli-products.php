@@ -47,7 +47,7 @@ class Doli_Products extends \eoxia\Singleton_Util {
 		'errors'   => array(),
 		'messages' => array(),
 	) ) {
-		if ( is_object( $wp_product ) ) {
+
 			$wp_product->data['external_id']       = (int) $doli_product->id;
 			$wp_product->data['fk_product_parent'] = isset( $doli_product->fk_product_parent ) ? (int) $doli_product->fk_product_parent : 0;
 			$wp_product->data['ref']               = $doli_product->ref;
@@ -61,6 +61,8 @@ class Doli_Products extends \eoxia\Singleton_Util {
 			$wp_product->data['fk_product_type']   = (int) $doli_product->type; // Product 0 or Service 1.
 			$wp_product->data['status']            = $doli_product->array_options->options__wps_status;
 
+			$wp_product = Product::g()->update( $wp_product->data );
+
 			if ( $save ) {
 				$data_sha = array();
 
@@ -68,16 +70,16 @@ class Doli_Products extends \eoxia\Singleton_Util {
 				$data_sha['wp_id']       = $wp_product->data['id'];
 				$data_sha['label']       = $wp_product->data['title'];
 				$data_sha['description'] = $wp_product->data['content'];
-				$data_sha['price']       = $wp_product->data['price'];
-				$data_sha['price_ttc']   = $wp_product->data['price_ttc'];
-				$data_sha['tva_tx']      = $wp_product->data['tva_tx'];
+				$data_sha['price']       = $doli_product->price;
+				$data_sha['price_ttc']   = $doli_product->price_ttc;
+				$data_sha['tva_tx']      = $doli_product->tva_tx;
 				$data_sha['status']      = $wp_product->data['status'];
 
 				$wp_product->data['sync_sha_256'] = hash( 'sha256', implode( ',', $data_sha ) );
+				//@todo save_post utilisé ?
 
 				remove_all_actions( 'save_post' );
-				$wp_product = Product::g()->update( $wp_product->data );
-
+				update_post_meta( $wp_product->data['id'], '_sync_sha_256', $wp_product->data['sync_sha_256'] );
 				update_post_meta( $wp_product->data['id'], '_external_id', (int) $doli_product->id );
 
 				// translators: Erase data for the product <strong>dolibarr</strong> data.
@@ -85,7 +87,6 @@ class Doli_Products extends \eoxia\Singleton_Util {
 			}
 
 			return $wp_product;
-		}
 	}
 
 	/**

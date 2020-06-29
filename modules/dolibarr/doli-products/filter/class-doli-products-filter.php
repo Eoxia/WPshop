@@ -28,7 +28,7 @@ class Doli_Product_Filter {
 	 */
 	public function __construct() {
 		if ( Settings::g()->dolibarr_is_active() ) {
-			add_filter( 'eo_model_wps-product_after_get', array( $this, 'auto_sync' ), 10, 2 );
+			//add_filter( 'wps-product_after_get', array( $this, 'auto_sync' ), 10, 2 );
 			add_filter( 'wps_product_filter_sync', array( $this, 'product_sync' ), 10, 1 );
 		}
 	}
@@ -37,7 +37,6 @@ class Doli_Product_Filter {
 		if ( empty( $object->data['external_id'] ) ) {
 			return $object;
 		}
-
 		$status = Doli_Sync::g()->check_status( $object->data['id'], $object->data['type'] );
 
 		if ($status['status_code'] != '0x3') {

@@ -86,11 +86,17 @@ class Doli_Sync_Filter extends \eoxia\Singleton_Util {
 		$data_sha['doli_id']   = $response->id;
 		$data_sha['wp_id']     = $wp_id;
 		$data_sha['label']     = $response->label;
+		$data_sha['description'] = $response->description;
 		$data_sha['price']     = $response->price;
 		$data_sha['price_ttc'] = $response->price_ttc;
 		$data_sha['tva_tx']    = $response->tva_tx;
 		$data_sha['status']    = $response->array_options->options__wps_status;
 
+		if ( $response->array_options->options__wps_status == 1  || $response->array_options->options__wps_status == 'publish' ) {
+			$data_sha['status'] = 'publish';
+		} else {
+			$data_sha['status'] = 'draft';
+		}
 
 		$response->sha = hash( 'sha256', implode( ',', $data_sha ) );
 
@@ -113,7 +119,6 @@ class Doli_Sync_Filter extends \eoxia\Singleton_Util {
 		$data_sha['zip']      = $response->zip;
 		$data_sha['state']    = $response->state;
 		$data_sha['country']  = $response->country;
-		$data_sha['town']     = $response->town;
 		$data_sha['address']  = $response->address;
 		$data_sha['phone']    = $response->phone;
 		$data_sha['email']    = $response->email;
