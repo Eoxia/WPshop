@@ -260,14 +260,14 @@ class Doli_Sync extends \eoxia\Singleton_Util {
 			return array(
 				'status' => true,
 				'status_code' => '0x3',
-				'status_message' => 'WP Object is not equal Dolibarr Object.',
+				'status_message' => __('WP Object is not equal Dolibarr Object', 'wpshop'),
 			);
 		}
 
 		return array(
 			'status' => true,
 			'status_code' => '0x0',
-			'status_message' => 'Sync OK',
+			'status_message' => __('Sync OK', 'wpshop'),
 		);
 	}
 
