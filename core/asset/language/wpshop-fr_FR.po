@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: wpshop\n"
-"POT-Creation-Date: 2020-06-05 12:37+0200\n"
-"PO-Revision-Date: 2020-06-05 12:58+0200\n"
+"POT-Creation-Date: 2020-07-13 14:49+0200\n"
+"PO-Revision-Date: 2020-07-13 14:53+0200\n"
 "Last-Translator: \n"
 "Language-Team: Eoxia\n"
 "Language: fr_FR\n"
@@ -32,7 +32,6 @@ msgstr "Tableau de bord"
 #: modules/dolibarr/doli-sync/class/class-doli-sync.php:63
 #: modules/order/action/class-order-action.php:39
 #: modules/order/action/class-order-action.php:40
-#: modules/products/action/class-product-action.php:48
 #: modules/products/action/class-product-action.php:49
 #: modules/products/action/class-product-action.php:116
 #: modules/products/filter/class-product-filter.php:65
@@ -369,6 +368,7 @@ msgstr "%s :"
 #: modules/dashboard/view/metaboxes/metabox-orders.view.php:28
 #: modules/dashboard/view/metaboxes/metabox-payments.view.php:29
 #: modules/dashboard/view/metaboxes/metabox-products.view.php:29
+#: modules/dashboard/view/metaboxes/metabox-proposals.view.php:28
 #: modules/dashboard/view/metaboxes/metabox-quotations.view.php:28
 #: modules/dolibarr/doli-order/view/metabox-order-details.view.php:26
 #: modules/dolibarr/doli-order/view/metabox-order-payment.view.php:26
@@ -397,6 +397,7 @@ msgstr "Derniers Clients"
 #: modules/dashboard/view/metaboxes/metabox-orders.view.php:21
 #: modules/dashboard/view/metaboxes/metabox-payments.view.php:21
 #: modules/dashboard/view/metaboxes/metabox-products.view.php:22
+#: modules/dashboard/view/metaboxes/metabox-proposals.view.php:21
 #: modules/dashboard/view/metaboxes/metabox-quotations.view.php:21
 #: modules/dolibarr/doli-invoice/view/item.view.php:35
 #: modules/dolibarr/doli-invoice/view/item.view.php:54
@@ -416,6 +417,7 @@ msgstr "Dernières Factures"
 
 #: modules/dashboard/view/metaboxes/metabox-invoices.view.php:26
 #: modules/dashboard/view/metaboxes/metabox-orders.view.php:26
+#: modules/dashboard/view/metaboxes/metabox-proposals.view.php:26
 #: modules/dashboard/view/metaboxes/metabox-quotations.view.php:26
 #: modules/dolibarr/doli-invoice/view/metabox-invoice-details.view.php:33
 #: modules/dolibarr/doli-order/view/metabox-order-details.view.php:27
@@ -427,6 +429,7 @@ msgstr "Client"
 #: modules/dashboard/view/metaboxes/metabox-orders.view.php:27
 #: modules/dashboard/view/metaboxes/metabox-payments.view.php:28
 #: modules/dashboard/view/metaboxes/metabox-products.view.php:28
+#: modules/dashboard/view/metaboxes/metabox-proposals.view.php:27
 #: modules/dashboard/view/metaboxes/metabox-quotations.view.php:27
 msgid "Price TTC"
 msgstr "Prix TTC"
@@ -473,6 +476,14 @@ msgstr "Titre"
 msgid "No products for now"
 msgstr "Aucun produits pour le moment"
 
+#: modules/dashboard/view/metaboxes/metabox-proposals.view.php:20
+msgid "Latest commercial proposals"
+msgstr "Dernières propositions commerciales"
+
+#: modules/dashboard/view/metaboxes/metabox-proposals.view.php:47
+msgid "No proposals for now"
+msgstr "Aucune devis trouvée"
+
 #: modules/dashboard/view/metaboxes/metabox-quotations.view.php:20
 msgid "Last Quotations"
 msgstr "Derniers Devis"
@@ -488,7 +499,6 @@ msgstr "Synchronisation"
 
 #: modules/dashboard/view/metaboxes/metabox-sync.view.php:26
 #: modules/dolibarr/doli-invoice/view/main.view.php:31
-#: modules/proposals/view/main.view.php:31
 msgid "Data synchronization"
 msgstr "Synchronisation des données"
 
@@ -982,7 +992,7 @@ msgstr "Mise à jour du lien de suivi"
 msgid "Mark as delivery"
 msgstr "Marquer comme livraison"
 
-#: modules/dolibarr/doli-products/class/class-doli-products.php:83
+#: modules/dolibarr/doli-products/class/class-doli-products.php:86
 #: modules/dolibarr/doli-sync/class/class-doli-sync.php:171
 #, php-format
 msgid ""
@@ -1043,11 +1053,8 @@ msgid "Third parties"
 msgstr "Tiers"
 
 #: modules/dolibarr/doli-sync/class/class-doli-sync.php:73
-#: modules/proposals/action/class-proposals-action.php:61
-#: modules/proposals/action/class-proposals-action.php:78
 #: modules/proposals/filter/class-proposals-filter.php:42
 #: modules/proposals/filter/class-proposals-filter.php:44
-#: modules/proposals/view/main.view.php:21
 #: modules/third-parties/view/metaboxes/metabox-dolibarr-proposals.view.php:20
 #: modules/third-parties/view/metaboxes/metabox-proposals.view.php:20
 msgid "Proposals"
@@ -1062,6 +1069,14 @@ msgid ""
 msgstr ""
 "Effacer les données pour le tiers <strong>%s</strong> avec les données de "
 "<strong>dolibarr</strong>"
+
+#: modules/dolibarr/doli-sync/class/class-doli-sync.php:263
+msgid "WP Object is not equal Dolibarr Object"
+msgstr "L'objet WordPress n'est pas égal à l'objet Dolibarr"
+
+#: modules/dolibarr/doli-sync/class/class-doli-sync.php:270
+msgid "Sync OK"
+msgstr "Synchronisation OK"
 
 #: modules/dolibarr/doli-sync/class/class-doli-sync.php:281
 msgid "Looking for sync status"
@@ -1080,7 +1095,7 @@ msgstr "Erreur non définie"
 msgid "Associate and synchronize %s"
 msgstr "Associer et synchroniser %s"
 
-#: modules/dolibarr/doli-third-parties/class/class-doli-third-parties.php:138
+#: modules/dolibarr/doli-third-parties/class/class-doli-third-parties.php:137
 #, php-format
 msgid ""
 "Erase data for the third party <strong>%s</strong> with the "
@@ -1426,6 +1441,10 @@ msgstr "Catégories de produits"
 msgid "Search result for \"%s\""
 msgstr "Résultats de la recherche pour \"%s\""
 
+#: modules/products/class/class-product.php:173
+msgid "Product configuration"
+msgstr "Configuration du produit"
+
 #: modules/products/filter/class-product-filter.php:66
 #: modules/products/filter/class-product-filter.php:68
 msgid "Product"
@@ -1584,6 +1603,15 @@ msgstr ""
 msgid "Product Downloadable"
 msgstr "Produit Téléchargeable"
 
+#: modules/proposals/action/class-proposals-action.php:61
+#: modules/proposals/view/main.view.php:21
+msgid "Wish List"
+msgstr "Liste d'envies"
+
+#: modules/proposals/action/class-proposals-action.php:78
+msgid "Quotation"
+msgstr "Devis"
+
 #: modules/proposals/filter/class-proposals-filter.php:43
 #: modules/proposals/filter/class-proposals-filter.php:45
 #: modules/proposals/view/single.view.php:21
@@ -1628,9 +1656,11 @@ msgstr "Aucune proposition trouvée."
 msgid "No proposals found in Trash."
 msgstr "Aucune proposition trouvée dans Trash."
 
-#: modules/proposals/view/main.view.php:32
-msgid "All Proposals Sync"
-msgstr "Synchroniser tous les devis"
+#: modules/proposals/view/main.view.php:57
+#, fuzzy
+#| msgid "Search result for \"%s\""
+msgid "Search result for « "
+msgstr "Résultats de la recherche pour \"%s\""
 
 #: modules/proposals/view/metabox-proposal-details.view.php:20
 msgid "Details"
@@ -1788,6 +1818,10 @@ msgstr "Largeur de la fenêtre de WPshop"
 #: modules/settings/view/general.view.php:42
 msgid "WPshop height size"
 msgstr "Hauteur de la fenêtre de WPshop"
+
+#: modules/settings/view/general.view.php:52
+msgid "enable quotations"
+msgstr "Activer les devis"
 
 #: modules/settings/view/main.view.php:34 modules/tools/view/main.view.php:24
 msgid "General"
@@ -1993,6 +2027,9 @@ msgstr ""
 "<li><strong>%1$d</strong> Contact #%2$d %4$s est déjà affecté à un tier #"
 "%3$d %4$s</li>"
 
+#~ msgid "All Proposals Sync"
+#~ msgstr "Synchroniser tous les devis"
+
 #~ msgid "An email for reset password"
 #~ msgstr "Un courriel pour réinitialiser le mot de passe"
 
@@ -2032,9 +2069,6 @@ msgstr ""
 
 #~ msgid "Price"
 #~ msgstr "Prix"
-
-#~ msgid "Sync"
-#~ msgstr "Synchroniser"
 
 #, php-format
 #~ msgid "Last synchronisation on %s"
