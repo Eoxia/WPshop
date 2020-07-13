@@ -165,7 +165,7 @@ class Doli_Associate_Action {
 			'doli_id' => $entry_id,
 		);
 
-		$response = Request_Util::get( 'wpshop/associate' . $sync_info['associate_endpoint'] . '?' . http_build_query( $data ) );
+		$response = Request_Util::get( 'doliwpshop/associate' . $sync_info['associate_endpoint'] . '?' . http_build_query( $data ) );
 
 		if ( ! $response || ( $response && isset( $response->error ) ) ) {
 			wp_send_json_success( array(

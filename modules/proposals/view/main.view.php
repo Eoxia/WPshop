@@ -18,7 +18,7 @@ defined( 'ABSPATH' ) || exit; ?>
 
 <div class="wrap wpeo-wrap">
 	<h2>
-		<?php esc_html_e( 'Quotations', 'wpshop' ); ?>
+		<?php esc_html_e( 'Wish List', 'wpshop' ); ?>
 
 		<?php
 		/*		if ( Settings::g()->dolibarr_is_active() && \eoxia\Config_Util::$init['wpshop']->use_global_sync ) :

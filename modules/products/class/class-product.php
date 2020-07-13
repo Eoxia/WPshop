@@ -153,10 +153,12 @@ class Product extends \eoxia\Post_Class {
 	}
 
 	public function display_item( $product, $sync_status, $doli_url = '' ) {
+		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
+
 		\eoxia\View_Util::exec( 'wpshop', 'products', 'item', array(
 			'product'     => $product,
 			'sync_status' => $sync_status,
-			'doli_url'    => $doli_url,
+			'doli_url'    => $dolibarr_option['dolibarr_url'],
 		) );
 	}
 

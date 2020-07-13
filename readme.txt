@@ -4,7 +4,7 @@ Tags: boutique, catalog, catalogue, commerce, e-commerce, ecommerce, m-commerce,
 Donate link: https://www.wpshop.fr/
 Requires at least: 5.4.1
 Tested up to: 5.4.1
-Requires PHP: 7.3
+Requires PHP: 7.0
 Stable tag: 2.0.0
 License: GPLv3 or later
 

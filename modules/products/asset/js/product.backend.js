@@ -18,6 +18,7 @@ window.eoxiaJS.wpshop.product.event = function() {
 	jQuery( document ).on( 'wps-change-toggle', '.stock-field .toggle', window.eoxiaJS.wpshop.product.displayBlockStock );
 	jQuery( document ).on( 'click', '.wps-list-product .table-header input[type="checkbox"]', window.eoxiaJS.wpshop.product.checkAll );
 	jQuery( document ).on( 'click', '.button-apply', window.eoxiaJS.wpshop.product.apply );
+	jQuery( document ).ready( window.eoxiaJS.wpshop.product.autoSynchro );
 	jQuery( '.similar-product' ).select2({
 		ajax: {
 			url: scriptParams.url + '/wp-json/wpshop/v2/product/search',
@@ -81,4 +82,11 @@ window.eoxiaJS.wpshop.product.apply = function() {
 			}
 		} );
 	}
+};
+
+window.eoxiaJS.wpshop.product.autoSynchro = function ( event ) {
+	var element = jQuery( this ).find( '.button-synchro[data-entry-id="1"]' );
+
+	//element.click();
+	console.log('test');
 };

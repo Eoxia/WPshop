@@ -58,7 +58,7 @@ class Proposals_Action {
 	public function callback_admin_menu() {
 		if ( Settings::g()->use_quotation() ) {
 
-			$hook = add_submenu_page( 'wpshop', __( 'Quotation', 'wpshop' ), __( 'Quotation', 'wpshop' ), 'manage_options', 'wps-proposal', array( $this, 'callback_add_menu_page' ) );
+			$hook = add_submenu_page( 'wpshop', __( 'Wish List', 'wpshop' ), __( 'Wish List', 'wpshop' ), 'manage_options', 'wps-proposal', array( $this, 'callback_add_menu_page' ) );
 
 			if ( ! isset( $_GET['id'] ) ) {
 				add_action( 'load-' . $hook, array( $this, 'callback_add_screen_option' ) );
