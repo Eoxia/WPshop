@@ -113,8 +113,8 @@ class Doli_Associate_Action {
 		$wp_entry         = $sync_info['wp_class']::g()->get( array( 'id' => $wp_id ), true );
 		$doli_entry       = Request_Util::get( $sync_info['endpoint'] . '/' . $entry_id );
 
-		$doli_to_wp_entry = $sync_info['wp_class']::g()->get( array( 'schema' => true ), true );
-		$doli_to_wp_entry = $sync_info['doli_class']::g()->doli_to_wp( $doli_entry, $doli_to_wp_entry, false );
+		//$doli_to_wp_entry = $sync_info['wp_class']::g()->get( array( 'schema' => true ), true );
+		$doli_to_wp_entry = $sync_info['doli_class']::g()->doli_to_wp( $doli_entry, $wp_entry, false );
 
 		$entries = array(
 			'wordpress' => array( // WPCS: spelling ok.
