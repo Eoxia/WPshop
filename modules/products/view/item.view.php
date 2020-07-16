@@ -20,12 +20,6 @@ defined( 'ABSPATH' ) || exit; ?>
 	<div class="table-cell table-50"><input type="checkbox" /></div>
 	<div class="table-cell table-100 table-padding-0"><?php echo get_the_post_thumbnail( $product->data['id'], array( 80, 80 ) ); ?></div>
 	<div class="table-cell table-full">
-		<ul class="reference-id">
-			<li><i class="fas fa-hashtag"></i>WP : <?php echo esc_html( $product->data['id'] ); ?></li>
-			<?php if ( ! empty( $product->data['external_id'] ) ) : ?>
-				<li><i class="fas fa-hashtag"></i>Doli : <?php echo esc_html( $product->data['external_id'] ); ?></li>
-			<?php endif; ?>
-		</ul>
 		<div class="reference-title">
 			<a href="<?php echo esc_attr( admin_url( 'post.php?post=' . $product->data['id'] . '&action=edit' ) ); ?>"><?php echo esc_html( $product->data['title'] ); ?></a>
 		</div>

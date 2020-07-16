@@ -32,7 +32,7 @@ defined( 'ABSPATH' ) || exit; ?>
 			?>
 		</h2>
 	</div>
-
+	<div style=""><?php do_action( 'wps_listing_table_end', $third_party, $sync_status = true ); ?></div>
 	<div class="wps-page-content wpeo-gridlayout grid-6">
 		<?php do_action( 'wps_third_party', $third_party ); ?>
 	</div>

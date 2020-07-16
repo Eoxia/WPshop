@@ -18,12 +18,6 @@ defined( 'ABSPATH' ) || exit; ?>
 
 <div class="table-row" data-id="<?php echo esc_attr( $third_party->data['id'] ); ?>">
 	<div class="table-cell table-200">
-		<ul class="reference-id">
-			<li><i class="fas fa-hashtag"></i>WP : <?php echo esc_html( $third_party->data['id'] ); ?></li>
-			<?php if ( ! empty( $third_party->data['external_id'] ) ) : ?>
-				<li><i class="fas fa-hashtag"></i>Doli : <?php echo esc_html( $third_party->data['external_id'] ); ?></li>
-			<?php endif; ?>
-		</ul>
 		<div class="reference-title">
 			<a href="<?php echo esc_attr( admin_url( 'admin.php?page=wps-third-party&id=' . $third_party->data['id'] ) ); ?>"><?php echo esc_html( $third_party->data['title'] ); ?></a>
 		</div>

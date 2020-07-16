@@ -21,6 +21,10 @@ namespace wpshop;
 defined( 'ABSPATH' ) || exit; ?>
 
 <div class="table-cell table-100 wps-sync">
+	<ul class="reference-id">
+		<li><i class="fas fa-hashtag"></i>WP : <?php echo esc_html( $object->data['id'] ); ?></li>
+		<li><i class="fas fa-hashtag"></i>Doli : <?php echo ! empty( $object->data['external_id'] ) ? esc_html( $object->data['external_id'] ) : "N/A"; ?></li>
+	</ul>
 	<div class="button-synchro <?php echo $can_sync ? 'action-attribute' : 'wpeo-modal-event'; ?>"
 		data-class="synchro-single wpeo-wrap"
 		<?php // translators: Associate and synchronize object name. ?>

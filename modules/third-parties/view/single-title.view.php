@@ -16,4 +16,6 @@ namespace wpshop;
 
 defined( 'ABSPATH' ) || exit; ?>
 
-<div><?php printf( __( 'Tier name <span style="font-weight: 700;">%s</span>', 'wpshop' ), esc_html( $third_party->data['title'] ) ); ?></div>
+<div>
+	<?php printf( __( 'Tier <span style="font-weight: 700;">%s</span>', 'wpshop' ), esc_html( $third_party->data['title'] ) ); ?>
+</div>
