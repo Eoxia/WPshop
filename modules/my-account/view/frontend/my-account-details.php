@@ -31,6 +31,8 @@ endif;
 
 ?>
 
+<?php do_action( 'wp_footer_end' ); ?>
+
 <form method="POST" action="<?php echo admin_url( 'admin-post.php'); ?>" class="wpeo-form">
 	<input type="hidden" name="action" value="update_account_details" />
 	<?php wp_nonce_field( 'update_account_details' ); ?>
@@ -38,63 +40,63 @@ endif;
 	<div class="form-element">
 		<span class="form-label"><?php echo esc_html_e( 'Email', 'wpshop' ); ?></span>
 		<label class="form-field-container">
-			<input type="text" class="form-field" name="email" value="<?php echo esc_attr( $contact->data['email'] ); ?>"/>
+			<input type="text" class="form-field" name="email" value="<?php echo esc_attr( $contact->data['email'] ); ?>" readonly/>
 		</label>
 	</div>
 
 	<div class="form-element">
 		<span class="form-label"><?php echo esc_html_e( 'Phone', 'wpshop' ); ?></span>
 		<label class="form-field-container">
-			<input type="text" class="form-field" name="email" value="<?php echo esc_attr( $contact->data['phone'] ); ?>" />
+			<input type="text" class="form-field" name="email" value="<?php echo esc_attr( $contact->data['phone'] ); ?>" readonly/>
 		</label>
 	</div>
 
 	<div class="form-element">
 		<span class="form-label"><?php echo esc_html_e( 'Login', 'wpshop' ); ?></span>
 		<label class="form-field-container">
-			<input type="text" class="form-field" name="email" value="<?php echo esc_attr( $contact->data['login'] ); ?>" />
+			<input type="text" class="form-field" name="email" value="<?php echo esc_attr( $contact->data['login'] ); ?>" readonly/>
 		</label>
 	</div>
 
 	<div class="form-element">
 		<span class="form-label"><?php echo esc_html_e( 'Firstname', 'wpshop' ); ?></span>
 		<label class="form-field-container">
-			<input type="text" class="form-field" name="email" value="<?php echo esc_attr( $contact->data['firstname'] ); ?>" />
+			<input type="text" class="form-field" name="email" value="<?php echo esc_attr( $contact->data['firstname'] ); ?>" readonly/>
 		</label>
 	</div>
 
 	<div class="form-element">
 		<span class="form-label"><?php echo esc_html_e( 'Lastname', 'wpshop' ); ?></span>
 		<label class="form-field-container">
-			<input type="text" class="form-field" name="email" value="<?php echo esc_attr( $contact->data['lastname'] ); ?>" />
+			<input type="text" class="form-field" name="email" value="<?php echo esc_attr( $contact->data['lastname'] ); ?>" readonly/>
 		</label>
 	</div>
 
 	<div class="form-element">
 		<span class="form-label"><?php echo esc_html_e( 'Address', 'wpshop' ); ?></span>
 		<label class="form-field-container">
-			<input type="text" class="form-field" name="email" value="<?php echo esc_attr( $third_party->data['address'] ); ?>" />
+			<input type="text" class="form-field" name="email" value="<?php echo esc_attr( $third_party->data['address'] ); ?>" readonly/>
 		</label>
 	</div>
 
 	<div class="form-element">
 		<span class="form-label"><?php echo esc_html_e( 'Zip', 'wpshop' ); ?></span>
 		<label class="form-field-container">
-			<input type="text" class="form-field" name="email" value="<?php echo esc_attr( $third_party->data['zip'] ); ?>" />
+			<input type="text" class="form-field" name="email" value="<?php echo esc_attr( $third_party->data['zip'] ); ?>" readonly/>
 		</label>
 	</div>
 
 	<div class="form-element">
 		<span class="form-label"><?php echo esc_html_e( 'Town', 'wpshop' ); ?></span>
 		<label class="form-field-container">
-			<input type="text" class="form-field" name="email" value="<?php echo esc_attr( $third_party->data['town'] ); ?>" />
+			<input type="text" class="form-field" name="email" value="<?php echo esc_attr( $third_party->data['town'] ); ?>" readonly/>
 		</label>
 	</div>
 
 	<div class="form-element">
 		<span class="form-label"><?php echo esc_html_e( 'Country', 'wpshop' ); ?></span>
 		<label class="form-field-container">
-			<input type="text" class="form-field" name="email" value="<?php echo esc_attr( $third_party->data['country'] ); ?>" />
+			<input type="text" class="form-field" name="email" value="<?php echo esc_attr( $third_party->data['country'] ); ?>" readonly/>
 		</label>
 	</div>
 

@@ -27,7 +27,7 @@ class Doli_User_Filter {
 	 * @since 2.0.0
 	 */
 	public function __construct() {
-		add_action( 'wp_footer', array( $this, 'check_user' ) );
+		add_action( 'wp_footer_end', array( $this, 'check_user' ) );
 	}
 
 	public function check_user() {
