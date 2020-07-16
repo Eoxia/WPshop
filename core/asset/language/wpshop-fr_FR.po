@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: wpshop\n"
-"POT-Creation-Date: 2020-07-13 14:49+0200\n"
-"PO-Revision-Date: 2020-07-13 14:53+0200\n"
+"POT-Creation-Date: 2020-07-15 18:37+0200\n"
+"PO-Revision-Date: 2020-07-15 22:45+0200\n"
 "Last-Translator: \n"
 "Language-Team: Eoxia\n"
 "Language: fr_FR\n"
@@ -58,7 +58,7 @@ msgstr "Réglages"
 #: modules/dolibarr/doli-order/view/metabox-order-details.view.php:41
 #: modules/dolibarr/doli-order/view/metabox-order-details.view.php:52
 #: modules/dolibarr/doli-sync/filter/class-doli-sync-filter.php:56
-#: modules/my-account/view/frontend/my-account-details.php:95
+#: modules/my-account/view/frontend/my-account-details.php:97
 #: modules/third-parties/view/metaboxes/metabox-billing-address.view.php:34
 msgid "Country"
 msgstr "Pays"
@@ -159,7 +159,7 @@ msgstr "Nom de famille"
 
 #: modules/checkout/class/class-checkout.php:81
 #: modules/dolibarr/doli-order/view/metabox-order-details.view.php:28
-#: modules/my-account/view/frontend/my-account-details.php:46
+#: modules/my-account/view/frontend/my-account-details.php:48
 #: modules/third-parties/view/metaboxes/metabox-billing-address-edit.view.php:34
 #: modules/third-parties/view/metaboxes/metabox-billing-address.view.php:35
 #: modules/third-parties/view/metaboxes/metabox-contacts-edit.view.php:23
@@ -252,7 +252,7 @@ msgstr "Nom"
 #: modules/checkout/view/frontend/form-shipping.php:38
 #: modules/dolibarr/doli-associate/view/compare-wps-third-party.view.php:31
 #: modules/dolibarr/doli-associate/view/compare-wps-user.view.php:33
-#: modules/my-account/view/frontend/my-account-details.php:39
+#: modules/my-account/view/frontend/my-account-details.php:41
 #: modules/third-parties/view/metaboxes/metabox-contacts-edit.view.php:22
 msgid "Email"
 msgstr "Email"
@@ -571,7 +571,7 @@ msgstr "Nom de la société"
 #: modules/dolibarr/doli-associate/view/compare-wps-third-party.view.php:33
 #: modules/dolibarr/doli-order/view/metabox-order-details.view.php:38
 #: modules/dolibarr/doli-order/view/metabox-order-details.view.php:49
-#: modules/my-account/view/frontend/my-account-details.php:74
+#: modules/my-account/view/frontend/my-account-details.php:76
 #: modules/third-parties/view/metaboxes/metabox-billing-address-edit.view.php:31
 #: modules/third-parties/view/metaboxes/metabox-billing-address.view.php:20
 #: modules/third-parties/view/metaboxes/metabox-billing-address.view.php:31
@@ -579,7 +579,7 @@ msgid "Address"
 msgstr "Adresse"
 
 #: modules/dolibarr/doli-associate/view/compare-wps-third-party.view.php:35
-#: modules/my-account/view/frontend/my-account-details.php:88
+#: modules/my-account/view/frontend/my-account-details.php:90
 msgid "Town"
 msgstr "Ville"
 
@@ -588,12 +588,12 @@ msgid "Display name"
 msgstr "Nom d'affichage"
 
 #: modules/dolibarr/doli-associate/view/compare-wps-user.view.php:31
-#: modules/my-account/view/frontend/my-account-details.php:67
+#: modules/my-account/view/frontend/my-account-details.php:69
 msgid "Lastname"
 msgstr "Nom"
 
 #: modules/dolibarr/doli-associate/view/compare-wps-user.view.php:32
-#: modules/my-account/view/frontend/my-account-details.php:60
+#: modules/my-account/view/frontend/my-account-details.php:62
 #: modules/third-parties/view/metaboxes/metabox-contacts-edit.view.php:21
 #: modules/third-parties/view/metaboxes/metabox-contacts.view.php:25
 msgid "Firstname"
@@ -703,7 +703,7 @@ msgstr "Démarrage"
 #: modules/dolibarr/doli-order/view/item.view.php:32
 #: modules/dolibarr/doli-proposals/view/item.view.php:31
 #: modules/proposals/view/item.view.php:32
-#: modules/third-parties/view/item.view.php:36
+#: modules/third-parties/view/item.view.php:30
 msgid "See"
 msgstr "Voir"
 
@@ -1090,7 +1090,7 @@ msgstr "Cette entitée n'est pas associé à votre ERP"
 msgid "Error not defined"
 msgstr "Erreur non définie"
 
-#: modules/dolibarr/doli-sync/view/sync-item.view.php:27
+#: modules/dolibarr/doli-sync/view/sync-item.view.php:31
 #, php-format
 msgid "Associate and synchronize %s"
 msgstr "Associer et synchroniser %s"
@@ -1219,12 +1219,15 @@ msgid "What do you try to do ?"
 msgstr "Qu'essayez-vous de faire ?"
 
 #: modules/my-account/class/class-my-account.php:110
-msgid "Account details"
-msgstr "Détails du compte"
+#: modules/pages/class/class-pages.php:87
+msgid "My account"
+msgstr "Mon compte"
 
 #: modules/my-account/class/class-my-account.php:115
-msgid "Quotations"
-msgstr "Devis"
+#: modules/proposals/action/class-proposals-action.php:61
+#: modules/proposals/view/main.view.php:21
+msgid "Wish List"
+msgstr "Liste d'envies"
 
 #: modules/my-account/class/class-my-account.php:120
 msgid "Dolibarr Quotation"
@@ -1260,7 +1263,7 @@ msgid "Lost Password"
 msgstr "Mot de passe perdu"
 
 #: modules/my-account/view/frontend/login-title.php:21
-#: modules/my-account/view/frontend/my-account-details.php:53
+#: modules/my-account/view/frontend/my-account-details.php:55
 msgid "Login"
 msgstr "Connexion"
 
@@ -1281,7 +1284,7 @@ msgstr ""
 msgid "Reset password"
 msgstr "Réinitialisation du mot de passe"
 
-#: modules/my-account/view/frontend/my-account-details.php:81
+#: modules/my-account/view/frontend/my-account-details.php:83
 msgid "Zip"
 msgstr "Code postal"
 
@@ -1306,7 +1309,6 @@ msgid "No products to display"
 msgstr "Aucun produits à afficher"
 
 #: modules/my-account/view/frontend/my-account-dolibarr-proposals.php:89
-#: modules/my-account/view/frontend/my-account-proposals.php:78
 msgid "No quotations"
 msgstr "Aucun devis"
 
@@ -1322,6 +1324,10 @@ msgstr "Aucune facture"
 msgid "No orders"
 msgstr "Aucune commande"
 
+#: modules/my-account/view/frontend/my-account-proposals.php:78
+msgid "No wishes"
+msgstr "Aucune envie"
+
 #: modules/pages/class/class-pages.php:84
 msgid "Shop"
 msgstr "Boutique"
@@ -1333,10 +1339,6 @@ msgstr "Panier"
 #: modules/pages/class/class-pages.php:86
 msgid "Checkout"
 msgstr "Tunnel de vente"
-
-#: modules/pages/class/class-pages.php:87
-msgid "My account"
-msgstr "Mon compte"
 
 #: modules/pages/class/class-pages.php:88
 msgid "General conditions of sale"
@@ -1565,25 +1567,25 @@ msgstr "Gérer le stock"
 msgid "Stock"
 msgstr "Stock"
 
-#: modules/products/view/item.view.php:33
+#: modules/products/view/item.view.php:27
 msgid "Edit"
 msgstr "Modifier"
 
-#: modules/products/view/item.view.php:35
+#: modules/products/view/item.view.php:29
 #: modules/products/view/metabox/main.view.php:26
-#: modules/third-parties/view/item.view.php:38
+#: modules/third-parties/view/item.view.php:32
 msgid "Edit in Dolibarr"
 msgstr "Editer sur Dolibarr"
 
-#: modules/products/view/item.view.php:37
+#: modules/products/view/item.view.php:31
 msgid "Delete"
 msgstr "Supprimer"
 
-#: modules/products/view/item.view.php:38
+#: modules/products/view/item.view.php:32
 msgid "Preview"
 msgstr "Afficher"
 
-#: modules/products/view/item.view.php:45
+#: modules/products/view/item.view.php:39
 msgid "No handle stock"
 msgstr "Stock non configuré"
 
@@ -1602,11 +1604,6 @@ msgstr ""
 #: modules/products/view/metabox/main.view.php:100
 msgid "Product Downloadable"
 msgstr "Produit Téléchargeable"
-
-#: modules/proposals/action/class-proposals-action.php:61
-#: modules/proposals/view/main.view.php:21
-msgid "Wish List"
-msgstr "Liste d'envies"
 
 #: modules/proposals/action/class-proposals-action.php:78
 msgid "Quotation"
@@ -1820,8 +1817,8 @@ msgid "WPshop height size"
 msgstr "Hauteur de la fenêtre de WPshop"
 
 #: modules/settings/view/general.view.php:52
-msgid "enable quotations"
-msgstr "Activer les devis"
+msgid "Enable wish list"
+msgstr "Activer la liste d'envies"
 
 #: modules/settings/view/main.view.php:34 modules/tools/view/main.view.php:24
 msgid "General"
@@ -1996,9 +1993,10 @@ msgstr "Tâches"
 msgid "New third party"
 msgstr "Nouveau tier"
 
-#: modules/third-parties/view/single-title.view.php:19
-#, php-format
-msgid "Tier name <span style=\"font-weight: 700;\">%s</span>"
+#: modules/third-parties/view/single-title.view.php:20
+#, fuzzy, php-format
+#| msgid "Tier name <span style=\"font-weight: 700;\">%s</span>"
+msgid "Tier <span style=\"font-weight: 700;\">%s</span>"
 msgstr "Nom du Tier <span style=\"font-weight: 700;\">%s</span>"
 
 #: modules/tools/view/general.view.php:22
@@ -2026,6 +2024,15 @@ msgid ""
 msgstr ""
 "<li><strong>%1$d</strong> Contact #%2$d %4$s est déjà affecté à un tier #"
 "%3$d %4$s</li>"
+
+#~ msgid "Account details"
+#~ msgstr "Détails du compte"
+
+#~ msgid "Quotations"
+#~ msgstr "Devis"
+
+#~ msgid "enable quotations"
+#~ msgstr "Activer les devis"
 
 #~ msgid "All Proposals Sync"
 #~ msgstr "Synchroniser tous les devis"

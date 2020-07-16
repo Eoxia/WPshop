@@ -75,7 +75,7 @@ defined( 'ABSPATH' ) || exit; ?>
 		?>
 		<div class="wpeo-notice notice-info">
 			<div class="notice-content">
-				<div class="notice-title"><?php esc_html_e( 'No quotations', 'wpshop' ); ?></div>
+				<div class="notice-title"><?php esc_html_e( 'No wishes', 'wpshop' ); ?></div>
 			</div>
 		</div>
 		<?php

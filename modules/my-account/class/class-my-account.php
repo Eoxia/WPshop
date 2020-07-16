@@ -107,12 +107,12 @@ class My_Account extends \eoxia\Singleton_Util {
 			'details'    => array(
 				'link'  => Pages::g()->get_account_link() . 'details/',
 				'icon'  => 'fas fa-user' ,
-				'title' => __( 'Account details', 'wpshop' ),
+				'title' => __( 'My account', 'wpshop' ),
 			),
 			'quotations' => array(
 				'link'  => Pages::g()->get_account_link() . 'quotations/',
 				'icon'  => 'fas fa-file-signature',
-				'title' => __( 'Quotations', 'wpshop' ),
+				'title' => __( 'Wish List', 'wpshop' ),
 			),
 			'dolibarr-quotations' => array(
 				'link'  => Pages::g()->get_account_link() . 'dolibarr-quotations/',

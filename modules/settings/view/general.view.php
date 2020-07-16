@@ -49,7 +49,7 @@ defined( 'ABSPATH' ) || exit; ?>
 	<div class="form-element">
 		<label class="form-field-container">
 			<input type="checkbox" id="use_quotation" class="form-field" name="use_quotation" <?php echo $dolibarr_option['use_quotation'] ? 'checked="checked"' : ''; ?> />
-			<label for="use_quotation"><?php esc_html_e( 'enable quotations', 'wpshop' ); ?></label>
+			<label for="use_quotation"><?php esc_html_e( 'Enable wish list', 'wpshop' ); ?></label>
 		</label>
 	</div>
 

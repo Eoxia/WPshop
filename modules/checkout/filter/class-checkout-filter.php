@@ -52,7 +52,7 @@ class Checkout_Filter {
 			return $title;
 		}
 
-		return __( 'Ask for a Quotation', 'wpshop' );
+		return __( 'Add to Wish List', 'wpshop' );
 	}
 
 }
