@@ -72,7 +72,8 @@ class Doli_Proposals extends \eoxia\Singleton_Util {
 
 			// @todo: Les trois valeurs ci-dessous ne corresponde pas au valeur de Dolibarr elle sont adapté pour répondre au besoin de WPshop.
 			// @todo: Détailler les besoins de WPshop et enlever ce fonctionnement pour le coup.
-			$wp_proposal->data['datec']          = date( 'Y-m-d H:i:s', $doli_proposal->datec );
+			$time = get_date_from_gmt ( date( 'Y-m-d H:i:s', $doli_proposal->datec ) );
+			$wp_proposal->data['datec']          = $time;
 			$wp_proposal->data['parent_id']      = Doli_Third_Parties::g()->get_wp_id_by_doli_id( $doli_proposal->socid );
 			$wp_proposal->data['payment_method'] = ( null === $doli_proposal->mode_reglement_code ) ? $wp_proposal->data['payment_method'] : Doli_Payment::g()->convert_to_wp( $doli_proposal->mode_reglement_code );
 

@@ -22,7 +22,7 @@ defined( 'ABSPATH' ) || exit; ?>
 			<?php if ( ! empty( $proposal->data['external_id'] ) ) : ?>
 				<li><i class="fas fa-hashtag"></i>Doli : <?php echo esc_html( $proposal->data['external_id'] ); ?></li>
 			<?php endif; ?>
-			<li><i class="fas fa-calendar-alt"></i> <?php echo esc_html( $proposal->data['date']['rendered']['date_time'] ); ?></li>
+			<li><i class="fas fa-calendar-alt"></i> <?php echo esc_html( $proposal->data['datec']['date_time'] ); ?></li>
 		</ul>
 		<div class="reference-title">
 			<a href="<?php echo esc_attr( admin_url( 'admin.php?page=wps-proposal-doli&id=' . $proposal->data['external_id'] ) ); ?>"><?php echo esc_html( $proposal->data['title'] ); ?></a>
