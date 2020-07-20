@@ -310,8 +310,8 @@ class Doli_Sync extends \eoxia\Singleton_Util {
 					$data_view['status_color'] = 'red';
 					break;
 				case '0x2':
-					$data_view['status_color'] = 'orange';
-					$data_view['can_sync'] = true;
+					$data_view['status_color'] = 'red';
+					$object->data['external_id'] =  '';
 					break;
 				case '0x3':
 					$data_view['status_color'] = 'orange';
