@@ -77,7 +77,7 @@ class Emails extends \eoxia\Singleton_Util {
 		//@todo Permettre le réglages des dossiers et du nom de fichier pour les logs
 		//@todo afficher la taille du fichier
 		$this->log_emails_directory = $wp_upload_dir['basedir'] . '/wpshop/logs/';
-
+        //@todo est ce que j'ai les droits ?, création de base lors de l'installation et check ?
 		wp_mkdir_p( $this->log_emails_directory );
 		//@todo erreur création répertoire ?
 	}
@@ -91,7 +91,7 @@ class Emails extends \eoxia\Singleton_Util {
 	 *
 	 * @param  string $to   Mail du destinataire.
 	 * @param  string $type_email Le type du mail utilisé voir les lignes 45 à 71 Sample : 'customer_new_account'
-	 * @param  array  $data Les données utilisées par le template.
+	 * @param  array  $data Les données utilisées par le mail.
 	 */
 	public function send_mail( $to, $type_email, $data = array() ) {
 		$shop_options = get_option( 'wps_dolibarr', Settings::g()->default_settings );
@@ -134,7 +134,7 @@ class Emails extends \eoxia\Singleton_Util {
 	}
 
 	/**
-	 * Création du log des mails envoyés
+	 * Création des lignes de log des mails envoyés
 	 *
 	 * @since 2.0.0
 	 *
@@ -142,12 +142,12 @@ class Emails extends \eoxia\Singleton_Util {
 	 */
 	public function log_emails( $data_email ) {
 
-		$filename = 'log_emails.txt';
+		$filename = 'log.txt';
 		$filepath = $this->log_emails_directory . $filename;
 		$current_time = current_time( 'Y-m-d|H:i:s' );
 
 		$log_email_file = fopen( $filepath,'a' );
-		$data = $current_time . '|' . $data_email['user_id']. '|' . $data_email['user_email'] . '|' . $data_email['title'] . '|' . "\n";
+		$data = $current_time . '|' . 'Email' . '|' .$data_email['user_id']. '|' . $data_email['user_email'] . '|' . $data_email['title'] . '|' . "\n";
 		fwrite( $log_email_file, $data );
 		fclose( $log_email_file );
 	}

@@ -118,7 +118,7 @@ class Pages extends \eoxia\Singleton_Util {
 	}
 
 	/**
-	 * Créer et associer les pages par défaut nécessaire pour le fonctionnement
+	 * Créer et associer les pages par défaut nécessaires pour le fonctionnement
 	 * de WPShop.
 	 *
 	 * @since 2.0.0
@@ -158,9 +158,9 @@ class Pages extends \eoxia\Singleton_Util {
 				if ( ! empty( $page_id ) ) {
 					$this->page_ids[ $key ] = $page_id;
 
-					\eoxia\LOG_Util::log( sprintf( 'Create the page %s when activate plugin success', $page_title ), 'wpshop' );
+					\eoxia\LOG_Util::log( sprintf( 'Create the private page %s when activate plugin success', $page_title ), 'wpshop' );
 				} else {
-					\eoxia\LOG_Util::log( sprintf( 'Error for create the page %s when activate plugin', $page_title ), 'wpshop' );
+					\eoxia\LOG_Util::log( sprintf( 'Error create the private page %s when activate plugin', $page_title ), 'wpshop' );
 				}
 			}
 
