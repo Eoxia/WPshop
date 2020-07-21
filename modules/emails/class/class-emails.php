@@ -79,6 +79,9 @@ class Emails extends \eoxia\Singleton_Util {
 
 
 		$wp_upload_dir              = wp_upload_dir();
+
+		//@todo Permettre le réglages des dossiers et du nom de fichier pour les logs
+		//@todo afficher la taille du fichier
 		$this->log_emails_directory = $wp_upload_dir['basedir'] . '/wpshop/logs/';
 
 		wp_mkdir_p( $this->log_emails_directory );
@@ -105,7 +108,7 @@ class Emails extends \eoxia\Singleton_Util {
 		return $path;
 	}
 
-	
+
 	/**
 	 * Envoie un mail.
 	 *
@@ -114,29 +117,25 @@ class Emails extends \eoxia\Singleton_Util {
 	 * @use wp_mail.
 	 *
 	 * @param  string $to   Mail du destinataire.
-	 * @param  string $type Le template à utilisé.
-	 * @param  array  $data Les données utilisé par le template.
+	 * @param  string $type Le template à utiliser.
+	 * @param  array  $data Les données utilisées par le template.
 	 */
 	public function send_mail( $to, $type, $data = array() ) {
 		$shop_options = get_option( 'wps_dolibarr', Settings::g()->default_settings );
 
 		if ( empty( $shop_options['shop_email'] ) ) {
+			//@todo récupération erreur
 			return;
 		}
 
 		$to          = empty( $to ) ? $shop_options['shop_email'] : $to;
 		$blog_name   = get_bloginfo();
 		$mail        = Emails::g()->emails[ $type ];
-		$path_file   = Emails::g()->get_path( $mail['filename_template'] );
 		$attachments = null;
 
 		if ( ! empty( $data['attachments'] ) ) {
 			$attachments = $data['attachments'];
 		}
-
-		/*ob_start();
-		include $path_file;
-		$content = ob_get_clean();*/
 
 		$content = $mail['content'];
 
@@ -161,19 +160,14 @@ class Emails extends \eoxia\Singleton_Util {
 
 		$this->log_emails( $data_email );
 
-		// translators: Send mail to test@eoxia.com, subject "sujet mail" with result true.
-		\eoxia\LOG_Util::log( sprintf( 'Send mail to %s, subject %s with result %s', $to, $mail['title'], $mail_statut ), 'wpshop2' );
 	}
 
 	/**
-	 * Récupère le chemin ABS vers le template du mail dans le thème.
-	 * Si introuvable récupère le template du mail dans le plugin WPshop.
+	 * Création du log des mails envoyés
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param  string $filename Le nom du template.
-	 *
-	 * @return string           Le chemin vers le template.
+	 * @param  string $data_email Les données du mails envoyé.
 	 */
 	public function log_emails( $data_email ) {
 
