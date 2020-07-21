@@ -105,23 +105,7 @@ class Emails extends \eoxia\Singleton_Util {
 		return $path;
 	}
 
-	/**
-	 * Renvoie true si le template se trouve dans le thème. Sinon false.
-	 *
-	 * @since 2.0.0
-	 *
-	 * @param string $filename Le nom du template.
-	 *
-	 * @return boolean         True ou false.
-	 */
-	public function is_override( $filename ) {
-		if ( locate_template( array( 'wpshop/emails/view/' . $filename ) ) ) {
-			return true;
-		}
-
-		return false;
-	}
-
+	
 	/**
 	 * Envoie un mail.
 	 *
