@@ -85,29 +85,8 @@ class Emails extends \eoxia\Singleton_Util {
 		$this->log_emails_directory = $wp_upload_dir['basedir'] . '/wpshop/logs/';
 
 		wp_mkdir_p( $this->log_emails_directory );
-
+		//@todo erreur création répertoire ?
 	}
-
-	/**
-	 * Récupère le chemin ABS vers le template du mail dans le thème.
-	 * Si introuvable récupère le template du mail dans le plugin WPshop.
-	 *
-	 * @since 2.0.0
-	 *
-	 * @param  string $filename Le nom du template.
-	 *
-	 * @return string           Le chemin vers le template.
-	 */
-	public function get_path( $filename ) {
-		$path = locate_template( array( 'wpshop/emails/view/' . $filename ) );
-
-		if ( empty( $path ) ) {
-			$path = \eoxia\Config_Util::$init['wpshop']->emails->path . '/view/' . $filename;
-		}
-
-		return $path;
-	}
-
 
 	/**
 	 * Envoie un mail.
@@ -124,7 +103,7 @@ class Emails extends \eoxia\Singleton_Util {
 		$shop_options = get_option( 'wps_dolibarr', Settings::g()->default_settings );
 
 		if ( empty( $shop_options['shop_email'] ) ) {
-			//@todo récupération erreur
+			//@todo récupération erreurs
 			return;
 		}
 
@@ -138,9 +117,7 @@ class Emails extends \eoxia\Singleton_Util {
 		}
 
 		$content = $mail['content'];
-
 		$user = wp_get_current_user();
-
 		$data_email = array(
 			'title' => $mail['title'],
 			'user_id' => $user->ID,
@@ -156,7 +133,7 @@ class Emails extends \eoxia\Singleton_Util {
 		$headers     = array();
 		$headers[]   = 'From: ' . $blog_name . ' <' . $shop_options['shop_email'] . '>';
 		$headers[]   = 'Content-Type: text/html; charset=UTF-8';
-		$mail_statut = wp_mail( $to, $mail['title'], $content, $headers, $attachments );
+		wp_mail( $to, $mail['title'], $content, $headers, $attachments );
 
 		$this->log_emails( $data_email );
 
