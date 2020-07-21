@@ -45,35 +45,29 @@ class Emails extends \eoxia\Singleton_Util {
 	protected function construct() {
 		$this->emails['customer_new_account'] = array(
 			'title'             => __( 'New account', 'wpshop' ),
-			'filename_template' => 'customer-new-account.php',
 			'content' => __( 'Welcome <br> This email confirms that your account has been created. <br> Thank you for your trust and see you soon on our shop.', 'wpshop' ),
 		);
 
 		$this->emails['customer_current_order'] = array(
 			'title'             => __( 'Pending order', 'wpshop' ),
-			'filename_template' => 'customer-processing-order.php',
 			'content' => __( 'Hello <br> We have just recorded your order, thank you to send us your payment. <br> We thank you for your confidence and see you soon on our shop.', 'wpshop' ),
 		);
 
 		$this->emails['customer_paid_order'] = array(
 			'title'             => __( 'New order', 'wpshop' ),
-			'filename_template' => 'admin-new-order.php',
 			'content' => __( 'Hello <br> This email confirms that your payment for your recent order has just been validated. <br> See you soon on our shop.', 'wpshop' ),
 		);
 /*
 		$this->emails['customer_completed_order'] = array(
 			'title'             => __( 'Completed order', 'wpshop' ),
-			'filename_template' => 'customer-completed-order.php',
 		);
 
 		$this->emails['customer_delivered_order'] = array(
 			'title'             => __( 'Delivered order', 'wpshop' ),
-			'filename_template' => 'customer-delivered-order.php',
 		);
 */
 		$this->emails['customer_invoice'] = array(
 			'title'             => __( 'Send invoice', 'wpshop' ),
-			'filename_template' => 'customer-invoice.php',
 			'content' => __( 'Hello <br> You can access your invoices by logging in to your account.', 'wpshop' ),
 		);
 
