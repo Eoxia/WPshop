@@ -90,10 +90,10 @@ class Emails extends \eoxia\Singleton_Util {
 	 * @use wp_mail.
 	 *
 	 * @param  string $to   Mail du destinataire.
-	 * @param  string $type Le template à utiliser.
+	 * @param  string $type_email Le type du mail utilisé voir les lignes 45 à 71 Sample : 'customer_new_account'
 	 * @param  array  $data Les données utilisées par le template.
 	 */
-	public function send_mail( $to, $type, $data = array() ) {
+	public function send_mail( $to, $type_email, $data = array() ) {
 		$shop_options = get_option( 'wps_dolibarr', Settings::g()->default_settings );
 
 		if ( empty( $shop_options['shop_email'] ) ) {
@@ -103,7 +103,7 @@ class Emails extends \eoxia\Singleton_Util {
 
 		$to          = empty( $to ) ? $shop_options['shop_email'] : $to;
 		$blog_name   = get_bloginfo();
-		$mail        = Emails::g()->emails[ $type ];
+		$mail        = Emails::g()->emails[ $type_email ];
 		$attachments = null;
 
 		if ( ! empty( $data['attachments'] ) ) {
