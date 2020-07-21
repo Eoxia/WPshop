@@ -176,7 +176,7 @@ class Emails extends \eoxia\Singleton_Util {
 		$current_time = current_time( 'Y-m-d|H:i:s' );
 
 		$log_email_file = fopen( $filepath,'a' );
-		$data = $data_email['user_id']. '|' . $data_email['user_email'] . '|' . $data_email['title'] . '|' . $current_time . "\n";
+		$data = $current_time . '|' . $data_email['user_id']. '|' . $data_email['user_email'] . '|' . $data_email['title'] . '|' . "\n";
 		fwrite( $log_email_file, $data );
 		fclose( $log_email_file );
 	}
