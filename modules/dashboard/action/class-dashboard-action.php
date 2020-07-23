@@ -1,15 +1,12 @@
 <?php
 /**
- * Gestion des actions du dashboard.
+ * Gestion des actions du tableau de bord.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
@@ -27,11 +24,12 @@ class Dashboard_Action {
 	 * @since 2.0.0
 	 */
 	public function __construct() {
+		//@todo nom a vérifier
 		add_action( 'load-toplevel_page_wps-third-party', array( $this, 'callback_load' ), 10 );
 	}
 
 	/**
-	 * Charges les script WP pour les metabox.
+	 * Charges les script WP pour les metaboxes.
 	 *
 	 * @since 2.0.0
 	 */

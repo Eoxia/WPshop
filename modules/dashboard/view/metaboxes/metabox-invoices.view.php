@@ -1,23 +1,30 @@
 <?php
 /**
- * Metabox des commandes dans le dashboard
+ * La metabox des factures dans le tableau de bord.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Templates
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
-defined( 'ABSPATH' ) || exit; ?>
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * Documentation des variables utilisées dans la vue.
+ *
+ * @var string             $dolibarr_url             L'url de dolibarr.
+ * @var string             $dolibarr_invoices_lists  L'url de la liste des factures sur dolibarr.
+ * @var array              $invoices                 Le tableau contenant toutes les données des factures.
+ * @var Doli_Invoice_Model $invoice                  Les données d'une facture.
+ */
+?>
 
 <div class="wps-metabox view gridw-3">
-	<h3 class="metabox-title"><?php esc_html_e( 'Last Invoices', 'wpshop' ); ?></h3>
+	<h3 class="metabox-title"><?php esc_html_e( 'Latest invoices', 'wpshop' ); ?></h3>
 	<a href="<?php echo esc_attr( $dolibarr_url . $dolibarr_invoices_lists ); ?>" target="_blank"><?php esc_html_e( 'See in Dolibarr', 'wpshop' ); ?></a>
 
 	<div class="wpeo-table table-flex table-4">
@@ -44,7 +51,7 @@ defined( 'ABSPATH' ) || exit; ?>
 			?>
 			<div class="table-row">
 				<div class="table-cell">
-					<?php esc_html_e( 'No invoices for now', 'wpshop' ); ?>
+					<?php esc_html_e( 'No invoice for the moment', 'wpshop' ); ?>
 				</div>
 			</div>
 			<?php

@@ -1,20 +1,27 @@
 <?php
 /**
- * Metabox des commandes dans le dashboard
+ * La metabox des propositions commerciales dans le tableau de bord.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Templates
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
-defined( 'ABSPATH' ) || exit; ?>
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * Documentation des variables utilisées dans la vue.
+ *
+ * @var string          $dolibarr_url             L'url de dolibarr.
+ * @var string          $dolibarr_proposals_lists L'url de la liste des propositions commerciales sur dolibarr.
+ * @var array           $proposals                Le tableau contenant toutes les données des propositions commerciales.
+ * @var Proposals_Model $proposal                 Les données d'une proposition commerciale.
+ */
+?>
 
 <div class="wps-metabox view gridw-3">
 	<h3 class="metabox-title"><?php esc_html_e( 'Latest commercial proposals', 'wpshop' ); ?></h3>
@@ -44,7 +51,7 @@ defined( 'ABSPATH' ) || exit; ?>
 			?>
 			<div class="table-row">
 				<div class="table-cell">
-					<?php esc_html_e( 'No proposals for now', 'wpshop' ); ?>
+					<?php esc_html_e( 'No proposals for the moment', 'wpshop' ); ?>
 				</div>
 			</div>
 		<?php
