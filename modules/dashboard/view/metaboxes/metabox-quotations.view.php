@@ -17,8 +17,7 @@ namespace wpshop;
 defined( 'ABSPATH' ) || exit; ?>
 
 <div class="wps-metabox view gridw-3">
-	<h3 class="metabox-title"><?php esc_html_e( 'Last Quotations', 'wpshop' ); ?></h3>
-	<a href="<?php echo esc_attr( $dolibarr_url . $dolibarr_proposals_lists ); ?>" target="_blank"><?php esc_html_e( 'See in Dolibarr', 'wpshop' ); ?></a>
+	<h3 class="metabox-title"><?php esc_html_e( 'Latest wishes', 'wpshop' ); ?></h3>
 
 	<div class="wpeo-table table-flex table-4">
 		<div class="table-row table-header">
@@ -44,9 +43,9 @@ defined( 'ABSPATH' ) || exit; ?>
 			?>
 			<div class="table-row">
 				<div class="table-cell">
-					<?php esc_html_e( 'No quotations for now', 'wpshop' ); ?>
+					<?php esc_html_e( 'No wishes for the moment', 'wpshop' ); ?>
 				</div>
-			</div>
+			</div
 			<?php
 		endif;
 		?>

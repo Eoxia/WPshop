@@ -114,7 +114,17 @@ class Pages extends \eoxia\Singleton_Util {
 
 		);
 
-		$this->page_ids = get_option( 'wps_page_ids', $this->default_options );
+		$this->page_content_default = array(
+			'customer_new_account'     => __( 'Welcome <br> This email confirms that your account has been created. <br> Thank you for your trust and see you soon on our shop.', 'wpshop' ),
+			'customer_current_order'   => __( 'Hello <br> We have just recorded your order, thank you to send us your payment. <br> We thank you for your confidence and see you soon on our shop.', 'wpshop' ),
+			'customer_completed_order' => __( 'Hello <br> This email confirms that your payment for your recent order has just been validated. <br> See you soon on our shop.', 'wpshop' ),
+			'customer_paid_order'      => __( 'Paid order', 'wpshop' ),
+			'customer_invoice'         => __( 'Hello <br> You can access your invoices by logging in to your account.', 'wpshop' ),
+			'customer_delivered_order' => __( 'Delivered order', 'wpshop' ),
+		);
+
+
+			$this->page_ids = get_option( 'wps_page_ids', $this->default_options );
 	}
 
 	/**
@@ -153,6 +163,7 @@ class Pages extends \eoxia\Singleton_Util {
 					'post_type'   => 'page',
 					'post_name'   => $key,
 					'post_status' => 'private',
+					'post_content' => $this->page_content_default[$key],
 				) );
 
 				if ( ! empty( $page_id ) ) {

@@ -159,7 +159,6 @@ class Settings extends \eoxia\Singleton_Util {
 				'section'     => $section,
 				'email'       => $email,
 				'content'     => $content,
-				'is_override' => Emails::g()->is_override( $email['filename_template'] ),
 			) );
 		} else {
 			$page_ids_options = get_option( 'wps_page_ids', Pages::g()->default_options );
