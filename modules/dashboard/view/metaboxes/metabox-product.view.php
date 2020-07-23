@@ -52,7 +52,7 @@ defined( 'ABSPATH' ) || exit;
 			?>
 			<div class="table-row">
 				<div class="table-cell">
-					<?php esc_html_e( 'No products for the moment', 'wpshop' ); ?>
+					<?php esc_html_e( 'No product for the moment', 'wpshop' ); ?>
 				</div>
 			</div>
 			<?php

@@ -16,10 +16,10 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Documentation des variables utilisées dans la vue.
  *
- * @var string             $dolibarr_url             L'url de dolibarr.
- * @var string             $dolibarr_invoices_lists  L'url de la liste des factures sur dolibarr.
- * @var array              $invoices                 Le tableau contenant toutes les données des factures.
- * @var Doli_Invoice_Model $invoice                  Les données d'une facture.
+ * @var string             $dolibarr_url            L'url de dolibarr.
+ * @var string             $dolibarr_invoices_lists L'url de la liste des factures sur dolibarr.
+ * @var array              $invoices                Le tableau contenant toutes les données des factures.
+ * @var Doli_Invoice_Model $invoice                 Les données d'une facture.
  */
 ?>
 

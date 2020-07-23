@@ -17,6 +17,7 @@ defined( 'ABSPATH' ) || exit;
  * Documentation des variables utilisées dans la vue.
  *
  * @var array           $wishlists Le tableau contenant toutes les données des envies.
+ * @todo revoir le model Proposals et faire un model Wish
  * @var Proposals_Model $whishlist Les données d'une envie.
  */
 ?>

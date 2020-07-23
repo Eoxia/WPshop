@@ -53,7 +53,7 @@ defined( 'ABSPATH' ) || exit;
 			?>
 			<div class="table-row">
 				<div class="table-cell">
-					<?php esc_html_e( 'No payments for the moment', 'wpshop' ); ?>
+					<?php esc_html_e( 'No payment for the moment', 'wpshop' ); ?>
 				</div>
 			</div>
 			<?php

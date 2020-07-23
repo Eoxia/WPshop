@@ -51,7 +51,7 @@ defined( 'ABSPATH' ) || exit;
 			?>
 			<div class="table-row">
 				<div class="table-cell">
-					<?php esc_html_e( 'No proposals for the moment', 'wpshop' ); ?>
+					<?php esc_html_e( 'No proposal for the moment', 'wpshop' ); ?>
 				</div>
 			</div>
 		<?php

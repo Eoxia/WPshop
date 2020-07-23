@@ -37,26 +37,26 @@ class Dashboard extends Singleton_Util {
 	 */
 	protected function construct() {
 		$this->metaboxes = apply_filters( 'wps_dashboard_metaboxes', array(
-			'wps-dashboard-customers'  => array(
-				'callback' => array( $this, 'metabox_customers' ),
+			'wps-dashboard-customer'  => array(
+				'callback' => array( $this, 'metabox_customer' ),
 			),
-			'wps-dashboard-products'   => array(
-				'callback' => array( $this, 'metabox_products' ),
+			'wps-dashboard-product'   => array(
+				'callback' => array( $this, 'metabox_product' ),
 			),
 			'wps-dashboard-wishlist' => array(
 				'callback' => array( $this, 'metabox_wishlist' ),
 			),
-			'wps-dashboard-proposals'   => array(
-				'callback' => array( $this, 'metabox_proposals' ),
+			'wps-dashboard-proposal'   => array(
+				'callback' => array( $this, 'metabox_proposal' ),
 			),
-			'wps-dashboard-orders'     => array(
-				'callback' => array( $this, 'metabox_orders' ),
+			'wps-dashboard-order'     => array(
+				'callback' => array( $this, 'metabox_order' ),
 			),
-			'wps-dashboard-invoices'   => array(
-				'callback' => array( $this, 'metabox_invoices' ),
+			'wps-dashboard-invoice'   => array(
+				'callback' => array( $this, 'metabox_invoice' ),
 			),
-			'wps-dashboard-payments'   => array(
-				'callback' => array( $this, 'metabox_payments' ),
+			'wps-dashboard-payment'   => array(
+				'callback' => array( $this, 'metabox_payment' ),
 			),
 		) );
 	}
@@ -73,8 +73,8 @@ class Dashboard extends Singleton_Util {
 					add_action( 'wps_dashboard', $metabox['callback'], 10, 0 );
 				}
 			} else {
-				add_action( 'wps_dashboard', array( $this, 'metabox_customers' ), 10, 0 );
-				add_action( 'wps_dashboard', array( $this, 'metabox_products'), 10, 0 );
+				add_action( 'wps_dashboard', array( $this, 'metabox_customer' ), 10, 0 );
+				add_action( 'wps_dashboard', array( $this, 'metabox_product'), 10, 0 );
 				add_action( 'wps_dashboard', array( $this, 'metabox_wishlist'), 10, 0 );
 			}
 		}
@@ -89,7 +89,7 @@ class Dashboard extends Singleton_Util {
 	 *
 	 * @since 2.0.0
 	 */
-	public function metabox_customers() {
+	public function metabox_customer() {
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
 
 		$dolibarr_url            = $dolibarr_option['dolibarr_url'];
@@ -97,7 +97,7 @@ class Dashboard extends Singleton_Util {
 
 		$third_parties = Third_Party::g()->get( array( 'posts_per_page' => 3 ) );
 
-		View_Util::exec( 'wpshop', 'dashboard', 'metaboxes/metabox-customers', array(
+		View_Util::exec( 'wpshop', 'dashboard', 'metaboxes/metabox-customer', array(
 			'third_parties'        => $third_parties,
 			'dolibarr_url'         => $dolibarr_url,
 			'dolibarr_tiers_lists' => $dolibarr_tiers_lists,
@@ -109,7 +109,7 @@ class Dashboard extends Singleton_Util {
 	 *
 	 * @since 2.0.0
 	 */
-	public function metabox_products() {
+	public function metabox_product() {
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
 
 		$dolibarr_url               = $dolibarr_option['dolibarr_url'];
@@ -117,7 +117,7 @@ class Dashboard extends Singleton_Util {
 
 		$products = Product::g()->get( array( 'posts_per_page' => 3 ) );
 
-		View_Util::exec( 'wpshop', 'dashboard', 'metaboxes/metabox-products', array(
+		View_Util::exec( 'wpshop', 'dashboard', 'metaboxes/metabox-product', array(
 			'products'                => $products,
 			'dolibarr_url'            => $dolibarr_url,
 			'dolibarr_products_lists' => $dolibarr_products_lists,
@@ -148,7 +148,7 @@ class Dashboard extends Singleton_Util {
 	 *
 	 * @since 2.0.0
 	 */
-	public function metabox_proposals() {
+	public function metabox_proposal() {
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
 
 		$dolibarr_url             = $dolibarr_option['dolibarr_url'];
@@ -163,7 +163,7 @@ class Dashboard extends Singleton_Util {
 			}
 		}
 
-		View_Util::exec( 'wpshop', 'dashboard', 'metaboxes/metabox-proposals', array(
+		View_Util::exec( 'wpshop', 'dashboard', 'metaboxes/metabox-proposal', array(
 			'proposals'                => $proposals,
 			'dolibarr_url'             => $dolibarr_url,
 			'dolibarr_proposals_lists' => $dolibarr_proposals_lists,
@@ -175,7 +175,7 @@ class Dashboard extends Singleton_Util {
 	 *
 	 * @since 2.0.0
 	 */
-	public function metabox_orders() {
+	public function metabox_order() {
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
 
 		$dolibarr_url          = $dolibarr_option['dolibarr_url'];
@@ -190,7 +190,7 @@ class Dashboard extends Singleton_Util {
 			}
 		}
 
-		View_Util::exec( 'wpshop', 'dashboard', 'metaboxes/metabox-orders', array(
+		View_Util::exec( 'wpshop', 'dashboard', 'metaboxes/metabox-order', array(
 			'orders'                => $orders,
 			'dolibarr_url'          => $dolibarr_url,
 			'dolibarr_orders_lists' => $dolibarr_orders_lists,
@@ -202,7 +202,7 @@ class Dashboard extends Singleton_Util {
 	 *
 	 * @since 2.0.0
 	 */
-	public function metabox_payments() {
+	public function metabox_payment() {
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
 
 		$dolibarr_url               = $dolibarr_option['dolibarr_url'];
@@ -233,7 +233,7 @@ class Dashboard extends Singleton_Util {
 			}
 		}
 
-		View_Util::exec( 'wpshop', 'dashboard', 'metaboxes/metabox-payments', array(
+		View_Util::exec( 'wpshop', 'dashboard', 'metaboxes/metabox-payment', array(
 			'payments'                => $payments,
 			'dolibarr_url'            => $dolibarr_url,
 			'dolibarr_payments_lists' => $dolibarr_payments_lists,
@@ -245,7 +245,7 @@ class Dashboard extends Singleton_Util {
 	 *
 	 * @since 2.0.0
 	 */
-	public function metabox_invoices() {
+	public function metabox_invoice() {
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
 
 		$dolibarr_url               = $dolibarr_option['dolibarr_url'];
@@ -260,7 +260,7 @@ class Dashboard extends Singleton_Util {
 			}
 		}
 
-		View_Util::exec( 'wpshop', 'dashboard', 'metaboxes/metabox-invoices', array(
+		View_Util::exec( 'wpshop', 'dashboard', 'metaboxes/metabox-invoice', array(
 			'invoices'                => $invoices,
 			'dolibarr_url'            => $dolibarr_url,
 			'dolibarr_invoices_lists' => $dolibarr_invoices_lists,
