@@ -2,19 +2,24 @@
 /**
  * Affichage les produits téléchargables dans la page "Mon compte"
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Templates
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
 defined( 'ABSPATH' ) || exit;
+
+/**
+ * Documentation des variables utilisées dans la vue.
+ *
+ * @var array                $products_downloadable Le tableau contenant toutes les données des produits téléchargeables.
+ * @var Product_Downloadable $product_downloadable  Les données d'un produit téléchargeable.
+ */
+?>
 
 ?>
 <div class="wps-list-invoice wps-list-box">

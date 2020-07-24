@@ -1,22 +1,28 @@
 <?php
 /**
- * Formulaire de login
+ * Le formulaire de login
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Templates
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
 defined( 'ABSPATH' ) || exit;
 
-do_action( 'wps_before_customer_login_form' ); ?>
+/**
+ * Documentation des variables utilisées dans la vue.
+ *
+ * @var string $transient               Un message.
+ * @var string $transient_lost_password Un message.
+ * @var string $account_page            Le slug de la page mon compte.
+ */
+?>
+
+<?php do_action( 'wps_before_customer_login_form' ); ?>
 
 <?php
 if ( ! empty( $transient ) ) :
@@ -64,6 +70,7 @@ endif;
 	<a href="<?php echo site_url( 'wp-login.php?action=lostpassword' ); ?>" title="Lost Password"><?php esc_html_e( 'Lost Password', 'wpshop' ); ?></a>
 
 	<?php do_action( 'wps_login_form_end' ); ?>
+	<?php wp_register() ?>
 </form>
 
 <?php do_action( 'wps_after_customer_login_form' ); ?>

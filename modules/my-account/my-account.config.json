@@ -2,10 +2,11 @@
 	"name": "My Account",
 	"slug": "my-account",
 	"since": "2.0.0",
+    "description": "Le module gérant la page mon compte",
 	"path": "modules/my-account",
 	"dependencies": {
+      "action": {},
       "class": {},
-      "shortcode": {},
-      "action": {}
+      "shortcode": {}
 	}
 }

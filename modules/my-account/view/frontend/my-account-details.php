@@ -1,20 +1,31 @@
 <?php
 /**
- * Affichage des devis dans la page "Mon compte".
+ * Affichage des informations du compte dans la page "Mon compte".
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Templates
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
+
 
 namespace wpshop;
 
-defined( 'ABSPATH' ) || exit; ?>
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * Documentation des variables utilisées dans la vue.
+ *
+ * @todo a check
+ *
+ * @var string      $transient   Un message.
+ * @var string      $key         Un message.
+ * @var string      $text        Un message.
+ * @var Contact     $contact     Les données d'un contact.
+ * @var Third_Party $third_party Les données d'un tier.
+ */
+?>
 
 <?php
 if ( ! empty( $transient ) ) :

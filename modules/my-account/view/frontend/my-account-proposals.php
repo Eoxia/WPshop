@@ -2,14 +2,13 @@
 /**
  * Affichage des devis dans la page "Mon compte".
  *
+ * @todo a revoir totalement
+ *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Templates
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
@@ -78,6 +77,34 @@ defined( 'ABSPATH' ) || exit; ?>
 				<div class="notice-title"><?php esc_html_e( 'No wishes', 'wpshop' ); ?></div>
 			</div>
 		</div>
+
+<!--	<form class="test">-->
+<!--		<div class="form-element">-->
+<!--			<span class="form-label">--><?php //esc_html_e( 'List name', 'wpshop' ); ?><!--</span>-->
+<!--			<label class="form-field-container">-->
+<!--				<input type="text" class="form-field" name="name_wishlist"/>-->
+<!--			</label>-->
+<!--		</div>-->
+<!---->
+<!--		<div class="wps-wishlist-action">-->
+<!--			<div class="wps-wishlist wpeo-button action-input"-->
+<!--				 data-parent="test"-->
+<!--				 data-action="add_wishlist"-->
+<!--				 data-nonce="--><?php //echo wp_create_nonce( 'add_wishlist' ); ?><!--">-->
+<!--				<i class="fas fa-plus"></i>-->
+<!--			</div>-->
+<!--		</div>-->
+<!--	</form>-->
+
+<!--	--><?php //Wishlist::g()->display(); ?>
+<!---->
+<!--		<div class="wps-wishlist-action">-->
+<!--			<div class="wps-wishlist wpeo-button wpeo-modal-event"-->
+<!--				 data-action="load_add_wishlist"-->
+<!--				 data-nonce="--><?php //echo wp_create_nonce( 'load_add_wishlist' ); ?><!--">-->
+<!--				<i class="fas fa-plus"></i>-->
+<!--			</div>-->
+<!--		</div>-->
 		<?php
 	endif;
 	?>

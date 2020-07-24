@@ -2,14 +2,11 @@
 /**
  * Gestion des actions dans la page mon compte.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
@@ -54,13 +51,13 @@ class My_Account_Action {
 	}
 
 	/**
-	 * Gestion de la connexion, si les identifiants sont correctes, rediriges
-	 * à la page indiqué dans $_POST['page'].
+	 * Gestion de la connexion, si les identifiants sont correctes,
+	 * rediriges à la page indiqué dans $_POST['page'].
 	 *
 	 * Si les identifiants sont incorrectes, redigires à la page indiquée dans
 	 * $_POST['page'] avec une erreur.
 	 *
-	 * @use wp_signon
+	 * @use wp_signon.
 	 *
 	 * @since 2.0.0
 	 */
@@ -169,8 +166,7 @@ class My_Account_Action {
 	}*/
 
 	/**
-	 * Repasses la même commande. Remet les mêmes données de la commande dans
-	 * le panier.
+	 * Repasse la même commande. Remet les mêmes données de la commande dans le panier.
 	 *
 	 * @since 2.0.0
 	 */
@@ -194,8 +190,7 @@ class My_Account_Action {
 	}
 
 	/**
-	 * Repasses la même commande. Remet les mêmes données de la commande dans
-	 * le panier.
+	 * Repasse la même commande. Remet les mêmes données de la commande dans le panier.
 	 *
 	 * @since 2.0.0
 	 */
@@ -219,11 +214,11 @@ class My_Account_Action {
 	}
 
 	/**
-	 * Ajoutes le lien vers le devis si dolibarr est active.
+	 * Ajoutes le lien vers la proposition commerciale si dolibarr est active.
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param Proposal_Model $proposal Les données du devis.
+	 * @param Doli_Proposals $proposal Les données d'une proposition commerciale.
 	 */
 	public function add_proposal_pdf( $proposal ) {
 		if ( Settings::g()->dolibarr_is_active() ) {

@@ -1,28 +1,27 @@
 <?php
 /**
- * Classe principale de My Account.
+ * Les fonctions principales de My account.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
+
+use eoxia\Singleton_Util;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
  * My Account Class.
  */
-class My_Account extends \eoxia\Singleton_Util {
+class My_Account extends Singleton_Util {
 
 	/**
-	 * Éléments du menu
+	 * Éléments du menu.
 	 *
 	 * @since 2.0.0
 	 *
@@ -61,8 +60,7 @@ class My_Account extends \eoxia\Singleton_Util {
 	}
 
 	/**
-	 * Appel la vue pour afficher le formulaire de login dans la page de
-	 * paiement.
+	 * Appel la vue pour afficher le formulaire de login dans la page de paiement.
 	 *
 	 * @since 2.0.0
 	 */
@@ -74,6 +72,11 @@ class My_Account extends \eoxia\Singleton_Util {
 		}
 	}
 
+	/**
+	 * Appel la vue pour afficher le formulaire de login dans la page mon compte.
+	 *
+	 * @since 2.0.0
+	 */
 	public function display_form_login( $account_page = true) {
 		global $post;
 
@@ -86,6 +89,11 @@ class My_Account extends \eoxia\Singleton_Util {
 		include( Template_Util::get_template_part( 'my-account', 'form-login' ) );
 	}
 
+	/**
+	 * Appel la vue pour afficher le formulaire de perte de mot de passe dans la page mon compte.
+	 *
+	 * @since 2.0.0
+	 */
 	public function display_lost_password() {
 		global $post;
 
@@ -96,7 +104,7 @@ class My_Account extends \eoxia\Singleton_Util {
 	}
 
 	/**
-	 * Affiche le menu de navigation
+	 * Affiche le menu de navigation.
 	 *
 	 * @since 2.0.0
 	 *

@@ -2,38 +2,39 @@
 /**
  * Affichage des commandes dans la page "Mon compte"
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Templates
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
+
 
 namespace wpshop;
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * Documentation des variables utilisées dans la vue.
+ *
+ * @var array        $invoices Le tableau contenant toutes les données des factures.
+ * @var Doli_Invoice $invoice  Les données d'une facture.
+ * @var array        $line     Le tableau contenant toutes les données d'un item.
+ * @var integer      $qty      La quantité du produit.
+ * @var Product      $product  Les données d'un produit.
+ */
+?>
 
-if ( ! Settings::g()->dolibarr_is_active() ):
-	?>
-
+<?php if ( ! Settings::g()->dolibarr_is_active() ): ?>
 	<div class="wpeo-notice notice-info">
 		<div class="notice-content">
 			<div class="notice-title"><?php _e( 'Please contact commercial', 'wpshop' ) ; ?></div>
 		</div>
 	</div>
-<?php
-else:
-
-	?>
+<?php else: ?>
 	<div class="wps-list-invoice wps-list-box">
-		<?php
-		if ( ! empty( $invoices ) ) :
-			foreach ( $invoices as $invoice ) :
-				?>
+		<?php if ( ! empty( $invoices ) ) :
+			foreach ( $invoices as $invoice ) : ?>
 				<div class="wps-order wps-box">
 					<div class="wps-box-resume">
 						<div class="wps-box-primary">
@@ -58,8 +59,7 @@ else:
 					</div>
 
 					<div class="wps-box-detail wps-list-product">
-						<?php
-						if ( ! empty( $invoice->data['lines'] ) ) :
+						<?php if ( ! empty( $invoice->data['lines'] ) ) :
 							foreach ( $invoice->data['lines'] as $line ) :
 								$qty                  = $line['qty'];
 								$product              = Product::g()->get( array(
@@ -73,22 +73,16 @@ else:
 							endforeach;
 						else :
 							esc_html_e( 'No products to display', 'wpshop' );
-						endif;
-						?>
+						endif; ?>
 					</div>
 				</div>
-				<?php
-			endforeach;
-		else :
-			?>
+			<?php endforeach;
+		else : ?>
 			<div class="wpeo-notice notice-info">
 				<div class="notice-content">
 					<div class="notice-title"><?php esc_html_e( 'No invoice', 'wpshop' ); ?></div>
 				</div>
 			</div>
-			<?php
-		endif;
-		?>
+		<?php endif; ?>
 	</div>
-<?php
-endif;
+<?php endif; ?>

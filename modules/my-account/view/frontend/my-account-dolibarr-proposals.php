@@ -1,37 +1,40 @@
 <?php
 /**
- * Affichage des devis dans la page "Mon compte".
+ * Affichage des propositions commerciales dans la page "Mon compte".
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Templates
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
 defined( 'ABSPATH' ) || exit;
 
-if ( ! Settings::g()->dolibarr_is_active() ):
-	?>
+/**
+ * Documentation des variables utilisées dans la vue.
+ *
+ * @var array     $proposals Le tableau contenant toutes les données des propositions commerciales.
+ * @var Proposals $proposal  Les données d'une proposition commerciale.
+ * @var array     $line      Le tableau contenant toutes les données d'un item.
+ * @var integer   $qty       La quantité du produit.
+ * @var array     $data      Le tableau contenant toutes les données externe d'un produit.
+ * @var Product   $product   Les données d'un produit.
+ */
+?>
 
+<?php if ( ! Settings::g()->dolibarr_is_active() ): ?>
 	<div class="wpeo-notice notice-info">
 		<div class="notice-content">
 			<div class="notice-title"><?php _e( 'Please contact commercial', 'wpshop' ) ; ?></div>
 		</div>
 	</div>
-	<?php
-else:
-	?>
+<?php else: ?>
 	<div class="wps-list-quotation wps-list-box">
-		<?php
-		if ( ! empty( $proposals ) ) :
-			foreach ( $proposals as $proposal ) :
-				?>
+		<?php if ( ! empty( $proposals ) ) :
+			foreach ( $proposals as $proposal ) : ?>
 				<div class="wps-order wps-box">
 					<div class="wps-box-resume">
 						<div class="wps-box-primary">
@@ -53,8 +56,7 @@ else:
 					</div>
 
 					<div class="wps-box-detail wps-list-product">
-						<?php
-						if ( ! empty( $proposal->data['lines'] ) ) :
+						<?php if ( ! empty( $proposal->data['lines'] ) ) :
 							foreach ( $proposal->data['lines'] as $line ) :
 								$qty                  = $line['qty'];
 
@@ -76,22 +78,16 @@ else:
 							endforeach;
 						else :
 							esc_html_e( 'No products to display', 'wpshop' );
-						endif;
-						?>
+						endif; ?>
 					</div>
 				</div>
-				<?php
-			endforeach;
-		else :
-			?>
+			<?php endforeach;
+		else : ?>
 			<div class="wpeo-notice notice-info">
 				<div class="notice-content">
 					<div class="notice-title"><?php esc_html_e( 'No quotations', 'wpshop' ); ?></div>
 				</div>
 			</div>
-			<?php
-		endif;
-		?>
+		<?php endif; ?>
 	</div>
-<?php
-endif;
+<?php endif; ?>
