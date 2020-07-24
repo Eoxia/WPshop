@@ -1,18 +1,17 @@
 <?php
 /**
- * Gestion des actions des mails.
+ * Gestion des actions des emails.
  *
- * @package   WPshop\Classes
- *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2020 Eoxia
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
+
+use eoxia\Config_Util;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -44,7 +43,7 @@ class Emails_Action {
 		$tab          = 'emails';
 		$section      = ! empty( $_GET['section'] ) ? sanitize_text_field( $_GET['section'] ) : '';
 		$email        = Emails::g()->emails[ $section ];
-		$file_to_copy = \eoxia\Config_Util::$init['wpshop']->emails->path . '/view/' . $email['filename_template'];
+		$file_to_copy = Config_Util::$init['wpshop']->emails->path . '/view/' . $email['filename_template'];
 		$path         = get_template_directory() . '/wpshop/emails/view/' . $email['filename_template'];
 
 		if ( wp_mkdir_p( dirname( $path ) ) && ! file_exists( $path ) ) {
@@ -56,11 +55,10 @@ class Emails_Action {
 
 	/**
 	 * Ajoute les détails de la commande dans le mail.
-	 * "customer-processing-order.php"
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param Order_Model $order Les données de la commande.
+	 * @param Order $order Les données de la commande.
 	 */
 	public function order_details( $order ) {
 		$tva_lines = array();
@@ -89,11 +87,10 @@ class Emails_Action {
 
 	/**
 	 * Ajoute les informations de paiement dans le mail.
-	 * "customer-processing-order.php"
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param Order_Model $order Les données de la commande.
+	 * @param Order $order Les données de la commande.
 	 */
 	public function type_payment( $order ) {
 		$payment_methods = get_option( 'wps_payment_methods', Payment::g()->default_options );

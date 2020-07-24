@@ -1,25 +1,24 @@
 <?php
 /**
- * Classe principale des emails
+ * Les fonctions principales des emails.
  *
- * @package   WPshop\Classes
- *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2020 Eoxia
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
+
+use eoxia\Singleton_Util;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
  * Emails Class.
  */
-class Emails extends \eoxia\Singleton_Util {
+class Emails extends Singleton_Util {
 
 	/**
 	 * Tableau contenant les mails par défaut.
@@ -89,9 +88,9 @@ class Emails extends \eoxia\Singleton_Util {
 	 *
 	 * @use wp_mail.
 	 *
-	 * @param  string $to   Mail du destinataire.
-	 * @param  string $type_email Le type du mail utilisé voir les lignes 45 à 71 Sample : 'customer_new_account'
-	 * @param  array  $data Les données utilisées par le mail.
+	 * @param  string $to         Email du destinataire.
+	 * @param  string $type_email Le type de l'email utilisé voir les lignes 45 à 71 Sample : 'customer_new_account'
+	 * @param  array  $data       Les données utilisées par l'email.
 	 */
 	public function send_mail( $to, $type_email, $data = array() ) {
 		$shop_options = get_option( 'wps_dolibarr', Settings::g()->default_settings );
@@ -134,7 +133,7 @@ class Emails extends \eoxia\Singleton_Util {
 	}
 
 	/**
-	 * Création des lignes de log des mails envoyés
+	 * Création des lignes de log des mails envoyés.
 	 *
 	 * @since 2.0.0
 	 *

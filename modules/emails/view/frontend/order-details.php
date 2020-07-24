@@ -1,24 +1,32 @@
 <?php
 /**
- * Ajoutes les détails de la commande.
+ * Ajoute les détails de la commande.
  *
- * @todo: Faire contenu mail
- *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Templates
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
+use Stripe\Order;
+
 defined( 'ABSPATH' ) || exit;
 
-do_action( 'wps_email_before_order_table', $order ); ?>
+/**
+ * Documentation des variables utilisées dans la vue.
+ *
+ * @var Order   $order     Les données d'une commande.
+ * @var string  $line      La ligne dans une commande.
+ * @var array   $tva_lines Le tableau contenant toutes les données des tva.
+ * @var string  $key       A faire.
+ * @var integer $tva_line  Les données d'une tva.
+ */
+?>
+
+<?php do_action( 'wps_email_before_order_table', $order ); ?>
 
 <h2>
 	<?php
