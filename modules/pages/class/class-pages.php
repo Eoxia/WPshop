@@ -2,24 +2,25 @@
 /**
  * Les fonctions principales des pages.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
+
 namespace wpshop;
+
+use eoxia\LOG_Util;
+use eoxia\Singleton_Util;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
  * Pages Class.
  */
-class Pages extends \eoxia\Singleton_Util {
+class Pages extends Singleton_Util {
 	/**
 	 * Tableau contenant toutes les pages personnalisables par défaut.
 	 *
@@ -57,8 +58,7 @@ class Pages extends \eoxia\Singleton_Util {
 	public $page_state_titles_private;
 
 	/**
-	 * Tableau contenant toutes les pages personnalisables dans la base de
-	 * donnée.
+	 * Tableau contenant toutes les pages personnalisables dans la base de donnée.
 	 *
 	 * @since 2.0.0
 	 *
@@ -123,13 +123,11 @@ class Pages extends \eoxia\Singleton_Util {
 			'customer_delivered_order' => __( 'Delivered order', 'wpshop' ),
 		);
 
-
 			$this->page_ids = get_option( 'wps_page_ids', $this->default_options );
 	}
 
 	/**
-	 * Créer et associer les pages par défaut nécessaires pour le fonctionnement
-	 * de WPShop.
+	 * Créer et associer les pages par défaut nécessaires pour le fonctionnement de WPShop.
 	 *
 	 * @since 2.0.0
 	 */
@@ -147,9 +145,9 @@ class Pages extends \eoxia\Singleton_Util {
 				if ( ! empty( $page_id ) ) {
 					$this->page_ids[ $key ] = $page_id;
 
-					\eoxia\LOG_Util::log( sprintf( 'Create the page %s when activate plugin success', $page_title ), 'wpshop' );
+					LOG_Util::log( sprintf( 'Create the page %s when activate plugin success', $page_title ), 'wpshop' );
 				} else {
-					\eoxia\LOG_Util::log( sprintf( 'Error for create the page %s when activate plugin', $page_title ), 'wpshop' );
+					LOG_Util::log( sprintf( 'Error for create the page %s when activate plugin', $page_title ), 'wpshop' );
 				}
 			}
 
@@ -169,9 +167,9 @@ class Pages extends \eoxia\Singleton_Util {
 				if ( ! empty( $page_id ) ) {
 					$this->page_ids[ $key ] = $page_id;
 
-					\eoxia\LOG_Util::log( sprintf( 'Create the private page %s when activate plugin success', $page_title ), 'wpshop' );
+					LOG_Util::log( sprintf( 'Create the private page %s when activate plugin success', $page_title ), 'wpshop' );
 				} else {
-					\eoxia\LOG_Util::log( sprintf( 'Error create the private page %s when activate plugin', $page_title ), 'wpshop' );
+					LOG_Util::log( sprintf( 'Error create the private page %s when activate plugin', $page_title ), 'wpshop' );
 				}
 			}
 
@@ -180,11 +178,11 @@ class Pages extends \eoxia\Singleton_Util {
 	}
 
 	/**
-	 * Récupères le slug de la page shop.
+	 * Récupère le slug de la page "Boutique".
 	 *
 	 * @since 2.0.0
 	 *
-	 * @return string Le slug de la page shop.
+	 * @return string Le slug de la page "Boutique".
 	 */
 	public function get_slug_shop_page() {
 		$page = get_page( $this->page_ids['shop_id'] );
@@ -196,6 +194,13 @@ class Pages extends \eoxia\Singleton_Util {
 		return $page->post_name;
 	}
 
+	/**
+	 * Récupère le slug de la page "Mon compte".
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return string Le slug de la page "Mon compte".
+	 */
 	public function get_slug_my_account_page() {
 		$page = get_page( $this->page_ids['my_account_id'] );
 
@@ -206,6 +211,13 @@ class Pages extends \eoxia\Singleton_Util {
 		return $page->post_name;
 	}
 
+	/**
+	 * Récupère le slug de la page "Tunnel de vente".
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return string Le slug de la page "Tunnel de vente".
+	 */
 	public function get_slug_checkout_page() {
 		$page = get_page( $this->page_ids['checkout_id'] );
 
@@ -217,22 +229,22 @@ class Pages extends \eoxia\Singleton_Util {
 	}
 
 	/**
-	 * Récupères le lien vers la page mon compte.
+	 * Récupère le lien vers la page "Mon compte".
 	 *
 	 * @since 2.0.0
 	 *
-	 * @return string Le lien vers la page mon compte.
+	 * @return string Le lien vers la page "Mon compte".
 	 */
 	public function get_account_link() {
 		return get_permalink( $this->page_ids['my_account_id'] );
 	}
 
 	/**
-	 * Récupères le lien vers la page "Mon compte".
+	 * Récupère le lien vers la page "Panier".
 	 *
 	 * @since 2.0.0
 	 *
-	 * @return string Le lien vers la page "Mon compte".
+	 * @return string Le lien vers la page "Panier".
 	 */
 	public function get_cart_link() {
 		return get_permalink( $this->page_ids['cart_id'] );
@@ -250,11 +262,11 @@ class Pages extends \eoxia\Singleton_Util {
 	}
 
 	/**
-	 * Récupères le lien vers la page "Condition générale de vente".
+	 * Récupères le lien vers la page "Condition générales de vente".
 	 *
 	 * @since 2.0.0
 	 *
-	 * @return string Le lien vers la page "Condition générale de vente".
+	 * @return string Le lien vers la page "Condition générales de vente".
 	 */
 	public function get_general_conditions_of_sale_link() {
 		return get_permalink( $this->page_ids['general_conditions_of_sale'] );

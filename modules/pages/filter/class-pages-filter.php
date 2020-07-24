@@ -1,25 +1,24 @@
 <?php
 /**
- * Filtres principales des pages de WordPress.
+ * Gestion des filtres des pages de WordPress.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
+
+use eoxia\Singleton_Util;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
  * Pages Filter Class.
  */
-class Pages_Filter extends \eoxia\Singleton_Util {
+class Pages_Filter extends Singleton_Util {
 
 	/**
 	 * Constructeur.
@@ -54,7 +53,7 @@ class Pages_Filter extends \eoxia\Singleton_Util {
 	}
 
 	/**
-	 * Affiches le status des pages lié à WPshop.
+	 * Affiche le status des pages lié à WPshop.
 	 *
 	 * @since 2.0.0
 	 *
@@ -82,7 +81,7 @@ class Pages_Filter extends \eoxia\Singleton_Util {
 	 *
 	 * @param  string $content Le contenu de la page.
 	 *
-	 * @return string $content Le contenu de la page + le contenu du shortcode.
+	 * @return string          Le contenu de la page + le contenu du shortcode.
 	 */
 	public function do_shortcode_page( $content ) {
 		if ( ! is_admin() ) {

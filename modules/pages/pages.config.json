@@ -2,6 +2,7 @@
 	"name": "Pages",
 	"slug": "pages",
 	"since": "2.0.0",
+    "description": "Le module gérant les pages",
 	"path": "modules/pages",
 	"dependencies": {
     "filter": {},
