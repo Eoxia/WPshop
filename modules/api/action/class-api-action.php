@@ -11,6 +11,10 @@
 
 namespace wpshop;
 
+use eoxia\LOG_Util;
+use eoxia\Rest_Class;
+use eoxia\View_Util;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -74,7 +78,7 @@ class API_Action {
 			'methods'             => array( 'GET' ),
 			'callback'            => array( $this, 'check_statut' ),
 			'permission_callback' => function( $request ) {
-				return \eoxia\Rest_Class::g()->check_cap( 'get', $request );
+				return Rest_Class::g()->check_cap( 'get', $request );
 			},
 		) );
 
@@ -97,7 +101,7 @@ class API_Action {
 			'methods' => array( 'POST' ),
 			'callback' => array( $this, 'callback_create_order' ),
 			'permission_callback' => function( $request ) {
-				return \eoxia\Rest_Class::g()->check_cap( 'get', $request );
+				return Rest_Class::g()->check_cap( 'get', $request );
 			},
 		) );
 
@@ -105,7 +109,7 @@ class API_Action {
 			'methods' => array( 'POST' ),
 			'callback' => array( $this, 'callback_create_propal' ),
 			'permission_callback' => function( $request ) {
-				return \eoxia\Rest_Class::g()->check_cap( 'get', $request );
+				return Rest_Class::g()->check_cap( 'get', $request );
 			},
 		) );
 
@@ -113,7 +117,7 @@ class API_Action {
 			'methods' => array( 'POST' ),
 			'callback' => array( $this, 'callback_create_invoice' ),
 			'permission_callback' => function( $request ) {
-				return \eoxia\Rest_Class::g()->check_cap( 'get', $request );
+				return Rest_Class::g()->check_cap( 'get', $request );
 			},
 		) );
 
@@ -121,7 +125,7 @@ class API_Action {
 			'methods' => array( 'POST' ),
 			'callback' => array( $this, 'callback_create_payment' ),
 			'permission_callback' => function( $request ) {
-				return \eoxia\Rest_Class::g()->check_cap( 'get', $request );
+				return Rest_Class::g()->check_cap( 'get', $request );
 			},
 		) );
 
@@ -129,7 +133,7 @@ class API_Action {
 			'methods' => array( 'POST' ),
 			'callback' => array( $this, 'callback_wps_sync_from_dolibarr' ),
 			'permission_callback' => function( $request ) {
-				return \eoxia\Rest_Class::g()->check_cap( 'get', $request );
+				return Rest_Class::g()->check_cap( 'get', $request );
 			},
 		) );
 	}
@@ -144,7 +148,7 @@ class API_Action {
 	public function callback_edit_user_profile( $user ) {
 		$token = get_user_meta( $user->ID, '_wpshop_api_key', true );
 
-		\eoxia\View_Util::exec( 'wpshop', 'api', 'field-api', array(
+		View_Util::exec( 'wpshop', 'api', 'field-api', array(
 			'id'    => $user->ID,
 			'token' => $token,
 		) );
@@ -168,7 +172,7 @@ class API_Action {
 		update_user_meta( $id, '_wpshop_api_key', $token );
 
 		ob_start();
-		\eoxia\View_Util::exec( 'wpshop', 'api', 'field-api', array(
+		View_Util::exec( 'wpshop', 'api', 'field-api', array(
 			'id'    => $id,
 			'token' => $token,
 		) );
@@ -210,7 +214,7 @@ class API_Action {
 		$data = $request->get_body_params();
 
 		// translators: Paypal Gateway data: {json_data}.
-		\eoxia\LOG_Util::log( sprintf( 'Paypal Gateway data: %s', json_encode( $data ) ), 'wpshop2' );
+		LOG_Util::log( sprintf( 'Paypal Gateway data: %s', json_encode( $data ) ), 'wpshop2' );
 
 		$txn_id = get_post_meta( $data['custom'], 'payment_txn_id', true );
 
@@ -237,8 +241,8 @@ class API_Action {
 		$param = json_decode( $request->get_body(), true );
 
 		// translators: Stripe Gateway data: {json_data}.
-		\eoxia\LOG_Util::log( sprintf( 'Stripe Gateway data: %s', json_encode( $param ) ), 'wpshop2' );
-		\eoxia\LOG_Util::log( sprintf( 'Stripe Gateway found dolibarr order id: %s', $param['data']['object']['metadata']['order_id'] ), 'wpshop2' );
+		LOG_Util::log( sprintf( 'Stripe Gateway data: %s', json_encode( $param ) ), 'wpshop2' );
+		LOG_Util::log( sprintf( 'Stripe Gateway found dolibarr order id: %s', $param['data']['object']['metadata']['order_id'] ), 'wpshop2' );
 
 		$param['custom'] = $param['data']['object']['metadata']['order_id'];
 
@@ -310,10 +314,9 @@ class API_Action {
 	 *
 	 * @param  WP_REST_Request $request L'objet contenant les informations de la requête.
 	 *
-	 * @return WP_REST_Response         La commande crée.
+	 * @return Doli_Order               Les données de la commande crée.
 	 */
 	public function callback_create_order( $request ) {
-		$response = new \WP_REST_Response();
  		$param    = $request->get_params();
 
 		$third_party_id = Doli_Third_Parties::g()->get_wp_id_by_doli_id( $param['socid'] );
@@ -351,11 +354,10 @@ class API_Action {
 	 *
 	 * @param  WP_REST_Request $request L'objet contenant les informations de la requête.
 	 *
-	 * @return WP_REST_Response         La proposition commerciale crée.
+	 * @return Proposals                Les données de la proposition commerciale crée.
 	 */
 	public function callback_create_propal( $request ) {
-		$response = new \WP_REST_Response();
- 		$param    = $request->get_params();
+ 		$param = $request->get_params();
 
 		$third_party_id = Doli_Third_Parties::g()->get_wp_id_by_doli_id( $param['socid'] );
 
@@ -391,11 +393,10 @@ class API_Action {
 	 *
 	 * @param  WP_REST_Request $request L'objet contenant les informations de la requête.
 	 *
-	 * @return WP_REST_Response         La facture crée.
+	 * @return Doli_Invoice             Les données de la facture crée.
 	 */
 	public function callback_create_invoice( $request ) {
-		$response = new \WP_REST_Response();
- 		$param    = $request->get_params();
+ 		$param = $request->get_params();
 
 		$third_party_id = Doli_Third_Parties::g()->get_wp_id_by_doli_id( $param['socid'] );
 
@@ -426,7 +427,7 @@ class API_Action {
 			$data['author_id'] = $order->data['author_id'];
 		}
 
-		\eoxia\LOG_Util::log( sprintf( 'POST /create/invoice with data %s', json_encode( $data ) ), 'wpshop2' );
+		LOG_Util::log( sprintf( 'POST /create/invoice with data %s', json_encode( $data ) ), 'wpshop2' );
 		$invoice = Doli_Invoice::g()->create( $data );
 		return $invoice;
 	}
@@ -440,11 +441,10 @@ class API_Action {
 	 *
 	 * @param  WP_REST_Request $request L'objet contenant les informations de la requête.
 	 *
-	 * @return WP_REST_Response         La paiement crée.
+	 * @return Doli_Payment             Les données du paiement crée.
 	 */
 	public function callback_create_payment( $request ) {
-		$response = new \WP_REST_Response();
-		$param    = $request->get_params();
+		$param = $request->get_params();
 
 		$invoice_id = Doli_Invoice::g()->get_wp_id_by_doli_id( $param['parent_id'] );
 

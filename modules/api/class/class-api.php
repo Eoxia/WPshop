@@ -11,12 +11,14 @@
 
 namespace wpshop;
 
+use eoxia\Singleton_Util;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
  * API Class.
  */
-class API extends \eoxia\Singleton_Util {
+class API extends Singleton_Util {
 
 	/**
 	 * Constructeur obligatoire.
