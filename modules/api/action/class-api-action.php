@@ -1,15 +1,12 @@
 <?php
 /**
- * Gestion API.
+ * Gestion des actions de l'API.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
@@ -22,7 +19,7 @@ defined( 'ABSPATH' ) || exit;
 class API_Action {
 
 	/**
-	 * Constructeur
+	 * Constructeur.
 	 *
 	 * @since 2.0.0
 	 */
@@ -34,7 +31,7 @@ class API_Action {
 		add_action( 'show_user_profile', array( $this, 'callback_edit_user_profile' ) );
 		add_action( 'edit_user_profile', array( $this, 'callback_edit_user_profile' ) );
 
-		add_action( 'wp_ajax_generate_api_key', array( $this, 'generate_api_key' ) );
+		add_action( 'wp_ajax_generate_api_key', array( $this, 'callback_generate_api_key' ) );
 	}
 
 	/**
@@ -68,7 +65,7 @@ class API_Action {
 	}
 
 	/**
-	 * Ajoutes la route pour PayPal.
+	 * Ajoute la route pour PayPal.
 	 *
 	 * @since 2.0.0
 	 */
@@ -138,12 +135,11 @@ class API_Action {
 	}
 
 	/**
-	 * Ajoute les champs spécifiques à note de frais dans le compte utilisateur.
+	 * Ajoute le champ clé API dans le compte utilisateur.
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param WP_User $user L'objet contenant la définition
-	 * complète de l'utilisateur.
+	 * @param WP_User $user L'objet contenant la définition complète de l'utilisateur.
 	 */
 	public function callback_edit_user_profile( $user ) {
 		$token = get_user_meta( $user->ID, '_wpshop_api_key', true );
@@ -155,11 +151,11 @@ class API_Action {
 	}
 
 	/**
-	 * Génère une clé API pour un utilisateur
+	 * Génère une clé API pour un utilisateur.
 	 *
 	 * @since 2.0.0
 	 */
-	public function generate_api_key() {
+	public function callback_generate_api_key() {
 		check_ajax_referer( 'generate_api_key' );
 
 		$id = ! empty( $_POST['id'] ) ? (int) $_POST['id'] : 0;
@@ -208,8 +204,7 @@ class API_Action {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param  WP_Request $request L'objet contenant les informations de la
-	 * requête.
+	 * @param  WP_Request $request L'objet contenant les informations de la requête.
 	 */
 	public function callback_wps_gateway_paypal( $request ) {
 		$data = $request->get_body_params();
@@ -236,8 +231,7 @@ class API_Action {
 	 *
 	 * @todo: Validate data request
 	 *
-	 * @param  WP_Request $request L'objet contenant les informations de la
-	 * requête.
+	 * @param  WP_Request $request L'objet contenant les informations de la requête.
 	 */
 	public function callback_wps_gateway_stripe( $request ) {
 		$param = json_decode( $request->get_body(), true );
@@ -285,8 +279,9 @@ class API_Action {
  	 *
  	 * @todo: Validate data request
  	 *
- 	 * @param  WP_Request $request L'objet contenant les informations de la
- 	 * requête.
+ 	 * @param  WP_REST_Request $request L'objet contenant les informations de la requête.
+	 *
+	 * @return WP_REST_Response         Le statut de synchronisation.
  	 */
  	public function callback_wps_sync_from_dolibarr( $request ) {
 		$response = new \WP_REST_Response();
@@ -307,9 +302,15 @@ class API_Action {
 	}
 
 	/**
+	 * Gestion de la route pour créer une commande sur dolibarr.
+	 *
+	 * @since 2.0.0
+	 *
 	 * @todo: Validate data request
-	 * @param  [type] $request [description]
-	 * @return [type]          [description]
+	 *
+	 * @param  WP_REST_Request $request L'objet contenant les informations de la requête.
+	 *
+	 * @return WP_REST_Response         La commande crée.
 	 */
 	public function callback_create_order( $request ) {
 		$response = new \WP_REST_Response();
@@ -342,9 +343,15 @@ class API_Action {
 	}
 
 	/**
+	 * Gestion de la route pour créer une proposition commerciale sur dolibarr.
+	 *
+	 * @since 2.0.0
+	 *
 	 * @todo: Validate data request
-	 * @param  [type] $request [description]
-	 * @return [type]          [description]
+	 *
+	 * @param  WP_REST_Request $request L'objet contenant les informations de la requête.
+	 *
+	 * @return WP_REST_Response         La proposition commerciale crée.
 	 */
 	public function callback_create_propal( $request ) {
 		$response = new \WP_REST_Response();
@@ -376,9 +383,15 @@ class API_Action {
 	}
 
 	/**
+	 * Gestion de la route pour créer une facture sur dolibarr.
+	 *
+	 * @since 2.0.0
+	 *
 	 * @todo: Validate data request
-	 * @param  [type] $request [description]
-	 * @return [type]          [description]
+	 *
+	 * @param  WP_REST_Request $request L'objet contenant les informations de la requête.
+	 *
+	 * @return WP_REST_Response         La facture crée.
 	 */
 	public function callback_create_invoice( $request ) {
 		$response = new \WP_REST_Response();
@@ -419,9 +432,15 @@ class API_Action {
 	}
 
 	/**
+	 * Gestion de la route pour créer un paiement sur dolibarr.
+	 *
+	 * @since 2.0.0
+	 *
 	 * @todo: Validate data request
-	 * @param  [type] $request [description]
-	 * @return [type]          [description]
+	 *
+	 * @param  WP_REST_Request $request L'objet contenant les informations de la requête.
+	 *
+	 * @return WP_REST_Response         La paiement crée.
 	 */
 	public function callback_create_payment( $request ) {
 		$response = new \WP_REST_Response();

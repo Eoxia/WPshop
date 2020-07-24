@@ -1,15 +1,12 @@
 <?php
 /**
- * Gestion API.
+ * Les fonctions principales de l'API.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
@@ -50,14 +47,13 @@ class API extends \eoxia\Singleton_Util {
 	}
 
 	/**
-	 * Récupères un utilisateur selon le token.
+	 * Récupère un utilisateur selon le token.
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param  string $token Le token.
+	 * @param  string $token   Le token.
 	 *
-	 * @return User_Model|null Les données de l'utilisateur ou NULL si aucun
-	 * utilisateur correspond au token.
+	 * @return User_Model|null Les données de l'utilisateur ou NULL si aucun utilisateur correspond au token.
 	 */
 	public function get_user_by_token( $token ) {
 		$users = get_users( array(
