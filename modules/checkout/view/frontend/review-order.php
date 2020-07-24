@@ -1,20 +1,30 @@
 <?php
 /**
- * Le formulaire pour créer son adresse de livraison
+ * Le formulaire pour avoir un aperçu de sa commande.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Templates
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
-
 namespace wpshop;
 
-defined( 'ABSPATH' ) || exit; ?>
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * Documentation des variables utilisées dans la vue.
+ *
+ * @todo a revoir
+ *
+ * @var Cart_Session $cart_contents Tableau contenant toutes les données du panier.
+ * @var string       $cart_item     Les données d'un item du panier.
+ * @var Proposals    $proposal      Les données d'un devis.
+ * @var array        $tva_lines     Le tableau contenant toutes les données des tva.
+ * @var string       $key           A faire.
+ * @var integer      $tva_line      Les données d'une tva.
+ */
+?>
 
 <table class="wpeo-table wps-checkout-review-order-table">
 	<thead>

@@ -5,9 +5,9 @@
 	"description": "Le module gérant le tunnel de vente",
 	"path": "module/checkout/",
 	"dependencies": {
-    "shortcode": {},
-		"action": {},
-		"class": {},
-    "filter": {}
+	  "action": {},
+	  "class": {},
+      "filter": {},
+      "shortcode": {}
 	}
 }

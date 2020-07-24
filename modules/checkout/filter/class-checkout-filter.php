@@ -2,14 +2,11 @@
 /**
  * Les filtres du tunnel de vente.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
@@ -22,7 +19,7 @@ defined( 'ABSPATH' ) || exit;
 class Checkout_Filter {
 
 	/**
-	 * Init filter
+	 * Init filter.
 	 *
 	 * @since 2.0.0
 	 */
@@ -47,12 +44,19 @@ class Checkout_Filter {
 		return $vars;
 	}
 
+	/**
+	 * Ajoute le bouton sur le panier.
+	 *
+	 * @param string $title Le titre du bouton.
+	 *
+	 * @return array        Le titre du bouton.
+	 */
 	public function wps_cart_to_checkout_link_title( $title ) {
 		if ( Settings::g()->dolibarr_is_active() ) {
 			return $title;
 		}
 
-		return __( 'Add to Wish List', 'wpshop' );
+		return __( 'Add to wish list', 'wpshop' );
 	}
 
 }

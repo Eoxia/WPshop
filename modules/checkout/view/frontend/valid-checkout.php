@@ -2,19 +2,32 @@
 /**
  * La page de validation du tunnel de vente
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Templates
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
-defined( 'ABSPATH' ) || exit; ?>
+use phpDocumentor\Reflection\Types\Object_;
+
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * Documentation des variables utilisées dans la vue.
+ *
+ * @var string  $title                   Le titre de l'objet.
+ * @var Object  $object                  Les données de l'objet (can be Product/Order).
+ * @var array   $atts                    Les attributs supplémentaires.
+ * @var integer $total_price_no_shipping Le prix total sans frais de livraison.
+ * @var integer $tva_amount              Le montant de la TVA.
+ * @var integer $total_price_ttc         Le prix total TTC.
+ * @var integer $shipping_cost           Les frais de livraison.
+ * @var integer $button_text             Le texte du bouton.
+ */
+?>
 
 <div class="content">
 	<?php

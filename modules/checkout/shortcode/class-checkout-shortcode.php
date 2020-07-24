@@ -2,28 +2,27 @@
 /**
  * Gestion shortcode du tunnel de vente.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
+
+use eoxia\Singleton_Util;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
  * Checkout Shortcode Class.
  */
-class Checkout_Shortcode extends \eoxia\Singleton_Util {
+class Checkout_Shortcode extends Singleton_Util {
 
 	/**
-	 * Constructeur pour la classe Class_Checkout_Shortcode. Ajoutes les
-	 * shortcodes pour le tunnel de vente.
+	 * Constructeur pour la classe Class_Checkout_Shortcode.
+	 * Ajoutes les shortcodes pour le tunnel de vente.
 	 *
 	 * @since 2.0.0
 	 */
@@ -39,7 +38,7 @@ class Checkout_Shortcode extends \eoxia\Singleton_Util {
 	}
 
 	/**
-	 * Affichage du tunnel de vente
+	 * Affichage du tunnel de vente.
 	 *
 	 * @since 2.0.
 	 *
@@ -135,7 +134,7 @@ class Checkout_Shortcode extends \eoxia\Singleton_Util {
 	}
 
 	/**
-	 * Affichage de la validation du devis
+	 * Affichage de la validation du devis.
 	 *
 	 * @since 2.0.0
 	 */

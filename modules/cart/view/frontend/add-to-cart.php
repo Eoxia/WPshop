@@ -16,8 +16,8 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Documentation des variables utilisées dans la vue.
  *
- * @var Product_Model $product La donnée d'un produit.
- * @var string        $a       Texte du bouton.
+ * @var Product $product La donnée d'un produit.
+ * @var string  $a       Texte du bouton.
  *
  * @Todo changer le nom de la variable.
  *

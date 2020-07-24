@@ -16,13 +16,13 @@ defined( 'ABSPATH' ) || exit;
 /**
 * Documentation des variables utilisées dans la vue.
 *
-* @var array         $cart_contents           Les données du panier.
-* @var Product_Model $product                 La donnée d'un produit.
-* @var array         $shipping_cost_option    Les données de frais de livraison.
-* @var integer       $total_price_no_shipping Prix total sans frais de livraison.
-* @var integer       $tva_amount              Montant de la TVA.
-* @var integer       $total_price_ttc         Prix total TTC.
-* @var integer       $shipping_cost           Frais de livraison.
+* @var array   $cart_contents           Les données du panier.
+* @var Product $product                 La donnée d'un produit.
+* @var array   $shipping_cost_option    Les données de frais de livraison.
+* @var integer $total_price_no_shipping Prix total sans frais de livraison.
+* @var integer $tva_amount              Montant de la TVA.
+* @var integer $total_price_ttc         Prix total TTC.
+* @var integer $shipping_cost           Frais de livraison.
 */
 ?>
 

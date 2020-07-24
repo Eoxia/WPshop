@@ -2,17 +2,16 @@
 /**
  * Gestion des actions du tunnel de vente.
  *
- * @package   WPshop\Classes
- *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2020 Eoxia
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
+
+use eoxia\LOG_Util;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -22,8 +21,8 @@ defined( 'ABSPATH' ) || exit;
 class Checkout_Action {
 
 	/**
-	 * Constructeur pour la classe Class_Checkout_Action. Ajoutes les
-	 * actions pour le tunnel de vente.
+	 * Constructeur pour la classe Checkout_Action.
+	 * Ajoutes les actions pour le tunnel de vente.
 	 *
 	 * @since 2.0.0
 	 */
@@ -108,16 +107,15 @@ class Checkout_Action {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param Third_Party_Model $third_party Les données du tier.
-	 * @param Contact_Model     $contact     Les données du contact.
-	 * vue d'édition ou false.
+	 * @param Third_Party $third_party Les données du tier.
+	 * @param Contact     $contact     Les données du contact.
 	 */
 	public function callback_checkout_shipping( $third_party, $contact ) {
 		include( Template_Util::get_template_part( 'checkout', 'form-shipping' ) );
 	}
 
 	/**
-	 * Le tableau récapitulatif de la commande
+	 * Le tableau récapitulatif de la commande.
 	 *
 	 * @since 2.0.0
 	 *
@@ -131,7 +129,7 @@ class Checkout_Action {
 	}
 
 	/**
-	 * Affiches les méthodes de paiement
+	 * Affiche les méthodes de paiement.
 	 *
 	 * @since 2.0.0
 	 */
@@ -142,7 +140,7 @@ class Checkout_Action {
 	}
 
 	/**
-	 * Créer la commande et passe au paiement
+	 * Créer la commande et passe au paiement.
 	 *
 	 * @since 2.0.0
 	 */
@@ -218,7 +216,7 @@ class Checkout_Action {
 
 
 	/**
-	 * Créer le tier lors du tunnel de vente
+	 * Créer le tier lors du tunnel de vente.
 	 *
 	 * @since 2.0.0
 	 */
@@ -274,7 +272,7 @@ class Checkout_Action {
 				Emails::g()->send_mail( $posted_data['contact']['email'], 'customer_new_account', array_merge( $posted_data, array( 'url' => $track_url ) ) );
 
 				// translators: Checkout: Create new third party and contact {json_data}.
-				\eoxia\LOG_Util::log( sprintf( 'Checkout: Create new third party and contact %s', json_encode( $posted_data ) ), 'wpshop2' );
+				LOG_Util::log( sprintf( 'Checkout: Create new third party and contact %s', json_encode( $posted_data ) ), 'wpshop2' );
 			} else {
 				// If user is connected, check the link with his third party and his contact.
 				$current_user = wp_get_current_user();
@@ -313,7 +311,7 @@ class Checkout_Action {
 				$contact                    = User::g()->update( $contact->data );
 
 				// translators: Checkout: Update third party and contact {json_data}.
-				\eoxia\LOG_Util::log( sprintf( 'Checkout: Update third party and contact %s', json_encode( $posted_data ) ), 'wpshop2' );
+				LOG_Util::log( sprintf( 'Checkout: Update third party and contact %s', json_encode( $posted_data ) ), 'wpshop2' );
 			}
 
 			do_action( 'checkout_create_proposal', $third_party, $contact );
@@ -332,6 +330,16 @@ class Checkout_Action {
 		}
 	}
 
+	/**
+	 * Créer le devis lors du tunnel de vente.
+	 *
+	 * @todo doit être supprimer
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param Third_Party $third_party Les données du tier.
+	 * @param Contact     $contact     Les données du contact.
+	 */
 	public function callback_checkout_proposal( $third_party, $contact ) {
 		$type         = ! empty( $_POST['type'] ) ? sanitize_text_field( $_POST['type'] ) : 'proposal';
 		$type_payment = ! empty( $_POST['type_payment'] ) ? sanitize_text_field( $_POST['type_payment'] ) : '';
@@ -342,7 +350,7 @@ class Checkout_Action {
 		$last_ref = Proposals::g()->get_last_ref();
 
 		if ( ! is_int( $last_ref ) ) {
-			\eoxia\LOG_Util::log( sprintf('Numérotation impossible' ), 'wpshop2' );
+			LOG_Util::log( sprintf('Numérotation impossible' ), 'wpshop2' );
 			return;
 		} else {
 			$last_ref++;
@@ -380,13 +388,21 @@ class Checkout_Action {
 		$proposal->data['total_ttc'] = $total_ttc;
 
 		$proposal = Proposals::g()->update( $proposal->data );
-		\eoxia\LOG_Util::log( sprintf( 'Checkout: Create proposal %s', json_encode( $proposal->data ) ), 'wpshop2' );
+		LOG_Util::log( sprintf( 'Checkout: Create proposal %s', json_encode( $proposal->data ) ), 'wpshop2' );
 
 		Cart_Session::g()->add_external_data( 'proposal_id', $proposal->data['id'] );
 		Cart_Session::g()->update_session();
 	}
 
 	// @todo: A déplacer dans doli-proposals-action quand on a le temps.
+	/**
+	 * Créer la proposition commerciale lors du tunnel de vente.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param Third_Party $third_party Les données du tier.
+	 * @param Contact     $contact     Les données du contact.
+	 */
 	public function callback_checkout_doli_proposal( $third_party, $contact ) {
  		$type_payment = ! empty( $_POST['type_payment'] ) ? sanitize_text_field( $_POST['type_payment'] ) : '';
 
@@ -396,7 +412,7 @@ class Checkout_Action {
 			'mode_reglement_id' => Doli_Payment::g()->convert_to_doli_id( $type_payment ),
 		);
 
-		\eoxia\LOG_Util::log( sprintf( 'Dolibarr call POST proposals with data %s', json_encode( $proposal_data ) ), 'wpshop2' );
+		LOG_Util::log( sprintf( 'Dolibarr call POST proposals with data %s', json_encode( $proposal_data ) ), 'wpshop2' );
 		$doli_proposal_id = Request_Util::post( 'proposals', $proposal_data );
 
 		if ( ! empty( Cart_Session::g()->cart_contents ) ) {
@@ -442,7 +458,7 @@ class Checkout_Action {
 	}
 
 	/**
-	 * Ajoutes la case à cocher pour confirmer les termes.
+	 * Ajoute la case à cocher pour confirmer les termes.
 	 *
 	 * @since 2.0.0
 	 */
@@ -471,7 +487,7 @@ class Checkout_Action {
 	}
 
 	/**
-	 * Ajoutes le bouton "Demande de devis".
+	 * Ajoute le bouton "Demande de devis".
 	 *
 	 * @since 2.0.0
 	 */
@@ -480,7 +496,7 @@ class Checkout_Action {
 	}
 
 	/**
-	 * Ajoutes le bouton "Passer commande".
+	 * Ajoute le bouton "Passer commande".
 	 *
 	 * @since 2.0.0
 	 */

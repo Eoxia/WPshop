@@ -17,7 +17,7 @@ window.eoxiaJS.wpshopFrontend.cart.init = function() {
 window.eoxiaJS.wpshopFrontend.cart.event = function() {
 	jQuery( document ).on( 'click', '.wps-cart .wps-product-quantity .wps-quantity-minus', window.eoxiaJS.wpshopFrontend.cart.updateQuantity );
 	jQuery( document ).on( 'click', '.wps-cart .wps-product-quantity .wps-quantity-plus', window.eoxiaJS.wpshopFrontend.cart.updateQuantity );
-}
+};
 
 /**
  * Met à jour la quantité d'un produit.
@@ -29,7 +29,7 @@ window.eoxiaJS.wpshopFrontend.cart.event = function() {
  *
  * @return {void}
  */
-window.eoxiaJS.wpshopFrontend.cart.updateQuantity = function() {
+window.eoxiaJS.wpshopFrontend.cart.updateQuantity = function( event ) {
 	var qty = parseInt( jQuery( this ).closest( '.wps-product-quantity' ).find( 'input[type="hidden"]' ).val() );
 
 	if ( jQuery( this ).hasClass( 'wps-quantity-minus' ) ) {

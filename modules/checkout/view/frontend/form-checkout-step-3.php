@@ -1,20 +1,27 @@
 <?php
 /**
- * Le formulaire pour créer son adresse de livraison
+ * Le formulaire pour avoir un aperçu de sa commande.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Templates
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
-defined( 'ABSPATH' ) || exit; ?>
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * Documentation des variables utilisées dans la vue.
+ *
+ * @var integer $total_price_no_shipping Prix total sans frais de livraison.
+ * @var integer $tva_amount              Montant de la TVA.
+ * @var integer $total_price_ttc         Prix total TTC.
+ * @var integer $shipping_cost           Frais de livraison.
+ */
+?>
 
 <div class="wps-checkout-step-3">
 	<div id="order_review_heading" class="wps-checkout-subtitle"><?php esc_html_e( 'Your order', 'wpshop' ); ?></div>

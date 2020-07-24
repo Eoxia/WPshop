@@ -2,24 +2,29 @@
 /**
  * Les méthodes de paiement et le bouton pour payer.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Templates
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
-defined( 'ABSPATH' ) || exit; ?>
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * Documentation des variables utilisées dans la vue.
+ *
+ * @var Payment $payment_methods Tableau contenant toutes les données des méthodes de paiements.
+ * @var string  $key             Le type de paiement.
+ * @var string  $payment_method  Le type de paiement choisie.
+ * @var string  $checked         L'attribut HTML "checked".
+ */
+?>
 
 <div id="payment" class="wps-checkout-payment">
-
 	<div class="wps-checkout-subtitle"><?php esc_html_e( 'Payment method', 'wpshop' ); ?></div>
-
 	<ul class="wps-payment-list wpeo-gridlayout grid-2 grid-gap-0">
 		<?php
 		if ( ! empty( $payment_methods ) ) :
@@ -52,5 +57,4 @@ defined( 'ABSPATH' ) || exit; ?>
 		endif;
 		?>
 	</ul>
-
 </div>

@@ -2,24 +2,23 @@
 /**
  * Les fonctions principales du tunnel de vente.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
+
+use eoxia\Singleton_Util;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
  * Checkout Class.
  */
-class Checkout extends \eoxia\Singleton_Util {
+class Checkout extends Singleton_Util {
 
 	/**
 	 * Constructeur pour la classe Checkout. Charge les options et les actions.
@@ -29,7 +28,7 @@ class Checkout extends \eoxia\Singleton_Util {
 	protected function construct() {}
 
 	/**
-	 * Récupères les données postées
+	 * Récupère les données postées.
 	 *
 	 * @since 2.0.0
 	 *
@@ -56,7 +55,7 @@ class Checkout extends \eoxia\Singleton_Util {
 	}
 
 	/**
-	 * Définition du formulaire du tunnel de vente
+	 * Définition du formulaire du tunnel de vente.
 	 *
 	 * @since 2.0.0
 	 *
@@ -172,12 +171,13 @@ class Checkout extends \eoxia\Singleton_Util {
 	public function validate_checkout( &$data, &$errors ) {
 		$this->validate_posted_data( $data, $errors );
 	}
+
 	/**
-	 * Procèdes au paiement
+	 * Procèdes au paiement.
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param Order_Model $order Les données de la commande.
+	 * @param Order $order Les données de la commande.
 	 */
 	public function process_order_payment( $order ) {
 		$type = ! empty( $_POST['type_payment'] ) ? sanitize_text_field( $_POST['type_payment'] ) : '';
@@ -223,6 +223,13 @@ class Checkout extends \eoxia\Singleton_Util {
 
 	}
 
+	/**
+	 * Appel la méthode pour recommander un proudit.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param array $id L'id de la commande.
+	 */
 	public function reorder( $id ) {
 		Cart_Session::g()->destroy();
 
@@ -247,6 +254,13 @@ class Checkout extends \eoxia\Singleton_Util {
 		}
 	}
 
+	/**
+	 * Appel la méthode pour faire le paiement.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param array $id L'id de la commande.
+	 */
 	public function do_pay( $id ) {
 		Cart_Session::g()->destroy();
 

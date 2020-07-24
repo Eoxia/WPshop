@@ -1,15 +1,12 @@
 <?php
 /**
- * Le formulaire pour créer son adresse de livraison
+ * Le formulaire pour passer une commande.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Templates
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
@@ -21,11 +18,9 @@ do_action( 'wps_before_checkout_form' ); ?>
 <div class="wps-checkout wpeo-gridlayout grid-5">
 	<div class="gridw-3">
 		<?php include( Template_Util::get_template_part( 'checkout', 'form-checkout-step-1' ) ); ?>
-		<?php
-		if ( Settings::g()->dolibarr_is_active() ) :
+		<?php if ( Settings::g()->dolibarr_is_active() ) :
 			include( Template_Util::get_template_part( 'checkout', 'form-checkout-step-2' ) );
-		endif;
-		?>
+		endif; ?>
 	</div>
 	<div class="gridw-2 wpeo-form">
 		<?php include( Template_Util::get_template_part( 'checkout', 'form-checkout-step-3' ) ); ?>

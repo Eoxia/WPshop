@@ -2,19 +2,27 @@
 /**
  * Le formulaire pour créer son adresse de livraison
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Templates
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
-defined( 'ABSPATH' ) || exit; ?>
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * Documentation des variables utilisées dans la vue.
+ *
+ * @var Product $third_party Les données d'un tier.
+ * @var Contact $contact     Les données d'un contact.
+ * @var array $countries     Le tableau contenant toutes les données des pays.
+ * @var array $country       Les données d'un pays.
+ * @var string $selected     L'attribut HTML "selected".
+ */
+?>
 
 <div class="wps-checkout-subtitle"><?php esc_html_e( 'Personnal and shipping informations', 'wpshop' ); ?></div>
 
