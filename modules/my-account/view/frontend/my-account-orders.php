@@ -69,7 +69,7 @@ else:
 
 								if ( empty( $product ) ) {
 									$product = Product::g()->get( array( 'schema' => true ), true );
-									$product->data['title'] = ! empty( $line['libelle'] ) ? $line['libelle'] : $line['desc'];
+									$product->data['title'] = ! empty( $line['libelle'] ) ? $line['libelle'] : '';
 								}
 
 								$product->data['qty'] = $qty;
