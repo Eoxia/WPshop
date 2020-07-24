@@ -34,5 +34,5 @@ defined( 'ABSPATH' ) || exit;
 			<?php esc_html_e( 'View cart', 'wpshop' ); ?>
 		</a>
 	</div>
-	<div class="notification-close"><i class="far fa-times"></i></div>
+	<div class="notification-close"><i class="fas fa-times"></i></div>
 </div>
