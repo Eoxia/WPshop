@@ -16,10 +16,10 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Documentation des variables utilisées dans la vue.
  *
- * @var string             $dolibarr_url            L'url de dolibarr.
- * @var string             $dolibarr_payments_lists L'url de la liste des paiements sur dolibarr.
- * @var array              $payments                Le tableau contenant toutes les données des paiements.
- * @var Doli_Payment_Model $payment                 Les données d'un paiement.
+ * @var string       $dolibarr_url            L'url de dolibarr.
+ * @var string       $dolibarr_payments_lists L'url de la liste des paiements sur dolibarr.
+ * @var array        $payments                Le tableau contenant toutes les données des paiements.
+ * @var Doli_Payment $payment                 Les données d'un paiement.
  */
 ?>
 

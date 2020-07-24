@@ -1,5 +1,5 @@
 {
-  "name": "Page de vue d'ensemble",
+  "name": "Gestion du tableau de bord",
   "slug": "dashboard",
   "since": "2.0.0",
   "description": "Le module gérant le tableau de bord",

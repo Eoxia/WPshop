@@ -29,7 +29,7 @@ class Dashboard_Action {
 	}
 
 	/**
-	 * Charges les script WP pour les metaboxes.
+	 * Charge les script WP pour les metaboxes.
 	 *
 	 * @since 2.0.0
 	 */
@@ -38,7 +38,6 @@ class Dashboard_Action {
 		wp_enqueue_script( 'wp-lists' );
 		wp_enqueue_script( 'postbox' );
 	}
-
 }
 
 new Dashboard_Action();

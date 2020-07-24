@@ -16,10 +16,10 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Documentation des variables utilisées dans la vue.
  *
- * @var string        $dolibarr_url            L'url de dolibarr.
- * @var string        $dolibarr_products_lists L'url de la liste des produits sur dolibarr.
- * @var array         $products                Le tableau contenant toutes les données des produits.
- * @var Product_Model $product                 Les données d'un produit.
+ * @var string  $dolibarr_url            L'url de dolibarr.
+ * @var string  $dolibarr_products_lists L'url de la liste des produits sur dolibarr.
+ * @var array   $products                Le tableau contenant toutes les données des produits.
+ * @var Product $product                 Les données d'un produit.
  */
 ?>
 

@@ -16,10 +16,10 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Documentation des variables utilisées dans la vue.
  *
- * @var string            $dolibarr_url         L'url de dolibarr.
- * @var string            $dolibarr_tiers_lists L'url de la liste des tiers sur dolibarr.
- * @var array             $third_parties        Le tableau contenant toutes les données des tiers.
- * @var Third_Party_Model $third_party          Les données d'un tier.
+ * @var string      $dolibarr_url         L'url de dolibarr.
+ * @var string      $dolibarr_tiers_lists L'url de la liste des tiers sur dolibarr.
+ * @var array       $third_parties        Le tableau contenant toutes les données des tiers.
+ * @var Third_Party $third_party          Les données d'un tier.
  */
 ?>
 

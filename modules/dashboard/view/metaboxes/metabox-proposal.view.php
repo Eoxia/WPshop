@@ -16,10 +16,10 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Documentation des variables utilisées dans la vue.
  *
- * @var string          $dolibarr_url             L'url de dolibarr.
- * @var string          $dolibarr_proposals_lists L'url de la liste des propositions commerciales sur dolibarr.
- * @var array           $proposals                Le tableau contenant toutes les données des propositions commerciales.
- * @var Proposals_Model $proposal                 Les données d'une proposition commerciale.
+ * @var string    $dolibarr_url             L'url de dolibarr.
+ * @var string    $dolibarr_proposals_lists L'url de la liste des propositions commerciales sur dolibarr.
+ * @var array     $proposals                Le tableau contenant toutes les données des propositions commerciales.
+ * @var Proposals $proposal                 Les données d'une proposition commerciale.
  */
 ?>
 

@@ -16,10 +16,10 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Documentation des variables utilisées dans la vue.
  *
- * @var string           $dolibarr_url          L'url de dolibarr.
- * @var string           $dolibarr_orders_lists L'url de la liste des commandes sur dolibarr.
- * @var array            $orders                Le tableau contenant toutes les données des commandes.
- * @var Doli_Order_Model $order                 Les données d'une commande.
+ * @var string     $dolibarr_url          L'url de dolibarr.
+ * @var string     $dolibarr_orders_lists L'url de la liste des commandes sur dolibarr.
+ * @var array      $orders                Le tableau contenant toutes les données des commandes.
+ * @var Doli_Order $order                 Les données d'une commande.
  */
 ?>
 
