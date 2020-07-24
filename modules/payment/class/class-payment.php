@@ -2,27 +2,26 @@
 /**
  * Les fonctions principales pour les paiements.
  *
- * @package   WPshop\Classes
- *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2020 Eoxia
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
+
+use eoxia\Singleton_Util;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
  * Payement Class.
  */
-class Payment extends \eoxia\Singleton_Util {
+class Payment extends Singleton_Util {
 
 	/**
-	 * Les méthodes de paiement
+	 * Les méthodes de paiement.
 	 *
 	 * @since 2.0.0
 	 *
@@ -31,7 +30,7 @@ class Payment extends \eoxia\Singleton_Util {
 	public $default_options;
 
 	/**
-	 * Les status des paiements
+	 * Les status des paiements.
 	 *
 	 * @since 2.0.0
 	 *
@@ -101,7 +100,7 @@ class Payment extends \eoxia\Singleton_Util {
 	}
 
 	/**
-	 * Récupères les données d'un méthode de paiement selon $slug.
+	 * Récupère les données d'une méthode de paiement selon le slug.
 	 *
 	 * @since 2.0.0
 	 *
@@ -120,7 +119,7 @@ class Payment extends \eoxia\Singleton_Util {
 	}
 
 	/**
-	 * Récupères le titre d'une méthode de paiement selon $slug.
+	 * Récupère le titre d'une méthode de paiement selon le slug.
 	 *
 	 * @since 2.0.0
 	 *
@@ -140,8 +139,7 @@ class Payment extends \eoxia\Singleton_Util {
 	}
 
 	/**
-	 * Affiches un status lisible selon la méthode de paiement et le status du
-	 * paiement.
+	 * Affiche un status lisible selon la méthode de paiement et le status du paiement.
 	 *
 	 * @since 2.0.0
 	 *
