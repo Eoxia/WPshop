@@ -2,24 +2,23 @@
 /**
  * Les fonctions principales de la session du panier.
  *
- * @package   WPshop\Classes
- *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2020 Eoxia
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
+
+use eoxia\Singleton_Util;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
  * Cart Session Class.
  */
-class Cart_Session extends \eoxia\Singleton_Util {
+class Cart_Session extends Singleton_Util {
 
 	/**
 	 * Les données externe.
@@ -31,7 +30,7 @@ class Cart_Session extends \eoxia\Singleton_Util {
 	public $external_data = array();
 
 	/**
-	 * Un tableau de produit
+	 * Un tableau de produit.
 	 *
 	 * @var array
 	 */
@@ -83,7 +82,7 @@ class Cart_Session extends \eoxia\Singleton_Util {
 	public $proposal_id;
 
 	/**
-	 * L'ID de la commande
+	 * L'ID de la commande.
 	 *
 	 * @since 2.0.0
 	 *
@@ -279,8 +278,7 @@ class Cart_Session extends \eoxia\Singleton_Util {
 	}
 
 	/**
-	 * Supprime un produit depuis $key qui est son index dans le tableau
-	 * cart_contents.
+	 * Supprime un produit depuis $key qui est son index dans le tableau cart_contents.
 	 *
 	 * @since 2.0.0
 	 *

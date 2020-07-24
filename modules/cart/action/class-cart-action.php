@@ -2,14 +2,11 @@
 /**
  * Gestion des actions du panier.
  *
- * @package   WPshop\Classes
- *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2020 Eoxia
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
@@ -31,14 +28,14 @@ class Cart_Action {
 
 		add_action( 'wps_calculate_totals', array( $this, 'callback_calculate_totals' ) );
 
-		add_action( 'wp_ajax_nopriv_add_to_cart', array( $this, 'ajax_add_to_cart' ) );
-		add_action( 'wp_ajax_add_to_cart', array( $this, 'ajax_add_to_cart' ) );
+		add_action( 'wp_ajax_nopriv_add_to_cart', array( $this, 'callback_add_to_cart' ) );
+		add_action( 'wp_ajax_add_to_cart', array( $this, 'callback_add_to_cart' ) );
 
-		add_action( 'wp_ajax_nopriv_wps_update_cart', array( $this, 'ajax_update_cart' ) );
-		add_action( 'wp_ajax_wps_update_cart', array( $this, 'ajax_update_cart' ) );
+		add_action( 'wp_ajax_nopriv_wps_update_cart', array( $this, 'callback_update_cart' ) );
+		add_action( 'wp_ajax_wps_update_cart', array( $this, 'callback_update_cart' ) );
 
-		add_action( 'wp_ajax_nopriv_delete_product_from_cart', array( $this, 'ajax_delete_product_from_cart' ) );
-		add_action( 'wp_ajax_delete_product_from_cart', array( $this, 'ajax_delete_product_from_cart' ) );
+		add_action( 'wp_ajax_nopriv_delete_product_from_cart', array( $this, 'callback_delete_product_from_cart' ) );
+		add_action( 'wp_ajax_delete_product_from_cart', array( $this, 'callback_delete_product_from_cart' ) );
 
 		add_action( 'wp_logout', array( $this, 'clear_cart' ) );
 	}
@@ -81,7 +78,7 @@ class Cart_Action {
 	 *
 	 * @since 2.0.0
 	 */
-	public function ajax_add_to_cart() {
+	public function callback_add_to_cart() {
 		check_ajax_referer( 'add_to_cart' );
 
 		$id  = ! empty( $_POST['id'] ) ? (int) $_POST['id'] : 0;
@@ -114,7 +111,7 @@ class Cart_Action {
 	 *
 	 * @since 2.0.0
 	 */
-	public function ajax_update_cart() {
+	public function callback_update_cart() {
 		check_ajax_referer( 'ajax_update_cart' );
 
 		$products = ! empty( $_POST['products'] ) ? (array) $_POST['products'] : array();
@@ -153,7 +150,7 @@ class Cart_Action {
 	 *
 	 * @since 2.0.0
 	 */
-	public function ajax_delete_product_from_cart() {
+	public function callback_delete_product_from_cart() {
 		check_ajax_referer( 'ajax_delete_product_from_cart' );
 
 		$key = isset( $_POST['key'] ) ? (int) $_POST['key'] : -1;

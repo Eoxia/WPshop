@@ -5,9 +5,9 @@
 	"description": "Le module gérant le panier",
 	"path": "module/cart/",
 	"dependencies": {
-      "shortcode": {},
-	  "action": {},
-		"class": {},
-        "filter": {}
+      "action": {},
+      "class": {},
+      "filter": {},
+      "shortcode": {}
 	}
 }

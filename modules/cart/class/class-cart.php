@@ -2,24 +2,23 @@
 /**
  * Les fonctions principales du panier.
  *
- * @package   WPshop\Classes
- *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2020 Eoxia
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
+
+use eoxia\Singleton_Util;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
  * Cart Class.
  */
-class Cart extends \eoxia\Singleton_Util {
+class Cart extends Singleton_Util {
 
 	/**
 	 * Constructeur pour la classe Cart. Charge les options et les actions.
@@ -33,7 +32,7 @@ class Cart extends \eoxia\Singleton_Util {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @return bool True si tout s'est bien passé.
+	 * @return boolean True si tout s'est bien passé.
 	 */
 	public function can_add_product() {
 		if ( ! Settings::g()->use_quotation() && ! Settings::g()->dolibarr_is_active() ) {
@@ -96,7 +95,7 @@ class Cart extends \eoxia\Singleton_Util {
 	}
 
 	/**
-	 * Met à jour le contenu du panier
+	 * Met à jour le contenu du panier.
 	 *
 	 * @since 2.0.0
 	 *
@@ -183,8 +182,7 @@ class Cart extends \eoxia\Singleton_Util {
 	}
 
 	/**
-	 * Pour chaque produit, décremente son stock selon la quantité de celui-ci
-	 * dans la commande.
+	 * Pour chaque produit, décremente son stock selon la quantité de celui-ci dans la commande.
 	 *
 	 * @since 2.0.0
 	 */

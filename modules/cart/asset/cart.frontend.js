@@ -1,5 +1,5 @@
 /**
- * Gestion JS du tunnel de vente.
+ * Gestion JS du panier.
  *
  * @since 2.0.0
  */
@@ -19,6 +19,16 @@ window.eoxiaJS.wpshopFrontend.cart.event = function() {
 	jQuery( document ).on( 'click', '.wps-cart .wps-product-quantity .wps-quantity-plus', window.eoxiaJS.wpshopFrontend.cart.updateQuantity );
 }
 
+/**
+ * Met à jour la quantité d'un produit.
+ *
+ * @since 2.0.0
+ * @version 2.0.0
+ *
+ * @param  {ClickEvent} event [updateQuantity].
+ *
+ * @return {void}
+ */
 window.eoxiaJS.wpshopFrontend.cart.updateQuantity = function() {
 	var qty = parseInt( jQuery( this ).closest( '.wps-product-quantity' ).find( 'input[type="hidden"]' ).val() );
 
@@ -39,6 +49,18 @@ window.eoxiaJS.wpshopFrontend.cart.updateQuantity = function() {
 	window.eoxiaJS.loader.display( jQuery( '.wps-cart-resume' ) );
 };
 
+/**
+ * Le callback en cas de réussite à la requête Ajax "add_to_cart".
+ * Ajoute un produit au panier.
+ *
+ * @since 2.0.0
+ * @version 2.0.0
+ *
+ * @param  {HTMLDivElement} triggeredElement  L'élement HTML déclenchant la requête Ajax.
+ * @param  {Object}         response          Les données renvoyées par la requête Ajax.
+ *
+ * @return {void}
+ */
 window.eoxiaJS.wpshopFrontend.cart.addedToCart = function ( triggeredElement, response ) {
 	if ( response.data.added ) {
 		var tmp = jQuery( response.data.view );
@@ -54,6 +76,18 @@ window.eoxiaJS.wpshopFrontend.cart.addedToCart = function ( triggeredElement, re
 	}
 };
 
+/**
+ * Le callback en cas de réussite à la requête Ajax "update_cart".
+ * Met à jour le panier.
+ *
+ * @since 2.0.0
+ * @version 2.0.0
+ *
+ * @param  {HTMLDivElement} triggeredElement  L'élement HTML déclenchant la requête Ajax.
+ * @param  {Object}         response          Les données renvoyées par la requête Ajax.
+ *
+ * @return {void}
+ */
 window.eoxiaJS.wpshopFrontend.cart.updatedCart = function ( triggeredElement, response ) {
 	jQuery( '.wps-cart' ).replaceWith( response.data.view );
 
@@ -65,6 +99,18 @@ window.eoxiaJS.wpshopFrontend.cart.updatedCart = function ( triggeredElement, re
 	}
 };
 
+/**
+ * Le callback en cas de réussite à la requête Ajax "delete_product_form_cart".
+ * Supprime un produit du panier.
+ *
+ * @since 2.0.0
+ * @version 2.0.0
+ *
+ * @param  {HTMLDivElement} triggeredElement  L'élement HTML déclenchant la requête Ajax.
+ * @param  {Object}         response          Les données renvoyées par la requête Ajax.
+ *
+ * @return {void}
+ */
 window.eoxiaJS.wpshopFrontend.cart.deletedProdutFromCart = function ( triggeredElement, response ) {
 	jQuery( '.wps-cart' ).replaceWith( response.data.view );
 

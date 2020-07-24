@@ -2,14 +2,11 @@
 /**
  * La vue principal du tableau récapitulatif du panier.
  *
- * @package   WPshop\Templates
- *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2020 Eoxia
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
@@ -26,7 +23,6 @@ defined( 'ABSPATH' ) || exit;
 * @var integer       $tva_amount              Montant de la TVA.
 * @var integer       $total_price_ttc         Prix total TTC.
 * @var integer       $shipping_cost           Frais de livraison.
-*
 */
 ?>
 
