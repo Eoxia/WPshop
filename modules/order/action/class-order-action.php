@@ -1,18 +1,17 @@
 <?php
 /**
- * Les actions relatives aux commandes.
+ * Gestion des actions relatives aux commandes.
  *
- * @package   WPshop\Classes
- *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2020 Eoxia
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
+
+use eoxia\View_Util;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -45,7 +44,7 @@ class Order_Action {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param  mixed $object Les données pour le tableau de produit de la commande.
+	 * @param  mixed $object Les données pour le tableau du produit de la commande.
 	 */
 	public function callback_products( $object ) {
 		$tva_lines = array();
@@ -60,7 +59,7 @@ class Order_Action {
 			}
 		}
 
-		\eoxia\View_Util::exec( 'wpshop', 'order', 'review-order', array(
+		View_Util::exec( 'wpshop', 'order', 'review-order', array(
 			'object'    => $object,
 			'tva_lines' => $tva_lines,
 		) );
