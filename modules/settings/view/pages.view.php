@@ -1,20 +1,30 @@
 <?php
 /**
- * La vue principale de la page de réglages
+ * La vue de la page "PAGES" dans les réglages.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Templates
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
-defined( 'ABSPATH' ) || exit; ?>
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * Documentation des variables utilisées dans la vue.
+ *
+ * @var array   $page_state_titles Le tableau contenant toutes les données des pages.
+ * @var string  $key               La page.
+ * @var array   $page_option       Le tableau contenant toutes les données des options d'une page.
+ * @var array   $pages             Le tableau contenant toutes les données des pages.
+ * @var array   $page              Le tableau contenant toutes les données d'une page.
+ * @var string  $selected          L'attribut HTML "selected".
+ * @var array   $page_ids_options  Le tableau contenant toutes les id des pages.
+ */
+?>
 
 <form class="wpeo-form" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="POST">
 	<input type="hidden" name="action" value="<?php echo esc_attr( 'wps_update_pages_settings' ); ?>" />

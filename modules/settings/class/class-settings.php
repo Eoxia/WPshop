@@ -1,25 +1,25 @@
 <?php
 /**
- * Les fonctions principales des options
+ * Les fonctions principales des réglages.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
+
+use eoxia\Singleton_Util;
+use eoxia\View_Util;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
  * Settings Class.
  */
-class Settings extends \eoxia\Singleton_Util {
+class Settings extends Singleton_Util {
 
 	/**
 	 * Les options par défauts.
@@ -31,7 +31,7 @@ class Settings extends \eoxia\Singleton_Util {
 	public $default_settings;
 
 	/**
-	 * TVA
+	 * TVA.
 	 *
 	 * @since 2.0.0
 	 *
@@ -105,7 +105,7 @@ class Settings extends \eoxia\Singleton_Util {
 	}
 
 	/**
-	 * Affiches l'onglet "Général" de la page options.
+	 * Affiche l'onglet "Général" de la page réglages.
 	 *
 	 * @param  string $section La section.
 	 *
@@ -114,13 +114,13 @@ class Settings extends \eoxia\Singleton_Util {
 	public function display_general( $section = '' ) {
 		$dolibarr_option = get_option( 'wps_dolibarr', $this->default_settings );
 
-		\eoxia\View_Util::exec( 'wpshop', 'settings', 'general', array(
+		View_Util::exec( 'wpshop', 'settings', 'general', array(
 			'dolibarr_option' => $dolibarr_option,
 		) );
 	}
 
 	/**
-	 * Affiches l'onglet "Pages" de la page options.
+	 * Affiche l'onglet "Pages" de la page réglages.
 	 *
 	 * @param  string $section La section.
 	 *
@@ -135,15 +135,15 @@ class Settings extends \eoxia\Singleton_Util {
 		) );
 
 		$page_ids_options = get_option( 'wps_page_ids', Pages::g()->default_options );
-
-		\eoxia\View_Util::exec( 'wpshop', 'settings', 'pages', array(
+		$page_ids_options = get_option( 'wps_page_ids', Pages::g()->default_options );
+		View_Util::exec( 'wpshop', 'settings', 'pages', array(
 			'pages'            => $pages,
 			'page_ids_options' => $page_ids_options,
 		) );
 	}
 
 	/**
-	 * Affiches l'onglet "Emails" de la page options.
+	 * Affiche l'onglet "Emails" de la page réglages.
 	 *
 	 * @param  string $section La section.
 	 *
@@ -155,7 +155,7 @@ class Settings extends \eoxia\Singleton_Util {
 			$path_to_template = Emails::g()->get_path( $email['filename_template'] );
 			$content          = file_get_contents( $path_to_template );
 
-			\eoxia\View_Util::exec( 'wpshop', 'settings', 'email-single', array(
+			View_Util::exec( 'wpshop', 'settings', 'email-single', array(
 				'section'     => $section,
 				'email'       => $email,
 				'content'     => $content,
@@ -171,14 +171,14 @@ class Settings extends \eoxia\Singleton_Util {
 				}
 			}
 
-			\eoxia\View_Util::exec( 'wpshop', 'settings', 'emails', array(
+			View_Util::exec( 'wpshop', 'settings', 'emails', array(
 				'emails' => $emails,
 			) );
 		}
 	}
 
 	/**
-	 * Affiches l'onglet "Méthode de paiement" de la page options.
+	 * Affiche l'onglet "Méthode de paiement" de la page options.
 	 *
 	 * @param  string $section La section.
 	 *
@@ -190,19 +190,19 @@ class Settings extends \eoxia\Singleton_Util {
 		if ( ! empty( $section ) ) {
 			$payment_data = Payment::g()->get_payment_option( $section );
 
-			\eoxia\View_Util::exec( 'wpshop', 'settings', 'payment-method-single', array(
+			View_Util::exec( 'wpshop', 'settings', 'payment-method-single', array(
 				'section'      => $section,
 				'payment_data' => $payment_data,
 			) );
 		} else {
-			\eoxia\View_Util::exec( 'wpshop', 'settings', 'payment-method', array(
+			View_Util::exec( 'wpshop', 'settings', 'payment-method', array(
 				'payment_methods' => $payment_methods,
 			) );
 		}
 	}
 
 	/**
-	 * Affiches l'onglet "Frais de port" de la page options.
+	 * Affiche l'onglet "Frais de port" de la page options.
 	 *
 	 * @param  string $section La section.
 	 *
@@ -222,14 +222,14 @@ class Settings extends \eoxia\Singleton_Util {
 
 		array_unshift( $products, $no_product );
 
-		\eoxia\View_Util::exec( 'wpshop', 'settings', 'shipping-cost', array(
+		View_Util::exec( 'wpshop', 'settings', 'shipping-cost', array(
 			'shipping_cost_option' => $shipping_cost_option,
 			'products'             => $products,
 		) );
 	}
 
 	/**
-	 * Affiches l'onglet "ERP" de la page options.
+	 * Affiche l'onglet "ERP" de la page options.
 	 *
 	 * @param  string $section La section.
 	 *
@@ -238,7 +238,7 @@ class Settings extends \eoxia\Singleton_Util {
 	public function display_erp( $section = '' ) {
 		$dolibarr_option = get_option( 'wps_dolibarr', $this->default_settings );
 
-		\eoxia\View_Util::exec( 'wpshop', 'settings', 'erp', array(
+		View_Util::exec( 'wpshop', 'settings', 'erp', array(
 			'dolibarr_option' => $dolibarr_option,
 		) );
 	}

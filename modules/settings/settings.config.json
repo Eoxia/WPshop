@@ -2,6 +2,7 @@
 	"name": "Settings",
 	"slug": "settings",
 	"since": "2.0.0",
+    "description": "Le module gérant les réglages",
 	"path": "modules/settings",
 	"dependencies": {
 		"class": {},

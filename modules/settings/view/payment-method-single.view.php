@@ -1,20 +1,25 @@
 <?php
 /**
- * La vue principale de la page de réglages
+ * La vue affichant une méthode de paiement dans les réglages.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Templates
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
-defined( 'ABSPATH' ) || exit; ?>
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * Documentation des variables utilisées dans la vue.
+ *
+ * @var Payment $payment_data  Les données d'une méthode de paiement.
+ * @var string  $section       La méthode de paiement.
+ */
+?>
 
 <h3><a href="<?php echo admin_url( 'admin.php?page=wps-settings&tab=payment_method' ); ?>"><?php esc_html_e( 'Payment method', 'wpshop' ); ?></a> -> <?php echo $payment_data['title']; ?></h3>
 

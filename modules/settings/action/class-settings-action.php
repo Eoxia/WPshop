@@ -2,17 +2,16 @@
 /**
  * Gestion des actions des réglages.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
+
+use eoxia\View_Util;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -53,7 +52,7 @@ class Settings_Action {
 	}
 
 	/**
-	 * Call notice activate erp view if dolibarr url and secret is empty;
+	 * Call notice activate erp view if dolibarr url and secret is empty.
 	 *
 	 * @since 2.0.0
 	 */
@@ -64,10 +63,10 @@ class Settings_Action {
 			$dolibarr_option = get_option('wps_dolibarr', Settings::g()->default_settings);
 
 			if (!empty($dolibarr_option['error']) && $dolibarr_option['notice'] && $dolibarr_option['notice']['error_erp']) {
-				\eoxia\View_Util::exec('wpshop', 'settings', 'notice-error-erp', array('error' => $dolibarr_option['error']));
+				View_Util::exec('wpshop', 'settings', 'notice-error-erp', array('error' => $dolibarr_option['error']));
 			} elseif ((empty($dolibarr_option['dolibarr_url']) || empty($dolibarr_option['dolibarr_secret'])) &&
 				($dolibarr_option['notice'] && $dolibarr_option['notice']['activate_erp'])) {
-				\eoxia\View_Util::exec('wpshop', 'settings', 'notice-activate-erp');
+				View_Util::exec('wpshop', 'settings', 'notice-activate-erp');
 			}
 		}
 	}
@@ -84,7 +83,7 @@ class Settings_Action {
 		$transient = get_transient( 'updated_wpshop_option_' . get_current_user_id() );
 		delete_transient( 'updated_wpshop_option_' . get_current_user_id() );
 
-		\eoxia\View_Util::exec( 'wpshop', 'settings', 'main', array(
+		View_Util::exec( 'wpshop', 'settings', 'main', array(
 			'tab'       => $tab,
 			'section'   => $section,
 			'transient' => $transient,
@@ -92,7 +91,7 @@ class Settings_Action {
 	}
 
 	/**
-	 * Redirige vers le bon onglet dans la page option;
+	 * Redirige vers le bon onglet dans la page option.
 	 *
 	 * @since 2.0.0
 	 */
@@ -314,7 +313,7 @@ class Settings_Action {
 		wp_redirect( admin_url( 'admin.php?page=wps-settings&tab= ' . $tab ) );
 	}
 	/**
-	 * Ajoute la taille des images des produits
+	 * Ajoute la taille des images des produits.
 	 *
 	 * @since 2.0.0
 	 */

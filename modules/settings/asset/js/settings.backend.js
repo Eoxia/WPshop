@@ -12,6 +12,17 @@ window.eoxiaJS.wpshop.settings = {};
  */
 window.eoxiaJS.wpshop.settings.init = function() {};
 
+/**
+ * Le callback en cas de réussite à la requête Ajax "dismiss".
+ * Efface la notice ERP.
+ *
+ * @since 2.0.0
+ * @version 2.0.0
+ *
+ * @param  {HTMLDivElement} triggeredElement  L'élement HTML déclenchant la requête Ajax.
+ * @param  {Object}         response          Les données renvoyées par la requête Ajax.
+ */
 window.eoxiaJS.wpshop.settings.dismiss = function( triggeredElement, response ) {
 	jQuery( '.notice-erp' ).fadeOut();
 };
+

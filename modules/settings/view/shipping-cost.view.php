@@ -1,21 +1,27 @@
 <?php
 /**
- * La vue principale de la page des frais de port
+ * La vue de la page "FRAIS DE LIVRAISON" dans les réglages.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Templates
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
-defined( 'ABSPATH' ) || exit; ?>
+defined( 'ABSPATH' ) || exit;
 
+/**
+ * Documentation des variables utilisées dans la vue.
+ *
+ * @var array   $products             Le tableau contenant toutes les données des produits.
+ * @var Product $product              Les données d'un produit.
+ * @var string  $selected             L'attribut HTML "selected".
+ * @var array   $shipping_cost_option Le tableau contenant toutes les données des options des frais de livraisons.
+ */
+?>
 
 <form class="wpeo-form" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="POST">
 	<input type="hidden" name="action" value="<?php echo esc_attr( 'wps_update_shipping_cost' ); ?>" />
@@ -26,20 +32,17 @@ defined( 'ABSPATH' ) || exit; ?>
 		<span class="form-label"><?php esc_html_e( 'Select shipping product', 'wpshop' ); ?></span>
 		<label class="form-field-container">
 			<select name="shipping_product_id" class="form-field">
-				<?php
-				if ( ! empty( $products ) ) :
+				<?php if ( ! empty( $products ) ) :
 					foreach ( $products as $product ) :
 						$selected = '';
 
 						if ( $product->data['id'] === $shipping_cost_option['shipping_product_id'] ) :
 							$selected = 'selected="selected"';
-						endif;
-						?>
+						endif; ?>
 						<option <?php echo $selected; ?> value="<?php echo esc_attr( $product->data['id'] ); ?>"><?php echo esc_html( $product->data['title'] ); ?></option>
 						<?php
 					endforeach;
-				endif;
-				?>
+				endif; ?>
 			</select>
 		</label>
 	</div>
