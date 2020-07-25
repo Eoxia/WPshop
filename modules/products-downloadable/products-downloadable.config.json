@@ -1,11 +1,12 @@
 {
-	"name": "Product Downloadable",
+	"name": "Products Downloadable",
 	"slug": "products-downloadable",
 	"since": "2.0.0",
+    "description": "Le module gérant les produits téléchargeables",
 	"path": "modules/products-downloadable",
 	"dependencies": {
-		"class": {},
-		"action": {},
-    "model": {}
+	  "class": {},
+	  "action": {},
+      "model": {}
 	}
 }

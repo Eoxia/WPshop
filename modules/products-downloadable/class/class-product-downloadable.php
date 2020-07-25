@@ -1,25 +1,24 @@
 <?php
 /**
- * Les fonctions principales des produits.
+ * Les fonctions principales des produits téléchargeables.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
+
+use eoxia\Post_Class;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
  * Product_Downloadable Class.
  */
-class Product_Downloadable extends \eoxia\Post_Class {
+class Product_Downloadable extends Post_Class {
 
 	/**
 	 * Model name @see ../model/*.model.php.
@@ -40,7 +39,7 @@ class Product_Downloadable extends \eoxia\Post_Class {
 	protected $type = 'wps-product-download';
 
 	/**
-	 * La clé principale du modèle
+	 * La clé principale du modèle.
 	 *
 	 * @since 2.0.0
 	 *
@@ -49,7 +48,7 @@ class Product_Downloadable extends \eoxia\Post_Class {
 	protected $meta_key = 'product-downloadable';
 
 	/**
-	 * La route pour accéder à l'objet dans la rest API
+	 * La route pour accéder à l'objet dans la rest API.
 	 *
 	 * @since 2.0.0
 	 *
@@ -67,11 +66,11 @@ class Product_Downloadable extends \eoxia\Post_Class {
 	protected $post_type_name = 'Product_Downloadables';
 
 	/**
-	 * Créer un produit téléchargable depuis les produits dans les commandes.
+	 * Créer un produit téléchargable depuis les produits dans la commande.
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param  Order_Model $order Les données de la commande.
+	 * @param  Order $order Les données de la commande.
 	 *
 	 * @return void
 	 */

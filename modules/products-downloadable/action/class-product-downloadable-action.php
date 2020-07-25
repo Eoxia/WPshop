@@ -1,17 +1,12 @@
 <?php
 /**
- * Gestion des actions des produits.
+ * Gestion des actions des produits téléchargeables.
  *
- * Ajoutes une page "Product" dans le menu de WordPress.
- *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
@@ -19,7 +14,7 @@ namespace wpshop;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Product Action Class.
+ * Product_Downloadable Action Class.
  */
 class Product_Downloadable_Action {
 
@@ -34,7 +29,7 @@ class Product_Downloadable_Action {
 	}
 
 	/**
-	 * Créer un répertoire sécurisé pour les produits téléchargables
+	 * Créer un répertoire sécurisé pour les produits téléchargables.
 	 *
 	 * @since 2.0.0
 	 */
@@ -51,7 +46,7 @@ class Product_Downloadable_Action {
 	}
 
 	/**
-	 * Télécharges la facture.
+	 * Télécharge le produit.
 	 *
 	 * @since 2.0.0
 	 */
