@@ -2,14 +2,11 @@
 /**
  * Gestion des filtres PayPal.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
@@ -17,12 +14,12 @@ namespace wpshop;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * PayPal Filter Class
+ * PayPal Filter Class.
  */
 class Paypal_Filter {
 
 	/**
-	 * Constructeur
+	 * Constructeur.
 	 *
 	 * @since 2.0.0
 	 */
@@ -31,7 +28,7 @@ class Paypal_Filter {
 	}
 
 	/**
-	 * Ajoutes le text pour indiquer que PayPal est en mode sandbox.
+	 * Ajoute le text pour indiquer que PayPal est en mode sandbox.
 	 *
 	 * @since 2.0.0
 	 *

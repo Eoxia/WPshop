@@ -1,27 +1,26 @@
 <?php
 /**
- * Gestion de PayPal.
+ * Les fonctions principales de PayPal.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
+
+use eoxia\Singleton_Util;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
  * PayPal Class.
  */
-class PayPal extends \eoxia\Singleton_Util {
+class PayPal extends Singleton_Util {
 	/**
-	 * L'URL vers la page de paiement
+	 * L'URL vers la page de paiement.
 	 *
 	 * @since 2.0.0
 	 *
@@ -37,12 +36,13 @@ class PayPal extends \eoxia\Singleton_Util {
 	protected function construct() {}
 
 	/**
-	 * Prépares l'URL pour aller à la page de paiement
+	 * Prépares l'URL pour aller à la page de paiement.
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param  Order_Model $order Les données de la commande.
-	 * @return array              L'URL pour aller à la page de paiement.
+	 * @param  Order $order Les données de la commande.
+	 *
+	 * @return array        L'URL pour aller à la page de paiement.
 	 */
 	public function process_payment( $order ) {
 		$paypal_options = Payment::g()->get_payment_option( 'paypal' );
@@ -56,13 +56,13 @@ class PayPal extends \eoxia\Singleton_Util {
 	}
 
 	/**
-	 * Récupères les paramètres IPN de PayPal.
+	 * Récupère les paramètres IPN de PayPal.
 	 *
 	 * @since 2.0.0.
 	 *
-	 * @param  Order_Model $order Les données de la commande.
+	 * @param  Order $order Les données de la commande.
 	 *
-	 * @return array              Les données IPN.
+	 * @return array        Les données IPN.
 	 */
 	protected function get_paypal_args( $order ) {
 		$paypal_args = apply_filters( 'wps_paypal_args', array_merge(
@@ -74,13 +74,13 @@ class PayPal extends \eoxia\Singleton_Util {
 	}
 
 	/**
-	 * Prépares les données IPN
+	 * Prépare les données IPN.
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param  Order_Model $order Les données de la commande.
+	 * @param  Order $order Les données de la commande.
 	 *
-	 * @return array              Les données IPN.
+	 * @return array        Les données IPN.
 	 */
 	protected function get_transaction_args( $order ) {
 		$payment_methods_option = get_option( 'wps_payment_methods', array(
@@ -110,13 +110,13 @@ class PayPal extends \eoxia\Singleton_Util {
 	}
 
 	/**
-	 * Ajoutes les lignes pour le paiement PayPal.
+	 * Ajoute les lignes pour le paiement PayPal.
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param  Order_Model $order Les données de la commande.
+	 * @param  Order $order Les données de la commande.
 	 *
-	 * @return array              Les lignes pour le paiement PayPal.
+	 * @return array        Les lignes pour le paiement PayPal.
 	 */
 	protected function get_line_item_args( $order ) {
 		$line_item_args = array(
@@ -128,8 +128,6 @@ class PayPal extends \eoxia\Singleton_Util {
 
 		return $line_item_args;
 	}
-
-
 }
 
 Paypal::g();

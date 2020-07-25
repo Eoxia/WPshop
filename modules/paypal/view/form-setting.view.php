@@ -1,20 +1,24 @@
 <?php
 /**
- * La vue principale de la page de réglages
+ * La vue principale de la page de réglages  pour la méthode de paiement Paypal.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Templates
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
-defined( 'ABSPATH' ) || exit; ?>
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * Documentation des variables utilisées dans la vue.
+ *
+ * @var array $paypal_options Le tableau contenant toutes les données de la méthode de paiement Paypal.
+ */
+?>
 
 <div class="form-element">
 	<span class="form-label"><?php esc_html_e( 'Paypal email', 'wpshop' ); ?></span>

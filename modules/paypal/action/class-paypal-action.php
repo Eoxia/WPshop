@@ -2,17 +2,17 @@
 /**
  * Gestion des actions PayPal.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
+
 namespace wpshop;
+
+use eoxia\View_Util;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -35,19 +35,19 @@ class PayPal_Action {
 	}
 
 	/**
-	 * Ajoutes la page pour configurer le paiement PayPal.
+	 * Ajoute la page pour configurer le paiement PayPal.
 	 *
 	 * @since 2.0.0
 	 */
 	public function callback_setting_payment_method() {
 		$paypal_options = Payment::g()->get_payment_option( 'paypal' );
-		\eoxia\View_Util::exec( 'wpshop', 'paypal', 'form-setting', array(
+		View_Util::exec( 'wpshop', 'paypal', 'form-setting', array(
 			'paypal_options' => $paypal_options,
 		) );
 	}
 
 	/**
-	 * Enregistres les configurations de PayPal en base de donnée.
+	 * Enregistre les configurations de PayPal en base de donnée.
 	 *
 	 * @since 2.0.0
 	 */
@@ -93,7 +93,7 @@ class PayPal_Action {
 	}
 
 	/**
-	 * Valides les données IPN.
+	 * Valide les données IPN.
 	 *
 	 * @since 2.0.0
 	 *
@@ -124,7 +124,7 @@ class PayPal_Action {
 	}
 
 	/**
-	 * Paiement OK
+	 * Paiement OK.
 	 *
 	 * @since 2.0.0
 	 *
