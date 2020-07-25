@@ -2,14 +2,11 @@
 /**
  * Gestion des actions de Stripe.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
@@ -23,7 +20,8 @@ class Stripe_Action {
 	/**
 	 * Constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function __construct() {
 		add_action( 'wp_head', array( $this, 'define_stripe_option' ) );
@@ -37,9 +35,10 @@ class Stripe_Action {
 	}
 
 	/**
-	 * Ajoutes la variable stripe_key pour la rendre acessible dans le JS.
+	 * Ajoute la variable stripe_key pour la rendre acessible dans le JS.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function define_stripe_option() {
 		$stripe_options = Payment::g()->get_payment_option( 'stripe' );
@@ -52,7 +51,8 @@ class Stripe_Action {
 	/**
 	 * Inclus le JS de stripe.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_enqueue_scripts() {
 		if ( Pages::g()->is_checkout_page() ) {
@@ -61,9 +61,10 @@ class Stripe_Action {
 	}
 
 	/**
-	 * Ajoutes la page pour configurer le paiement Stripe.
+	 * Ajoute la page pour configurer le paiement Stripe.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_setting_payment_method() {
 		$stripe_options = Payment::g()->get_payment_option( 'stripe' );
@@ -73,9 +74,15 @@ class Stripe_Action {
 	}
 
 	/**
-	 * Enregistres les configurations de Stripe en base de donnée.
+	 * Met à jour les réglages de Stripe.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 *
+	 * @param array $data Les données de Stripe.
+	 * @param array $type Le type de méthode de paiement.
+	 *
+	 * @return array      Les données de Stripe
 	 */
 	public function update_method_payment_stripe( $data, $type ) {
 		if ( 'stripe' === $type ) {
@@ -92,11 +99,12 @@ class Stripe_Action {
 	}
 
 	/**
-	 * Déclenches l'action pour compléter le paiement.
+	 * Déclenche l'action pour compléter le paiement.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param array $param Donnée reçu par Stripe.
+	 * @param array $param Les données reçues par Stripe.
 	 */
 	public function callback_wps_gateway_stripe( $param ) {
 		if ( 'order.payment_failed' === $param['type'] ) {

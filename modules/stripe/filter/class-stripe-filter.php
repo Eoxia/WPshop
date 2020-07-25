@@ -2,14 +2,11 @@
 /**
  * Gestion des filtres Stripe.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
  * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
@@ -17,23 +14,25 @@ namespace wpshop;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Stripe Filter Class
+ * Stripe Filter Class.
  */
 class Stripe_Filter {
 
 	/**
-	 * Constructeur
+	 * Constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function __construct() {
 		add_filter( 'wps_payment_method_stripe_description', array( $this, 'more_stripe_description' ) );
 	}
 
 	/**
-	 * Ajoutes le text pour indiquer que Stripe est en mode sandbox.
+	 * Ajoute le text pour indiquer que Stripe est en mode sandbox.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @param  string $description Description actuelle.
 	 *
