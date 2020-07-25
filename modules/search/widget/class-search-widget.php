@@ -2,17 +2,16 @@
 /**
  * Le widget pour la recherche.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
+
+use eoxia\View_Util;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -36,7 +35,7 @@ class Search_Widget extends \WP_Widget {
 	}
 
 	/**
-	 * Outputs the content of the widget
+	 * Outputs the content of the widget.
 	 *
 	 * @since 2.0.0
 	 *
@@ -44,14 +43,14 @@ class Search_Widget extends \WP_Widget {
 	 * @param array $instance Les données du widget.
 	 */
 	public function widget( $args, $instance ) {
-		\eoxia\View_Util::exec( 'wpshop', 'search', 'search-field', array(
+		View_Util::exec( 'wpshop', 'search', 'search-field', array(
 			'args'     => $args,
 			'instance' => $instance,
 		) );
 	}
 
 	/**
-	 * Le formulaire pour configurer le widget
+	 * Le formulaire pour configurer le widget.
 	 *
 	 * @since 2.0.0
 	 *
@@ -68,7 +67,7 @@ class Search_Widget extends \WP_Widget {
 	}
 
 	/**
-	 * Processing widget options on save
+	 * Processing widget options on save.
 	 *
 	 * @since 2.0.0
 	 *

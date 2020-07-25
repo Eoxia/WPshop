@@ -2,9 +2,10 @@
 	"name": "search",
 	"slug": "search",
 	"since": "2.0.0",
+    "description": "Le module gérant la page mon compte",
 	"path": "modules/search",
 	"dependencies": {
-    "widget": {},
-		"action": {}
+      "widget": {},
+	  "action": {}
 	}
 }
