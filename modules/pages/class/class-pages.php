@@ -1,6 +1,6 @@
 <?php
 /**
- * Les fonctions principales des pages.
+ * La classe gérant les fonctions principales des pages.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -8,7 +8,6 @@
  * @since     2.0.0
  * @version   2.0.0
  */
-
 
 namespace wpshop;
 
@@ -22,18 +21,20 @@ defined( 'ABSPATH' ) || exit;
  */
 class Pages extends Singleton_Util {
 	/**
-	 * Tableau contenant toutes les pages personnalisables par défaut.
+	 * Le tableau contenant toutes les pages personnalisables par défaut.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var array
 	 */
 	public $default_options;
 
 	/**
-	 * Tableau contenant toutes les pages personnalisables par défaut.
+	 * Le tableau contenant toutes les pages emails par défaut.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var array
 	 */
@@ -42,7 +43,8 @@ class Pages extends Singleton_Util {
 	/**
 	 * Les titres des pages lisible.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var array
 	 */
@@ -51,25 +53,28 @@ class Pages extends Singleton_Util {
 	/**
 	 * Les titres des pages non visible.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var array
 	 */
 	public $page_state_titles_private;
 
 	/**
-	 * Tableau contenant toutes les pages personnalisables dans la base de donnée.
+	 * Le tableau contenant toutes les id des pages.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var array
 	 */
 	public $page_ids;
 
 	/**
-	 * Constructeur.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	protected function construct() {
 		$this->default_options = array(
@@ -129,7 +134,8 @@ class Pages extends Singleton_Util {
 	/**
 	 * Créer et associer les pages par défaut nécessaires pour le fonctionnement de WPShop.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function create_default_page() {
 		load_plugin_textdomain( 'wpshop', false, PLUGIN_WPSHOP_DIR . '/core/asset/language/' );
@@ -180,7 +186,8 @@ class Pages extends Singleton_Util {
 	/**
 	 * Récupère le slug de la page "Boutique".
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @return string Le slug de la page "Boutique".
 	 */
@@ -197,7 +204,8 @@ class Pages extends Singleton_Util {
 	/**
 	 * Récupère le slug de la page "Mon compte".
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @return string Le slug de la page "Mon compte".
 	 */
@@ -214,7 +222,8 @@ class Pages extends Singleton_Util {
 	/**
 	 * Récupère le slug de la page "Tunnel de vente".
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @return string Le slug de la page "Tunnel de vente".
 	 */
@@ -231,7 +240,8 @@ class Pages extends Singleton_Util {
 	/**
 	 * Récupère le lien vers la page "Mon compte".
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @return string Le lien vers la page "Mon compte".
 	 */
@@ -242,7 +252,8 @@ class Pages extends Singleton_Util {
 	/**
 	 * Récupère le lien vers la page "Panier".
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @return string Le lien vers la page "Panier".
 	 */
@@ -251,9 +262,10 @@ class Pages extends Singleton_Util {
 	}
 
 	/**
-	 * Récupères le lien vers la page "Paiement".
+	 * Récupère le lien vers la page "Paiement".
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @return string Le lien vers la page "Paiement".
 	 */
@@ -262,9 +274,10 @@ class Pages extends Singleton_Util {
 	}
 
 	/**
-	 * Récupères le lien vers la page "Condition générales de vente".
+	 * Récupère le lien vers la page "Condition générales de vente".
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @return string Le lien vers la page "Condition générales de vente".
 	 */
@@ -273,9 +286,10 @@ class Pages extends Singleton_Util {
 	}
 
 	/**
-	 * Récupères le lien vers la page "Commande payée".
+	 * Récupère le lien vers la page "Commande payée".
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @return string Le lien vers la page "Commande payée".
 	 */
@@ -284,9 +298,10 @@ class Pages extends Singleton_Util {
 	}
 
 	/**
-	 * Récupères le lien vers la page "Commande en cours".
+	 * Récupère le lien vers la page "Commande en cours".
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @return string Le lien vers la page "Commande en cours".
 	 */
@@ -295,9 +310,10 @@ class Pages extends Singleton_Util {
 	}
 
 	/**
-	 * Récupères le lien vers la page "Commande complétée".
+	 * Récupère le lien vers la page "Commande complétée".
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @return string Le lien vers la page "Commande complétée".
 	 */
@@ -306,9 +322,10 @@ class Pages extends Singleton_Util {
 	}
 
 	/**
-	 * Récupères le lien vers la page "Commande livrée".
+	 * Récupère le lien vers la page "Commande livrée".
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @return string Le lien vers la page "Commande livrée".
 	 */
@@ -317,9 +334,10 @@ class Pages extends Singleton_Util {
 	}
 
 	/**
-	 * Récupères le lien vers la page "Facture".
+	 * Récupère le lien vers la page "Facture".
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @return string Le lien vers la page "Facture".
 	 */
@@ -328,9 +346,10 @@ class Pages extends Singleton_Util {
 	}
 
 	/**
-	 * Récupères le lien vers la page "Nouveau compte".
+	 * Récupère le lien vers la page "Nouveau compte".
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @return string Le lien vers la page "Nouveau compte".
 	 */
@@ -341,7 +360,8 @@ class Pages extends Singleton_Util {
 	/**
 	 * Est-ce la page "checkout" ?
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @return boolean True si oui, sinon false.
 	 */
