@@ -1,13 +1,14 @@
 {
-	"name": "Core",
+	"name": "WPshop Core",
 	"slug": "core",
 	"since": "2.0.0",
-	"description": "Main files of my_plugin",
+    "version": "2.0.0",
+	"description": "Le module gérant le démarage de WPshop",
 	"path": "core/",
 	"dependencies": {
-    "class": {},
-		"action": {},
-    "filter": {},
-    "util": {}
+      "util": {},
+      "filter": {},
+      "class": {},
+	  "action": {}
 	}
 }

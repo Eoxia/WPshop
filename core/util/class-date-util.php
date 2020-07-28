@@ -1,30 +1,30 @@
 <?php
 /**
- * Fixes des dates de EOFramework.
+ * La classe gérant les fonctions utilitaires des dates de EOFramework.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
  * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
+
+use eoxia\Singleton_Util;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
  * Date Util Class.
  */
-class Date_util extends \eoxia\Singleton_Util {
+class Date_util extends Singleton_Util {
 
 	/**
-	 * Le constructeur
+	 * Le constructeur.
 	 *
-	 * @since 0.2.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	protected function construct() {}
 
@@ -35,12 +35,13 @@ class Date_util extends \eoxia\Singleton_Util {
 	 * @todo: Expliquer pourquoi ce FIX.
 	 * class-doli-order L126
 	 *
-	 * @since  2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param string $module   Le nom du module.
-	 * @param string $template Le nom du template.
+	 * @param string $mysql_date La date au format mysql.
+	 * @param string $output     Le type de date.
 	 *
-	 * @return string          Le chemin du template
+	 * @return string            La date au format lecture humaine
 	 */
 	public static function readable_date( $mysql_date, $output = 'date_time' ) {
 		if ( empty( $mysql_date ) ) {

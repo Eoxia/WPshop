@@ -1,11 +1,18 @@
 /**
- * Initialise l'objet principale de WPshop.
+ * Gestion JS de WPshop.
  *
- * @since 2.0.0
+ * @since   2.0.0
+ * @version 2.0.0
  */
 window.eoxiaJS.wpshop = {};
 window.eoxiaJS.wpshopFrontend = {};
 
+/**
+ * La méthode "init" est appelé automatiquement par la lib JS de Eo-Framework
+ *
+ * @since   2.0.0
+ * @version 2.0.0
+ */
 window.eoxiaJS.wpshop.init = function() {
 	if ( jQuery( '.wps-sync' ).length ) {
 		jQuery( '.wps-sync' ).each( function() {

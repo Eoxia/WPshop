@@ -1,37 +1,38 @@
 <?php
 /**
- * Les fonctions principales.
+ * La classe gérant les fonctions principales de WPshop.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
+use eoxia\Singleton_Util;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Cart Session Class.
+ * WPshop Class.
  */
-class Core extends \eoxia\Singleton_Util {
+class WPshop extends Singleton_Util {
 
 	/**
 	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	protected function construct() {}
 
 	/**
-	 * Méthode appelée à l'activation du plugin.
+	 * La méthode appelée à l'activation du plugin.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function default_install() {
 		$db_version = get_option( 'wpshop2_database_version', false );
@@ -44,4 +45,4 @@ class Core extends \eoxia\Singleton_Util {
 	}
 }
 
-Core::g();
+WPshop::g();

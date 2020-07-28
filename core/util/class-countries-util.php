@@ -1,23 +1,25 @@
 <?php
 /**
- * Countries
+ * Les fonctions utilitaires des pays.
  *
- * Returns an array of countries and codes.
- *
- * @package WPshop
- * @version 2.0.0
+ * @package   WPshop
+ * @author    Eoxia <dev@eoxia.com>
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
+ * @since     2.0.0
+ * @version   2.0.0
  */
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Récupères le pays par le code.
+ * Récupère le pays par le code.
  *
- * @since 2.0.0
+ * @since   2.0.0
+ * @version 2.0.0
  *
- * @param  string $code Le code.
+ * @param  string $code Le code du pays.
  *
- * @return array        Définition du pays.
+ * @return array        Les données du pays.
  */
 function get_from_code( $code ) {
 	$countries = get_countries();
@@ -26,11 +28,13 @@ function get_from_code( $code ) {
 }
 
 /**
- * Récupères un pays par rapport à son ID.
+ * Récupère un pays par rapport à son ID.
  *
- * @since 2.00.0.
+ * @since   2.0.0
+ * @version 2.0.0
  *
- * @param  integer $id l'ID du pays.
+ * @param  integer $id L'ID du pays.
+ *
  * @return array       Les données du pays.
  */
 function get_from_id( $id ) {
@@ -48,11 +52,12 @@ function get_from_id( $id ) {
 }
 
 /**
- * Définition de tous les pays
+ * Définition de tous les pays.
  *
- * @since 2.0.0
+ * @since   2.0.0
+ * @version 2.0.0
  *
- * @return array Tous les pays.
+ * @return array Les données du pays.
  */
 function get_countries() {
 	return apply_filters( 'wps_countries', array(

@@ -1,18 +1,15 @@
 <?php
 /**
- * Classe gérant les actions principales de WPshop.
+ * La classe gérant les actions principales de WPshop.
  *
  * Elle ajoute les styles et scripts JS principaux pour le bon fonctionnement de WPshop.
  * Elle ajoute également les textes de traductions (fichiers .mo)
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
@@ -20,14 +17,15 @@ namespace wpshop;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Main actions of wpshop.
+ * WPshop Action.
  */
-class Core_Action {
+class WPshop_Action {
 
 	/**
-	 * Constructor.
+	 * Le Constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function __construct() {
 		add_action( 'init', array( $this, 'callback_register_session' ), 1 );
@@ -50,7 +48,8 @@ class Core_Action {
 	/**
 	 * Enregistre la session et enlève l'admin bar.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_register_session() {
 		if ( ! session_id() ) {
@@ -65,7 +64,8 @@ class Core_Action {
 	/**
 	 * Charge le fichier de traduction.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_language() {
 		load_plugin_textdomain( 'wpshop', false, PLUGIN_WPSHOP_DIR . '/core/asset/language/' );
@@ -76,16 +76,18 @@ class Core_Action {
 	 *
 	 * @todo: Documenter les données par défaut.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_install_default() {
-		Core::g()->default_install();
+		WPshop::g()->default_install();
 	}
 
 	/**
 	 * Enregistre les blocks gutenberg.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_init_block() {
 		$asset_file = include( PLUGIN_WPSHOP_PATH . 'build/block.asset.php');
@@ -111,7 +113,8 @@ class Core_Action {
 	/**
 	 * Ajoute ajaxurl.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function define_ajax_url() {
 		echo '<script type="text/javascript">
@@ -120,9 +123,10 @@ class Core_Action {
 	}
 
 	/**
-	 * Init backend style and script
+	 * Init backend style and script.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_admin_enqueue_scripts() {
 		wp_enqueue_media();
@@ -145,9 +149,10 @@ class Core_Action {
 	}
 
 	/**
-	 * Init backend style and script
+	 * Init backend style and script.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_enqueue_scripts() {
 		wp_dequeue_script( 'wpeo-assets-datepicker-js' );
@@ -171,13 +176,20 @@ class Core_Action {
 	/**
 	 * Ajoute le menu principal de WPshop.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_admin_menu() {
 		add_menu_page( __( 'WPshop', 'wpshop' ), __( 'WPshop', 'wpshop' ), 'manage_options', 'wpshop', '', 'dashicons-store' );
 		add_submenu_page( 'wpshop', __( 'Dashboard', 'wpshop' ), __( 'Dashboard', 'wpshop' ), 'manage_options', 'wpshop', array( Dashboard::g(), 'callback_add_menu_page' ) );
 	}
 
+	/**
+	 * Vérifie le statut de l'ERP.
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 */
 	public function check_erp_statut() {
 		check_ajax_referer( 'check_erp_statut' );
 
@@ -210,7 +222,8 @@ class Core_Action {
 	/**
 	 * Permet de rediriger l'utilisateur Client/Abonné vers la page de gestion de compte.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function redirect_to() {
 
@@ -230,4 +243,4 @@ class Core_Action {
 	}
 }
 
-new Core_Action();
+new WPshop_Action();

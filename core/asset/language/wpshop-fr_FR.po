@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: wpshop\n"
-"POT-Creation-Date: 2020-07-15 18:37+0200\n"
-"PO-Revision-Date: 2020-07-15 22:45+0200\n"
+"POT-Creation-Date: 2020-07-23 17:04+0200\n"
+"PO-Revision-Date: 2020-07-23 17:04+0200\n"
 "Last-Translator: \n"
 "Language-Team: Eoxia\n"
 "Language: fr_FR\n"
@@ -19,12 +19,11 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-0: core/external\n"
 
 #: core/action/class-core-action.php:177
-#: modules/health/filter/class-health-filter.php:47
 msgid "WPshop"
 msgstr "WPshop"
 
 #: core/action/class-core-action.php:178
-#: modules/dashboard/view/main.view.php:20
+#: modules/dashboard/view/main.view.php:17
 msgid "Dashboard"
 msgstr "Tableau de bord"
 
@@ -207,9 +206,8 @@ msgid "%s is already used."
 msgstr "%s est déjà utilisé."
 
 #: modules/checkout/filter/class-checkout-filter.php:55
-#: modules/checkout/view/frontend/devis-button.php:22
-msgid "Ask for a Quotation"
-msgstr "Demander un devis"
+msgid "Add to wish list"
+msgstr "Ajouter à la liste d'envie"
 
 #: modules/checkout/shortcode/class-checkout-shortcode.php:102
 #: modules/checkout/shortcode/class-checkout-shortcode.php:109
@@ -232,6 +230,10 @@ msgstr "Voir mes commandes"
 #: modules/checkout/shortcode/class-checkout-shortcode.php:123
 msgid "You can not see this page. Go back to <a href=\""
 msgstr "Vous ne pouvez pas voir cette page. Retournez à <a href=\""
+
+#: modules/checkout/view/frontend/devis-button.php:22
+msgid "Ask for a Quotation"
+msgstr "Demander un devis"
 
 #: modules/checkout/view/frontend/form-checkout-step-3.php:20
 msgid "Your order"
@@ -274,7 +276,7 @@ msgid "Postcode / ZIP"
 msgstr "Code postal"
 
 #: modules/checkout/view/frontend/payment.php:21
-#: modules/dashboard/view/metaboxes/metabox-payments.view.php:27
+#: modules/dashboard/view/metaboxes/metabox-payment.view.php:34
 #: modules/dolibarr/doli-invoice/view/metabox-invoice-details.view.php:23
 #: modules/dolibarr/doli-invoice/view/metabox-invoice-details.view.php:42
 #: modules/dolibarr/doli-order/view/metabox-order-details.view.php:30
@@ -364,12 +366,12 @@ msgid "%s :"
 msgstr "%s :"
 
 #: modules/checkout/view/frontend/valid-checkout.php:34
-#: modules/dashboard/view/metaboxes/metabox-invoices.view.php:28
-#: modules/dashboard/view/metaboxes/metabox-orders.view.php:28
-#: modules/dashboard/view/metaboxes/metabox-payments.view.php:29
-#: modules/dashboard/view/metaboxes/metabox-products.view.php:29
-#: modules/dashboard/view/metaboxes/metabox-proposals.view.php:28
-#: modules/dashboard/view/metaboxes/metabox-quotations.view.php:28
+#: modules/dashboard/view/metaboxes/metabox-invoice.view.php:35
+#: modules/dashboard/view/metaboxes/metabox-order.view.php:35
+#: modules/dashboard/view/metaboxes/metabox-payment.view.php:36
+#: modules/dashboard/view/metaboxes/metabox-product.view.php:36
+#: modules/dashboard/view/metaboxes/metabox-proposal.view.php:35
+#: modules/dashboard/view/metaboxes/metabox-wishlist.view.php:33
 #: modules/dolibarr/doli-order/view/metabox-order-details.view.php:26
 #: modules/dolibarr/doli-order/view/metabox-order-payment.view.php:26
 #: modules/dolibarr/doli-order/view/metabox-order-related-object.view.php:27
@@ -388,17 +390,16 @@ msgstr "Date"
 msgid "Method of payment"
 msgstr "Moyen de paiement"
 
-#: modules/dashboard/view/metaboxes/metabox-customers.view.php:20
-msgid "Last Customers"
-msgstr "Derniers Clients"
+#: modules/dashboard/view/metaboxes/metabox-customer.view.php:27
+msgid "Latest customers"
+msgstr "Derniers clients"
 
-#: modules/dashboard/view/metaboxes/metabox-customers.view.php:21
-#: modules/dashboard/view/metaboxes/metabox-invoices.view.php:21
-#: modules/dashboard/view/metaboxes/metabox-orders.view.php:21
-#: modules/dashboard/view/metaboxes/metabox-payments.view.php:21
-#: modules/dashboard/view/metaboxes/metabox-products.view.php:22
-#: modules/dashboard/view/metaboxes/metabox-proposals.view.php:21
-#: modules/dashboard/view/metaboxes/metabox-quotations.view.php:21
+#: modules/dashboard/view/metaboxes/metabox-customer.view.php:28
+#: modules/dashboard/view/metaboxes/metabox-invoice.view.php:28
+#: modules/dashboard/view/metaboxes/metabox-order.view.php:28
+#: modules/dashboard/view/metaboxes/metabox-payment.view.php:28
+#: modules/dashboard/view/metaboxes/metabox-product.view.php:29
+#: modules/dashboard/view/metaboxes/metabox-proposal.view.php:28
 #: modules/dolibarr/doli-invoice/view/item.view.php:35
 #: modules/dolibarr/doli-invoice/view/item.view.php:54
 #: modules/dolibarr/doli-order/view/item.view.php:34
@@ -407,50 +408,50 @@ msgstr "Derniers Clients"
 msgid "See in Dolibarr"
 msgstr "Voir dans Dolibarr"
 
-#: modules/dashboard/view/metaboxes/metabox-customers.view.php:45
-msgid "No customer for now"
+#: modules/dashboard/view/metaboxes/metabox-customer.view.php:52
+msgid "No customer for the moment"
 msgstr "Aucun client pour le moment"
 
-#: modules/dashboard/view/metaboxes/metabox-invoices.view.php:20
-msgid "Last Invoices"
-msgstr "Dernières Factures"
+#: modules/dashboard/view/metaboxes/metabox-invoice.view.php:27
+msgid "Latest invoices"
+msgstr "Dernières factures"
 
-#: modules/dashboard/view/metaboxes/metabox-invoices.view.php:26
-#: modules/dashboard/view/metaboxes/metabox-orders.view.php:26
-#: modules/dashboard/view/metaboxes/metabox-proposals.view.php:26
-#: modules/dashboard/view/metaboxes/metabox-quotations.view.php:26
+#: modules/dashboard/view/metaboxes/metabox-invoice.view.php:33
+#: modules/dashboard/view/metaboxes/metabox-order.view.php:33
+#: modules/dashboard/view/metaboxes/metabox-proposal.view.php:33
+#: modules/dashboard/view/metaboxes/metabox-wishlist.view.php:31
 #: modules/dolibarr/doli-invoice/view/metabox-invoice-details.view.php:33
 #: modules/dolibarr/doli-order/view/metabox-order-details.view.php:27
 #: modules/proposals/view/metabox-proposal-address.view.php:24
 msgid "Customer"
 msgstr "Client"
 
-#: modules/dashboard/view/metaboxes/metabox-invoices.view.php:27
-#: modules/dashboard/view/metaboxes/metabox-orders.view.php:27
-#: modules/dashboard/view/metaboxes/metabox-payments.view.php:28
-#: modules/dashboard/view/metaboxes/metabox-products.view.php:28
-#: modules/dashboard/view/metaboxes/metabox-proposals.view.php:27
-#: modules/dashboard/view/metaboxes/metabox-quotations.view.php:27
+#: modules/dashboard/view/metaboxes/metabox-invoice.view.php:34
+#: modules/dashboard/view/metaboxes/metabox-order.view.php:34
+#: modules/dashboard/view/metaboxes/metabox-payment.view.php:35
+#: modules/dashboard/view/metaboxes/metabox-product.view.php:35
+#: modules/dashboard/view/metaboxes/metabox-proposal.view.php:34
+#: modules/dashboard/view/metaboxes/metabox-wishlist.view.php:32
 msgid "Price TTC"
 msgstr "Prix TTC"
 
-#: modules/dashboard/view/metaboxes/metabox-invoices.view.php:47
-msgid "No invoices for now"
+#: modules/dashboard/view/metaboxes/metabox-invoice.view.php:54
+msgid "No invoice for the moment"
 msgstr "Aucune facture pour le moment"
 
-#: modules/dashboard/view/metaboxes/metabox-orders.view.php:20
-msgid "Last Orders"
-msgstr "Dernières Commandes"
+#: modules/dashboard/view/metaboxes/metabox-order.view.php:27
+msgid "Latest orders"
+msgstr "Dernières commandes"
 
-#: modules/dashboard/view/metaboxes/metabox-orders.view.php:47
-msgid "No orders for now"
+#: modules/dashboard/view/metaboxes/metabox-order.view.php:54
+msgid "No order for the moment"
 msgstr "Aucune commande pour le moment"
 
-#: modules/dashboard/view/metaboxes/metabox-payments.view.php:20
-msgid "Last Payments"
-msgstr "Derniers Paiements"
+#: modules/dashboard/view/metaboxes/metabox-payment.view.php:27
+msgid "Latest payments"
+msgstr "Derniers paiements"
 
-#: modules/dashboard/view/metaboxes/metabox-payments.view.php:26
+#: modules/dashboard/view/metaboxes/metabox-payment.view.php:33
 #: modules/dolibarr/doli-invoice/filter/class-doli-invoice-filter.php:61
 #: modules/dolibarr/doli-invoice/filter/class-doli-invoice-filter.php:63
 #: modules/dolibarr/doli-invoice/view/single.view.php:21
@@ -458,49 +459,39 @@ msgstr "Derniers Paiements"
 msgid "Invoice"
 msgstr "Factures"
 
-#: modules/dashboard/view/metaboxes/metabox-payments.view.php:49
-msgid "No payments for now"
+#: modules/dashboard/view/metaboxes/metabox-payment.view.php:56
+msgid "No payment for the moment"
 msgstr "Aucun paiement pour le moment"
 
-#: modules/dashboard/view/metaboxes/metabox-products.view.php:21
-msgid "Last Products"
-msgstr "Derniers Produits"
+#: modules/dashboard/view/metaboxes/metabox-product.view.php:28
+msgid "Latest products"
+msgstr "Derniers produits"
 
-#: modules/dashboard/view/metaboxes/metabox-products.view.php:27
+#: modules/dashboard/view/metaboxes/metabox-product.view.php:34
 #: modules/products/view/list.view.php:23
 #: modules/settings/view/payment-method-single.view.php:32
 msgid "Title"
 msgstr "Titre"
 
-#: modules/dashboard/view/metaboxes/metabox-products.view.php:48
-msgid "No products for now"
+#: modules/dashboard/view/metaboxes/metabox-product.view.php:55
+msgid "No product for the moment"
 msgstr "Aucun produits pour le moment"
 
-#: modules/dashboard/view/metaboxes/metabox-proposals.view.php:20
+#: modules/dashboard/view/metaboxes/metabox-proposal.view.php:27
 msgid "Latest commercial proposals"
 msgstr "Dernières propositions commerciales"
 
-#: modules/dashboard/view/metaboxes/metabox-proposals.view.php:47
-msgid "No proposals for now"
-msgstr "Aucune devis trouvée"
+#: modules/dashboard/view/metaboxes/metabox-proposal.view.php:54
+msgid "No commercial proposal for the moment"
+msgstr "Aucune proposition commerciale pour le moment"
 
-#: modules/dashboard/view/metaboxes/metabox-quotations.view.php:20
-msgid "Last Quotations"
-msgstr "Derniers Devis"
+#: modules/dashboard/view/metaboxes/metabox-wishlist.view.php:26
+msgid "Latest wishes"
+msgstr "Dernières envies"
 
-#: modules/dashboard/view/metaboxes/metabox-quotations.view.php:47
-msgid "No quotations for now"
-msgstr "Aucun devis pour le moment"
-
-#: modules/dashboard/view/metaboxes/metabox-sync.view.php:20
-#: modules/dashboard/view/metaboxes/metabox-sync.view.php:27
-msgid "Synchronization"
-msgstr "Synchronisation"
-
-#: modules/dashboard/view/metaboxes/metabox-sync.view.php:26
-#: modules/dolibarr/doli-invoice/view/main.view.php:31
-msgid "Data synchronization"
-msgstr "Synchronisation des données"
+#: modules/dashboard/view/metaboxes/metabox-wishlist.view.php:52
+msgid "No wish for the moment"
+msgstr "Aucune envie pour le moment"
 
 #: modules/dolibarr/doli-associate/action/class-doli-associate-action.php:108
 msgid "Please select an entry"
@@ -620,7 +611,6 @@ msgstr "Chercher..."
 
 #: modules/dolibarr/doli-associate/view/modal-associate-footer.view.php:26
 #: modules/dolibarr/doli-sync/view/modal-sync-button.view.php:20
-#: modules/dolibarr/doli-user/view/frontend/user-alert.php:20
 msgid "Close"
 msgstr "Fermer"
 
@@ -735,6 +725,10 @@ msgstr "Statut"
 #: modules/dolibarr/doli-sync/view/sync-header.view.php:19
 msgid "Synchro"
 msgstr "Synchroniser"
+
+#: modules/dolibarr/doli-invoice/view/main.view.php:31
+msgid "Data synchronization"
+msgstr "Synchronisation des données"
 
 #: modules/dolibarr/doli-invoice/view/main.view.php:32
 msgid "All Invoices Sync"
@@ -1104,31 +1098,52 @@ msgstr ""
 "Effacer les données pour le tiers <strong>%s</strong> avec les données de "
 "<strong>WordPress</strong>"
 
-#: modules/dolibarr/doli-user/view/frontend/user-alert.php:6
+#: modules/dolibarr/doli-user/view/frontend/user-alert.php:25
 msgid "There is a problem connecting your account to our ERP"
 msgstr "IL Y A UN PROBLÈME DE CONNEXION DE VOTRE COMPTE À NOTRE ERP"
-
-#: modules/dolibarr/doli-user/view/frontend/user-alert.php:14
-#: modules/my-account/class/class-my-account.php:140
-msgid "Logout"
-msgstr "Deconnexion"
 
 #: modules/emails/class/class-emails.php:47
 #: modules/pages/class/class-pages.php:103
 msgid "New account"
 msgstr "Nouveau compte"
 
+#: modules/emails/class/class-emails.php:48
+#: modules/pages/class/class-pages.php:118
+msgid ""
+"Welcome <br> This email confirms that your account has been created. <br> "
+"Thank you for your trust and see you soon on our shop."
+msgstr ""
+
 #: modules/emails/class/class-emails.php:52
 msgid "Pending order"
 msgstr "Commande en cours"
+
+#: modules/emails/class/class-emails.php:53
+#: modules/pages/class/class-pages.php:119
+msgid ""
+"Hello <br> We have just recorded your order, thank you to send us your "
+"payment. <br> We thank you for your confidence and see you soon on our shop."
+msgstr ""
 
 #: modules/emails/class/class-emails.php:57
 msgid "New order"
 msgstr "Nouvelle commande payée"
 
-#: modules/emails/class/class-emails.php:72
+#: modules/emails/class/class-emails.php:58
+#: modules/pages/class/class-pages.php:120
+msgid ""
+"Hello <br> This email confirms that your payment for your recent order has "
+"just been validated. <br> See you soon on our shop."
+msgstr ""
+
+#: modules/emails/class/class-emails.php:70
 msgid "Send invoice"
 msgstr "Votre facture"
+
+#: modules/emails/class/class-emails.php:71
+#: modules/pages/class/class-pages.php:122
+msgid "Hello <br> You can access your invoices by logging in to your account."
+msgstr ""
 
 #: modules/emails/view/admin-new-order.php:30
 #, php-format
@@ -1206,10 +1221,6 @@ msgstr "Commande #%1$s (<time datetime=\"%2$s\">%3$s</time>)"
 msgid "See my orders or my downloadable products"
 msgstr "Voir mes commandes ou mes produits téléchargeables"
 
-#: modules/health/filter/class-health-filter.php:53
-msgid "Page not set"
-msgstr "Page non utilisé"
-
 #: modules/my-account/action/class-my-account-action.php:83
 msgid "Your username or password is incorrect."
 msgstr "Votre identifiant ou votre mot de passe est incorrect."
@@ -1236,6 +1247,10 @@ msgstr "Proposition"
 #: modules/my-account/class/class-my-account.php:135
 msgid "Downloads"
 msgstr "Téléchargements"
+
+#: modules/my-account/class/class-my-account.php:140
+msgid "Logout"
+msgstr "Deconnexion"
 
 #: modules/my-account/class/class-my-account.php:153
 msgid "Switch back"
@@ -1353,10 +1368,12 @@ msgid "Completed order"
 msgstr "Commande complétée"
 
 #: modules/pages/class/class-pages.php:109
+#: modules/pages/class/class-pages.php:121
 msgid "Paid order"
 msgstr "Commande payée"
 
 #: modules/pages/class/class-pages.php:113
+#: modules/pages/class/class-pages.php:123
 msgid "Delivered order"
 msgstr "Commande livrée"
 
@@ -1702,7 +1719,7 @@ msgstr "Vos réglages ont été enregistrés."
 msgid "No page"
 msgstr "Pas de page"
 
-#: modules/settings/class/class-settings.php:220
+#: modules/settings/class/class-settings.php:219
 msgid "No product"
 msgstr "Aucun produit"
 
@@ -2024,6 +2041,18 @@ msgid ""
 msgstr ""
 "<li><strong>%1$d</strong> Contact #%2$d %4$s est déjà affecté à un tier #"
 "%3$d %4$s</li>"
+
+#~ msgid "Last Quotations"
+#~ msgstr "Derniers Devis"
+
+#~ msgid "No quotations for now"
+#~ msgstr "Aucun devis pour le moment"
+
+#~ msgid "Synchronization"
+#~ msgstr "Synchronisation"
+
+#~ msgid "Page not set"
+#~ msgstr "Page non utilisé"
 
 #~ msgid "Account details"
 #~ msgstr "Détails du compte"

@@ -1,15 +1,12 @@
 <?php
 /**
- * Classe gérant les filtres principales de WPshop.
+ * La classe gérant les filtres principales de WPshop.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
@@ -17,14 +14,15 @@ namespace wpshop;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Main filters of wpshop.
+ * WPshop Filter.
  */
-class Core_Filter {
+class WPshop_Filter {
 
 	/**
-	 * Constructor.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function __construct() {
 		add_filter( 'custom_menu_order', array( $this, 'order_menu' ), 10, 1 );
@@ -40,9 +38,10 @@ class Core_Filter {
 	}
 
 	/**
-	 * Réorganises le menu du backadmin de WordPress.
+	 * Réorganise le menu du backadmin de WordPress.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @param  array $order_menu Le menu.
 	 *
@@ -75,10 +74,11 @@ class Core_Filter {
 	/**
 	 * Permet d'ajouter l'active sur le menu.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @param  string $parent_file Le fichier parent.
-	 * @return $parent_file        Le nouveau parent.
+	 * @return string              Le nouveau parent.
 	 */
 	public function highlight_menu( $parent_file ) {
 		global $submenu_file, $current_screen, $pagenow;
@@ -101,7 +101,8 @@ class Core_Filter {
 	/**
 	 * Permet de sauvegarder l'option d'écran "Par page".
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @param  string $status Le statut.
 	 * @param  string $option Le nom de l'option.
@@ -122,6 +123,16 @@ class Core_Filter {
 		return $status;
 	}
 
+	/**
+	 * Ajoute les liens sur la page du menu WordPress.
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 *
+	 * @param  array $links Le tableau contenant les liens des pages du menu WordPress.
+	 *
+	 * @return array        Le tableau contenant les liens des pages du menu WordPress + de nouveaux liens.
+	 */
 	public function add_link_plugin_page( $links ) {
 		$links[] = '<a href="' . admin_url( 'admin.php?page=wps-settings' ) . '">' .  __( 'Settings', 'wpshop' ) . '</a>';
 		//$links[] = '<a href="' . admin_url( 'admin.php?page=wps-tools' ) . '">' .  __( 'Tools', 'wpshop' ) . '</a>';
@@ -129,11 +140,20 @@ class Core_Filter {
 		return $links;
 	}
 
+	/**
+	 * Augmente le temps d'éxécution d'une requête.
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 *
+	 * @param  integer $timeout Le temps de la requête.
+	 *
+	 * @return integer          Le temps de la requête plus long.
+	 */
 	public function extend_timeout_request( $timeout ) {
 		// $timeout = 50;
 		return $timeout;
 	}
-
 }
 
-new Core_Filter();
+new WPshop_Filter();

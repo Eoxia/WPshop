@@ -1,43 +1,44 @@
 <?php
 /**
- * Gestion des requêtes.
+ * La classe gérant les fonctions utilitaires des requêtes.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
+use eoxia\Singleton_Util;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Gestion des requêtes.
+ * Request Util Class.
  */
-class Request_Util extends \eoxia\Singleton_Util {
+class Request_Util extends Singleton_Util {
 
 	/**
-	 * Le constructeur
+	 * Le constructeur.
 	 *
-	 * @since 0.2.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	protected function construct() {}
 
 	/**
 	 * Requête POST.
 	 *
-	 * @since 0.2.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @param  string $end_point L'url a appeler.
 	 * @param  array  $data      Les données du formulaire.
-	 * @param  string $method    le type de la méthode.
+	 * @param  string $method    Le type de la méthode.
 	 *
-	 * @return mixed            Retournes les données de la requête ou false.
+	 * @return mixed             Retournes les données de la requête ou false.
 	 */
 	public static function post( $end_point, $data = array(), $method = 'POST' ) {
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
@@ -70,14 +71,15 @@ class Request_Util extends \eoxia\Singleton_Util {
 	}
 
 	/**
-	 * Appel la méthode PUT
+	 * Requête PUT.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @param  string $end_point L'url a appeler.
 	 * @param  array  $data      Les données du formulaire.
 	 *
-	 * @return array|boolean   Retournes les données de la requête ou false.
+	 * @return array|boolean     Retournes les données de la requête ou false.
 	 */
 	public static function put( $end_point, $data ) {
 		return Request_Util::post( $end_point, $data, 'PUT' );
@@ -86,7 +88,8 @@ class Request_Util extends \eoxia\Singleton_Util {
 	/**
 	 * Requête GET.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @param string $end_point L'url a appeler.
 	 *
