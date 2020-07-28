@@ -1,6 +1,6 @@
 <?php
 /**
- * Gestion des actions relatives aux commandes.
+ * La classe gérant les actions des commandes.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -21,18 +21,20 @@ defined( 'ABSPATH' ) || exit;
 class Order_Action {
 
 	/**
-	 * Initialise les actions liées aux commandes.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function __construct() {
 		add_action( 'admin_init', array( $this, 'callback_admin_init' ), 11 );
 	}
 
 	/**
-	 * Ajoute les meta box.
+	 * Ajoute les metaboxes.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_admin_init() {
 		add_meta_box( 'wps-invoice-products', __( 'Products', 'wpshop' ), array( $this, 'callback_products' ), 'wps-invoice', 'normal', 'default' );
@@ -42,9 +44,10 @@ class Order_Action {
 	/**
 	 * Box affichant les produits de la commande.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param  mixed $object Les données pour le tableau du produit de la commande.
+	 * @param mixed $object Les données pour le tableau du produit de la commande.
 	 */
 	public function callback_products( $object ) {
 		$tva_lines = array();
