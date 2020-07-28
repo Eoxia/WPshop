@@ -1,6 +1,6 @@
 <?php
 /**
- * Le formulaire pour créer son adresse de livraison
+ * La vue affichant le formulaire pour créer son adresse de livraison
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -17,10 +17,10 @@ defined( 'ABSPATH' ) || exit;
  * Documentation des variables utilisées dans la vue.
  *
  * @var Product $third_party Les données d'un tier.
- * @var Contact $contact     Les données d'un contact.
- * @var array $countries     Le tableau contenant toutes les données des pays.
- * @var array $country       Les données d'un pays.
- * @var string $selected     L'attribut HTML "selected".
+ * @var User    $contact     Les données d'un contact.
+ * @var array   $countries   Le tableau contenant toutes les données des pays.
+ * @var array   $country     Les données d'un pays.
+ * @var string  $selected   L'attribut HTML "selected".
  */
 ?>
 
@@ -63,21 +63,17 @@ defined( 'ABSPATH' ) || exit;
 	<div class="form-element third_party-country_id form-element-required gridw-2">
 		<label class="form-field-container">
 			<select id="monselect" class="form-field" name="third_party[country_id]">
-				<?php
-				if ( ! empty( $countries ) ) :
+				<?php if ( ! empty( $countries ) ) :
 					foreach ( $countries as $country ) :
 						$selected = '';
 
 						if ( ! empty( $third_party ) && (int) $country['id'] === (int) $third_party->data['country_id'] ) :
 							$selected = 'selected="selected"';
-						endif;
+						endif; ?>
 
-						?>
 						<option <?php echo $selected; ?> value="<?php echo esc_attr( (int) $country['id'] ); ?>"><?php echo $country['label']; ?></option>
-						<?php
-					endforeach;
-				endif;
-				?>
+					<?php endforeach;
+				endif; ?>
 			</select>
 		</label>
 	</div>

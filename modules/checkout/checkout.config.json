@@ -1,13 +1,14 @@
 {
-	"name": "Gestion du tunnel de vente",
+	"name": "Checkout",
 	"slug": "checkout",
 	"since": "2.0.0",
+    "version": "2.0.0",
 	"description": "Le module gérant le tunnel de vente",
 	"path": "module/checkout/",
 	"dependencies": {
-	  "action": {},
-	  "class": {},
+      "shortcode": {},
       "filter": {},
-      "shortcode": {}
+	  "class": {},
+	  "action": {}
 	}
 }

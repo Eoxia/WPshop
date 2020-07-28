@@ -1,6 +1,6 @@
 <?php
 /**
- * Les fonctions principales du tunnel de vente.
+ * La classe gérant les fonctions principales du tunnel de vente.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -21,16 +21,18 @@ defined( 'ABSPATH' ) || exit;
 class Checkout extends Singleton_Util {
 
 	/**
-	 * Constructeur pour la classe Checkout. Charge les options et les actions.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	protected function construct() {}
 
 	/**
 	 * Récupère les données postées.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @return array Les données postées filtrés et sécurisés.
 	 */
@@ -57,7 +59,8 @@ class Checkout extends Singleton_Util {
 	/**
 	 * Définition du formulaire du tunnel de vente.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @return array Tableau contenant la définition des champs.
 	 */
@@ -111,12 +114,13 @@ class Checkout extends Singleton_Util {
 	}
 
 	/**
-	 * Vérifie les données reçu par le formulaire du tunnel de vente.
+	 * Vérifie les données reçues par le formulaire du tunnel de vente.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param  array    $data   Les données reçu du formulaire.
-	 * @param  WP_Error $errors Gestion des erreurs du formulaire.
+	 * @param array    $data   Les données reçues du formulaire.
+	 * @param WP_Error $errors Les erreurs du formulaire.
 	 */
 	protected function validate_posted_data( &$data, &$errors ) {
 		foreach ( $this->get_checkout_fields() as $fieldset_key => $fieldset ) {
@@ -163,19 +167,21 @@ class Checkout extends Singleton_Util {
 	/**
 	 * Appel la méthode pour valider le formulaire.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param  array    $data   Les données reçu du formulaire.
-	 * @param  WP_Error $errors Gestion des erreurs du formulaire.
+	 * @param array    $data   Les données reçu du formulaire.
+	 * @param WP_Error $errors Les erreurs du formulaire.
 	 */
 	public function validate_checkout( &$data, &$errors ) {
 		$this->validate_posted_data( $data, $errors );
 	}
 
 	/**
-	 * Procèdes au paiement.
+	 * Procède au paiement.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @param Order $order Les données de la commande.
 	 */
@@ -224,9 +230,10 @@ class Checkout extends Singleton_Util {
 	}
 
 	/**
-	 * Appel la méthode pour recommander un proudit.
+	 * Appel la méthode pour recommander un produit.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @param array $id L'id de la commande.
 	 */
@@ -257,7 +264,8 @@ class Checkout extends Singleton_Util {
 	/**
 	 * Appel la méthode pour faire le paiement.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @param array $id L'id de la commande.
 	 */

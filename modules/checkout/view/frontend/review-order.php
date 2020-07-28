@@ -1,6 +1,6 @@
 <?php
 /**
- * Le formulaire pour avoir un aperçu de sa commande.
+ * La vue affichant le formulaire pour avoir un aperçu de sa commande.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -42,8 +42,7 @@ defined( 'ABSPATH' ) || exit;
 		do_action( 'wps_review_order_before_cart_contents' );
 
 		if ( ! empty( $cart_contents ) ) :
-			foreach ( $cart_contents as $cart_item ) :
-				?>
+			foreach ( $cart_contents as $cart_item ) : ?>
 				<tr>
 					<td><?php echo get_the_post_thumbnail( $cart_item['id'], array( 80, 80 ) ); ?></td>
 					<td data-title="<?php echo esc_html( 'Product name', 'wpshop' ); ?>"><a href="<?php echo esc_url( get_permalink( $cart_item['id'] ) ); ?>"><?php echo esc_html( $cart_item['title'] ); ?></a></td>
@@ -52,8 +51,7 @@ defined( 'ABSPATH' ) || exit;
 					<td data-title="<?php echo esc_html( 'Quantity', 'wpshop' ); ?>"><?php echo esc_html( $cart_item['qty'] ); ?></td>
 					<td data-title="<?php echo esc_html( 'Total HT', 'wpshop' ); ?>"><?php echo esc_html( number_format( $cart_item['price'] * $cart_item['qty'], 2, ',', '' ) ); ?>€</td>
 				</tr>
-				<?php
-			endforeach;
+			<?php endforeach;
 		endif;
 
 		do_action( 'wps_review_order_after_cart_contents' );
@@ -64,18 +62,14 @@ defined( 'ABSPATH' ) || exit;
 			<td colspan="5"><strong><?php esc_html_e( 'Total HT', 'wpshop' ); ?></strong></td>
 			<td><?php echo number_format( $proposal->data['total_ht'], 2, ',', '' ); ?>€</td>
 		</tr>
-		<?php
-		if ( ! empty( $tva_lines ) ) :
-			foreach ( $tva_lines as $key => $tva_line ) :
-				?>
+		<?php if ( ! empty( $tva_lines ) ) :
+			foreach ( $tva_lines as $key => $tva_line ) : ?>
 				<tr>
 					<td colspan="5"><strong><?php esc_html_e( 'Total VAT', 'wpshop' ); ?> <?php echo number_format( $key, 2, ',', '' ); ?>%</strong></td>
 					<td><?php echo number_format( $tva_line, 2, ',', '' ); ?>€</td>
 				</tr>
-				<?php
-			endforeach;
-		endif;
-		?>
+			<?php endforeach;
+		endif; ?>
 
 		<tr>
 			<td colspan="5"><strong><?php esc_html_e( 'Total TTC', 'wpshop' ); ?></strong></td>

@@ -1,6 +1,6 @@
 <?php
 /**
- * Affichage des messages d'erreurs.
+ * La vue affichant les messages d'erreurs du tunnel de vente.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>

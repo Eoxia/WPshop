@@ -1,6 +1,6 @@
 <?php
 /**
- * La liste des produits dans le résumé du panier.
+ * La vue affichant la liste des produits dans le résumé du panier.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>

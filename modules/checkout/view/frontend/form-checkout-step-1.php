@@ -1,6 +1,6 @@
 <?php
 /**
- * Le formulaire pour créer son adresse de livraison.
+ * La vue affichant le formulaire pour créer son adresse de livraison.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -17,7 +17,7 @@ defined( 'ABSPATH' ) || exit;
  * Documentation des variables utilisées dans la vue.
  *
  * @var Product $third_party Les données d'un tier.
- * @var Contact $contact     Les données d'un contact.
+ * @var User    $contact     Les données d'un contact.
  */
 ?>
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Les termes de la boutique.
+ * La vue affichant les termes de la boutique.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>

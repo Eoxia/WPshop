@@ -1,6 +1,6 @@
 <?php
 /**
- * Gestion shortcode du tunnel de vente.
+ * La classe gérant les shortcodes du tunnel de vente.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -21,17 +21,18 @@ defined( 'ABSPATH' ) || exit;
 class Checkout_Shortcode extends Singleton_Util {
 
 	/**
-	 * Constructeur pour la classe Class_Checkout_Shortcode.
-	 * Ajoutes les shortcodes pour le tunnel de vente.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	protected function construct() {}
 
 	/**
 	 * Initialise les shortcodes.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_init() {
 		add_shortcode( 'wps_checkout', array( $this, 'callback_checkout' ) );
@@ -42,7 +43,7 @@ class Checkout_Shortcode extends Singleton_Util {
 	 *
 	 * @since 2.0.
 	 *
-	 * @param  array $param Les paramètres du shortcode.
+	 * @param array $param Les paramètres du shortcode.
 	 */
 	public function callback_checkout( $param ) {
 		if ( ! is_admin() ) {
@@ -87,7 +88,8 @@ class Checkout_Shortcode extends Singleton_Util {
 	 *
 	 * @param array $atts Les attributs du shortcode.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function display_valid_checkout( $atts ) {
 		if ( ! is_admin() && is_user_logged_in() ) {
@@ -136,7 +138,8 @@ class Checkout_Shortcode extends Singleton_Util {
 	/**
 	 * Affichage de la validation du devis.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_valid_proposal() {
 		if ( ! is_admin() ) {

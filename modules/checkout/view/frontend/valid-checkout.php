@@ -1,6 +1,6 @@
 <?php
 /**
- * La page de validation du tunnel de vente
+ * La vue affichant La page de validation du tunnel de vente.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -10,8 +10,6 @@
  */
 
 namespace wpshop;
-
-use phpDocumentor\Reflection\Types\Object_;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -47,15 +45,11 @@ defined( 'ABSPATH' ) || exit;
 			<li><?php esc_html_e( 'Date', 'wpshop' ); ?> : <strong><?php echo esc_html( $object->data['date']['rendered']['date'] ); ?></strong></li>
 			<li><?php esc_html_e( 'Total', 'wpshop' ); ?> : <strong><?php echo esc_html( number_format( $object->data['total_ttc'], 2 ) ); ?>€</strong></li>
 
-			<?php
-			if ( $atts['type'] == 'order' ) :
-				?>
+			<?php if ( $atts['type'] == 'order' ) : ?>
 				<li><?php esc_html_e( 'Method of payment', 'wpshop' ); ?> :
 					<strong><?php echo esc_html( Payment::g()->get_payment_title( $object->data['payment_method'] ) ); ?></strong>
 				</li>
-				<?php
-			endif;
-			?>
+			<?php endif; ?>
 		</ul>
 
 		<div id="order_review" class="wps-checkout-review-order">

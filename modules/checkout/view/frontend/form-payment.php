@@ -1,6 +1,6 @@
 <?php
 /**
- * Le formulaire pour payer directement.
+ * La vue affichant le formulaire pour payer directement.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>

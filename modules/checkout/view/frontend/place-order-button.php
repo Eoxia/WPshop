@@ -1,6 +1,6 @@
 <?php
 /**
- * Ajoute le bouton pour passer la commande.
+ * La vue affichant le bouton pour passer la commande.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>

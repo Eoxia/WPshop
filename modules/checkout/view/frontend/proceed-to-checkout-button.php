@@ -1,6 +1,6 @@
 <?php
 /**
- * Le bouton pour passer au tunnel de vente.
+ * La vue affichant le bouton pour passer au tunnel de vente.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>

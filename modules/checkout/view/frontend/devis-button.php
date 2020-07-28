@@ -1,6 +1,6 @@
 <?php
 /**
- * Ajoute le bouton pour demander un devis.
+ * La vue affichant le bouton pour demander un devis.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>

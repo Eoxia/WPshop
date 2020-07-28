@@ -1,6 +1,6 @@
 <?php
 /**
- * Les filtres du tunnel de vente.
+ * La classe gérant les filtres du tunnel de vente.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -19,9 +19,10 @@ defined( 'ABSPATH' ) || exit;
 class Checkout_Filter {
 
 	/**
-	 * Init filter.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function __construct() {
 		add_filter( 'query_vars', array( $this, 'add_order_or_quotation_id' ) );
@@ -30,11 +31,11 @@ class Checkout_Filter {
 	}
 
 	/**
-	 * Add parameters to the route /{type}/{id}
+	 * Add parameters to the route /{type}/{id}.
 	 *
-	 * @param array $vars Les paramètres de base.
+	 * @param  array $vars Les paramètres de base.
 	 *
-	 * @return array      Les paramètres de base avec {type} et {id}.
+	 * @return array       Les paramètres de base avec {type} et {id}.
 	 */
 	public function add_order_or_quotation_id( $vars ) {
 		$vars[] = 'id';
@@ -47,9 +48,9 @@ class Checkout_Filter {
 	/**
 	 * Ajoute le bouton sur le panier.
 	 *
-	 * @param string $title Le titre du bouton.
+	 * @param  string $title Le titre du bouton.
 	 *
-	 * @return array        Le titre du bouton.
+	 * @return array         Le titre du bouton.
 	 */
 	public function wps_cart_to_checkout_link_title( $title ) {
 		if ( Settings::g()->dolibarr_is_active() ) {

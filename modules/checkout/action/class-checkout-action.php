@@ -1,6 +1,6 @@
 <?php
 /**
- * Gestion des actions du tunnel de vente.
+ * La classe gérant les actions du tunnel de vente.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -21,10 +21,10 @@ defined( 'ABSPATH' ) || exit;
 class Checkout_Action {
 
 	/**
-	 * Constructeur pour la classe Checkout_Action.
-	 * Ajoutes les actions pour le tunnel de vente.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function __construct() {
 		add_action( 'init', array( Checkout_Shortcode::g(), 'callback_init' ) );
@@ -57,7 +57,8 @@ class Checkout_Action {
 	/**
 	 * Initialise l'endpoint order.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function init_endpoint() {
 		$page_ids_options = get_option( 'wps_page_ids', Pages::g()->default_options );
@@ -82,7 +83,8 @@ class Checkout_Action {
 	/**
 	 * Ajoute le bouton "Passer à la commande".
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_after_cart_table() {
 		$link_checkout = Pages::g()->get_checkout_link();
@@ -92,7 +94,8 @@ class Checkout_Action {
 	/**
 	 * Ajoute le prix de la livraison dans le tableau du résumé.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_before_resume() {
 		if ( Pages::g()->is_checkout_page() ) {
@@ -105,10 +108,11 @@ class Checkout_Action {
 	/**
 	 * Affiche le formulaire pour l'adresse de livraison.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @param Third_Party $third_party Les données du tier.
-	 * @param Contact     $contact     Les données du contact.
+	 * @param User        $contact     Les données du contact.
 	 */
 	public function callback_checkout_shipping( $third_party, $contact ) {
 		include( Template_Util::get_template_part( 'checkout', 'form-shipping' ) );
@@ -117,7 +121,8 @@ class Checkout_Action {
 	/**
 	 * Le tableau récapitulatif de la commande.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @param integer $total_price_no_shipping Le prix total sans le frais de livraison.
 	 * @param integer $tva_amount              Le total de la TVA.
@@ -131,7 +136,8 @@ class Checkout_Action {
 	/**
 	 * Affiche les méthodes de paiement.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_checkout_payment() {
 		$payment_methods = get_option( 'wps_payment_methods', Payment::g()->default_options );
@@ -142,7 +148,8 @@ class Checkout_Action {
 	/**
 	 * Créer la commande et passe au paiement.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_place_order() {
 		check_ajax_referer( 'callback_place_order' );
@@ -218,7 +225,8 @@ class Checkout_Action {
 	/**
 	 * Créer le tier lors du tunnel de vente.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_checkout_create_third() {
 		$errors      = new \WP_Error();
@@ -335,10 +343,11 @@ class Checkout_Action {
 	 *
 	 * @todo doit être supprimer
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @param Third_Party $third_party Les données du tier.
-	 * @param Contact     $contact     Les données du contact.
+	 * @param User        $contact     Les données du contact.
 	 */
 	public function callback_checkout_proposal( $third_party, $contact ) {
 		$type         = ! empty( $_POST['type'] ) ? sanitize_text_field( $_POST['type'] ) : 'proposal';
@@ -398,10 +407,11 @@ class Checkout_Action {
 	/**
 	 * Créer la proposition commerciale lors du tunnel de vente.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @param Third_Party $third_party Les données du tier.
-	 * @param Contact     $contact     Les données du contact.
+	 * @param User        $contact     Les données du contact.
 	 */
 	public function callback_checkout_doli_proposal( $third_party, $contact ) {
  		$type_payment = ! empty( $_POST['type_payment'] ) ? sanitize_text_field( $_POST['type_payment'] ) : '';
@@ -460,7 +470,8 @@ class Checkout_Action {
 	/**
 	 * Ajoute la case à cocher pour confirmer les termes.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function add_terms() {
 		$page_ids             = get_option( 'wps_page_ids', Pages::g()->default_options );
@@ -489,7 +500,8 @@ class Checkout_Action {
 	/**
 	 * Ajoute le bouton "Demande de devis".
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function add_devis_button() {
 		include( Template_Util::get_template_part( 'checkout', 'devis-button' ) );
@@ -498,7 +510,8 @@ class Checkout_Action {
 	/**
 	 * Ajoute le bouton "Passer commande".
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function add_place_order_button() {
 		if ( Settings::g()->dolibarr_is_active() ) {

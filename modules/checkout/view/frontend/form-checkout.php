@@ -1,6 +1,6 @@
 <?php
 /**
- * Le formulaire pour passer une commande.
+ * La vue affichant le formulaire pour passer une commande.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
