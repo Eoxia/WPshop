@@ -1,6 +1,6 @@
 <?php
 /**
- * Les fonctions principales de PayPal.
+ * La classe gérant les fonctions principales de PayPal.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -22,27 +22,30 @@ class PayPal extends Singleton_Util {
 	/**
 	 * L'URL vers la page de paiement.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var string
 	 */
 	protected $request_url;
 
 	/**
-	 * Constructeur.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	protected function construct() {}
 
 	/**
-	 * Prépares l'URL pour aller à la page de paiement.
+	 * Prépare l'URL pour aller à la page de paiement.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param  Order $order Les données de la commande.
+	 * @param  Doli_Order $order Les données de la commande.
 	 *
-	 * @return array        L'URL pour aller à la page de paiement.
+	 * @return array             L'URL pour aller à la page de paiement.
 	 */
 	public function process_payment( $order ) {
 		$paypal_options = Payment::g()->get_payment_option( 'paypal' );
@@ -58,11 +61,12 @@ class PayPal extends Singleton_Util {
 	/**
 	 * Récupère les paramètres IPN de PayPal.
 	 *
-	 * @since 2.0.0.
+	 * @since   2.0.0
+	 * @version 2.0.0.
 	 *
-	 * @param  Order $order Les données de la commande.
+	 * @param  Doli_Order $order Les données de la commande.
 	 *
-	 * @return array        Les données IPN.
+	 * @return array             Les données IPN.
 	 */
 	protected function get_paypal_args( $order ) {
 		$paypal_args = apply_filters( 'wps_paypal_args', array_merge(
@@ -76,11 +80,12 @@ class PayPal extends Singleton_Util {
 	/**
 	 * Prépare les données IPN.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param  Order $order Les données de la commande.
+	 * @param  Doli_Order $order Les données de la commande.
 	 *
-	 * @return array        Les données IPN.
+	 * @return array             Les données IPN.
 	 */
 	protected function get_transaction_args( $order ) {
 		$payment_methods_option = get_option( 'wps_payment_methods', array(
@@ -112,11 +117,12 @@ class PayPal extends Singleton_Util {
 	/**
 	 * Ajoute les lignes pour le paiement PayPal.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param  Order $order Les données de la commande.
+	 * @param  Doli_Order $order Les données de la commande.
 	 *
-	 * @return array        Les lignes pour le paiement PayPal.
+	 * @return array             Les lignes pour le paiement PayPal.
 	 */
 	protected function get_line_item_args( $order ) {
 		$line_item_args = array(

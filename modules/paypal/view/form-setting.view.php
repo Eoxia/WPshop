@@ -1,6 +1,6 @@
 <?php
 /**
- * La vue principale de la page de réglages  pour la méthode de paiement Paypal.
+ * La vue affichant la méthode de paiement Paypal dans la page "Réglages".
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>

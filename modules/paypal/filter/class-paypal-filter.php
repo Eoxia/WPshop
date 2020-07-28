@@ -1,6 +1,6 @@
 <?php
 /**
- * Gestion des filtres PayPal.
+ * La classe gérant les filtres PayPal.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -19,9 +19,10 @@ defined( 'ABSPATH' ) || exit;
 class Paypal_Filter {
 
 	/**
-	 * Constructeur.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function __construct() {
 		add_filter( 'wps_payment_method_paypal_description', array( $this, 'more_paypal_description' ) );
@@ -30,7 +31,8 @@ class Paypal_Filter {
 	/**
 	 * Ajoute le text pour indiquer que PayPal est en mode sandbox.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @param  string $description Description actuelle.
 	 *

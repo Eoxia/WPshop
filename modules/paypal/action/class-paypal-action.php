@@ -1,6 +1,6 @@
 <?php
 /**
- * Gestion des actions PayPal.
+ * La classe gérant les actions PayPal.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -8,7 +8,6 @@
  * @since     2.0.0
  * @version   2.0.0
  */
-
 
 namespace wpshop;
 
@@ -22,9 +21,10 @@ defined( 'ABSPATH' ) || exit;
 class PayPal_Action {
 
 	/**
-	 * Constructeur.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function __construct() {
 		add_action( 'wps_setting_payment_method_paypal_after_form', array( $this, 'callback_setting_payment_method' ), 10, 0 );
@@ -37,7 +37,8 @@ class PayPal_Action {
 	/**
 	 * Ajoute la page pour configurer le paiement PayPal.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_setting_payment_method() {
 		$paypal_options = Payment::g()->get_payment_option( 'paypal' );
@@ -49,7 +50,8 @@ class PayPal_Action {
 	/**
 	 * Enregistre les configurations de PayPal en base de donnée.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function update_method_payment_paypal( $data, $type ) {
 		if ( 'paypal' === $type ) {
@@ -66,9 +68,10 @@ class PayPal_Action {
 	/**
 	 * Vérifie les données IPN reçu par PayPal.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param  array $data Les données reçu par PayPal.
+	 * @param array $data Les données reçu par PayPal.
 	 */
 	public function callback_wps_gateway_paypal( $data ) {
 		if ( ! empty( $data ) && $this->validate_ipn( $data ) ) { // WPCS: CSRF ok.
@@ -82,7 +85,8 @@ class PayPal_Action {
 	/**
 	 * Appel la méthode selon le status du paiement.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @param array $posted Les données reçu par PayPal vérifié.
 	 */
@@ -95,7 +99,8 @@ class PayPal_Action {
 	/**
 	 * Valide les données IPN.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @param  array $data Les données reçu par PayPal.
 	 * @return boolean     True si OK, sinon false.
@@ -126,9 +131,10 @@ class PayPal_Action {
 	/**
 	 * Paiement OK.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param  array $posted Les données reçu par PayPal vérifié.
+	 * @param array $posted Les données reçu par PayPal vérifié.
 	 */
 	private function payment_status_completed( $posted ) {
 		do_action( 'wps_payment_complete', $posted );
@@ -137,7 +143,8 @@ class PayPal_Action {
 	/**
 	 * Paiement pas OK.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @param array $posted Les données reçu par Paypal vérifié.
 	 */

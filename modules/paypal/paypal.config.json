@@ -1,7 +1,8 @@
 {
-	"name": "Gestion de PayPal",
+	"name": "PayPal",
 	"slug": "paypal",
 	"since": "2.0.0",
+    "version": "2.0.0",
     "description": "Le module gérant la méthode de paiement Paypal",
 	"path": "modules/paypal",
 	"dependencies": {
