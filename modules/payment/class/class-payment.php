@@ -1,6 +1,6 @@
 <?php
 /**
- * Les fonctions principales pour les paiements.
+ * La classe gérant les fonctions principales pour les paiements.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -21,27 +21,30 @@ defined( 'ABSPATH' ) || exit;
 class Payment extends Singleton_Util {
 
 	/**
-	 * Les méthodes de paiement.
+	 * Le tableau contenant toutes les données des méthodes de paiements par défaut.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var array
 	 */
 	public $default_options;
 
 	/**
-	 * Les status des paiements.
+	 * Le tableau contenant tous les statuts des paiements.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var array
 	 */
 	public $statut;
 
 	/**
-	 * Constructeur.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	protected function construct() {
 		$this->default_options = array(
@@ -102,7 +105,8 @@ class Payment extends Singleton_Util {
 	/**
 	 * Récupère les données d'une méthode de paiement selon le slug.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @param  string $slug Le slug de la méthode de paiement.
 	 *
@@ -121,7 +125,8 @@ class Payment extends Singleton_Util {
 	/**
 	 * Récupère le titre d'une méthode de paiement selon le slug.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @param  string $slug Le slug de la méthode de paiement.
 	 *
@@ -139,9 +144,10 @@ class Payment extends Singleton_Util {
 	}
 
 	/**
-	 * Affiche un status lisible selon la méthode de paiement et le status du paiement.
+	 * Affiche un statut lisible selon la méthode de paiement et le statut du paiement.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @param  mixed $object Les données de l'objet.
 	 *

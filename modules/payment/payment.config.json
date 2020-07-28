@@ -2,6 +2,7 @@
 	"name": "Payment",
 	"slug": "payment",
 	"since": "2.0.0",
+    "version": "2.0.0",
     "description": "Le module gérant le paiement",
 	"path": "modules/payment",
 	"dependencies": {
