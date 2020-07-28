@@ -1,6 +1,6 @@
 <?php
 /**
- * Gestion des filtres du panier.
+ * La classe gérant les filtres du panier.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -19,9 +19,10 @@ defined( 'ABSPATH' ) || exit;
 class Cart_Filter {
 
 	/**
-	 * Constructor.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function __construct() {
 		add_filter( 'wp_nav_menu_objects', array( $this, 'nav_menu_add_search' ), 10, 2 );
@@ -32,10 +33,11 @@ class Cart_Filter {
 	/**
 	 * Ajoute le nombre de produit dans le panier dans le menu "Panier".
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param array $items Les items du menu.
-	 * @param array $args  Arguments supplémentaires.
+	 * @param  array $items Les items du menu.
+	 * @param  array $args  Arguments supplémentaires.
 	 *
 	 * @return array       Les items du menu avec le bouton "Panier" modifié.
 	 */
@@ -65,12 +67,13 @@ class Cart_Filter {
 	/**
 	 * Vérifie si le produit est disponible en stock.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param  boolean       $can_add Filter params.
-	 * @param  Product_Model $product Les données du produit.
+	 * @param  boolean $can_add Filter params.
+	 * @param  Product $product Les données du produit.
 	 *
-	 * @return boolean                True si oui, sinon false.
+	 * @return boolean          True si oui, sinon false.
 	 */
 	public function check_stock( $can_add, $product ) {
 		if ( $product->data['manage_stock'] && 0 >= $product->data['stock'] ) {

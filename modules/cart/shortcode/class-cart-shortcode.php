@@ -1,6 +1,6 @@
 <?php
 /**
- * Gestion des shortcodes du panier.
+ * La classe gérant ldes shortcodes du panier.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -21,17 +21,18 @@ defined( 'ABSPATH' ) || exit;
 class Cart_Shortcode extends Singleton_Util {
 
 	/**
-	 * Constructeur pour la classe Cart_Shortcode.
-	 * Ajoute les shortcodes pour le tunnel de vente.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	protected function construct() {}
 
 	/**
-	 * Initialise le shortcode.
+	 * Initialise les shortcodes.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_init() {
 		add_shortcode( 'wps_cart', array( $this, 'callback_cart' ) );
@@ -41,7 +42,8 @@ class Cart_Shortcode extends Singleton_Util {
 	/**
 	 * Affichage de la vue du shortcode.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_cart() {
 		$cart_contents = Cart_Session::g()->cart_contents;
@@ -63,11 +65,12 @@ class Cart_Shortcode extends Singleton_Util {
 	/**
 	 * Permet d'afficher le bouton "Ajouter au panier".
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param array $atts Les attributs du shortcode. Voir ci dessous shortcode_atts.
+	 * @param  array $atts Les attributs du shortcode. Voir ci dessous shortcode_atts.
 	 *
-	 * @return view       La vue du bouton ""Ajouter au panier".
+	 * @return view        La vue du bouton ""Ajouter au panier".
 	 */
 	public function callback_add_to_cart( $atts ) {
 		if ( ! is_admin() ) {

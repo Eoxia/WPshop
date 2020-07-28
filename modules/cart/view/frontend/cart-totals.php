@@ -1,6 +1,6 @@
 <?php
 /**
- * Le total du panier.
+ * La vue affichant le total du panier.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -17,7 +17,6 @@ defined( 'ABSPATH' ) || exit;
  * Documentation des variables utilisées dans la vue.
  *
  * @var integer $total_price Prix total du panier.
- *
  */
 ?>
 

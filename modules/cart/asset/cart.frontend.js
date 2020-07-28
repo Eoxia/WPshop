@@ -1,14 +1,16 @@
 /**
  * Gestion JS du panier.
  *
- * @since 2.0.0
+ * @since   2.0.0
+ * @version 2.0.0
  */
 window.eoxiaJS.wpshopFrontend.cart = {};
 
 /**
  * La méthode "init" est appelé automatiquement par la lib JS de Eo-Framework
  *
- * @since 2.0.0
+ * @since   2.0.0
+ * @version 2.0.0
  */
 window.eoxiaJS.wpshopFrontend.cart.init = function() {
 	window.eoxiaJS.wpshopFrontend.cart.event();
@@ -22,12 +24,10 @@ window.eoxiaJS.wpshopFrontend.cart.event = function() {
 /**
  * Met à jour la quantité d'un produit.
  *
- * @since 2.0.0
+ * @since   2.0.0
  * @version 2.0.0
  *
- * @param  {ClickEvent} event [updateQuantity].
- *
- * @return {void}
+ * @param {ClickEvent} event [updateQuantity].
  */
 window.eoxiaJS.wpshopFrontend.cart.updateQuantity = function( event ) {
 	var qty = parseInt( jQuery( this ).closest( '.wps-product-quantity' ).find( 'input[type="hidden"]' ).val() );
@@ -53,13 +53,11 @@ window.eoxiaJS.wpshopFrontend.cart.updateQuantity = function( event ) {
  * Le callback en cas de réussite à la requête Ajax "add_to_cart".
  * Ajoute un produit au panier.
  *
- * @since 2.0.0
+ * @since   2.0.0
  * @version 2.0.0
  *
- * @param  {HTMLDivElement} triggeredElement  L'élement HTML déclenchant la requête Ajax.
- * @param  {Object}         response          Les données renvoyées par la requête Ajax.
- *
- * @return {void}
+ * @param {HTMLDivElement} triggeredElement L'élement HTML déclenchant la requête Ajax.
+ * @param {Object}         response         Les données renvoyées par la requête Ajax.
  */
 window.eoxiaJS.wpshopFrontend.cart.addedToCart = function ( triggeredElement, response ) {
 	if ( response.data.added ) {
@@ -80,13 +78,11 @@ window.eoxiaJS.wpshopFrontend.cart.addedToCart = function ( triggeredElement, re
  * Le callback en cas de réussite à la requête Ajax "update_cart".
  * Met à jour le panier.
  *
- * @since 2.0.0
+ * @since   2.0.0
  * @version 2.0.0
  *
- * @param  {HTMLDivElement} triggeredElement  L'élement HTML déclenchant la requête Ajax.
- * @param  {Object}         response          Les données renvoyées par la requête Ajax.
- *
- * @return {void}
+ * @param {HTMLDivElement} triggeredElement L'élement HTML déclenchant la requête Ajax.
+ * @param {Object}         response         Les données renvoyées par la requête Ajax.
  */
 window.eoxiaJS.wpshopFrontend.cart.updatedCart = function ( triggeredElement, response ) {
 	jQuery( '.wps-cart' ).replaceWith( response.data.view );
@@ -103,13 +99,11 @@ window.eoxiaJS.wpshopFrontend.cart.updatedCart = function ( triggeredElement, re
  * Le callback en cas de réussite à la requête Ajax "delete_product_form_cart".
  * Supprime un produit du panier.
  *
- * @since 2.0.0
+ * @since   2.0.0
  * @version 2.0.0
  *
- * @param  {HTMLDivElement} triggeredElement  L'élement HTML déclenchant la requête Ajax.
- * @param  {Object}         response          Les données renvoyées par la requête Ajax.
- *
- * @return {void}
+ * @param {HTMLDivElement} triggeredElement L'élement HTML déclenchant la requête Ajax.
+ * @param {Object}         response         Les données renvoyées par la requête Ajax.
  */
 window.eoxiaJS.wpshopFrontend.cart.deletedProdutFromCart = function ( triggeredElement, response ) {
 	jQuery( '.wps-cart' ).replaceWith( response.data.view );

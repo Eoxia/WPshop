@@ -1,6 +1,6 @@
 <?php
 /**
- * Le bouton pour ajouter un produit au panier.
+ * La vue affichant le bouton pour ajouter un produit au panier.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -15,12 +15,10 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * Documentation des variables utilisées dans la vue.
+ * @Todo changer le nom de la variable.
  *
  * @var Product $product La donnée d'un produit.
  * @var string  $a       Texte du bouton.
- *
- * @Todo changer le nom de la variable.
- *
  */
 ?>
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * La vue si le panier est vide.
+ * La vue affichant si le panier est vide.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>

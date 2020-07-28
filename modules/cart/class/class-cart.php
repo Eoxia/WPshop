@@ -1,6 +1,6 @@
 <?php
 /**
- * Les fonctions principales du panier.
+ * La classe gérant les fonctions principales du panier.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -21,16 +21,18 @@ defined( 'ABSPATH' ) || exit;
 class Cart extends Singleton_Util {
 
 	/**
-	 * Constructeur pour la classe Cart. Charge les options et les actions.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	protected function construct() {}
 
 	/**
 	 * Vérifie si un produit peut être ajouté.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @return boolean True si tout s'est bien passé.
 	 */
@@ -45,12 +47,13 @@ class Cart extends Singleton_Util {
 	/**
 	 * Ajoute un produit dans le panier.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param Product_Model $product Les données du produit.
-	 * @param integer       $qty     La quantité à ajouter.
+	 * @param  Product  $product Les données du produit.
+	 * @param  integer  $qty     La quantité à ajouter.
 	 *
-	 * @return boolean               True si tout s'est bien passé.
+	 * @return boolean           True si tout s'est bien passé.
 	 */
 	public function add_to_cart( $product, $qty = 1 ) {
 		if ( ! $this->can_add_product() ) {
@@ -97,9 +100,10 @@ class Cart extends Singleton_Util {
 	/**
 	 * Met à jour le contenu du panier.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param  Product_Model $product Les données du produit.
+	 * @param Product $product Les données du produit.
 	 */
 	public function update_cart( $product ) {
 		if ( ! empty( Cart_Session::g()->cart_contents ) ) {
@@ -120,9 +124,10 @@ class Cart extends Singleton_Util {
 	/**
 	 * Supprime un produit du panier.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param  integer $key La clé du produit dans le tableau.
+	 * @param integer $key La clé du produit dans le tableau.
 	 */
 	public function delete_product( $key ) {
 		Cart_Session::g()->remove_product_by_key( $key );
@@ -136,12 +141,13 @@ class Cart extends Singleton_Util {
 	/**
 	 * Affiche le résumé du panier.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param  integer $total_price_no_shipping Prix total sans frais de livraison.
-	 * @param  integer $tva_amount              Montant de la TVA.
-	 * @param  integer $total_price_ttc         Prix total TTC.
-	 * @param  integer $shipping_cost           Frais de livraison.
+	 * @param integer $total_price_no_shipping Prix total sans frais de livraison.
+	 * @param integer $tva_amount              Montant de la TVA.
+	 * @param integer $total_price_ttc         Prix total TTC.
+	 * @param integer $shipping_cost           Frais de livraison.
 	 */
 	public function display_cart_resume( $total_price_no_shipping, $tva_amount, $total_price_ttc, $shipping_cost ) {
 		$shipping_cost_option = get_option( 'wps_shipping_cost', Settings::g()->shipping_cost_default_settings );
@@ -154,7 +160,8 @@ class Cart extends Singleton_Util {
 	/**
 	 * Vérifie le stock au moment du passage de la commande.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @return array is_valid à false si le produit n'est plus disponible.
 	 */
@@ -184,7 +191,8 @@ class Cart extends Singleton_Util {
 	/**
 	 * Pour chaque produit, décremente son stock selon la quantité de celui-ci dans la commande.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function decrease_stock() {
 		if ( ! empty( Cart_Session::g()->cart_contents ) ) {

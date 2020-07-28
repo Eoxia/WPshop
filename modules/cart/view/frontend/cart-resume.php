@@ -1,6 +1,6 @@
 <?php
 /**
- * La vue du tableau récapitulatif du panier.
+ * La vue affichant le tableau récapitulatif du panier.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>

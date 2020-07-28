@@ -1,6 +1,6 @@
 <?php
 /**
- * Les fonctions principales de la session du panier.
+ * La classe gérant les fonctions principales de la session du panier.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -23,14 +23,15 @@ class Cart_Session extends Singleton_Util {
 	/**
 	 * Les données externe.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var array
 	 */
 	public $external_data = array();
 
 	/**
-	 * Un tableau de produit.
+	 * Un tableau de produits.
 	 *
 	 * @var array
 	 */
@@ -39,7 +40,8 @@ class Cart_Session extends Singleton_Util {
 	/**
 	 * Le prix total HT.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var float
 	 */
@@ -48,7 +50,8 @@ class Cart_Session extends Singleton_Util {
 	/**
 	 * Le prix total HT sans frais de port.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var float
 	 */
@@ -57,7 +60,8 @@ class Cart_Session extends Singleton_Util {
 	/**
 	 * Le prix total TTC.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var float
 	 */
@@ -66,7 +70,8 @@ class Cart_Session extends Singleton_Util {
 	/**
 	 * Le total TVA.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var float
 	 */
@@ -75,7 +80,8 @@ class Cart_Session extends Singleton_Util {
 	/**
 	 * L'ID du devis.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var integer
 	 */
@@ -84,7 +90,8 @@ class Cart_Session extends Singleton_Util {
 	/**
 	 * L'ID de la commande.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var integer
 	 */
@@ -93,7 +100,8 @@ class Cart_Session extends Singleton_Util {
 	/**
 	 * Quantité de produit dans la commande.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var integer
 	 */
@@ -102,7 +110,8 @@ class Cart_Session extends Singleton_Util {
 	/**
 	 * Prix du frais de livaison;
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var integer
 	 */
@@ -111,7 +120,8 @@ class Cart_Session extends Singleton_Util {
 	/**
 	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	protected function construct() {
 		$this->cart_contents           = isset( $_SESSION['wps_cart'] ) ? $_SESSION['wps_cart'] : array();
@@ -129,7 +139,8 @@ class Cart_Session extends Singleton_Util {
 	/**
 	 * Ajoute une donnée externe.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @param string $property Le nom.
 	 * @param mixed  $value    La valeur.
@@ -142,7 +153,8 @@ class Cart_Session extends Singleton_Util {
 	/**
 	 * Met à jour la SESSION.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function update_session() {
 		$shipping_cost_option = get_option( 'wps_shipping_cost', Settings::g()->shipping_cost_default_settings );
@@ -180,7 +192,8 @@ class Cart_Session extends Singleton_Util {
 	/**
 	 * Supprime toutes les données de la SESSION.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function destroy() {
 		unset( $_SESSION['wps_cart'] );
@@ -200,7 +213,8 @@ class Cart_Session extends Singleton_Util {
 	/**
 	 * Ajoute un produit dans le panier.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @param Product $data Les données du produit.
 	 */
@@ -213,10 +227,11 @@ class Cart_Session extends Singleton_Util {
 	/**
 	 * Met à jour un produit dans le panier.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param  integer $index L'index du produit dans le tableau cart_contents.
-	 * @param  Product $data  Les données du produit.
+	 * @param integer $index L'index du produit dans le tableau cart_contents.
+	 * @param Product $data  Les données du produit.
 	 */
 	public function update_product( $index, $data ) {
 		$this->cart_contents[ $index ] = $data;
@@ -226,10 +241,11 @@ class Cart_Session extends Singleton_Util {
 	/**
 	 * Met à jour une propriété et met à jour la SESSION.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param  string $property Le nom de la propriété.
-	 * @param  mixed  $value    La valeur de la propriété.
+	 * @param string $property Le nom de la propriété.
+	 * @param mixed  $value    La valeur de la propriété.
 	 */
 	public function update( $property, $value ) {
 		$this->$property = $value;
@@ -239,7 +255,8 @@ class Cart_Session extends Singleton_Util {
 	/**
 	 * Recherche le produit dans le panier correspondant à l'ID.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @param  integer $id L'id du produit.
 	 *
@@ -260,9 +277,10 @@ class Cart_Session extends Singleton_Util {
 	/**
 	 * Supprime un produit du panier selon son $id.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param  integer $id L'ID du produit.
+	 * @param integer $id L'ID du produit.
 	 */
 	public function remove_product( $id ) {
 		if ( ! empty( $this->cart_contents ) ) {
@@ -280,7 +298,8 @@ class Cart_Session extends Singleton_Util {
 	/**
 	 * Supprime un produit depuis $key qui est son index dans le tableau cart_contents.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @param integer $key L'index dans le tableau cart_contents.
 	 */

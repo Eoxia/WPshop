@@ -1,13 +1,13 @@
 {
-	"name": "Gestion du panier",
+	"name": "Cart",
 	"slug": "cart",
 	"since": "2.0.0",
 	"description": "Le module gérant le panier",
 	"path": "module/cart/",
 	"dependencies": {
-      "action": {},
-      "class": {},
+      "shortcode": {},
       "filter": {},
-      "shortcode": {}
+      "class": {},
+      "action": {}
 	}
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Gestion des actions du panier.
+ * La classe gérant les actions du panier.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -19,9 +19,10 @@ defined( 'ABSPATH' ) || exit;
 class Cart_Action {
 
 	/**
-	 * Constructor.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function __construct() {
 		add_action( 'init', array( Cart_Shortcode::g(), 'callback_init' ), 5 );
@@ -45,7 +46,8 @@ class Cart_Action {
 	 *
 	 * @Todo bouger dans class-cart.php
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_calculate_totals() {
 		$shipping_cost_option = get_option( 'wps_shipping_cost', Settings::g()->shipping_cost_default_settings );
@@ -76,7 +78,8 @@ class Cart_Action {
 	/**
 	 * Action pour ajouter un produit dans le panier.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_add_to_cart() {
 		check_ajax_referer( 'add_to_cart' );
@@ -105,11 +108,12 @@ class Cart_Action {
 	}
 
 	/**
-	 * Action pour mêttre à jour le panier.
+	 * Action pour mettre à jour le panier.
 	 *
 	 * @todo Validate Data in $_POST['products']
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_update_cart() {
 		check_ajax_referer( 'ajax_update_cart' );
@@ -148,7 +152,8 @@ class Cart_Action {
 	/**
 	 * Action pour supprimer un produit du panier.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_delete_product_from_cart() {
 		check_ajax_referer( 'ajax_delete_product_from_cart' );
@@ -173,7 +178,8 @@ class Cart_Action {
 	/**
 	 * Action pour vider le panier.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function clear_cart() {
 		Cart_Session::g()->destroy();

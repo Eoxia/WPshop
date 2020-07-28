@@ -1,6 +1,6 @@
 <?php
 /**
- * Le bouton pour aller au panier.
+ * La vue affichant le bouton pour aller au panier.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -16,8 +16,8 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Documentation des variables utilisées dans la vue.
  *
- * @var Product_Model $product La donnée d'un produit.
- * @var integer       $qty     La quantité d'un produit.
+ * @var Product $product La donnée d'un produit.
+ * @var integer $qty     La quantité d'un produit.
  */
 ?>
 
