@@ -1,6 +1,6 @@
 <?php
 /**
- * Le formulaire de login
+ * La vue affichant le formulaire de login.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -24,25 +24,17 @@ defined( 'ABSPATH' ) || exit;
 
 <?php do_action( 'wps_before_customer_login_form' ); ?>
 
-<?php
-if ( ! empty( $transient ) ) :
-	?>
+<?php if ( ! empty( $transient ) ) : ?>
 	<div class="notice notice-error ">
 		<p><?php echo $transient; ?></p>
 	</div>
-<?php
-endif;
-?>
+<?php endif; ?>
 
-<?php
-if ( ! empty( $transient_lost_password ) ) :
-	?>
+<?php if ( ! empty( $transient_lost_password ) ) : ?>
 	<div class="notice notice-success">
 		<p><?php echo $transient_lost_password; ?></p>
 	</div>
-<?php
-endif;
-?>
+<?php endif; ?>
 
 <form class="wpeo-form" action="<?php echo esc_attr( admin_url( 'admin-post.php' ) ); ?>" method="post">
 	<?php wp_nonce_field( 'handle_login' ); ?>

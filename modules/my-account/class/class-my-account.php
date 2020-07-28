@@ -1,6 +1,6 @@
 <?php
 /**
- * Les fonctions principales de My account.
+ * La classe gérant les fonctions principales de My account.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -23,23 +23,26 @@ class My_Account extends Singleton_Util {
 	/**
 	 * Éléments du menu.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var array
 	 */
 	public $menu = array();
 
 	/**
-	 * Constructor.
+	 * Le constructor.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	protected function construct() {}
 
 	/**
-	 * Ajoute la route orders.
+	 * Initialise l'endpoint.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function init_endpoint() {
 		add_rewrite_endpoint( 'lost-password', EP_PAGES );
@@ -62,7 +65,8 @@ class My_Account extends Singleton_Util {
 	/**
 	 * Appel la vue pour afficher le formulaire de login dans la page de paiement.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function checkout_form_login() {
 		if ( ! is_user_logged_in() ) {
@@ -75,7 +79,10 @@ class My_Account extends Singleton_Util {
 	/**
 	 * Appel la vue pour afficher le formulaire de login dans la page mon compte.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 *
+	 * @param boolean $account_page True s'il s'agit de la page mon compte.
 	 */
 	public function display_form_login( $account_page = true) {
 		global $post;
@@ -92,7 +99,8 @@ class My_Account extends Singleton_Util {
 	/**
 	 * Appel la vue pour afficher le formulaire de perte de mot de passe dans la page mon compte.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function display_lost_password() {
 		global $post;
@@ -106,7 +114,8 @@ class My_Account extends Singleton_Util {
 	/**
 	 * Affiche le menu de navigation.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @param  string $tab Le slug de l'onglet actuel.
 	 */
@@ -171,7 +180,8 @@ class My_Account extends Singleton_Util {
 	/**
 	 * Affiche les détails de l'utilisateur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function display_details() {
 		$contact     = User::g()->get( array( 'id' => get_current_user_id() ), true );
@@ -188,7 +198,8 @@ class My_Account extends Singleton_Util {
 	 *
 	 * @todo: Doli My Account
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function display_orders() {
 		$contact     = User::g()->get( array( 'id' => get_current_user_id() ), true );
@@ -213,7 +224,8 @@ class My_Account extends Singleton_Util {
 	/**
 	 * Affiche les factures liées au tier.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function display_invoices() {
 		$contact     = User::g()->get( array( 'id' => get_current_user_id() ), true );
@@ -239,7 +251,8 @@ class My_Account extends Singleton_Util {
 	/**
 	 * Affiche les téléchargements liées au tier.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function display_downloads() {
 		$contact     = User::g()->get( array( 'id' => get_current_user_id() ), true );
@@ -259,7 +272,8 @@ class My_Account extends Singleton_Util {
 	/**
 	 * Affiche les devis liés au tiers sans l'ERP.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function display_quotations() {
 		$contact     = User::g()->get( array( 'id' => get_current_user_id() ), true );
@@ -277,7 +291,8 @@ class My_Account extends Singleton_Util {
 	/**
 	 * Affiche les propositions commerciales liés au tiers.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function display_dolibarr_quotations() {
 		$contact     = User::g()->get( array( 'id' => get_current_user_id() ), true );

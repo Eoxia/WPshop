@@ -1,6 +1,6 @@
 <?php
 /**
- * Gestion des actions dans la page mon compte.
+ * La classe gérant les actions de My account.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -19,9 +19,10 @@ defined( 'ABSPATH' ) || exit;
 class My_Account_Action {
 
 	/**
-	 * Constructor.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function __construct() {
 		add_action( 'init', array( My_Account_Shortcode::g(), 'init_shortcode' ) );
@@ -59,7 +60,8 @@ class My_Account_Action {
 	 *
 	 * @use wp_signon.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function handle_login() {
 		check_admin_referer( 'handle_login' );
@@ -168,7 +170,8 @@ class My_Account_Action {
 	/**
 	 * Repasse la même commande. Remet les mêmes données de la commande dans le panier.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function do_reorder() {
 		check_ajax_referer( 'do_reorder' );
@@ -192,7 +195,8 @@ class My_Account_Action {
 	/**
 	 * Repasse la même commande. Remet les mêmes données de la commande dans le panier.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function do_pay() {
 		//check_admin_referer( 'do_pay' );
@@ -214,9 +218,10 @@ class My_Account_Action {
 	}
 
 	/**
-	 * Ajoutes le lien vers la proposition commerciale si dolibarr est active.
+	 * Ajoute le lien vers la proposition commerciale si dolibarr est active.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @param Doli_Proposals $proposal Les données d'une proposition commerciale.
 	 */

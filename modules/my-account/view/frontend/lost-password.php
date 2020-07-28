@@ -1,6 +1,6 @@
 <?php
 /**
- * Lost password.
+ * La vue affichant le Lost password.
  *
  * @todo a supprimer
  *

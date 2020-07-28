@@ -1,6 +1,6 @@
 <?php
 /**
- * Affichage des informations du compte dans la page "Mon compte".
+ * La vue affichant les informations du compte.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -22,7 +22,7 @@ defined( 'ABSPATH' ) || exit;
  * @var string      $transient   Un message.
  * @var string      $key         Un message.
  * @var string      $text        Un message.
- * @var Contact     $contact     Les données d'un contact.
+ * @var User        $contact     Les données d'un contact.
  * @var Third_Party $third_party Les données d'un tier.
  */
 ?>

@@ -1,6 +1,6 @@
 <?php
 /**
- * Affichage des commandes dans la page "Mon compte"
+ * La vue affichant les commandes.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>

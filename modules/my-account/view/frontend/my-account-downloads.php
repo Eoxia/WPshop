@@ -1,6 +1,6 @@
 <?php
 /**
- * Affichage les produits téléchargables dans la page "Mon compte"
+ * La vue affichant les produits téléchargables.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>

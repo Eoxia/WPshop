@@ -1,6 +1,6 @@
 <?php
 /**
- * Gestion des shortcodes pour la page "Mon compte"
+ * La classe gérant les shortcodes de My account.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -11,34 +11,39 @@
 
 namespace wpshop;
 
+use eoxia\Singleton_Util;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
  * My Account Shortcode Class.
  */
-class My_Account_Shortcode extends \eoxia\Singleton_Util {
+class My_Account_Shortcode extends Singleton_Util {
 
 	/**
-	 * Constructor.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	protected function construct() {}
 
 	/**
 	 * Initialise le shortcode.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function init_shortcode() {
 		add_shortcode( 'wps_account', array( $this, 'callback_account' ) );
 	}
 
 	/**
-	 * Appel la vue "my-account" si l'utilisateur est connecté. Sinon
-	 * appel la vue form-login.
+	 * Appel la vue "my-account" si l'utilisateur est connecté.
+	 * Sinon appel la vue form-login.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_account() {
 		if ( ! is_admin() ) {

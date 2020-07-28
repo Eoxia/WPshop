@@ -1,6 +1,6 @@
 <?php
 /**
- * Affichage du titre login.
+ * La vue affichant le titre du login.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>

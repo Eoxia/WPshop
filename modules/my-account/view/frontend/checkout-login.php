@@ -1,6 +1,6 @@
 <?php
 /**
- * Appel le formulaire de login pour la page de paiement.
+ * La vue affichant le formulaire de login pour la page de paiement.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>

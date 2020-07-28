@@ -1,6 +1,6 @@
 <?php
 /**
- * Affichage des devis dans la page "Mon compte".
+ * La vue affichant la liste d'envies.
  *
  * @todo a revoir totalement
  *

@@ -1,6 +1,6 @@
 <?php
 /**
- * Affichage de la page mon compte.
+ * La vue principale affichant la page mon compte.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>

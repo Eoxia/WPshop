@@ -1,6 +1,6 @@
 <?php
 /**
- * Affichage des propositions commerciales dans la page "Mon compte".
+ * La vue affichant les propositions commerciales.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -16,12 +16,12 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Documentation des variables utilisées dans la vue.
  *
- * @var array     $proposals Le tableau contenant toutes les données des propositions commerciales.
- * @var Proposals $proposal  Les données d'une proposition commerciale.
- * @var array     $line      Le tableau contenant toutes les données d'un item.
- * @var integer   $qty       La quantité du produit.
- * @var array     $data      Le tableau contenant toutes les données externe d'un produit.
- * @var Product   $product   Les données d'un produit.
+ * @var array          $proposals Le tableau contenant toutes les données des propositions commerciales.
+ * @var Doli_Proposals $proposal  Les données d'une proposition commerciale.
+ * @var array          $line      Le tableau contenant toutes les données d'un item.
+ * @var integer        $qty       La quantité du produit.
+ * @var array          $data      Le tableau contenant toutes les données externe d'un produit.
+ * @var Product        $product   Les données d'un produit.
  */
 ?>
 

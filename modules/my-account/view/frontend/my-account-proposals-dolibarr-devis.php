@@ -1,6 +1,6 @@
 <?php
 /**
- * Affichage du lien pour télécharger la proposition commerciale en format PDF.
+ * La vue affichant le lien pour télécharger la proposition commerciale en format PDF.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -16,7 +16,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Documentation des variables utilisées dans la vue.
  *
- * @var Doli_Proposals  $proposal     Les données d'une proposition commerciale.
+ * @var Doli_Proposals $proposal Les données d'une proposition commerciale.
  */
 ?>
 <a target="_blank" href="<?php echo esc_attr( admin_url( 'admin-post.php?action=wps_download_proposal&_wpnonce=' . wp_create_nonce( 'download_proposal' ) . '&proposal_id=' . $proposal->data['external_id'] ) ); ?>"

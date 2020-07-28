@@ -1,6 +1,6 @@
 <?php
 /**
- * La vue pour la navigation dans la page mon compte.
+ * La vue affichant la navigation.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -16,10 +16,10 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Documentation des variables utilisées dans la vue.
  *
- * @var string   $this    A faire.
- * @var string  $key     A faire.
- * @var string   $element A faire.
- * @var string  $tab     A faire.
+ * @var string $this    A faire.
+ * @var string $key     A faire.
+ * @var string $element A faire.
+ * @var string $tab     A faire.
  */
 ?>
 
