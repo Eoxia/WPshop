@@ -1,6 +1,6 @@
 <?php
 /**
- * Gestion des actions des emails.
+ * La classe gérant les actions des emails.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -21,44 +21,23 @@ defined( 'ABSPATH' ) || exit;
 class Emails_Action {
 
 	/**
-	 * Constructor.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function __construct() {
-		add_action( 'admin_post_wps_copy_email_template', array( $this, 'callback_copy_email_template' ) );
-
 		add_action( 'wps_email_order_details', array( $this, 'order_details' ) );
 		add_action( 'wps_email_order_details', array( $this, 'type_payment' ), 20, 1 );
 	}
 
 	/**
-	 * Copie le template vers le thème.
+	 * Ajoute les détails de la commande dans l'email.
 	 *
-	 * @since 2.0.0
-	 */
-	public function callback_copy_email_template() {
-		check_admin_referer( 'callback_copy_email_template' );
-
-		$tab          = 'emails';
-		$section      = ! empty( $_GET['section'] ) ? sanitize_text_field( $_GET['section'] ) : '';
-		$email        = Emails::g()->emails[ $section ];
-		$file_to_copy = Config_Util::$init['wpshop']->emails->path . '/view/' . $email['filename_template'];
-		$path         = get_template_directory() . '/wpshop/emails/view/' . $email['filename_template'];
-
-		if ( wp_mkdir_p( dirname( $path ) ) && ! file_exists( $path ) ) {
-			copy( $file_to_copy, $path );
-		}
-
-		wp_redirect( admin_url( 'admin.php?page=wps-settings&tab= ' . $tab . '&section=' . $section ) );
-	}
-
-	/**
-	 * Ajoute les détails de la commande dans le mail.
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @since 2.0.0
-	 *
-	 * @param Order $order Les données de la commande.
+	 * @param Doli_Order $order Les données de la commande.
 	 */
 	public function order_details( $order ) {
 		$tva_lines = array();
@@ -86,11 +65,12 @@ class Emails_Action {
 	}
 
 	/**
-	 * Ajoute les informations de paiement dans le mail.
+	 * Ajoute les informations de paiement dans l'email.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param Order $order Les données de la commande.
+	 * @param Doli_Order $order Les données de la commande.
 	 */
 	public function type_payment( $order ) {
 		$payment_methods = get_option( 'wps_payment_methods', Payment::g()->default_options );

@@ -1,6 +1,6 @@
 <?php
 /**
- * Les fonctions principales des emails.
+ * La classe gérant les fonctions principales des emails.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -23,7 +23,8 @@ class Emails extends Singleton_Util {
 	/**
 	 * Tableau contenant les mails par défaut.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var array
 	 */
@@ -37,9 +38,10 @@ class Emails extends Singleton_Util {
 	public $log_emails_directory;
 
 	/**
-	 * Constructeur.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	protected function construct() {
 		$this->emails['customer_new_account'] = array(
@@ -84,13 +86,12 @@ class Emails extends Singleton_Util {
 	/**
 	 * Envoie un mail.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @use wp_mail.
-	 *
-	 * @param  string $to         Email du destinataire.
-	 * @param  string $type_email Le type de l'email utilisé voir les lignes 45 à 71 Sample : 'customer_new_account'
-	 * @param  array  $data       Les données utilisées par l'email.
+	 * @param string $to         Email du destinataire.
+	 * @param string $type_email Le type de l'email utilisé voir les lignes 45 à 71 Sample : 'customer_new_account'
+	 * @param array  $data       Les données utilisées par l'email.
 	 */
 	public function send_mail( $to, $type_email, $data = array() ) {
 		$shop_options = get_option( 'wps_dolibarr', Settings::g()->default_settings );
@@ -129,15 +130,15 @@ class Emails extends Singleton_Util {
 		wp_mail( $to, $mail['title'], $content, $headers, $attachments );
 
 		$this->log_emails( $data_email );
-
 	}
 
 	/**
 	 * Création des lignes de log des mails envoyés.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param  string $data_email Les données du mails envoyé.
+	 * @param string $data_email Les données du mails envoyé.
 	 */
 	public function log_emails( $data_email ) {
 

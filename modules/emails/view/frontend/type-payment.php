@@ -1,6 +1,6 @@
 <?php
 /**
- * Ajoute le type de paiement.
+ * La vue affichant le type de paiement.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -16,8 +16,8 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Documentation des variables utilisées dans la vue.
  *
- * @var Order  $order           Les données d'une commande.
- * @var string $payment_methods Tableau contenant toutes les données des méthodes de paiements.
+ * @var Doli_Order $order           Les données d'une commande.
+ * @var string     $payment_methods Tableau contenant toutes les données des méthodes de paiements.
  */
 ?>
 

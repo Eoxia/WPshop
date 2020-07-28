@@ -1,6 +1,6 @@
 <?php
 /**
- * Ajoute les détails de la commande.
+ * La vue affichant les détails de la commande.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -11,18 +11,16 @@
 
 namespace wpshop;
 
-use Stripe\Order;
-
 defined( 'ABSPATH' ) || exit;
 
 /**
  * Documentation des variables utilisées dans la vue.
  *
- * @var Order   $order     Les données d'une commande.
- * @var string  $line      La ligne dans une commande.
- * @var array   $tva_lines Le tableau contenant toutes les données des tva.
- * @var string  $key       A faire.
- * @var integer $tva_line  Les données d'une tva.
+ * @var Doli_Order $order     Les données d'une commande.
+ * @var string     $line      La ligne dans une commande.
+ * @var array      $tva_lines Le tableau contenant toutes les données des tva.
+ * @var string     $key       A faire.
+ * @var integer    $tva_line  Les données d'une tva.
  */
 ?>
 
@@ -46,10 +44,8 @@ defined( 'ABSPATH' ) || exit;
 		</tr>
 	</thead>
 	<tbody>
-		<?php
-		if ( ! empty( $order->lines ) ) :
-			foreach ( $order->lines as $line ) :
-				?>
+		<?php if ( ! empty( $order->lines ) ) :
+			foreach ( $order->lines as $line ) : ?>
 				<tr>
 					<td><a href="<?php echo esc_url( get_permalink( $line->wp_id ) ); ?>"><?php echo esc_html( $line->libelle ); ?></a></td>
 					<td><?php echo esc_html( number_format( $line->tva_tx, 2, ',', '' ) ); ?>%</td>
@@ -57,29 +53,22 @@ defined( 'ABSPATH' ) || exit;
 					<td><?php echo esc_html( $line->qty ); ?></td>
 					<td><?php echo esc_html( number_format( $line->price * $line->qty, 2, ',', '' ) ); ?>€</td>
 				</tr>
-				<?php
-			endforeach;
-		endif;
-		?>
+			<?php endforeach;
+		endif; ?>
 	</tbody>
 	<tfoot>
 		<tr>
 			<td colspan="4"><strong><?php esc_html_e( 'Total HT', 'wpshop' ); ?></strong></td>
 			<td><?php echo number_format( $order->total_ht, 2, ',', '' ); ?>€</td>
 		</tr>
-		<?php
-		if ( ! empty( $tva_lines ) ) :
-			foreach ( $tva_lines as $key => $tva_line ) :
-				?>
+		<?php if ( ! empty( $tva_lines ) ) :
+			foreach ( $tva_lines as $key => $tva_line ) : ?>
 				<tr>
 					<td colspan="4"><strong><?php esc_html_e( 'Total VAT', 'wpshop' ); ?> <?php echo number_format( $key, 2, ',', '' ); ?>%</strong></td>
 					<td><?php echo number_format( $tva_line, 2, ',', '' ); ?>€</td>
 				</tr>
-				<?php
-			endforeach;
-		endif;
-		?>
-
+			<?php endforeach;
+		endif; ?>
 		<tr>
 			<td colspan="4"><strong><?php esc_html_e( 'Total TTC', 'wpshop' ); ?></strong></td>
 			<td><strong><?php echo number_format( $order->total_ttc, 2, ',', '' ); ?>€</strong></td>
@@ -87,6 +76,6 @@ defined( 'ABSPATH' ) || exit;
 	</tfoot>
 </table>
 
-<strong><a href="<?php echo esc_attr( \wpshop\Pages::g()->get_account_link() ); ?>"><?php esc_html_e( 'See my orders or my downloadable products', 'wpshop' ); ?></a></strong>
+<strong><a href="<?php echo esc_attr( Pages::g()->get_account_link() ); ?>"><?php esc_html_e( 'See my orders or my downloadable products', 'wpshop' ); ?></a></strong>
 
 <?php do_action( 'wps_email_after_order_table', $order ); ?>

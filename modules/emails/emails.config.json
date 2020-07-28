@@ -5,7 +5,7 @@
     "description": "Le module gérant les emails",
 	"path": "modules/emails",
 	"dependencies": {
-      "action": {},
-      "class": {}
+      "class": {},
+      "action": {}
 	}
 }
