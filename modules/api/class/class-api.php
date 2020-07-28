@@ -1,6 +1,6 @@
 <?php
 /**
- * Les fonctions principales de l'API.
+ * La classe gérant les fonctions principales de l'API.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -21,16 +21,18 @@ defined( 'ABSPATH' ) || exit;
 class API extends Singleton_Util {
 
 	/**
-	 * Constructeur obligatoire.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	protected function construct() {}
 
 	/**
 	 * Génère un token sur 20 caractères.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @return string Le token généré.
 	 */
@@ -51,7 +53,8 @@ class API extends Singleton_Util {
 	/**
 	 * Récupère un utilisateur selon le token.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @param  string $token   Le token.
 	 *

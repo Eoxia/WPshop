@@ -1,16 +1,15 @@
 {
 	"name": "wpshop",
 	"slug": "wpshop",
+	"version": "2.0.0",
+    "description": "L'application WPshop2",
 	"modules": [
 		"core/core.config.json",
 
-        "modules/transfert-data/transfert-data.config.json",
-    
         "modules/api/api.config.json",
     
         "modules/settings/settings.config.json",
         "modules/tools/tools.config.json",
-        "modules/health/health.config.json",
     
         "modules/order/order.config.json",
         "modules/products/products.config.json",
@@ -33,6 +32,7 @@
         "modules/dashboard/dashboard.config.json",
     
         "modules/search/search.config.json",
+        "modules/wishlist/wishlist.config.json",
     
         "modules/dolibarr/doli-shipping-cost/doli-shipping-cost.config.json",
         "modules/dolibarr/doli-statut/doli-statut.config.json",
@@ -46,6 +46,5 @@
         "modules/dolibarr/doli-sync/doli-sync.config.json",
         "modules/dolibarr/doli-associate/doli-associate.config.json"
 	],
-	"version": "2.0.0",
     "use_global_sync": true
 }

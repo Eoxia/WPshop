@@ -3,16 +3,20 @@
  * Plugin Name: WPshop
  * Plugin URI:
  * Description: Simple, fast, efficient it will transform your WordPress into an internet sales site
- * Version: 2.0.
- * Author: Eoxia <dev@eoxia.com>
- * Author URI: http://www.eoxia.com/
- * License:
- * License URI:
+ * Version:     2.0.0
+ * Author:      Eoxia <dev@eoxia.com>
+ * Author URI:  http://www.eoxia.com/
+ * License:     GPLv3
+ * License URI: https://spdx.org/licenses/GPL-3.0-or-later.html
+ * Domain Path: /core/assets/languages
+ * Text Domain: wpshop
  *
  * @package WPshop
  */
 
 namespace wpshop;
+
+use eoxia\Init_Util;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -29,4 +33,4 @@ if ( ! PLUGIN_WPSHOP_DEV_MODE ) {
 require_once 'vendor/autoload.php';
 
 // Boot your plugin.
-\eoxia\Init_Util::g()->exec( PLUGIN_WPSHOP_PATH, basename( __FILE__, '.php' ) );
+Init_Util::g()->exec( PLUGIN_WPSHOP_PATH, basename( __FILE__, '.php' ) );

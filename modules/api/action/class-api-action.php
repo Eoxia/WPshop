@@ -1,6 +1,6 @@
 <?php
 /**
- * Gestion des actions de l'API.
+ * La classe gérant les actions de l'API.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -23,9 +23,10 @@ defined( 'ABSPATH' ) || exit;
 class API_Action {
 
 	/**
-	 * Constructeur.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function __construct() {
 		add_filter( 'eo_model_check_cap', array( $this, 'check_cap' ), 1, 2 );
@@ -41,7 +42,8 @@ class API_Action {
 	/**
 	 * Vérifie que l'utilisateur à les droits.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @param  boolean         $cap     True ou false.
 	 * @param  WP_REST_Request $request Les données de la requête.
@@ -71,7 +73,8 @@ class API_Action {
 	/**
 	 * Ajoute la route pour PayPal.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_rest_api_init() {
 		register_rest_route( 'wpshop/v2', '/statut', array(
@@ -141,7 +144,8 @@ class API_Action {
 	/**
 	 * Ajoute le champ clé API dans le compte utilisateur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @param WP_User $user L'objet contenant la définition complète de l'utilisateur.
 	 */
@@ -157,7 +161,8 @@ class API_Action {
 	/**
 	 * Génère une clé API pour un utilisateur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_generate_api_key() {
 		check_ajax_referer( 'generate_api_key' );
@@ -188,11 +193,12 @@ class API_Action {
 	/**
 	 * Permet de vérifier que l'application externe soit bien connecté.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @param  WP_REST_Request $request Les données de la requête.
 	 *
-	 * @return WP_REST_Response          La réponse au format JSON.
+	 * @return WP_REST_Response         La réponse au format JSON.
 	 */
 	public function check_statut( $request ) {
 		if ( ! current_user_can( 'manage_options' ) ) {
@@ -206,7 +212,8 @@ class API_Action {
 	 * Gestion de la route Paypal.
 	 * Data is validated in wps_gateway_paypal
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @param  WP_Request $request L'objet contenant les informations de la requête.
 	 */
@@ -231,7 +238,8 @@ class API_Action {
 	/**
 	 * Gestion de la route Stripe.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @todo: Validate data request
 	 *
@@ -252,7 +260,8 @@ class API_Action {
 	/**
 	 * Recherche un produit depuis l'API.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @todo: Validate data request
 	 *
@@ -279,7 +288,8 @@ class API_Action {
 	 /**
  	 * Gestion de la route pour synchroniser un objet depuis dolibarr.
  	 *
- 	 * @since 2.0.0
+ 	 * @since   2.0.0
+	 * @version 2.0.0
  	 *
  	 * @todo: Validate data request
  	 *
@@ -308,7 +318,8 @@ class API_Action {
 	/**
 	 * Gestion de la route pour créer une commande sur dolibarr.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @todo: Validate data request
 	 *
@@ -348,7 +359,8 @@ class API_Action {
 	/**
 	 * Gestion de la route pour créer une proposition commerciale sur dolibarr.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @todo: Validate data request
 	 *
@@ -387,7 +399,8 @@ class API_Action {
 	/**
 	 * Gestion de la route pour créer une facture sur dolibarr.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @todo: Validate data request
 	 *
@@ -435,7 +448,8 @@ class API_Action {
 	/**
 	 * Gestion de la route pour créer un paiement sur dolibarr.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @todo: Validate data request
 	 *
