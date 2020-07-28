@@ -1,6 +1,6 @@
 <?php
 /**
- * Gestion des actions des produits téléchargeables.
+ * La classe gérant les actions des produits téléchargeables.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -19,9 +19,10 @@ defined( 'ABSPATH' ) || exit;
 class Product_Downloadable_Action {
 
 	/**
-	 * Constructor.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function __construct() {
 		add_action( 'init', array( $this, 'create_wpshop_upload_dir' ) );
@@ -31,7 +32,8 @@ class Product_Downloadable_Action {
 	/**
 	 * Créer un répertoire sécurisé pour les produits téléchargables.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function create_wpshop_upload_dir() {
 		$dir = wp_upload_dir();
@@ -48,7 +50,8 @@ class Product_Downloadable_Action {
 	/**
 	 * Télécharge le produit.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function download_product() {
 		check_admin_referer( 'download_product' );

@@ -1,6 +1,6 @@
 <?php
 /**
- * Les fonctions principales des produits téléchargeables.
+ * La classe gérant les fonctions principales des produits téléchargeables.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -21,18 +21,20 @@ defined( 'ABSPATH' ) || exit;
 class Product_Downloadable extends Post_Class {
 
 	/**
-	 * Model name @see ../model/*.model.php.
+	 * Le nom du modèle.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var string
 	 */
 	protected $model_name = '\wpshop\Product_Downloadable_Model';
 
 	/**
-	 * Post type
+	 * Le post type.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var string
 	 */
@@ -41,7 +43,8 @@ class Product_Downloadable extends Post_Class {
 	/**
 	 * La clé principale du modèle.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var string
 	 */
@@ -50,7 +53,8 @@ class Product_Downloadable extends Post_Class {
 	/**
 	 * La route pour accéder à l'objet dans la rest API.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var string
 	 */
@@ -59,7 +63,8 @@ class Product_Downloadable extends Post_Class {
 	/**
 	 * Le nom du post type.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var string
 	 */
@@ -68,11 +73,10 @@ class Product_Downloadable extends Post_Class {
 	/**
 	 * Créer un produit téléchargable depuis les produits dans la commande.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param  Order $order Les données de la commande.
-	 *
-	 * @return void
+	 * @param Doli_Order $order Les données de la commande.
 	 */
 	public function create_from_order( $order ) {
 		if ( ! empty( $order->data['lines'] ) ) {

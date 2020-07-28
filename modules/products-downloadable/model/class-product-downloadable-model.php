@@ -1,6 +1,6 @@
 <?php
 /**
- * Classe définisant le modèle d'un produit téléchargeable WPshop.
+ * La classe définisant le modèle d'un produit téléchargeable.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -21,9 +21,10 @@ defined( 'ABSPATH' ) || exit;
 class Product_Downloadable_Model extends Post_Model {
 
 	/**
-	 * Constructor.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @param Product_Downloadable $object     Les données de l'objet.
 	 * @param string               $req_method La méthode de la requête.
