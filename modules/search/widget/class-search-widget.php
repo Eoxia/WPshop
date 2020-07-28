@@ -1,6 +1,6 @@
 <?php
 /**
- * Le widget pour la recherche.
+ * La classe gérant le widget pour la recherche.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -21,9 +21,10 @@ defined( 'ABSPATH' ) || exit;
 class Search_Widget extends \WP_Widget {
 
 	/**
-	 * Initialise le Widget.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function __construct() {
 		$widget_ops = array(
@@ -37,7 +38,8 @@ class Search_Widget extends \WP_Widget {
 	/**
 	 * Outputs the content of the widget.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @param array $args     Les paramètres du widget.
 	 * @param array $instance Les données du widget.
@@ -52,9 +54,10 @@ class Search_Widget extends \WP_Widget {
 	/**
 	 * Le formulaire pour configurer le widget.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param  array $instance Les données du widget.
+	 * @param array $instance Les données du widget.
 	 */
 	public function form( $instance ) {
 		$title = ! empty( $instance['title'] ) ? $instance['title'] : esc_html__( 'New title', 'wpshop' );
@@ -69,12 +72,13 @@ class Search_Widget extends \WP_Widget {
 	/**
 	 * Processing widget options on save.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param array $new_instance The new options.
-	 * @param array $old_instance The previous options.
+	 * @param  array $new_instance The new options.
+	 * @param  array $old_instance The previous options.
 	 *
-	 * @return array
+	 * @return array               L'instance mise à jour.
 	 */
 	public function update( $new_instance, $old_instance ) {
 		$instance          = array();

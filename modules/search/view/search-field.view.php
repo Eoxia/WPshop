@@ -1,6 +1,6 @@
 <?php
 /**
- * Champs pour rechercher un produit.
+ * La vue affichant le champs pour rechercher un produit.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>

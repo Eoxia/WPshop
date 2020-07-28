@@ -1,6 +1,6 @@
 <?php
 /**
- * Gestions des actions principales pour la recherche.
+ * La classe gérant les actions principales pour la recherche.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -19,9 +19,10 @@ defined( 'ABSPATH' ) || exit;
 class Search_Action {
 
 	/**
-	 * Constructeur.
+	 * Le ccnstructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function __construct() {
 		add_action( 'widgets_init', array( $this, 'register_widget' ) );
@@ -30,7 +31,8 @@ class Search_Action {
 	/**
 	 * Enregistre le widget.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function register_widget() {
 		register_widget( 'wpshop\Search_Widget' );

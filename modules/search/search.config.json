@@ -1,8 +1,9 @@
 {
-	"name": "search",
+	"name": "Search",
 	"slug": "search",
 	"since": "2.0.0",
-    "description": "Le module gérant la page mon compte",
+    "version": "2.0.0",
+    "description": "Le module gérant la recherche",
 	"path": "modules/search",
 	"dependencies": {
       "widget": {},
