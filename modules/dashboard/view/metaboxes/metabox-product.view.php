@@ -1,6 +1,6 @@
 <?php
 /**
- * La metabox des produits dans le tableau de bord.
+ * La vue affichant la metabox des produits dans le tableau de bord.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -36,27 +36,21 @@ defined( 'ABSPATH' ) || exit;
 			<div class="table-cell"><?php esc_html_e( 'Date', 'wpshop' ); ?></div>
 		</div>
 
-		<?php
-		if ( ! empty( $products ) ) :
-			foreach ( $products as $product ) :
-				?>
+		<?php if ( ! empty( $products ) ) :
+			foreach ( $products as $product ) : ?>
 				<div class="table-row">
 					<div class="table-cell"><a href="<?php echo esc_attr( admin_url( 'post.php?action=edit&post=' . $product->data['id'] ) ); ?>"><?php echo esc_html( $product->data['id'] ); ?></a></div>
 					<div class="table-cell break-word"><a href="<?php echo esc_attr( admin_url( 'post.php?action=edit&post=' . $product->data['id'] ) ); ?>"><?php echo esc_html( $product->data['title'] ); ?></a></div>
 					<div class="table-cell"><?php echo esc_html( number_format( $product->data['price_ttc'], 2, ',', '' ) ); ?>€</div>
 					<div class="table-cell"><?php echo esc_html( $product->data['date']['rendered']['date_time'] ); ?></div>
 				</div>
-				<?php
-			endforeach;
-		else :
-			?>
+			<?php endforeach;
+		else : ?>
 			<div class="table-row">
 				<div class="table-cell">
 					<?php esc_html_e( 'No product for the moment', 'wpshop' ); ?>
 				</div>
 			</div>
-			<?php
-		endif;
-		?>
+		<?php endif; ?>
 	</div>
 </div>

@@ -1,6 +1,6 @@
 <?php
 /**
- * La metabox des paiements dans le tableau de bord.
+ * La vue affichant la metabox des paiements dans le tableau de bord.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -36,10 +36,8 @@ defined( 'ABSPATH' ) || exit;
 			<div class="table-cell"><?php esc_html_e( 'Date', 'wpshop' ); ?></div>
 		</div>
 
-		<?php
-		if ( ! empty( $payments ) ) :
-			foreach ( $payments as $payment ) :
-				?>
+		<?php if ( ! empty( $payments ) ) :
+			foreach ( $payments as $payment ) : ?>
 				<div class="table-row">
 					<div class="table-cell"><?php echo esc_html( $payment->data['title'] ); ?></div>
 					<div class="table-cell"><a href="<?php echo esc_attr( admin_url( 'admin.php?page=wps-invoice&id=' . $payment->data['invoice']->data['id'] ) ); ?>"><?php echo esc_html( $payment->data['invoice']->data['title'] ); ?></a></div>
@@ -47,17 +45,13 @@ defined( 'ABSPATH' ) || exit;
 					<div class="table-cell"><?php echo esc_html( number_format( $payment->data['amount'], 2, ',', '' ) ); ?>€</div>
 					<div class="table-cell"><?php echo esc_html( Date_util::readable_date( $payment->data['date'], 'date_time' ) ); ?></div>
 				</div>
-				<?php
-			endforeach;
-		else :
-			?>
+			<?php endforeach;
+		else : ?>
 			<div class="table-row">
 				<div class="table-cell">
 					<?php esc_html_e( 'No payment for the moment', 'wpshop' ); ?>
 				</div>
 			</div>
-			<?php
-		endif;
-		?>
+		<?php endif; ?>
 	</div>
 </div>

@@ -1,6 +1,6 @@
 <?php
 /**
- * Les fonctions principales du tableau de bord.
+ * La classe gérant les fonctions principales du tableau de bord.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -24,16 +24,18 @@ class Dashboard extends Singleton_Util {
 	/**
 	 * Définition des metaboxes.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var array
 	 */
 	private $metaboxes = array();
 
 	/**
-	 * Obligatoire pour Singleton_Util.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	protected function construct() {
 		$this->metaboxes = apply_filters( 'wps_dashboard_metaboxes', array(
@@ -64,7 +66,8 @@ class Dashboard extends Singleton_Util {
 	/**
 	 * Appel la vue "main" du module "dashboard".
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_add_menu_page() {
 		if ( ! empty( $this->metaboxes ) ) {
@@ -82,12 +85,11 @@ class Dashboard extends Singleton_Util {
 		View_Util::exec( 'wpshop', 'dashboard', 'main' );
 	}
 
-
-
 	/**
 	 * La metabox des 3 derniers clients.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function metabox_customer() {
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
@@ -107,7 +109,8 @@ class Dashboard extends Singleton_Util {
 	/**
 	 * La metabox des 3 derniers produits.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function metabox_product() {
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
@@ -127,7 +130,8 @@ class Dashboard extends Singleton_Util {
 	/**
 	 * La metabox des 3 dernières envies.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function metabox_wishlist() {
 		$wishlists = Proposals::g()->get( array( 'posts_per_page' => 3 ) );
@@ -146,7 +150,8 @@ class Dashboard extends Singleton_Util {
 	/**
 	 * La metabox des 3 dernières propositions commerciales.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function metabox_proposal() {
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
@@ -173,7 +178,8 @@ class Dashboard extends Singleton_Util {
 	/**
 	 * La metabox des 3 dernières commandes.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function metabox_order() {
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
@@ -200,7 +206,8 @@ class Dashboard extends Singleton_Util {
 	/**
 	 * La metabox des 3 derniers paiements.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function metabox_payment() {
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
@@ -243,7 +250,8 @@ class Dashboard extends Singleton_Util {
 	/**
 	 * La metabox des 3 dernières factures.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function metabox_invoice() {
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );

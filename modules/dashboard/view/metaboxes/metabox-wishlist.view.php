@@ -1,6 +1,6 @@
 <?php
 /**
- * La metabox des envies dans le tableau de bord.
+ * La vue affichant la metabox des envies dans le tableau de bord.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -33,27 +33,21 @@ defined( 'ABSPATH' ) || exit;
 			<div class="table-cell"><?php esc_html_e( 'Date', 'wpshop' ); ?></div>
 		</div>
 
-		<?php
-		if ( ! empty( $wishlists ) ) :
-			foreach ( $wishlists as $whishlist ) :
-				?>
+		<?php if ( ! empty( $wishlists ) ) :
+			foreach ( $wishlists as $whishlist ) : ?>
 				<div class="table-row">
 					<div class="table-cell"><a href="<?php echo esc_attr( admin_url( 'admin.php?page=wps-proposal&id=' . $whishlist->data['id'] ) ); ?>"><?php echo esc_html( $whishlist->data['title'] ); ?></a></div>
 					<div class="table-cell"><a href="<?php echo esc_attr( admin_url( 'admin.php?page=wps-third-party&id=' . $whishlist->data['third_party']->data['id'] ) ); ?>"><?php echo esc_html( $whishlist->data['third_party']->data['title'] ); ?></a></div>
 					<div class="table-cell"><?php echo esc_html( number_format( $whishlist->data['total_ttc'], 2, ',', '' ) ); ?>€</div>
 					<div class="table-cell"><?php echo esc_html( $whishlist->data['date']['rendered']['date_time'] ); ?></div>
 				</div>
-				<?php
-			endforeach;
-		else :
-			?>
+			<?php endforeach;
+		else : ?>
 			<div class="table-row">
 				<div class="table-cell">
 					<?php esc_html_e( 'No wish for the moment', 'wpshop' ); ?>
 				</div>
 			</div>
-			<?php
-		endif;
-		?>
+		<?php endif; ?>
 	</div>
 </div>

@@ -1,6 +1,6 @@
 <?php
 /**
- * Gestion des actions du tableau de bord.
+ * La classe gérant les actions du tableau de bord.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -19,9 +19,10 @@ defined( 'ABSPATH' ) || exit;
 class Dashboard_Action {
 
 	/**
-	 * Constructeur.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function __construct() {
 		//@todo nom a vérifier
@@ -31,7 +32,8 @@ class Dashboard_Action {
 	/**
 	 * Charge les script WP pour les metaboxes.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_load() {
 		wp_enqueue_script( 'common' );

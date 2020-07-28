@@ -1,6 +1,6 @@
 <?php
 /**
- * La metabox des clients dans le tableau de bord.
+ * La vue affichant la metabox des clients dans le tableau de bord.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -30,30 +30,24 @@ defined( 'ABSPATH' ) || exit;
 	<div class="wpeo-table table-flex table-3">
 		<div class="table-row table-header">
 			<div class="table-cell">#</div>
-			<div class="table-cell">Nom</div>
-			<div class="table-cell">Date</div>
+			<div class="table-cell"><?php esc_html_e( 'Name', 'wpshop' ); ?></div>
+			<div class="table-cell"><?php esc_html_e( 'Date', 'wpshop' ); ?></div>
 		</div>
 
-		<?php
-		if ( ! empty( $third_parties ) ) :
-			foreach ( $third_parties as $third_party ) :
-				?>
+		<?php if ( ! empty( $third_parties ) ) :
+			foreach ( $third_parties as $third_party ) : ?>
 				<div class="table-row">
 					<div class="table-cell"><a href="<?php echo esc_attr( admin_url( 'admin.php?page=wps-third-party&id=' . $third_party->data['id'] ) ); ?>"><?php echo esc_html( $third_party->data['id'] ); ?></a></div>
 					<div class="table-cell break-word"><a href="<?php echo esc_attr( admin_url( 'admin.php?page=wps-third-party&id=' . $third_party->data['id'] ) ); ?>"><?php echo esc_html( $third_party->data['title'] ); ?></a></div>
 					<div class="table-cell"><?php echo esc_html( $third_party->data['date']['rendered']['date_time'] ); ?></div>
 				</div>
-				<?php
-			endforeach;
-		else :
-			?>
+			<?php endforeach;
+		else : ?>
 			<div class="table-row">
 				<div class="table-cell">
 					<?php esc_html_e( 'No customer for the moment', 'wpshop' ); ?>
 				</div>
 			</div>
-			<?php
-		endif;
-		?>
+		<?php endif; ?>
 	</div>
 </div>

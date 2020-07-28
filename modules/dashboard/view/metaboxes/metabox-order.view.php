@@ -1,6 +1,6 @@
 <?php
 /**
- * La metabox des commandes dans le tableau de bord.
+ * La vue affichant la metabox des commandes dans le tableau de bord.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -35,27 +35,21 @@ defined( 'ABSPATH' ) || exit;
 			<div class="table-cell"><?php esc_html_e( 'Date', 'wpshop' ); ?></div>
 		</div>
 
-		<?php
-		if ( ! empty( $orders ) ) :
-			foreach ( $orders as $order ) :
-				?>
+		<?php if ( ! empty( $orders ) ) :
+			foreach ( $orders as $order ) : ?>
 				<div class="table-row">
 					<div class="table-cell"><a href="<?php echo esc_attr( $dolibarr_url . '/commande/card.php?id=' . $order->data['external_id'] ); ?>"><?php echo esc_html( $order->data['title'] ); ?></a></div>
 					<div class="table-cell"><a href="<?php echo esc_attr( admin_url( 'admin.php?page=wps-third-party&id=' . $order->data['third_party']->data['id'] ) ); ?>"><?php echo esc_html( $order->data['third_party']->data['title'] ); ?></a></div>
 					<div class="table-cell"><?php echo esc_html( number_format( $order->data['total_ttc'], 2, ',', '' ) ); ?>€</div>
 					<div class="table-cell"><?php echo esc_html( date( 'd/m/Y H:i', strtotime( $order->data['datec'] ) ) ); ?></div>
 				</div>
-				<?php
-			endforeach;
-		else :
-			?>
+			<?php endforeach;
+		else : ?>
 			<div class="table-row">
 				<div class="table-cell">
 					<?php esc_html_e( 'No order for the moment', 'wpshop' ); ?>
 				</div>
 			</div>
-			<?php
-		endif;
-		?>
+		<?php endif; ?>
 	</div>
 </div>
