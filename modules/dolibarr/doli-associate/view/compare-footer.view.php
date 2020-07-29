@@ -1,26 +1,27 @@
 <?php
 /**
- * Le footer de la modal de comparaison.
+ * La vue affichant le footer de la modal de comparaison.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2019-2020 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Templates
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
-/**
- * @var string $type     Can be product, third-party or propal.
- * @var int    $entry_id Dolibarr entry ID.
- * @var int    $wp_id    WP Entry ID.
- */
 
-defined( 'ABSPATH' ) || exit; ?>
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * Documentation des variables utilisées dans la vue.
+ *
+ * @var string  $type     Le type d'entité ( produit / tier ).
+ * @var integer $entry_id L'id de Dolibarr.
+ * @var integer $wp_id    L'id de WordPress.
+ */
+?>
 
 <div class="action-attribute wpeo-button button-main"
      data-action="associate_entry"

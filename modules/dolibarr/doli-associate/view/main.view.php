@@ -1,48 +1,37 @@
 <?php
 /**
- * Modal Associate first step. Search element by type.
+ * La vue principale de l'association des entités.
  *
- * @todo: Translate to english.
- *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2019-2020 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Templates
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
 use eoxia\View_Util;
 
+
+defined( 'ABSPATH' ) || exit;
+
 /**
- * @var string $label Entity Name.
- * @var int    $wp_id ID Entity on WP.
- * @var string $type  Type of the Entity (Can be product, propal, third-party).
+ * Documentation des variables utilisées dans la vue.
+ *
+ * @var string  $label   Le nom de l'entité à associer.
+ * @var integer $wp_id   L'id de WordPress.
+ * @var string  $type    Le type de l'entité ( produit, tier ).
+ * @var array   $entries Le tableau contenant toutes les données des entités.
+ * @var array   $entry   Les données d'une entité.
  */
+?>
 
-defined( 'ABSPATH' ) || exit; ?>
+<p><?php printf( __( 'This %s is not associated to a %s in Dolibarr', 'wpshop' ), esc_html( $label ), esc_html( $label ) ); ?></p>
 
-<p>
-	<?php
-	printf( __( 'This %s is not associated to a %s in Dolibarr', 'wpshop' ), esc_html( $label ), esc_html( $label ) );
-	?>
-</p>
+<p><?php printf( __( 'Please select a %s to associate in the next elements:', 'wpshop' ), esc_html( $label ) ); ?></p>
 
-<p>
-	<?php
-	printf( __( 'Please select a %s to associate in the next elements:', 'wpshop' ), esc_html( $label ) );
-	?>
-</p>
-
-<p>
-	<?php
-	printf( __( '%s available in your ERP', 'wpshop' ), ucfirst( esc_html( $label ) ) );
-	?>
-</p>
+<p><?php printf( __( '%s available in your ERP', 'wpshop' ), ucfirst( esc_html( $label ) ) ); ?></p>
 
 <!-- Dolibarr id -->
 <input type="hidden" name="entry_id" />
@@ -56,13 +45,11 @@ defined( 'ABSPATH' ) || exit; ?>
 <input type="text" class="filter-entry" placeholder="<?php esc_attr_e( 'Search...', 'wpshop' ); ?>" />
 
 <ul class="select">
-	<?php
-	if ( ! empty( $entries ) ) :
+	<?php if ( ! empty( $entries ) ) :
 		foreach ( $entries as $entry ) :
 			View_Util::exec( 'wpshop', 'doli-associate', 'item-' . $type, array(
 				'entry' => $entry,
 			) );
 		endforeach;
-	endif;
-	?>
+	endif; ?>
 </ul>

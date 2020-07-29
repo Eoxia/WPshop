@@ -1,15 +1,12 @@
 <?php
 /**
- * Les filtres relatives aux association.
+ * La classe gérant les filtres d'association des entités.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
@@ -22,24 +19,25 @@ defined( 'ABSPATH' ) || exit;
 class Doli_Associate_Filter {
 
 	/**
-	 * Constructeur.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function __construct() {
 		add_filter( 'wps_associate_entry', array( $this, 'add_email' ), 10, 2 );
 	}
 
 	/**
-	 * Ajoutes l'adresse email dans l'utilisateur venant de dolibarr dans la
-	 * modal d'association.
+	 * Ajoute l'adresse email dans l'utilisateur venant de dolibarr dans la modal d'association.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param string $output Le nom de l'utilisateur.
-	 * @param Object $entry  Les données de l'utilisateur.
+	 * @param  string $output Le nom de l'utilisateur.
+	 * @param  Object $entry  Les données de l'utilisateur.
 	 *
-	 * @return string        Le nom de l'utilisateur avec son adresse email.
+	 * @return string         Le nom de l'utilisateur avec son adresse email.
 	 */
 	public function add_email( $output, $entry ) {
 		if ( '1' === $entry->entity && ! empty( $entry->email ) ) {

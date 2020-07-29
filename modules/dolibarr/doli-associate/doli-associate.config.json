@@ -1,10 +1,12 @@
 {
-	"name": "Gestion des assocations avec les entitées de dolibarr",
+	"name": "Doli Associate",
 	"slug": "doli-associate",
 	"since": "2.0.0",
+    "version": "2.0.0",
+    "description": "Le module gérant les associations entre les entités Dolibarr et WordPress",
 	"path": "modules/dolibarr/doli-associate",
 	"dependencies": {
-    "filter": {},
-		"action": {}
+      "filter": {},
+	  "action": {}
 	}
 }

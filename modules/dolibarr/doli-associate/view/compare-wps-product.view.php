@@ -1,26 +1,30 @@
 <?php
 /**
- * Le contenu de la modal de synchronisation.
+ * La vue affichant le contenu de la modal de synchronisation pour les produits.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Templates
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
-defined( 'ABSPATH' ) || exit; ?>
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * Documentation des variables utilisées dans la vue.
+ *
+ * @var array   $entries Le tableau contenant toutes les données des produits.
+ * @var string  $key     Le produit.
+ * @var Product $entry   Les données d'un produit.
+ */
+?>
 
 <div class="wpeo-gridlayout grid-2">
-	<?php
-	if ( ! empty( $entries ) ) :
-		foreach ( $entries as $key => $entry ) :
-			?>
+	<?php if ( ! empty( $entries ) ) :
+		foreach ( $entries as $key => $entry ) : ?>
 			<div class="choose <?php echo esc_attr( $key ); ?>">
 				<h2><?php echo $entry['title']; ?>
 
@@ -34,11 +38,7 @@ defined( 'ABSPATH' ) || exit; ?>
 					<li><strong><?php esc_html_e( 'VAT Rate', 'wpshop' ); ?></strong>: <?php echo ! empty( $entry['data']['tva_tx'] ) ? esc_html( $entry['data']['tva_tx'] ) : '0,00'; ?>€</li>
 					<li><strong><?php esc_html_e( 'Price TTC(€)', 'wpshop' ); ?></strong>: <?php echo ! empty( $entry['data']['price_ttc'] ) ? esc_html( $entry['data']['price_ttc'] ) : '0,00'; ?>€</li>
 				</ul>
-
-
 			</div>
-			<?php
-		endforeach;
-	endif;
-	?>
+		<?php endforeach;
+	endif; ?>
 </div>

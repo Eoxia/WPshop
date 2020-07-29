@@ -1,28 +1,25 @@
 <?php
 /**
- * Item in modal search.
+ * La vue affichant l'entité proposition commercile à associer.
  *
- * @todo: Translate to english.
- *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2019-2020 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Templates
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
-/**
- * @var string $label Entity Name.
- * @var int    $wp_id ID Entity on WP.
- * @var string $type  Type of the Entity (Can be product, propal, third-party).
- */
 
-defined( 'ABSPATH' ) || exit; ?>
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * Documentation des variables utilisées dans la vue.
+ *
+ * @var Doli_Proposals $entry Les données d'une proposition commerciale.
+ */
+?>
 
 <li data-id="<?php echo esc_attr( $entry->id ); ?>">
 	<?php echo apply_filters( 'wps_associate_entry', '#' . $entry->id . ' ' . $entry->ref, $entry ); ?>

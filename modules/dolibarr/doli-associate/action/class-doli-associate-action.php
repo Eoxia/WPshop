@@ -1,17 +1,12 @@
 <?php
 /**
- * Gestion des actions d'association des entités avec dolibarr.
+ * La classe gérant les actions d'association des entités avec dolibarr.
  *
- * @todo: Translate to English.
- *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2019-2020 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
@@ -26,9 +21,10 @@ defined( 'ABSPATH' ) || exit;
 class Doli_Associate_Action {
 
 	/**
-	 * Constructor.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function __construct() {
 		add_action( 'wp_ajax_load_associate_modal', array( $this, 'load_associate_modal' ) );
@@ -37,11 +33,10 @@ class Doli_Associate_Action {
 	}
 
 	/**
-	 * Charges la modal d'association.
+	 * Charge la modal d'association.
 	 *
-	 * @todo: Translate to english.
-	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function load_associate_modal() {
 		check_ajax_referer( 'load_associate_modal' );
@@ -85,9 +80,10 @@ class Doli_Associate_Action {
 	}
 
 	/**
-	 * Charges la modal pour comparer les données de WordPress et Dolibarr.
+	 * Charge la modal pour comparer les données de WordPress et Dolibarr.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function load_compare_modal() {
 		check_ajax_referer( 'load_compare_modal' );
@@ -153,6 +149,12 @@ class Doli_Associate_Action {
 		) );
 	}
 
+	/**
+	 * Fait l'assiciation entre l'entité WordPress et Dolibarr.
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 */
 	public function associate_entry() {
 		$wp_id    = ! empty( $_POST['wp_id'] ) ? (int) $_POST['wp_id'] : 0;
 		$entry_id = ! empty( $_POST['entry_id'] ) ? (int) $_POST['entry_id'] : 0;

@@ -1,17 +1,16 @@
 /**
- * Initialise l'objet "wpshop" ainsi que la méthode "init" obligatoire pour la bibliothèque EoxiaJS.
- * @todo: Translate to english.
+ * Gestion JS des assoications Dolibarr.
  *
- * @since 2.0.0
+ * @since   2.0.0
+ * @version 2.0.0
  */
 window.eoxiaJS.wpshop.doliAssociate = {};
 
 /**
- * La méthode appelée automatiquement par la bibliothèque EoxiaJS.
+ * La méthode "init" est appelé automatiquement par la lib JS de Eo-Framework.
  *
- * @return {void}
- *
- * @since 2.0.0
+ * @since   2.0.0
+ * @version 2.0.0
  */
 window.eoxiaJS.wpshop.doliAssociate.init = function() {
 	jQuery( document ).on( 'keyup', '.synchro-single .filter-entry', window.eoxiaJS.wpshop.doliAssociate.filter );
@@ -19,10 +18,12 @@ window.eoxiaJS.wpshop.doliAssociate.init = function() {
 };
 
 /**
- * @todo: Comment
- * @param event
+ * Filtre les entités a associer.
  *
- * @since 2.0.0
+ * @since   2.0.0
+ * @version 2.0.0
+ *
+ * @param {KeyboardEvent} event [filter].
  */
 window.eoxiaJS.wpshop.doliAssociate.filter = function( event ) {
 	var entries = jQuery( '.synchro-single ul.select li' );
@@ -38,11 +39,12 @@ window.eoxiaJS.wpshop.doliAssociate.filter = function( event ) {
 };
 
 /**
- * @todo: Comment
+ * Clique sur l'entité a associer.
  *
- * @param event
+ * @since   2.0.0
+ * @version 2.0.0
  *
- * @since 2.0.0
+ * @param {ClickEvent} event [clickEntry].
  */
 window.eoxiaJS.wpshop.doliAssociate.clickEntry = function( event ) {
 	jQuery( '.synchro-single li.active' ).removeClass( 'active' );
@@ -51,24 +53,33 @@ window.eoxiaJS.wpshop.doliAssociate.clickEntry = function( event ) {
 };
 
 /**
- * @todo: Comment
+ * Le callback en cas de réussite à la requête Ajax "go_sync".
+ * Lance la l'association des entités.
  *
- * @param triggeredElement
- * @returns {boolean}
+ * @since   2.0.0
+ * @version 2.0.0
  *
- * @since 2.0.0
+ * @param {HTMLDivElement} triggeredElement L'élement HTML déclenchant la requête Ajax.
+ * @param {Object}         response         Les données renvoyées par la requête Ajax.
+ *
+ * @return boolean                         True si tout c'est bien passé.
  */
-window.eoxiaJS.wpshop.doliAssociate.goSync = function (triggeredElement) {
+
+window.eoxiaJS.wpshop.doliAssociate.goSync = function( triggeredElement ) {
 	jQuery( triggeredElement ).closest( '.wpeo-modal' ).addClass( 'modal-force-display' );
 
 	return true;
 };
 
 /**
- * @todo: Comment
- * @param triggeredElement
- * @param response
- * @since 2.0.0
+ * Le callback en cas de réussite à la requête Ajax "open_modal_compare".
+ * Ouvre la modal de comparaison des entités.
+ *
+ * @since   2.0.0
+ * @version 2.0.0
+ *
+ * @param {HTMLDivElement} triggeredElement L'élement HTML déclenchant la requête Ajax.
+ * @param {Object}         response         Les données renvoyées par la requête Ajax.
  */
 window.eoxiaJS.wpshop.doliAssociate.openModalCompareSuccess = function ( triggeredElement, response ) {
 	if ( response.data.error ) {
@@ -80,10 +91,14 @@ window.eoxiaJS.wpshop.doliAssociate.openModalCompareSuccess = function ( trigger
 };
 
 /**
- * @todo: Comment
- * @param triggeredElement
- * @param response
- * @since 2.0.0
+ * Le callback en cas de réussite à la requête Ajax "associate_entry".
+ * Associe l'entité.
+ *
+ * @since   2.0.0
+ * @version 2.0.0
+ *
+ * @param {HTMLDivElement} triggeredElement L'élement HTML déclenchant la requête Ajax.
+ * @param {Object}         response         Les données renvoyées par la requête Ajax.
  */
 window.eoxiaJS.wpshop.doliAssociate.associatedEntrySuccess = function ( triggeredElement, response ) {
 	jQuery( '.wpeo-modal.modal-active .modal-content' ).html( response.data.view );
