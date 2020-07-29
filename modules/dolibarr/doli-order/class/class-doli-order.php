@@ -1,57 +1,62 @@
 <?php
 /**
- * Fonction principales pour les commandes avec DolibarR.
+ * La classe gérant les fonction principales des commandes de Dolibarr.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
+
+use eoxia\Post_Class;
+use eoxia\View_Util;
+use stdClass;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
  * Doli Order Class.
  */
-class Doli_Order extends \eoxia\Post_Class {
+class Doli_Order extends Post_Class {
 
 	/**
-	 * Model name @see ../model/*.model.php.
+	 * Le nom du modèle.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var string
 	 */
 	protected $model_name = '\wpshop\Doli_Order_Model';
 
 	/**
-	 * Post type
+	 * Le post type.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var string
 	 */
 	protected $type = 'wps-order';
 
 	/**
-	 * La clé principale du modèle
+	 * La clé principale du modèle.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var string
 	 */
 	protected $meta_key = 'order';
 
 	/**
-	 * La route pour accéder à l'objet dans la rest API
+	 * La route pour accéder à l'objet dans la rest API.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var string
 	 */
@@ -60,16 +65,18 @@ class Doli_Order extends \eoxia\Post_Class {
 	/**
 	 * La taxonomy lié à ce post type.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var string
 	 */
 	protected $attached_taxonomy_type = '';
 
 	/**
-	 * Nom du post type.
+	 * Le nom du post type.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var string
 	 */
@@ -78,7 +85,8 @@ class Doli_Order extends \eoxia\Post_Class {
 	/**
 	 * La limite par page.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var integer
 	 */
@@ -87,16 +95,18 @@ class Doli_Order extends \eoxia\Post_Class {
 	/**
 	 * Le nom de l'option pour la limite par page.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var string
 	 */
 	public $option_per_page = 'doli_order_per_page';
 
 	/**
-	 * Récupères la liste des devis et appel la vue "list" du module "order".
+	 * Appel la vue "list" du module "doli-order".
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function display() {
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
@@ -127,30 +137,40 @@ class Doli_Order extends \eoxia\Post_Class {
 			}
 		}
 
-		\eoxia\View_Util::exec( 'wpshop', 'doli-order', 'list', array(
+		View_Util::exec( 'wpshop', 'doli-order', 'list', array(
 			'orders'   => $orders,
 			'doli_url' => $dolibarr_option['dolibarr_url'],
 		) );
 	}
 
+	/**
+	 * Appel la vue "item" d'une commande.
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 *
+	 * @param Doli_Order $order    Les données d'une commande.
+	 * @param string     $doli_url L'url de Dolibarr.
+	 */
 	public function display_item( $order, $doli_url = '' ) {
 		if ( empty( $order->data['tier'] ) ) {
 			$order->data['tier'] = Third_Party::g()->get( array( 'id' => $order->data['parent_id'] ), true );
 		}
-		\eoxia\View_Util::exec( 'wpshop', 'doli-order', 'item', array(
+		View_Util::exec( 'wpshop', 'doli-order', 'item', array(
 			'order'    => $order,
 			'doli_url' => $doli_url,
 		) );
 	}
 
 	/**
-	 * Convertis un tableau Order Object provenant de dolibarr vers un format Order Object WPShop afin de normisé pour l'affichage.
+	 * Convertit un tableau Order Object provenant de Dolibarr vers un format Order Object WPshop afin de normisé pour l'affichage.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param array $doli_orders Tableau Order Object provenant de Dolibarr.
+	 * @param  stdClass $doli_orders Le tableau contenant toutes les données des commandes provenant de Dolibarr.
 	 *
-	 * @return array $wp_orders Tableau Order Object de WPshop convertis depuis le format de Dolibarr.
+	 * @return Doli_Order            Le tableau contenant toutes les données des commandes convertis depuis le format de Dolibarr.
 	 */
 	public function convert_to_wp_order_format( $doli_orders ) {
 		$wp_orders = array();
@@ -168,13 +188,14 @@ class Doli_Order extends \eoxia\Post_Class {
 	/**
 	 * Synchronisation depuis Dolibarr vers WP.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param  stdClass    $doli_order   Les données venant de dolibarr.
-	 * @param  Order_Model $wp_order     Les données de WP.
-	 * @param  Boolean     $only_convert Only Convert Dolibarr Object to WP. Don't save the WP Object on the database.
+	 * @param  stdClass   $doli_order   Les données d'une commande Dolibarr.
+	 * @param  Doli_Order $wp_order     Les données d'une commande WordPress.
+	 * @param  boolean    $only_convert Only Convert Dolibarr Object to WP. Don't save the WP Object on the database.
 	 *
-	 * @return Order_Model             Les données de WP avec ceux de dolibarr.
+	 * @return Doli_Order               Les données d'une commande WordPress avec ceux de Dolibarr.
 	 */
 	public function doli_to_wp( $doli_order, $wp_order, $only_convert = false ) {
 		if ( is_object( $wp_order ) ) {
@@ -271,17 +292,16 @@ class Doli_Order extends \eoxia\Post_Class {
 	}
 
 	/**
-	 * Fonctions de recherche
+	 * Fonction de recherche.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @param  string  $s            Le terme de la recherche.
 	 * @param  array   $default_args Les arguments par défaut.
-	 * @param  boolean $count        Si true compte le nombre d'élement, sinon
-	 * renvoies l'ID des éléments trouvés.
+	 * @param  boolean $count        Si true compte le nombre d'élement, sinon renvoies l'ID des éléments trouvés.
 	 *
-	 * @return array|integer         Les ID des éléments trouvés ou le nombre
-	 * d'éléments trouvés.
+	 * @return array|integer         Les ID des éléments trouvés ou le nombre d'éléments trouvés.
 	 */
 	public function search( $s = '', $default_args = array(), $count = false ) {
 		$route = 'orders?sortfield=t.rowid&sortorder=DESC';
@@ -299,12 +319,30 @@ class Doli_Order extends \eoxia\Post_Class {
 		}
 	}
 
+	/**
+	 * Ajoute une ligne sur la commande.
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 *
+	 * @param Doli_Order $order      Les données d'une commande.
+	 * @param array      $line_data  La donnée à ajouté.
+	 */
 	public function add_line( $order, $line_data ) {
 		$order->data['lines'][] = $line_data;
 
 		Doli_Order::g()->update( $order->data );
 	}
 
+	/**
+	 * Met à jour une ligne sur la commande.
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 *
+	 * @param Doli_Order $order      Les données d'une commande.
+	 * @param array      $line_data  La donnée à ajouté.
+	 */
 	public function update_line( $order, $line_data ) {
 		$founded_line = null;
 		$key_line     = null;
@@ -328,6 +366,15 @@ class Doli_Order extends \eoxia\Post_Class {
 		}
 	}
 
+	/**
+	 * Supprime une ligne sur la commande.
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 *
+	 * @param Doli_Order $order   Les données d'une commande.
+	 * @param integer    $row_id  L'id de la ligne.
+	 */
 	public function delete_line( $order, $row_id ) {
 		$founded_line = null;
 		$key_line     = null;

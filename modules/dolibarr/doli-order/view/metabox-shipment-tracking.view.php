@@ -1,20 +1,24 @@
 <?php
 /**
- * Affichage des détails de la commande
+ * La vue affichant les informations de livraison d'une commande.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Templates
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
-defined( 'ABSPATH' ) || exit; ?>
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * Documentation des variables utilisées dans la vue.
+ *
+ * @var Doli_Order $order Les données d'une commande.
+ */
+?>
 
 <div class="wps-metabox gridw-1 wps-shipment-tracking">
 	<h3 class="metabox-title"><?php esc_html_e( 'Shipment Tracking', 'wpshop' ); ?></h3>
@@ -33,13 +37,11 @@ defined( 'ABSPATH' ) || exit; ?>
 				data-action="mark_as_delivery"
 				data-id="<?php echo esc_attr( $order->data['id'] ); ?>">
 				<span>
-					<?php
-					if ( $order->data['delivered'] ) :
+					<?php if ( $order->data['delivered'] ) :
 						esc_html_e( 'Update tracking link', 'wpshop' );
 					else:
 						esc_html_e( 'Mark as delivery', 'wpshop' );
-					endif;
-					?>
+					endif; ?>
 				</span>
 			</div>
 		</div>

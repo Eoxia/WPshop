@@ -1,20 +1,28 @@
 <?php
 /**
- * Affichage du listing des commandes dans le backend.
+ * La vue affichant la liste des commandes dans le backend.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Templates
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
-defined( 'ABSPATH' ) || exit; ?>
+use eoxia\View_Util;
+
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * Documentation des variables utilisées dans la vue.
+ *
+ * @var array      $orders   Le tableau contanant toutes les données des commandes.
+ * @var Doli_Order $order    Les données d'une commande.
+ * @var string     $doli_url L'url de Dolibarr.
+ */
+?>
 
 <div class="wps-list-product wpeo-table table-flex table-7">
 	<div class="table-row table-header">
@@ -26,14 +34,12 @@ defined( 'ABSPATH' ) || exit; ?>
 		<?php do_action( 'wps_listing_table_header_end', 'order' ); ?>
 	</div>
 
-	<?php
-	if ( ! empty( $orders ) ) :
+	<?php if ( ! empty( $orders ) ) :
 		foreach ( $orders as $order ) :
-			\eoxia\View_Util::exec( 'wpshop', 'doli-order', 'item', array(
+			View_Util::exec( 'wpshop', 'doli-order', 'item', array(
 				'order'    => $order,
 				'doli_url' => $doli_url,
 			) );
 		endforeach;
-	endif;
-	?>
+	endif; ?>
 </div>

@@ -1,20 +1,29 @@
 <?php
 /**
- * Affichage des détails de paiement la commande
+ * La vue affichant les détails de paiement d'une commande.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Templates
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
-defined( 'ABSPATH' ) || exit; ?>
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * Documentation des variables utilisées dans la vue.
+ *
+ * @var array        $invoices           Le tableau contenant toutes Les données des factures.
+ * @var Doli_Invoice $invoice            Les données d'une facture.
+ * @var Doli_Payment $payment            Les données d'un paiement.
+ * @var integer      $already_paid       Le montant déja payé.
+ * @var integer      $total_ttc_invoices Le montant total TTC.
+ * @var integer      $remaining_unpaid   Le montant restant à payer.
+ */
+?>
 
 <div class="wps-metabox wps-order-payment">
 	<h3 class="metabox-title"><?php esc_html_e( 'Payments', 'wpshop' ); ?></h3>
@@ -30,24 +39,20 @@ defined( 'ABSPATH' ) || exit; ?>
 		</thead>
 
 		<tbody>
-			<?php
-			if ( ! empty( $invoices ) ) :
+			<?php if ( ! empty( $invoices ) ) :
 				foreach ( $invoices as $invoice ) :
 					if ( ! empty( $invoice->data['payments'] ) ) :
-						foreach ( $invoice->data['payments'] as $payment ) :
-							?>
+						foreach ( $invoice->data['payments'] as $payment ) : ?>
 							<tr>
 								<td><?php echo esc_html( $payment->data['title'] ); ?></td>
 								<td><?php echo esc_html( $payment->data['date']['rendered']['date'] ); ?></td>
 								<td><?php echo esc_html( $payment->data['payment_type'] ); ?></td>
 								<td class="table-end"><?php echo number_format( $payment->data['amount'], 2, ',', '' ); ?>€</td>
 							</tr>
-							<?php
-						endforeach;
+						<?php endforeach;
 					endif;
 				endforeach;
-			endif;
-			?>
+			endif; ?>
 		</tbody>
 
 		<tfoot>

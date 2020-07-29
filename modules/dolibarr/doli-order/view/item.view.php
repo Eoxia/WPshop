@@ -1,20 +1,25 @@
 <?php
 /**
- * Affichage d'une commande dans le listing de la page des commandes (wps-order)
+ * La vue affichant une commande dans la liste des commandes.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Templates
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
-defined( 'ABSPATH' ) || exit; ?>
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * Documentation des variables utilisées dans la vue.
+ *
+ * @var Doli_Order $order    Les données d'une commande.
+ * @var string     $doli_url L'url de Dolibarr.
+ */
+?>
 
 <div class="table-row" data-id="<?php echo esc_attr( $order->data['id'] ); ?>">
 	<div class="table-cell table-full">

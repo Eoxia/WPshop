@@ -1,22 +1,19 @@
 <?php
 /**
- * Les actions relatives aux commandes avec Dolibarr.
+ * La classe gérant les actions des commandes de Dolibarr.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
+use eoxia\LOG_Util;
+use eoxia\View_Util;
 use stdClass;
-use Stripe\ApiOperations\Request;
-use Stripe\Order;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -26,18 +23,20 @@ defined( 'ABSPATH' ) || exit;
 class Doli_Order_Action {
 
 	/**
-	 * Définition des metabox sur la page.
+	 * Définition des metaboxes sur la page.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var array
 	 */
 	public $metaboxes = null;
 
 	/**
-	 * Initialise les actions liées aux proposals.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function __construct() {
 		add_action( 'init', array( $this, 'create_tmp_order_dir' ) );
@@ -74,9 +73,10 @@ class Doli_Order_Action {
 	}
 
 	/**
-	 * Ajoutes des status dans la commande.
+	 * Ajoute des status dans la commande.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_admin_init() {
 		remove_post_type_support( 'wps-order', 'title' );
@@ -105,9 +105,10 @@ class Doli_Order_Action {
 	}
 
 	/**
-	 * Créer un répertoire temporaire pour les factures.
+	 * Créer un répertoire temporaire pour les commandes.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function create_tmp_order_dir() {
 		$dir = wp_upload_dir();
@@ -124,7 +125,8 @@ class Doli_Order_Action {
 	/**
 	 * Initialise la page "Commande".
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_admin_menu() {
 		if ( Settings::g()->dolibarr_is_active() ) {
@@ -137,9 +139,10 @@ class Doli_Order_Action {
 	}
 
 	/**
-	 * Affichage de la vue du menu
+	 * Affichage de la vue du menu.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_add_menu_page() {
 		if ( isset( $_GET['id'] ) ) {
@@ -160,7 +163,7 @@ class Doli_Order_Action {
 				}
 			}
 
-			\eoxia\View_Util::exec( 'wpshop', 'doli-order', 'single', array(
+			View_Util::exec( 'wpshop', 'doli-order', 'single', array(
 				'third_party' => $third_party,
 				'order'       => $wp_order,
 			) );
@@ -197,7 +200,7 @@ class Doli_Order_Action {
 				$next_url  .= '&s=' . $s;
 			}
 
-			\eoxia\View_Util::exec( 'wpshop', 'doli-order', 'main', array(
+			View_Util::exec( 'wpshop', 'doli-order', 'main', array(
 				'number_page'  => $number_page,
 				'current_page' => $current_page,
 				'count'        => $count,
@@ -214,9 +217,10 @@ class Doli_Order_Action {
 	}
 
 	/**
-	 * Ajoutes le menu "Options de l'écran".
+	 * Ajoute le menu "Options de l'écran".
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_add_screen_option() {
 		add_screen_option(
@@ -230,27 +234,29 @@ class Doli_Order_Action {
 	}
 
 	/**
-	 * La metabox des détails de la commande
+	 * La metabox des détails d'une commande.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param Order $order Les données de la commande.
+	 * @param Doli_Order $order Les données d'une commande.
 	 */
 	public function metabox_order_details( $order ) {
 		$third_party  = Third_Party::g()->get( array( 'id' => $order->data['parent_id'] ), true );
 
-		\eoxia\View_Util::exec( 'wpshop', 'doli-order', 'metabox-order-details', array(
+		View_Util::exec( 'wpshop', 'doli-order', 'metabox-order-details', array(
 			'order'       => $order,
 			'third_party' => $third_party,
 		) );
 	}
 
 	/**
-	 * La metabox des détails de la commande
+	 * La metabox des paiements d'une commande
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param  Order $order Les données de la commande.
+	 * @param Doli_Order $order Les données d'une commande.
 	 */
 	public function metabox_order_payment( $order ) {
 		$doli_invoices = array();
@@ -285,7 +291,7 @@ class Doli_Order_Action {
 		}
 		$remaining_unpaid = $total_ttc_invoices - $already_paid;
 
-		\eoxia\View_Util::exec( 'wpshop', 'doli-order', 'metabox-order-payment', array(
+		View_Util::exec( 'wpshop', 'doli-order', 'metabox-order-payment', array(
 			'order'              => $order,
 			'invoices'           => $invoices,
 			'already_paid'       => $already_paid,
@@ -294,18 +300,27 @@ class Doli_Order_Action {
 		) );
 	}
 
+	/**
+	 * La metabox des frais de livraison d'une commande
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 *
+	 * @param Doli_Order $order Les données d'une commande.
+	 */
 	public function metabox_shipment_tracking( $order ) {
-		\eoxia\View_Util::exec( 'wpshop', 'doli-order', 'metabox-shipment-tracking', array(
+		View_Util::exec( 'wpshop', 'doli-order', 'metabox-shipment-tracking', array(
 			'order' => $order,
 		) );
 	}
 
 	/**
-	 * Box affichant les produits de la commande
+	 * La metabox de résumé d'une commande.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param Order $order Les données de la commande.
+	 * @param Doli_Order $order Les données d'une commande.
 	 */
 	public function metabox_order_review( $order ) {
 		$tva_lines = array();
@@ -320,33 +335,35 @@ class Doli_Order_Action {
 			}
 		}
 
-		\eoxia\View_Util::exec( 'wpshop', 'order', 'review-order', array(
+		View_Util::exec( 'wpshop', 'order', 'review-order', array(
 			'object'    => $order,
 			'tva_lines' => $tva_lines,
 		) );
 	}
 
 	/**
-	 * Box affichant les actions de la commande.
+	 * La metabox des actions d'une commande.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param Order $order Les données de la commande.
+	 * @param Doli_Order $order Les données d'une commande.
 	 */
 	public function callback_order_action( $order ) {
 		$order = $callback_args['args']['order'];
 
-		\eoxia\View_Util::exec( 'wpshop', 'doli-order', 'metabox-action', array(
+		View_Util::exec( 'wpshop', 'doli-order', 'metabox-action', array(
 			'order' => $order,
 		) );
 	}
 
 	/**
-	 * Box affichant les produits de la commande
+	 * La metabox des relations d'objet d'un commande.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param Order $order Les données de la commande.
+	 * @param Doli_Order $order Les données d'une commande.
 	 */
 	public function metabox_order_related_object( $order ) {
 		// \eoxia\View_Util::exec( 'wpshop', 'doli-order', 'metabox-order-related-object', array() );
@@ -355,18 +372,20 @@ class Doli_Order_Action {
 	/**
 	 * Création d'une commande lors du tunnel de vente.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param  stdClass $proposal Les données du devis.
-	 * @return Order_Model           Les données de la commande WP.
+	 * @param  stdClass $proposal Les données d'une proposition commerciale.
+	 *
+	 * @return Doli_Order         Les données d'une commande.
 	 */
 	public function create_order( $proposal ) {
-		\eoxia\LOG_Util::log( sprintf( 'Dolibarr call POST /orders/createfromproposal/ with data %s', $proposal->id ), 'wpshop2' );
+		LOG_Util::log( sprintf( 'Dolibarr call POST /orders/createfromproposal/ with data %s', $proposal->id ), 'wpshop2' );
 		$doli_order = Request_Util::post( 'orders/createfromproposal/' . $proposal->id );
-		\eoxia\LOG_Util::log( sprintf( 'Dolibarr call POST /orders/createfromproposal/ response %s', json_encode( $doli_order ) ), 'wpshop2' );
+		LOG_Util::log( sprintf( 'Dolibarr call POST /orders/createfromproposal/ response %s', json_encode( $doli_order ) ), 'wpshop2' );
 
 
-		\eoxia\LOG_Util::log( sprintf( 'Dolibarr call POST /orders/%s/validate', $doli_order->id ), 'wpshop2' );
+		LOG_Util::log( sprintf( 'Dolibarr call POST /orders/%s/validate', $doli_order->id ), 'wpshop2' );
 		Request_Util::post( 'orders/' . $doli_order->id . '/validate' );
 
 		$doli_order  = Request_Util::get( 'orders/' . $doli_order->id );
@@ -385,7 +404,7 @@ class Doli_Order_Action {
 		) );
 
 		// translators: Create order 00001 for the third party Eoxia.
-		\eoxia\LOG_Util::log( sprintf( 'Create order %s for the third party %s', $doli_order->ref, $third_party->data['title'] ), 'wpshop2' );
+		LOG_Util::log( sprintf( 'Create order %s for the third party %s', $doli_order->ref, $third_party->data['title'] ), 'wpshop2' );
 
 		$wp_order = Doli_Order::g()->get( array( 'schema' => true ), true );
 		$wp_order = Doli_Order::g()->doli_to_wp( $doli_order, $wp_order, true );
@@ -394,9 +413,10 @@ class Doli_Order_Action {
 	}
 
 	/**
-	 * Passes la commande à payé.
+	 * Passe la commande à payé.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @param array $data Les données IPN de PayPal.
 	 */
@@ -438,15 +458,16 @@ class Doli_Order_Action {
 		) );
 
 		// translators: Update the order 00001 to billed.
-		\eoxia\LOG_Util::log( sprintf( 'Update the order %s to billed', $doli_order->ref ), 'wpshop2' );
+		LOG_Util::log( sprintf( 'Update the order %s to billed', $doli_order->ref ), 'wpshop2' );
 
 		unlink( $path_file );
 	}
 
 	/**
-	 * Passes la commande à payment échoué.
+	 * Passe la commande à paiement échoué.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @param array $data Les données IPN de PayPal.
 	 *
@@ -460,13 +481,14 @@ class Doli_Order_Action {
 		update_post_meta( $wp_order->data['id'], '_traitment_in_progress', false );
 
 		// translators: Update the order 00001 to failed.
-		\eoxia\LOG_Util::log( sprintf( 'Update the order %s to failed', $wp_order->data['title'] ), 'wpshop2' );
+		LOG_Util::log( sprintf( 'Update the order %s to failed', $wp_order->data['title'] ), 'wpshop2' );
 	}
 
 	/**
-	 * Télécharges la commande au format PDT.
+	 * Télécharge la commande au format PDF.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function download_order() {
 		check_admin_referer( 'download_order' );
@@ -488,7 +510,7 @@ class Doli_Order_Action {
 		}
 
 		// translators: Download the order 00001.
-		\eoxia\LOG_Util::log( sprintf( 'Download the order %s', $order->data['title'] ), 'wpshop2' );
+		LOG_Util::log( sprintf( 'Download the order %s', $order->data['title'] ), 'wpshop2' );
 		$order_file = Request_Util::get( 'documents/download?modulepart=order&original_file=' . $order->data['title'] . '/' . $order->data['title'] . '.pdf' );
 		$content = base64_decode( $order_file->content );
 
@@ -502,8 +524,10 @@ class Doli_Order_Action {
 	}
 
 	/**
-	 * @todo: nonce
-	 * @return [type] [description]
+	 * Marque la commande comme livrée.
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function mark_as_delivery() {
 		$id           = ! empty( $_POST['id'] ) ? (int) $_POST['id'] : 0;
@@ -532,10 +556,10 @@ class Doli_Order_Action {
 		) );
 
 		// // translators: Send the invoice 000001 to the email contact text@eoxia.com.
-		\eoxia\LOG_Util::log( sprintf( 'Send the invoice %s to the email contact %s', $wp_invoice->data['title'], $contact->data['email'] ), 'wpshop2' );
+		LOG_Util::log( sprintf( 'Send the invoice %s to the email contact %s', $wp_invoice->data['title'], $contact->data['email'] ), 'wpshop2' );
 
 		ob_start();
-		\eoxia\View_Util::exec( 'wpshop', 'doli-order', 'metabox-shipment-tracking', array(
+		View_Util::exec( 'wpshop', 'doli-order', 'metabox-shipment-tracking', array(
 			'order'       => $order,
 		) );
 		wp_send_json_success( array(

@@ -1,15 +1,12 @@
 <?php
 /**
- * Les filtres relatives aux commandes de dolibarr.
+ * La classe gérant les filtres des commandes de Dolibarr.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
@@ -22,9 +19,10 @@ defined( 'ABSPATH' ) || exit;
 class Doli_Order_Filter {
 
 	/**
-	 * Constructeur.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function __construct() {
 		add_filter( 'eo_model_wps-order_register_post_type_args', array( $this, 'callback_register_post_type_args' ) );
@@ -37,9 +35,10 @@ class Doli_Order_Filter {
 	}
 
 	/**
-	 * Ajoutes des données supplémentaires pour le register_post_type.
+	 * Ajoute des données supplémentaires pour le register_post_type.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @return array Les données supplementaires.
 	 */
@@ -76,14 +75,15 @@ class Doli_Order_Filter {
 	}
 
 	/**
-	 * Ajoute une classe dans le tableau
+	 * Ajoute une classe dans le tableau.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param string $class  Donnée reçue par le filtre.
-	 * @param mixed  $object Donnée de la commande/facture/devis.
+	 * @param  string $class  Donnée reçue par le filtre.
+	 * @param  mixed  $object Donnée de la commande/facture/devis.
 	 *
-	 * @return string        Classe renvoyée au tableau
+	 * @return string         Classe renvoyée au tableau
 	 */
 	public function add_review_order_table_class( $class, $object ) {
 		switch ( $object->data['type'] ) {
@@ -102,6 +102,17 @@ class Doli_Order_Filter {
 		return $class;
 	}
 
+	/**
+	 * Change le statut d'une commande.
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 *
+	 * @param  string       $status Le statut d'une facture.
+	 * @param  Doli_Invoice $object Les données d'une facture.
+	 *
+	 * @return string               Le nouveau statut d'une facture.
+	 */
 	public function wps_doli_status( $status, $object ) {
 		if ( $object->data['type'] == Doli_Order::g()->get_type() ) {
 			if ( $object->data['traitment_in_progress'] ) {
@@ -116,6 +127,17 @@ class Doli_Order_Filter {
 		return $status;
 	}
 
+	/**
+	 * Télécharge la commande.
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 *
+	 * @param  Doli_Order $object Les données d'une commande.
+	 * @param  array      $args   Les arguments supplémentaires.
+	 *
+	 * @return Doli_Order         Les nouvelles données d'une commande.
+	 */
 	public function update_after_billed( $object, $args ) {
 		if ( $object->data['billed'] ) {
 			Product_Downloadable::g()->create_from_order( $object );
