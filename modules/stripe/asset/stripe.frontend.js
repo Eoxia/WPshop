@@ -7,7 +7,7 @@
 window.eoxiaJS.wpshopFrontend.stripe = {};
 
 /**
- * La méthode "init" est appelé automatiquement par la lib JS de Eo-Framework
+ * La méthode "init" est appelé automatiquement par la lib JS de Eo-Framework.
  *
  * @since   2.0.0
  * @version 2.0.0

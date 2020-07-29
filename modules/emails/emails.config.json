@@ -2,6 +2,7 @@
 	"name": "Emails",
 	"slug": "emails",
 	"since": "2.0.0",
+    "version": "2.0.0",
     "description": "Le module gérant les emails",
 	"path": "modules/emails",
 	"dependencies": {
