@@ -1,41 +1,43 @@
 <?php
 /**
- * Les fonctions principales des outils
+ * La classe gérant les fonctions principales des outils.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
+
+use eoxia\Singleton_Util;
+use eoxia\View_Util;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
  * Tools Class.
  */
-class Tools extends \eoxia\Singleton_Util {
+class Tools extends Singleton_Util {
 	/**
-	 * Constructeur.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	protected function construct() {}
 
 	/**
-	 * Appel la vue principal
+	 * Appel la vue principal.
 	 *
-	 * @since 2.0.
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param  string $section La section actuelle.
+	 * @param string $section La section actuelle.
 	 */
 	public function display_general( $section ) {
-		\eoxia\View_Util::exec( 'wpshop', 'tools', 'general' );
+		View_Util::exec( 'wpshop', 'tools', 'general' );
 	}
 }
 

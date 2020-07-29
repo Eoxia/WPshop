@@ -1,39 +1,40 @@
 <?php
 /**
- * Gestion des actions des outils.
+ * La classe gérant les actions des outils.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
+use eoxia\View_Util;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Settings Action Class.
+ * Tools Action Class.
  */
 class Tools_Action {
 
 	/**
-	 * Distanation temporaire pour l'importation des tiers.
+	 * Destination temporaire pour l'importation des tiers.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var string
 	 */
 	private $destination_directory;
 
 	/**
-	 * Constructor.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function __construct() {
 		add_action( 'admin_menu', array( $this, 'callback_admin_menu' ), 13 );
@@ -49,9 +50,10 @@ class Tools_Action {
 	}
 
 	/**
-	 * Initialise la page "Product".
+	 * Initialise la page "Outils".
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_admin_menu() {
 		//add_submenu_page( 'wpshop', __( 'Tools', 'wpshop' ), __( 'Tools', 'wpshop' ), 'manage_options', 'wps-tools', array( $this, 'callback_add_menu_page' ) );
@@ -60,22 +62,24 @@ class Tools_Action {
 	/**
 	 * La vue principale pour la page "Outils".
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_add_menu_page() {
 		$tab     = ! empty( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'general';
 		$section = ! empty( $_GET['section'] ) ? sanitize_text_field( $_GET['section'] ) : '';
 
-		\eoxia\View_Util::exec( 'wpshop', 'tools', 'main', array(
+		View_Util::exec( 'wpshop', 'tools', 'main', array(
 			'tab'     => $tab,
 			'section' => $section,
 		) );
 	}
 
 	/**
-	 * Redirige vers le bon onglet dans la page option;
+	 * Redirige vers le bon onglet dans la page outils.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_load_tab() {
 		check_admin_referer( 'callback_load_tab' );
@@ -93,12 +97,13 @@ class Tools_Action {
 	}
 
 	/**
-	 * Parcours le CSV. Traite chaque ligne afin de créer un tier et son contact
+	 * Parcours le CSV. Traite chaque ligne afin de créer un tier et son contact.
 	 *
 	 * @todo: nonce
 	 * @todo: check $_FILES security
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function import_third_party() {
 		ini_set( 'memory_limit', -1 );
@@ -183,12 +188,10 @@ class Tools_Action {
 	}
 
 	/**
-	 * Parcours le CSV. Traite chaque ligne afin de créer les produits.
+	 * Importe des produits.
 	 *
-	 * @todo: nonce
-	 * @todo: check $_FILES security
-	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function import_product() {
 		ini_set( 'memory_limit', -1 );
