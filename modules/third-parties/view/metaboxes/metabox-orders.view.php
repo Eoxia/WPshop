@@ -1,20 +1,27 @@
 <?php
 /**
- * La vue affichant les devis d'un tier dans la page single d'un tier.
+ * La vue affichant la métabox "Commandes".
+ * Page d'un tier.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Templates
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
-defined( 'ABSPATH' ) || exit; ?>
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * Documentation des variables utilisées dans la vue.
+ *
+ * @var array      $orders   Le tableau contenant toutes les données des commandes.
+ * @var Doli_Order $order    Les données d'une commande.
+ * @var string     $doli_url L'url de Dolibarr.
+ */
+?>
 
 <div class="wps-metabox wps-billing-address view gridw-2">
 	<h3 class="metabox-title"><?php esc_html_e( 'Orders', 'wpshop' ); ?></h3>
@@ -27,10 +34,8 @@ defined( 'ABSPATH' ) || exit; ?>
 			<div class="table-cell"><?php esc_html_e( 'Status', 'wpshop' ); ?></div>
 		</div>
 
-		<?php
-		if ( ! empty( $orders ) ) :
-			foreach ( $orders as $order ) :
-				?>
+		<?php if ( ! empty( $orders ) ) :
+			foreach ( $orders as $order ) : ?>
 				<div class="table-row">
 					<div class="table-cell">
 						<a href="<?php echo esc_attr( $doli_url . '/commande/card.php?id=' . $order->data['external_id'] ); ?>">
@@ -41,9 +46,7 @@ defined( 'ABSPATH' ) || exit; ?>
 					<div class="table-cell"><?php echo esc_html( number_format( $order->data['total_ttc'], 2, ',', '' ) ); ?>€</div>
 					<div class="table-cell"><strong><?php echo Doli_Statut::g()->display_status( $order ); ?></strong></div>
 				</div>
-				<?php
-			endforeach;
-		endif;
-		?>
+			<?php endforeach;
+		endif; ?>
 	</div>
 </div>

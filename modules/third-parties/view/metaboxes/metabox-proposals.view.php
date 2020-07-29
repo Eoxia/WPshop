@@ -1,20 +1,27 @@
 <?php
 /**
- * La vue affichant les devis d'un tier dans la page single d'un tier.
+ * La vue affichant la métabox "Envies".
+ * Page d'un tier.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Templates
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
-defined( 'ABSPATH' ) || exit; ?>
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * Documentation des variables utilisées dans la vue.
+ * @todo a revoir
+ *
+ * @var array     $proposals Le tableau contenant toutes les données des envies.
+ * @var Proposals $proposal  Les données d'une envie.
+ */
+?>
 
 <div class="wps-metabox wps-billing-address view gridw-2">
 	<h3 class="metabox-title"><?php esc_html_e( 'Proposals', 'wpshop' ); ?></h3>

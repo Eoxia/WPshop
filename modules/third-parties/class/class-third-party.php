@@ -1,61 +1,61 @@
 <?php
 /**
- * Les fonctions principales des tiers.
+ * La classe gérant les fonctions principales des tiers.
  *
- * Le controlleur du modèle Third_Party_Model.
- *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
-use Stripe\ApiOperations\Request;
+use eoxia\Post_Class;
+use eoxia\View_Util;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
  * Third Party class.
  */
-class Third_Party extends \eoxia\Post_Class {
+class Third_Party extends Post_Class {
 
 	/**
-	 * Model name @see ../model/*.model.php.
+	 * Le nom du modèle.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var string
 	 */
 	protected $model_name = '\wpshop\Third_Party_Model';
 
 	/**
-	 * Post type
+	 * Le post type.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var string
 	 */
 	protected $type = 'wps-third-party';
 
 	/**
-	 * La clé principale du modèle
+	 * La clé principale du modèle.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var string
 	 */
 	protected $meta_key = 'third-party';
 
 	/**
-	 * La route pour accéder à l'objet dans la rest API
+	 * La route pour accéder à l'objet dans la rest API.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var string
 	 */
@@ -64,7 +64,8 @@ class Third_Party extends \eoxia\Post_Class {
 	/**
 	 * La taxonomy lié à ce post type.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var string
 	 */
@@ -73,7 +74,8 @@ class Third_Party extends \eoxia\Post_Class {
 	/**
 	 * La limite par page.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var integer
 	 */
@@ -82,16 +84,18 @@ class Third_Party extends \eoxia\Post_Class {
 	/**
 	 * Le nom de l'option pour la limite par page.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var string
 	 */
 	public $option_per_page = 'third_party_per_page';
 
 	/**
-	 * Récupères la liste des produits et appel la vue "list" du module "Product".
+	 * Récupère la liste des produits et appel la vue "list" du module "Product".
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function display() {
 		$per_page = get_user_meta( get_current_user_id(), $this->option_per_page, true );
@@ -121,14 +125,24 @@ class Third_Party extends \eoxia\Post_Class {
 
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
 
-		\eoxia\View_Util::exec( 'wpshop', 'third-parties', 'list', array(
+		View_Util::exec( 'wpshop', 'third-parties', 'list', array(
 			'third_parties' => $third_parties,
 			'doli_url'      => $dolibarr_option['dolibarr_url'],
 		) );
 	}
 
+	/**
+	 * Appel la vue "item" du tier.
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 *
+	 * @param Third_Party $third_party Les données d'un produit.
+	 * @param string      $sync_status Le statut de la synchronisation.
+	 * @param string      $doli_url    L'url de Dolibarr.
+	 */
 	public function display_item( $third_party, $sync_status, $doli_url = '' ) {
-		\eoxia\View_Util::exec( 'wpshop', 'third-parties', 'item', array(
+		View_Util::exec( 'wpshop', 'third-parties', 'item', array(
 			'third_party' => $third_party,
 			'sync_status' => $sync_status,
 			'doli_url'    => $doli_url,
@@ -136,11 +150,12 @@ class Third_Party extends \eoxia\Post_Class {
 	}
 
 	/**
-	 * Affiches les trois dernières actions commerciales du tier.
+	 * Affiche les trois dernières actions commerciales du tier.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param  Third_Party $third_party Les données du tier.
+	 * @param Third_Party $third_party Les données du tier.
 	 */
 	public function display_commercial( $third_party ) {
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
@@ -171,7 +186,7 @@ class Third_Party extends \eoxia\Post_Class {
 			}
 		}
 
-		\eoxia\View_Util::exec( 'wpshop', 'third-parties', 'commercial', array(
+		View_Util::exec( 'wpshop', 'third-parties', 'commercial', array(
 			'doli_url'    => $dolibarr_option['dolibarr_url'],
 			'order'       => $order,
 			'propal'      => $propal,
@@ -181,17 +196,16 @@ class Third_Party extends \eoxia\Post_Class {
 	}
 
 	/**
-	 * Fonctions de recherche
+	 * La fonction de recherche.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @param  string  $s            Le terme de la recherche.
 	 * @param  array   $default_args Les arguments par défaut.
-	 * @param  boolean $count        Si true compte le nombre d'élement, sinon
-	 * renvoies l'ID des éléments trouvés.
+	 * @param  boolean $count        Si true compte le nombre d'élement, sinon renvoies l'ID des éléments trouvés.
 	 *
-	 * @return array|integer         Les ID des éléments trouvés ou le nombre
-	 * d'éléments trouvés.
+	 * @return array|integer         Les ID des éléments trouvés ou le nombre d'éléments trouvés.
 	 */
 	public function search( $s = '', $default_args = array(), $count = false ) {
 		$args = array(
@@ -262,11 +276,12 @@ class Third_Party extends \eoxia\Post_Class {
 	/**
 	 * Dissocie tous les contact d'un tier.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param  Third_Party_Model $third_party Les données du tier.
+	 * @param  Third_Party $third_party Les données du tier.
 	 *
-	 * @return array                          Messages informatifs.
+	 * @return array                    Messages informatifs.
 	 */
 	public function dessociate_contact( $third_party ) {
 		$messages = array();

@@ -2,19 +2,32 @@
 /**
  * La vue principale de la page des tiers.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Templates
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
-defined( 'ABSPATH' ) || exit; ?>
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * Documentation des variables utilisées dans la vue.
+ *
+ * @var string  $dolibarr_url         L'url de Dolibarr.
+ * @var string  $dolibarr_create_tier L'url de la liste des tiers sur Dolibarr.
+ * @var string  $s                    Le paramètre de la recherche.
+ * @var integer $count                Le nombre de tier.
+ * @var integer $number_page          Le nombre de page.
+ * @var string  $current_page         La page actuel.
+ * @var string  $begin_url            L'url de début de recherche.
+ * @var string  $prev_url             L'url précédante.
+ * @var string  $next_url             L'url suivante.
+ * @var string  $end_url              L'url de fin de recherche.
+ */
+?>
 
 <div class="wrap wpeo-wrap">
 	<h2>

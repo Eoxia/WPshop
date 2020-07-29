@@ -1,20 +1,28 @@
 <?php
 /**
- * Affichage des données commercials d'un tier: devis, commande et facture.
+ * La vue affichant les données commerciales d'un tier: proposition commerciale, commande et facture.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Templates
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
-defined( 'ABSPATH' ) || exit; ?>
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * Documentation des variables utilisées dans la vue.
+ *
+ * @var Doli_Proposals $propal      Les données d'une proposition commerciale.
+ * @var Doli_Order     $order       Les données d'une commande.
+ * @var boolean        $doli_active True si Dolibarr est activé.
+ * @var string         $doli_url    L'url de Dolibarr.
+ * @var Doli_Invoice   $invoice     Les données d'une facture.
+ */
+?>
 
 <ul class="list-commercial">
 	<?php if ( ! empty( $propal->data ) ) : ?>

@@ -1,21 +1,28 @@
 <?php
 /**
- * Affichage du listing des tiers dans le backend.
+ * La vue affichant la liste des tiers dans le backend.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Templates
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
-defined( 'ABSPATH' ) || exit; ?>
+use eoxia\View_Util;
 
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * Documentation des variables utilisées dans la vue.
+ *
+ * @var array              $third_parties Le tableau contenant toutes les données des tiers.
+ * @var Doli_Third_Parties $third_party   Les données d'un tier.
+ * @var string             $doli_url      L'url de Dolibarr.
+ */
+?>
 
 <div class="wps-list-third-parties wpeo-table table-flex table-6">
 	<div class="table-row table-header">
@@ -26,15 +33,13 @@ defined( 'ABSPATH' ) || exit; ?>
 		<?php do_action( 'wps_listing_table_header_end', 'thirdparties' ); ?>
 	</div>
 
-	<?php
-	if ( ! empty( $third_parties ) ) :
+	<?php if ( ! empty( $third_parties ) ) :
 		foreach ( $third_parties as $third_party ) :
-			\eoxia\View_Util::exec( 'wpshop', 'third-parties', 'item', array(
+			View_Util::exec( 'wpshop', 'third-parties', 'item', array(
 				'third_party' => $third_party,
 				'sync_status' => false,
 				'doli_url'    => $doli_url,
 			) );
 		endforeach;
-	endif;
-	?>
+	endif; ?>
 </div>

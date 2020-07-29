@@ -1,20 +1,29 @@
 <?php
 /**
- * La vue affichant les contact d'un tier dans la page single d'un tier.
+ * La vue affichant la metabox "Utilisateurs".
+ * Page d'un tier.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Templates
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
-defined( 'ABSPATH' ) || exit; ?>
+use eoxia\View_Util;
+
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * Documentation des variables utilisées dans la vue.
+ *
+ * @var array              $contacts    Le tableau contenant toutes les données des utilisateurs.
+ * @var User               $contact     Les données d'un utilisateur.
+ * @var Doli_Third_Parties $third_party Les données d'un tier.
+ */
+?>
 
 <div class="wps-metabox wps-billing-contact view gridw-3">
 	<h3 class="metabox-title"><?php esc_html_e( 'Users', 'wpshop' ); ?></h3>
@@ -28,15 +37,13 @@ defined( 'ABSPATH' ) || exit; ?>
 			<div class="table-cell"></div>
 		</div>
 
-		<?php
-		if ( ! empty( $contacts ) ) :
+		<?php if ( ! empty( $contacts ) ) :
 			foreach ( $contacts as $contact ) :
-				\eoxia\View_Util::exec( 'wpshop', 'third-parties', 'metaboxes/metabox-contacts-item', array(
+				View_Util::exec( 'wpshop', 'third-parties', 'metaboxes/metabox-contacts-item', array(
 					'third_party_id' => $third_party->data['id'],
 					'contact'        => $contact,
 				) );
 			endforeach;
-		endif;
-		?>
+		endif; ?>
 	</div>
 </div>

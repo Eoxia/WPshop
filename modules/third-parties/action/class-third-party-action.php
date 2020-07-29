@@ -1,41 +1,40 @@
 <?php
 /**
- * Gestion des actions des tiers.
+ * La classe gérant les actions des tiers.
  *
- * Ajoutes une page "Tiers" dans le menu de WordPress.
- *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
+use eoxia\View_Util;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Third Party Action Class.
+ * Third_Party Action Class.
  */
 class Third_Party_Action {
 
 	/**
-	 * Définition des metabox sur la page.
+	 * Définition des metaboxes sur la page.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var array
 	 */
 	public $metaboxes = null;
 
 	/**
-	 * Constructeur.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function __construct() {
 		add_action( 'admin_menu', array( $this, 'callback_admin_menu' ), 20 );
@@ -56,7 +55,8 @@ class Third_Party_Action {
 	/**
 	 * Initialise la page "Third Parties".
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_admin_menu() {
 		$hook = add_submenu_page(
@@ -76,7 +76,8 @@ class Third_Party_Action {
 	/**
 	 * Appel la vue "main" du module "Third Party".
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_add_menu_page() {
 		// If it is a single page.
@@ -94,7 +95,7 @@ class Third_Party_Action {
 				}
 			}
 
-			\eoxia\View_Util::exec( 'wpshop', 'third-parties', 'single', array( 'third_party' => $third_party ) );
+			View_Util::exec( 'wpshop', 'third-parties', 'single', array( 'third_party' => $third_party ) );
 		} else {
 			// Or it is the listing.
 			$per_page = get_user_meta( get_current_user_id(), Third_Party::g()->option_per_page, true );
@@ -127,7 +128,7 @@ class Third_Party_Action {
 				$next_url  .= '&s=' . $s;
 			}
 
-			\eoxia\View_Util::exec( 'wpshop', 'third-parties', 'main', array(
+			View_Util::exec( 'wpshop', 'third-parties', 'main', array(
 				'number_page'  => $number_page,
 				'current_page' => $current_page,
 				'count'        => $count,
@@ -144,9 +145,10 @@ class Third_Party_Action {
 	}
 
 	/**
-	 * Ajoutes le menu "Options de l'écran" pour les tiers.
+	 * Ajoute le menu "Options de l'écran" pour les tiers.
 	 *
-	 * @since 2.0.0.
+	 * @since   2.0.0
+	 * @version 2.0.0.
 	 */
 	public function callback_add_screen_option() {
 		add_screen_option(
@@ -162,12 +164,13 @@ class Third_Party_Action {
 	/**
 	 * Appel la vue de la metabox des adresses.
 	 *
-	 * @param Third_Party $third_party Les données du tiers.
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @since 2.0.0
+	 * @param Third_Party $third_party Les données du tiers.
 	 */
 	public function metabox_billing_address( $third_party ) {
-		\eoxia\View_Util::exec( 'wpshop', 'third-parties', 'metaboxes/metabox-billing-address', array(
+		View_Util::exec( 'wpshop', 'third-parties', 'metaboxes/metabox-billing-address', array(
 			'third_party' => $third_party,
 		) );
 	}
@@ -175,9 +178,10 @@ class Third_Party_Action {
 	/**
 	 * Appel la vue de la metabox des contact.
 	 *
-	 * @param Third_Party $third_party Les données du tiers.
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @since 2.0.0
+	 * @param Third_Party $third_party Les données du tiers.
 	 */
 	public function metabox_contacts( $third_party ) {
 		$contacts = array();
@@ -186,7 +190,7 @@ class Third_Party_Action {
 			$contacts = User::g()->get( array( 'include' => $third_party->data['contact_ids'] ) );
 		}
 
-		\eoxia\View_Util::exec( 'wpshop', 'third-parties', 'metaboxes/metabox-contacts', array(
+		View_Util::exec( 'wpshop', 'third-parties', 'metaboxes/metabox-contacts', array(
 			'third_party' => $third_party,
 			'contacts'    => $contacts,
 		) );
@@ -195,16 +199,17 @@ class Third_Party_Action {
 	/**
 	 * Appel la vue de la metabox des devis.
 	 *
-	 * @param Third_Party $third_party Les données du tiers.
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @since 2.0.0
+	 * @param Third_Party $third_party Les données du tiers.
 	 */
 	public function metabox_proposals( $third_party ) {
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
 
 		$proposals = Proposals::g()->get( array( 'post_parent' => $third_party->data['id'] ) );
 
-		\eoxia\View_Util::exec( 'wpshop', 'third-parties', 'metaboxes/metabox-proposals', array(
+		View_Util::exec( 'wpshop', 'third-parties', 'metaboxes/metabox-proposals', array(
 			'doli_url'  => $dolibarr_option['dolibarr_url'],
 			'proposals' => $proposals,
 		) );
@@ -213,9 +218,10 @@ class Third_Party_Action {
 	/**
 	 * Appel la vue de la metabox des dolibarr propal.
 	 *
-	 * @param Third_Party $third_party Les données du tiers.
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @since 2.0.0
+	 * @param Third_Party $third_party Les données du tiers.
 	 */
 	public function metabox_dolibarr_propal( $third_party ) {
 		// @todo: Charger dolibarr_option qu'une seule fois.
@@ -234,7 +240,7 @@ class Third_Party_Action {
 			}
 		}
 
-		\eoxia\View_Util::exec( 'wpshop', 'third-parties', 'metaboxes/metabox-dolibarr-proposals', array(
+		View_Util::exec( 'wpshop', 'third-parties', 'metaboxes/metabox-dolibarr-proposals', array(
 			'proposals' => $proposals,
 			'doli_url'  => $dolibarr_option['dolibarr_url'],
 		) );
@@ -244,9 +250,10 @@ class Third_Party_Action {
 	/**
 	 * Appel la vue de la metabox des commandes.
 	 *
-	 * @param Third_Party $third_party Les données du tiers.
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @since 2.0.0
+	 * @param Third_Party $third_party Les données du tiers.
 	 */
 	public function metabox_orders( $third_party ) {
 		// @todo: Charger dolibarr_option qu'une seule fois.
@@ -265,7 +272,7 @@ class Third_Party_Action {
 			}
 		}
 
-		\eoxia\View_Util::exec( 'wpshop', 'third-parties', 'metaboxes/metabox-orders', array(
+		View_Util::exec( 'wpshop', 'third-parties', 'metaboxes/metabox-orders', array(
 			'orders'   => $orders,
 			'doli_url' => $dolibarr_option['dolibarr_url'],
 		) );
@@ -274,9 +281,10 @@ class Third_Party_Action {
 	/**
 	 * Appel la vue de la metabox des factures.
 	 *
-	 * @param Third_Party $third_party Les données du tiers.
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @since 2.0.0
+	 * @param Third_Party $third_party Les données du tiers.
 	 */
 	public function metabox_invoices( $third_party ) {
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
@@ -308,54 +316,9 @@ class Third_Party_Action {
 			}
 		}
 
-		\eoxia\View_Util::exec( 'wpshop', 'third-parties', 'metaboxes/metabox-invoices', array(
+		View_Util::exec( 'wpshop', 'third-parties', 'metaboxes/metabox-invoices', array(
 			'doli_url' => $dolibarr_option['dolibarr_url'],
 			'invoices' => $invoices,
-		) );
-	}
-
-	/**
-	 * Ajoutes la metabox "Tâches".
-	 *
-	 * @param Third_Party $third_party Les données du tiers.
-	 *
-	 * @since 2.0.0
-	 */
-	public function metabox_tasks( $third_party ) {
-		$post = get_post( $third_party->data['id'] );
-
-		\eoxia\View_Util::exec( 'wpshop', 'third-parties', 'metaboxes/metabox-task', array(
-			'post' => $post,
-		) );
-	}
-
-	/**
-	 * Ajoutes la metabox "Indicateur".
-	 *
-	 * @param Third_Party $third_party Les données du tiers.
-	 *
-	 * @since 2.0.0
-	 */
-	public function metabox_indicator( $third_party ) {
-		$post = get_post( $third_party->data['id'] );
-
-		\eoxia\View_Util::exec( 'wpshop', 'third-parties', 'metaboxes/metabox-indicator', array(
-			'post' => $post,
-		) );
-	}
-
-	/**
-	 * Ajoutes la metabox "Activité".
-	 *
-	 * @param Third_Party $third_party Les données du tiers.
-	 *
-	 * @since 2.0.0
-	 */
-	public function metabox_activity( $third_party ) {
-		$post = get_post( $third_party->data['id'] );
-
-		\eoxia\View_Util::exec( 'wpshop', 'third-parties', 'metaboxes/metabox-activity', array(
-			'post' => $post,
 		) );
 	}
 }

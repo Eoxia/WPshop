@@ -1,20 +1,26 @@
 <?php
 /**
- * La vue principale de la page des produits (wps-third-party)
+ * La vue affichant l'édition dans la metabox "Utilisateurs".
+ * Page d'un tier.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Templates
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
-defined( 'ABSPATH' ) || exit; ?>
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * Documentation des variables utilisées dans la vue.
+ *
+ * @var User    $contact        Les données d'un utilisateur.
+ * @var integer $third_party_id L'id d'un tier.
+ */
+?>
 
 <div class="table-row <?php echo empty( $contact->data['id'] ) ? 'new' : 'edit'; ?>">
 	<div class="table-cell"><input type="text" name="contact[lastname]" placeholder="<?php esc_html_e( 'Name', 'wpshop' ); ?>" value="<?php echo esc_attr( $contact->data['lastname'] ); ?>" /></div>
