@@ -1,18 +1,18 @@
 <?php
 /**
- * Gestion des actions des factures.
+ * La classe gérant les actions des factures de Dolibarr.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
+
+use eoxia\LOG_Util;
+use eoxia\View_Util;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -22,18 +22,20 @@ defined( 'ABSPATH' ) || exit;
 class Doli_Invoice_Action {
 
 	/**
-	 * Définition des metabox sur la page.
+	 * Définition des metaboxes sur la page.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var array
 	 */
 	public $metaboxes = null;
 
 	/**
-	 * Constructor.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function __construct() {
 		add_action( 'init', array( $this, 'create_tmp_invoice_dir' ) );
@@ -57,7 +59,8 @@ class Doli_Invoice_Action {
 	/**
 	 * Créer un répertoire temporaire pour les factures.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function create_tmp_invoice_dir() {
 		$dir = wp_upload_dir();
@@ -72,9 +75,10 @@ class Doli_Invoice_Action {
 	}
 
 	/**
-	 * Ajoutes la metabox details
+	 * Ajoute la metabox details.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function add_meta_box() {
 		if ( isset( $_GET['id'] ) && isset( $_GET['page'] ) && 'wps-invoice' === $_GET['page'] ) {
@@ -97,16 +101,18 @@ class Doli_Invoice_Action {
 	/**
 	 * Initialise la page "Facture".
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_admin_menu() {
 		add_submenu_page( 'wpshop', __( 'Invoices', 'wpshop' ), __( 'Invoices', 'wpshop' ), 'manage_options', 'wps-invoice', array( $this, 'callback_add_menu_page' ) );
 	}
 
 	/**
-	 * Affichage de la vue du menu
+	 * Affichage de la vue du menu.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_add_menu_page() {
 		if ( isset( $_GET['id'] ) ) {
@@ -120,7 +126,7 @@ class Doli_Invoice_Action {
 				}
 			}
 
-			\eoxia\View_Util::exec( 'wpshop', 'doli-invoice', 'single', array( 'invoice' => $invoice ) );
+			View_Util::exec( 'wpshop', 'doli-invoice', 'single', array( 'invoice' => $invoice ) );
 		} else {
 			$args = array(
 				'post_type'      => 'wps-doli-invoice',
@@ -130,19 +136,19 @@ class Doli_Invoice_Action {
 
 			$count = count( get_posts( $args ) );
 
-			\eoxia\View_Util::exec( 'wpshop', 'doli-invoice', 'main', array(
+			View_Util::exec( 'wpshop', 'doli-invoice', 'main', array(
 				'count' => $count,
 			) );
 		}
 	}
 
 	/**
-	 * La metabox des détails de la commande
+	 * La metabox des détails de la facture.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param  WP_Post $post          Les données du post.
-	 * @param  array   $callback_args Tableau contenu les données de la commande.
+	 * @param Doli_Invoice $invoice Les données d'une facture.
 	 */
 	public function callback_meta_box( $invoice ) {
 		$third_party  = Third_Party::g()->get( array( 'id' => $invoice->data['third_party_id'] ), true );
@@ -156,7 +162,7 @@ class Doli_Invoice_Action {
 			$invoice->data['order'] = Doli_Order::g()->get( array( 'id' => $invoice->data['parent_id'] ), true );
 		}
 
-		\eoxia\View_Util::exec( 'wpshop', 'doli-invoice', 'metabox-invoice-details', array(
+		View_Util::exec( 'wpshop', 'doli-invoice', 'metabox-invoice-details', array(
 			'invoice'      => $invoice,
 			'third_party'  => $third_party,
 			'link_invoice' => $link_invoice,
@@ -164,12 +170,12 @@ class Doli_Invoice_Action {
 	}
 
 	/**
-	 * Box affichant les produits de la commande
+	 * La metabox affichant les produits de la commande
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param  WP_Post $post          Les données du post.
-	 * @param  array   $callback_args Tableau contenu les données de la commande.
+	 * @param Doli_Invoice $invoice Les données d'une facture.
 	 */
 	public function meta_box_product( $invoice ) {
 		$tva_lines = array();
@@ -184,7 +190,7 @@ class Doli_Invoice_Action {
 			}
 		}
 
-		\eoxia\View_Util::exec( 'wpshop', 'order', 'review-order', array(
+		View_Util::exec( 'wpshop', 'order', 'review-order', array(
 			'object'    => $invoice,
 			'tva_lines' => $tva_lines,
 		) );
@@ -193,9 +199,10 @@ class Doli_Invoice_Action {
 	/**
 	 * Créer la facture si la commande est payé.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param  array $data Data from PayPal.
+	 * @param array $data Data from PayPal.
 	 */
 	public function create_invoice( $data ) {
 		$doli_order   = Request_Util::get( 'orders/' . (int) $data['custom'] );
@@ -209,7 +216,7 @@ class Doli_Invoice_Action {
 
 		$invoice = Doli_Invoice::g()->get( array( 'schema' => true ), true );
 		$doli_invoice = Request_Util::get( 'invoices/' . $doli_invoice->id );
-		\eoxia\LOG_Util::log( sprintf( $doli_invoice->id . '|' . $doli_invoice->socid ), 'wpshop2' );
+		LOG_Util::log( sprintf( $doli_invoice->id . '|' . $doli_invoice->socid ), 'wpshop2' );
 		$wp_invoice = Doli_Invoice::g()->doli_to_wp( $doli_invoice, $invoice, true );
 
 		$doli_payment = Request_Util::post( 'invoices/' . $doli_invoice->id . '/payments', array(
@@ -265,15 +272,16 @@ class Doli_Invoice_Action {
 		) );
 
 		// // translators: Send the invoice 000001 to the email contact text@eoxia.com.
-		\eoxia\LOG_Util::log( sprintf( 'Send the invoice %s to the email contact %s', $wp_invoice->data['title'], $third_party_email ), 'wpshop2' );
+		LOG_Util::log( sprintf( 'Send the invoice %s to the email contact %s', $wp_invoice->data['title'], $third_party_email ), 'wpshop2' );
 
 		unlink( $path_file );
 	}
 
 	/**
-	 * Télécharges la facture.
+	 * Télécharge la facture.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function download_invoice() {
 		check_admin_referer( 'download_invoice' );
@@ -294,7 +302,7 @@ class Doli_Invoice_Action {
 		}
 
 		// translators: Contact test@eoxia.com download the invoice 00001.
-		\eoxia\LOG_Util::log( sprintf( 'Contact %s download the invoice %s', $contact->data['email'], $invoice->ref ), 'wpshop2' );
+		LOG_Util::log( sprintf( 'Contact %s download the invoice %s', $contact->data['email'], $invoice->ref ), 'wpshop2' );
 
 		$invoice_file = Request_Util::get( 'documents/download?modulepart=facture&original_file=' . $invoice->ref . '/' . $invoice->ref . '.pdf' );
 

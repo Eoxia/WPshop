@@ -1,15 +1,12 @@
 <?php
 /**
- * Les filtres relatives aux factures de dolibarr.
+ * La classe gérant les filtre des factures de dolibarr.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
@@ -22,9 +19,10 @@ defined( 'ABSPATH' ) || exit;
 class Doli_Invoice_Filter {
 
 	/**
-	 * Constructeur.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function __construct() {
 		add_filter( 'eo_model_wps-invoice_register_post_type_args', array( $this, 'callback_register_post_type_args' ) );
@@ -33,6 +31,17 @@ class Doli_Invoice_Filter {
 		add_filter( 'wps_doli_status', array( $this, 'wps_doli_status' ), 10, 2 );
 	}
 
+	/**
+	 * Ajoute les détails d'une facture.
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 *
+	 * @param  Doli_Invoice $object Les données d'une facture.
+	 * @param  array        $args   Les arguments supplémentaires.
+	 *
+	 * @return Doli_Invoice         Les nouvelles données d'une facture.
+	 */
 	public function add_details( $object, $args ) {
 		$object->data['payments'] = Doli_Payment::g()->get( array( 'post_parent' => $object->data['id'] ) );
 		$object->data['totalpaye'] = 0;
@@ -49,9 +58,10 @@ class Doli_Invoice_Filter {
 	}
 
 	/**
-	 * Ajoutes des données supplémentaires pour le register_post_type.
+	 * Ajoute des données supplémentaires pour le register_post_type.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @return array Les données supplementaires.
 	 */
@@ -87,6 +97,17 @@ class Doli_Invoice_Filter {
 		return $args;
 	}
 
+	/**
+	 * Change le statut d'une facture.
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 *
+	 * @param  string       $status Le statut de la facture.
+	 * @param  Doli_Invoice $object Les données d'une facture.
+	 *
+	 * @return string               Le nouveau statut de la facture.
+	 */
 	public function wps_doli_status( $status, $object ) {
 		if ( $object->data['type'] == Doli_Invoice::g()->get_type() ) {
 			if ( $object->data['totalpaye'] != 0 && ! $object->data['paye'] ) {

@@ -1,59 +1,61 @@
 <?php
 /**
- * Les fonctions principales des produits.
+ * La classe gérant les fonctions principales des factures de Dolibarr.
  *
- * Le controlleur du modèle Product_Model.
- *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
+
+use eoxia\Post_Class;
+use eoxia\View_Util;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
  * Doli Invoice Class.
  */
-class Doli_Invoice extends \eoxia\Post_Class {
+class Doli_Invoice extends Post_Class {
 
 	/**
-	 * Model name @see ../model/*.model.php.
+	 * Le nom du modèle.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var string
 	 */
 	protected $model_name = '\wpshop\Doli_Invoice_Model';
 
 	/**
-	 * Post type
+	 * Le post type.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var string
 	 */
 	protected $type = 'wps-doli-invoice';
 
 	/**
-	 * La clé principale du modèle
+	 * La clé principale du modèle.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var string
 	 */
 	protected $meta_key = 'doli-invoice';
 
 	/**
-	 * La route pour accéder à l'objet dans la rest API
+	 * La route pour accéder à l'objet dans la rest API.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var string
 	 */
@@ -62,7 +64,8 @@ class Doli_Invoice extends \eoxia\Post_Class {
 	/**
 	 * La taxonomy lié à ce post type.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var string
 	 */
@@ -71,16 +74,18 @@ class Doli_Invoice extends \eoxia\Post_Class {
 	/**
 	 * Le nom du post type.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var string
 	 */
 	protected $post_type_name = 'Doli Invoice';
 
 	/**
-	 * Récupères la liste des devis et appel la vue "list" du module "invoice".
+	 * Appel la vue "list" du module "doli-invoice".
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function display() {
 		$invoices = $this->get( array(
@@ -104,26 +109,36 @@ class Doli_Invoice extends \eoxia\Post_Class {
 
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
 
-		\eoxia\View_Util::exec( 'wpshop', 'doli-invoice', 'list', array(
+		View_Util::exec( 'wpshop', 'doli-invoice', 'list', array(
 			'invoices' => $invoices,
 			'doli_url' => $dolibarr_option['dolibarr_url'],
 		) );
 	}
 
+	/**
+	 * Appel la vue "item" d'une facture.
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 *
+	 * @param Doli_Invoice $invoice  Les données d'une facture.
+	 * @param string       $doli_url L'url de Dolibarr.
+	 */
 	public function display_item( $invoice, $doli_url = '' ) {
-		\eoxia\View_Util::exec( 'wpshop', 'doli-invoice', 'item', array(
+		View_Util::exec( 'wpshop', 'doli-invoice', 'item', array(
 			'invoice' => $invoice,
 		) );
 	}
 
 	/**
-	 * Convertis un tableau Invoice Object provenant de Dolibarr vers un format Invoice Object WPShop afin de normisé pour l'affichage.
+	 * Convertit un tableau Invoice Object provenant de Dolibarr vers un format Invoice Object WPShop afin de normisé pour l'affichage.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param array $doli_invoices Tableau Invoice Object provenant de Dolibarr.
+	 * @param  \stdClass $doli_invoices Le tableau ontenant toutes les données des factures provenant de Dolibarr.
 	 *
-	 * @return array $wp_invoices Tableau Invoice Object de WPshop convertis depuis le format de Dolibarr.
+	 * @return Doli_Invoice             Le tableau contenant toutes les données des factures convertis depuis le format de Dolibarr.
 	 */
 	public function convert_to_wp_invoice_format( $doli_invoices ) {
 		$wp_invoices = array();
@@ -141,15 +156,14 @@ class Doli_Invoice extends \eoxia\Post_Class {
 	/**
 	 * Synchronise depuis Dolibarr vers WP.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param stdClass      $doli_invoice Les données de la facture venant de
-	 * Dolibarr.
-	 * @param Invoice_Model $wp_invoice   Les données de la facture WP.
-	 * @param Boolean       $only_convert Only Convert Dolibarr Object to WP. Don't save the WP Object on the database.
+	 * @param  \stdClass    $doli_invoice Les données d'une facture Dolibarr.
+	 * @param  Doli_Invoice $wp_invoice   Les données d'une facture WordPress.
+	 * @param  boolean      $only_convert Only Convert Dolibarr Object to WP. Don't save the WP Object on the database.
 	 *
-	 * @return Invoice_Model              Les données de la facture WP avec les
-	 * données de Dolibarr.
+	 * @return Doli_Invoice              Les données de la facture WP avec les données de Dolibarr.
 	 */
 	public function doli_to_wp( $doli_invoice, $wp_invoice, $only_convert = false ) {
 		$order = null;
@@ -277,12 +291,30 @@ class Doli_Invoice extends \eoxia\Post_Class {
 		return $wp_invoice;
 	}
 
+	/**
+	 * Ajoute une ligne sur la commande.
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 *
+	 * @param Doli_Order $order      Les données d'une commande.
+	 * @param array      $line_data  La donnée à ajouté.
+	 */
 	public function add_line( $order, $line_data ) {
 		$order->data['lines'][] = $line_data;
 
 		$this->update( $order->data );
 	}
 
+	/**
+	 * Met à jour une ligne sur la commande.
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 *
+	 * @param Doli_Order $order      Les données d'une commande.
+	 * @param array      $line_data  La donnée à ajouté.
+	 */
 	public function update_line( $order, $line_data ) {
 		$founded_line = null;
 		$key_line     = null;
@@ -306,6 +338,15 @@ class Doli_Invoice extends \eoxia\Post_Class {
 		}
 	}
 
+	/**
+	 * Supprime une ligne sur la commande.
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 *
+	 * @param Doli_Order $order   Les données d'une commande.
+	 * @param integer    $row_id  L'id de la ligne.
+	 */
 	public function delete_line( $order, $row_id ) {
 		$founded_line = null;
 		$key_line     = null;
