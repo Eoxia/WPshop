@@ -1,6 +1,6 @@
 <?php
 /**
- * Les fonctions principales de Stripe.
+ * La classe gérant les fonctions principales de Stripe.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -12,6 +12,7 @@
 namespace wpshop;
 
 use eoxia\Singleton_Util;
+use Stripe\Checkout\Session;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -20,7 +21,7 @@ defined( 'ABSPATH' ) || exit;
  */
 class Stripe extends Singleton_Util {
 	/**
-	 * Constructeur.
+	 * Le constructeur.
 	 *
 	 * @since   2.0.0
 	 * @version 2.0.0
@@ -28,14 +29,14 @@ class Stripe extends Singleton_Util {
 	protected function construct() {}
 
 	/**
-	 * Prépare la paiement stripe.
+	 * Prépare le paiement stripe.
 	 *
 	 * @since   2.0.0
 	 * @version 2.0.0
 	 *
-	 * @param Order $order Les données de la commande.
+	 * @param  Doli_Order $order Les données de la commande.
 	 *
-	 * @return array       L'ID de la session Stripe.
+	 * @return array             L'ID de la session Stripe.
 	 */
 	public function process_payment( $order ) {
 		$stripe_options = Payment::g()->get_payment_option( 'stripe' );
@@ -50,7 +51,7 @@ class Stripe extends Singleton_Util {
 			'currency' => 'eur',
 		);
 
-		$session = \Stripe\Checkout\Session::create( array(
+		$session = Session::create( array(
 			'success_url'          => Pages::g()->get_checkout_link() . '/received/order/' . $order->data['external_id'],
 			'cancel_url'           => site_url(),
 			'payment_method_types' => array( 'card' ),

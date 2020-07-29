@@ -1,6 +1,6 @@
 <?php
 /**
- * Gestion des filtres Stripe.
+ * La classe gérant les filtres Stripe.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -19,7 +19,7 @@ defined( 'ABSPATH' ) || exit;
 class Stripe_Filter {
 
 	/**
-	 * Constructeur.
+	 * Le constructeur.
 	 *
 	 * @since   2.0.0
 	 * @version 2.0.0

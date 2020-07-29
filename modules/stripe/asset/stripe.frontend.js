@@ -21,8 +21,8 @@ window.eoxiaJS.wpshopFrontend.stripe.init = function() {};
  * @since   2.0.0
  * @version 2.0.0
  *
- * @param  {HTMLDivElement} triggeredElement  L'élement HTML déclenchant la requête Ajax.
- * @param  {Object}         response          Les données renvoyées par la requête Ajax.
+ * @param {HTMLDivElement} triggeredElement L'élement HTML déclenchant la requête Ajax.
+ * @param {Object}         response         Les données renvoyées par la requête Ajax.
  */
 window.eoxiaJS.wpshopFrontend.stripe.redirectToPayment = function(triggeredElement, response) {
 	var stripe = Stripe(
@@ -37,4 +37,4 @@ window.eoxiaJS.wpshopFrontend.stripe.redirectToPayment = function(triggeredEleme
 	}).then(function (result) {
 	  console.log(result);
 	});
-}
+};

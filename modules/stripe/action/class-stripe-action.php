@@ -1,6 +1,6 @@
 <?php
 /**
- * Gestion des actions de Stripe.
+ * La classe gérant les actions de Stripe.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -11,6 +11,8 @@
 
 namespace wpshop;
 
+use eoxia\View_Util;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -18,7 +20,7 @@ defined( 'ABSPATH' ) || exit;
  */
 class Stripe_Action {
 	/**
-	 * Constructeur.
+	 * Le constructeur.
 	 *
 	 * @since   2.0.0
 	 * @version 2.0.0
@@ -68,7 +70,7 @@ class Stripe_Action {
 	 */
 	public function callback_setting_payment_method() {
 		$stripe_options = Payment::g()->get_payment_option( 'stripe' );
-		\eoxia\View_Util::exec( 'wpshop', 'stripe', 'form-setting', array(
+		View_Util::exec( 'wpshop', 'stripe', 'form-setting', array(
 			'stripe_options' => $stripe_options,
 		) );
 	}
@@ -79,8 +81,8 @@ class Stripe_Action {
 	 * @since   2.0.0
 	 * @version 2.0.0
 	 *
-	 * @param array $data Les données de Stripe.
-	 * @param array $type Le type de méthode de paiement.
+	 * @param  array $data Les données de Stripe.
+	 * @param  array $type Le type de méthode de paiement.
 	 *
 	 * @return array      Les données de Stripe
 	 */

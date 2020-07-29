@@ -1,6 +1,6 @@
 <?php
 /**
- * La vue de la page de "MOYEN DE PAIEMENT" pour la méthode de paiement Stripe.
+ * La vue affichant la méthode de paiement Stripe dans la page "Réglages".
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
