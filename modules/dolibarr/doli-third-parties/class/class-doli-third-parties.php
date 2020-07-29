@@ -1,45 +1,46 @@
 <?php
 /**
- * Les fonctions principales des tiers avec dolibarr.
+ * La classe gérant les fonctions principales des tiers de Dolibarr.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
+use eoxia\Singleton_Util;
+use stdClass;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Doli Third Parties class.
+ * Doli Third Parties Class.
  */
-class Doli_Third_Parties extends \eoxia\Singleton_Util {
+class Doli_Third_Parties extends Singleton_Util {
 
 	/**
-	 * Constructeur.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	protected function construct() {}
 
 	/**
-	 * Synchronisation de dolibarr vers WP
+	 * Synchronisation de Dolibarr vers WordPress.
 	 *
-	 * @param stdClass          $doli_third_party Les données du tier
-	 * venant de dolibarr.
-	 * @param Third_party_Model $wp_third_party   Les données du tier de WP.
-	 * @param boolean           $save             Enregistres les données sinon
-	 * renvoies l'objet remplit sans l'enregistrer en base de donnée.
-	 * @param array             $notices          Gestion des erreurs et
-	 * informations de l'évolution de la méthode.
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @since 2.0.0
+	 * @param  stdClass    $doli_third_party Les données d'un tier Dolibarr.
+	 * @param  Third_Party $wp_third_party   Les données d'un tier WordPress.
+	 * @param  boolean     $save             Enregistres les données sinon renvoies l'objet remplit sans l'enregistrer en base de donnée.
+	 * @param  array       $notices          Gestion des erreurs et informations de l'évolution de la méthode.
+	 *
+	 * @return Third_Party                   Les données d'un tier WordPress avec ceux de Dolibarr.
 	 */
 	public function doli_to_wp( $doli_third_party, $wp_third_party, $save = true, &$notices = array(
 		'errors'   => array(),
@@ -97,17 +98,17 @@ class Doli_Third_Parties extends \eoxia\Singleton_Util {
 	}
 
 	/**
-	 * Synchronisation de WP vers dolibarr.
+	 * Synchronisation de WordPress vers Dolibarr.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param Third_Party_Model $wp_third_party   Les données du tier de WP.
-	 * @param stdClass          $doli_third_party Les données du tier venant
-	 * de dolibarr.
-	 * @param boolean           $save             Enregistres les données sinon
-	 * renvoies l'objet remplit sans l'enregistrer en base de donnée.
-	 * @param array             $notices          Gestion des erreurs et
-	 * informations de l'évolution de la méthode.
+	 * @param  Third_Party $wp_third_party   Les données d'un tier WordPress.
+	 * @param  stdClass    $doli_third_party Les données d'un tier Dolibarr.
+	 * @param  boolean     $save             Enregistres les données sinon renvoies l'objet remplit sans l'enregistrer en base de donnée.
+	 * @param  array       $notices          Gestion des erreurs et informations de l'évolution de la méthode.
+	 *
+	 * @return Third_Party                   Les données d'un tier Dolibarr avec ceux de WordPress.
 	 */
 	public function wp_to_doli( $wp_third_party, $doli_third_party, $save = true, &$notices = array(
 		'errors'   => array(),
@@ -147,13 +148,14 @@ class Doli_Third_Parties extends \eoxia\Singleton_Util {
 	}
 
 	/**
-	 * Récupères l'ID de WP depuis l'ID de dolibarr
+	 * Récupère l'id de WordPress depuis l'id de Dolibarr
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param  integer $doli_id L'ID du tier venant de dolibarr.
+	 * @param  integer $doli_id L'id d'un tier de Dolibarr.
 	 *
-	 * @return integer          L'ID WP du tier.
+	 * @return integer          L'id d'un tier de WordPress.
 	 */
 	public function get_wp_id_by_doli_id( $doli_id ) {
 		// @todo: Que se passe-t-il si une commande ou une entité peu importe possède la même ID.

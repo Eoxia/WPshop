@@ -1,15 +1,12 @@
 <?php
 /**
- * Gestion des actions des tiers avec dolibarr.
+ * La classe gérant les actions des tiers de Dolibarr.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
@@ -22,9 +19,10 @@ defined( 'ABSPATH' ) || exit;
 class Doli_Third_Parties_Action {
 
 	/**
-	 * Constructor.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function __construct() {
 		add_action( 'wps_checkout_create_third_party', array( $this, 'checkout_create_third_party' ) );
@@ -36,9 +34,10 @@ class Doli_Third_Parties_Action {
 	/**
 	 * Lors du tennel de vente, créer un tier vers dolibarr.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param  Third_Party_Model $wp_third_party Les données du tier depuis WP.
+	 * @param Third_Party $wp_third_party Les données d'un tier.
 	 */
 	public function checkout_create_third_party( $wp_third_party ) {
 
@@ -50,6 +49,15 @@ class Doli_Third_Parties_Action {
 		}
 	}
 
+	/**
+	 * Lors du tennel de vente, synchronise le tier.
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 *
+	 * @param Third_Party $wp_third_party Les données d'un tier.
+	 * @param User        $wp_contact     Les données d'un utilisateur.
+	 */
 	public function checkout_sync_third( $wp_third_party, $wp_contact ) {
 		if ( Settings::g()->dolibarr_is_active() ) {
 			Doli_Sync::g()->sync( $wp_third_party->data['id'], $wp_third_party->data['external_id'], $wp_third_party->data['type'] );
@@ -57,11 +65,12 @@ class Doli_Third_Parties_Action {
 	}
 
 	/**
-	 * Passes la commande à payé.
+	 * Met à jour l'adresse d'un tier.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param array $data Les données IPN de PayPal.
+	 * @param Third_Party $data Les données d'un tier.
 	 */
 	public function update_address( $data ) {
 		$wp_order = Doli_Order::g()->get( array( 'id' => (int) $data['custom'] ), true );

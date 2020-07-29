@@ -1,7 +1,9 @@
 {
-	"name": "Third Party avec dolibarr",
+	"name": "Doli Third Parties",
 	"slug": "doli-third-parties",
 	"since": "2.0.0",
+    "version": "2.0.0",
+    "description": "Le module gérant les tiers de Dolibarr",
 	"path": "modules/dolibarr/doli-third-parties",
 	"dependencies": {
         "filter": {},

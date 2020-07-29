@@ -1,16 +1,12 @@
 <?php
 /**
- * Gestion des filtres des tiers.
- * En relation avec Dolibarr.
+ * La classe gérant les filtres des tiers de Dolibarr.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Filters
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
@@ -23,24 +19,25 @@ defined( 'ABSPATH' ) || exit;
 class Doli_Third_Parties_Filter {
 
 	/**
-	 * Constructor.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function __construct() {
 		add_filter( 'wps_save_and_associate_contact', array( $this, 'add_contact_soc' ), 10, 2 );
 	}
 
 	/**
-	 * Ajoutes l'ID du tier de dolibarr dans le contact
+	 * Ajoute l'id du tier de Dolibarr à un utilisateur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param Contact_Model     $contact     Les données du contact.
-	 * @param Third_Party_Model $third_party Les données du tier.
+	 * @param  User        $contact     Les données d'un utilisateur.
+	 * @param  Third_Party $third_party Les données d'un tier.
 	 *
-	 * @return Contact_Model                 Les données du contact avec l'ID
-	 * du tier.
+	 * @return User                     Les données d'un utilisateur avec l'id du tier.
 	 */
 	public function add_contact_soc( $contact, $third_party ) {
 		$contact['third_party_id'] = $third_party->data['external_id'];
