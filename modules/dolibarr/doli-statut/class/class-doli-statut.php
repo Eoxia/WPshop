@@ -1,37 +1,41 @@
 <?php
 /**
- * Les fonctions principales pour les status de dolibarr.
+ * La classe gérant les fonctions principales des status de dolibarr.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
+
+use eoxia\Singleton_Util;
+use eoxia\View_Util;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
  * Doli Statut Class.
  */
-class Doli_Statut extends \eoxia\Singleton_Util {
+class Doli_Statut extends Singleton_Util {
 
 	/**
-	 * Les status des entitées de dolibarr.
+	 * Les statuts des entitées de Dolibarr.
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var array
 	 */
 	public $status = array();
 
 	/**
-	 * Constructeur.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	protected function construct() {
 		$this->status = array(
@@ -109,11 +113,12 @@ class Doli_Statut extends \eoxia\Singleton_Util {
 	}
 
 	/**
-	 * Affiches un status lisible selon le status de l'objet
+	 * Affiche un status lisible selon le status de l'objet
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param  mixed $object Les données de l'objet.
+	 * @param mixed $object Les données d'un objet.
 	 */
 	public function display_status( $object ) {
 		$status = null;
@@ -123,7 +128,7 @@ class Doli_Statut extends \eoxia\Singleton_Util {
 		}
 
 		if ( $status ) {
-			\eoxia\View_Util::exec( 'wpshop', 'doli-statut', 'item', array(
+			View_Util::exec( 'wpshop', 'doli-statut', 'item', array(
 				'object' => $object,
 				'text'   => $status['text'],
 				'class'  => $status['class'],
@@ -132,13 +137,14 @@ class Doli_Statut extends \eoxia\Singleton_Util {
 	}
 
 	/**
-	 * Ajoutes une classe dans la balise du statut.
+	 * Ajoute une classe dans la balise du statut.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @param  mixed $object Les données d'un objet.
 	 *
-	 * @return string        La classe.
+	 * @return string        La classe à ajouter.
 	 */
 	public function display_status_class( $object ) {
 		$status = null;
