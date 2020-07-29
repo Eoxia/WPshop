@@ -1,20 +1,26 @@
 <?php
 /**
- * Affichage des détails de la commande
+ * La vue affichant la métabox des détails d'une facture.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Templates
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
-defined( 'ABSPATH' ) || exit; ?>
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * Documentation des variables utilisées dans la vue.
+ *
+ * @var Doli_Invoice $invoice     Les données d'une facture.
+ * @var Third_Party  $third_party Les données d'un tier.
+ * @var Doli_Payment $payment     Les données d'un paiement.
+ */
+?>
 
 <div class="wps-metabox gridw-1 wps-customer-payment">
 	<h3 class="metabox-title"><?php esc_html_e( 'Payment', 'wpshop' ); ?></h3>
@@ -31,26 +37,18 @@ defined( 'ABSPATH' ) || exit; ?>
 		<div>
 			<ul>
 				<li><strong><?php esc_html_e( 'Customer', 'wpshop' ); ?></strong> : <a href="<?php echo admin_url( 'admin.php?page=wps-third-party&id=' . $third_party->data['id'] ); ?>"><?php echo $third_party->data['title']; ?></a></li>
-			<?php
-			if ( ! empty( $invoice->data['payments'] ) ) :
-				?>
+			<?php if ( ! empty( $invoice->data['payments'] ) ) : ?>
 				<li>
-					<?php
-					foreach ( $invoice->data['payments'] as $payment ) :
-						?>
+					<?php foreach ( $invoice->data['payments'] as $payment ) : ?>
 						<ul>
 							<li><?php esc_html_e( 'Payment method', 'wpshop' ); ?> : <?php echo esc_html( $payment->data['payment_type'] ); ?></li>
 							<li><?php esc_html_e( 'Payment date', 'wpshop' ); ?> : <?php echo esc_html( $payment->data['date']['rendered']['date_human_readable'] ); ?></li>
 							<li><?php esc_html_e( 'Payment reference', 'wpshop' ); ?> : <?php echo esc_html( $payment->data['title'] ); ?></li>
 							<li><?php esc_html_e( 'Amount', 'wpshop' ); ?> : <?php echo esc_html( $payment->data['amount'] ); ?>€</li>
 						</ul>
-						<?php
-					endforeach;
-					?>
+					<?php endforeach; ?>
 				</li>
-				<?php
-			endif;
-			?>
+			<?php endif; ?>
 		</div>
 		<div>
 			<strong><?php esc_html_e( 'Billing', 'wpshop' ); ?></strong>

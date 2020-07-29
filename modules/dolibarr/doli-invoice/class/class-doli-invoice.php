@@ -13,6 +13,7 @@ namespace wpshop;
 
 use eoxia\Post_Class;
 use eoxia\View_Util;
+use stdClass;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -131,14 +132,14 @@ class Doli_Invoice extends Post_Class {
 	}
 
 	/**
-	 * Convertit un tableau Invoice Object provenant de Dolibarr vers un format Invoice Object WPShop afin de normisé pour l'affichage.
+	 * Convertit un tableau Invoice Object provenant de Dolibarr vers un format Invoice Object WPshop afin de normisé pour l'affichage.
 	 *
 	 * @since   2.0.0
 	 * @version 2.0.0
 	 *
-	 * @param  \stdClass $doli_invoices Le tableau ontenant toutes les données des factures provenant de Dolibarr.
+	 * @param  stdClass $doli_invoices Le tableau contenant toutes les données des factures provenant de Dolibarr.
 	 *
-	 * @return Doli_Invoice             Le tableau contenant toutes les données des factures convertis depuis le format de Dolibarr.
+	 * @return Doli_Invoice            Le tableau contenant toutes les données des factures convertis depuis le format de Dolibarr.
 	 */
 	public function convert_to_wp_invoice_format( $doli_invoices ) {
 		$wp_invoices = array();
@@ -159,11 +160,11 @@ class Doli_Invoice extends Post_Class {
 	 * @since   2.0.0
 	 * @version 2.0.0
 	 *
-	 * @param  \stdClass    $doli_invoice Les données d'une facture Dolibarr.
+	 * @param  stdClass     $doli_invoice Les données d'une facture Dolibarr.
 	 * @param  Doli_Invoice $wp_invoice   Les données d'une facture WordPress.
 	 * @param  boolean      $only_convert Only Convert Dolibarr Object to WP. Don't save the WP Object on the database.
 	 *
-	 * @return Doli_Invoice              Les données de la facture WP avec les données de Dolibarr.
+	 * @return Doli_Invoice               Les données d'une facture WordPress avec ceux de Dolibarr.
 	 */
 	public function doli_to_wp( $doli_invoice, $wp_invoice, $only_convert = false ) {
 		$order = null;
@@ -345,7 +346,7 @@ class Doli_Invoice extends Post_Class {
 	 * @version 2.0.0
 	 *
 	 * @param Doli_Order $order   Les données d'une commande.
-	 * @param integer    $row_id  L'id de la ligne.
+	 * @param integer    $row_id  L'id d'une ligne.
 	 */
 	public function delete_line( $order, $row_id ) {
 		$founded_line = null;

@@ -103,10 +103,10 @@ class Doli_Invoice_Filter {
 	 * @since   2.0.0
 	 * @version 2.0.0
 	 *
-	 * @param  string       $status Le statut de la facture.
+	 * @param  string       $status Le statut d'une facture.
 	 * @param  Doli_Invoice $object Les données d'une facture.
 	 *
-	 * @return string               Le nouveau statut de la facture.
+	 * @return string               Le nouveau statut d'une facture.
 	 */
 	public function wps_doli_status( $status, $object ) {
 		if ( $object->data['type'] == Doli_Invoice::g()->get_type() ) {

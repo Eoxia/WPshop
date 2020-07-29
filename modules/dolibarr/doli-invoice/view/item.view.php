@@ -1,29 +1,30 @@
 <?php
 /**
- * Affichage d'une facture dans le listing de la page des commandes (wps-invoice)
+ * La vue affichant une facture dans la liste des factures.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Templates
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
-defined( 'ABSPATH' ) || exit; ?>
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * Documentation des variables utilisées dans la vue.
+ *
+ * @var Doli_Invoice $invoice  Les données d'une facture.
+ * @var string       $doli_url L'url de Dolibarr.
+ */
+?>
 
 <div class="table-row">
 	<div class="table-cell table-25"><input type="checkbox" class="check"/></div>
 	<div class="table-cell table-full">
 		<ul class="reference-id">
-			<li><i class="fas fa-hashtag"></i>WP : <?php echo esc_html( $invoice->data['id'] ); ?></li>
-			<?php if ( ! empty( $invoice->data['external_id'] ) ) : ?>
-				<li><i class="fas fa-hashtag"></i>Doli : <?php echo esc_html( $invoice->data['external_id'] ); ?></li>
-			<?php endif; ?>
 			<li><i class="fas fa-calendar-alt"></i> <?php echo esc_html( $invoice->data['date']['rendered']['date_time'] ); ?></li>
 		</ul>
 		<div class="reference-title">
@@ -38,15 +39,10 @@ defined( 'ABSPATH' ) || exit; ?>
 	</div>
 	<div class="table-cell table-full">
 		<div class="reference-title">
-			<?php
-			if ( ! empty( $invoice->data['order'] ) ) :
-				?>
+			<?php if ( ! empty( $invoice->data['order'] ) ) : ?>
 				<a href="<?php echo esc_attr( admin_url( 'admin.php?page=wps-order&id=' . $invoice->data['order']->data['id'] ) ); ?>"><?php echo esc_html( $invoice->data['order']->data['title'] ); ?></a>
-				<?php
-			else :
-				?>-<?php
-			endif;
-			?>
+			<?php else : ?>-<?php
+			endif; ?>
 		</div>
 		<ul class="reference-actions">
 			<li><a href="<?php echo esc_attr( admin_url( 'admin.php?page=wps-order&id=' . $invoice->data['order']->data['id'] ) ); ?>"><?php esc_html_e( 'See', 'wpshop' ); ?></a></li>
@@ -56,16 +52,12 @@ defined( 'ABSPATH' ) || exit; ?>
 		</ul>
 	</div>
 	<div class="table-cell table-200">
-		<?php
-		if ( ! empty( $invoice->data['tier'] ) ) :
-			?>
+		<?php if ( ! empty( $invoice->data['tier'] ) ) : ?>
 			<div><strong><?php echo esc_html( $invoice->data['tier']->data['title'] ); ?></strong></div>
 			<div><?php echo esc_html( $invoice->data['tier']->data['contact'] ); ?></div>
 			<div><?php echo esc_html( $invoice->data['tier']->data['zip'] ) . ' ' . esc_html( $invoice->data['tier']->data['country'] ); ?></div>
 			<div><?php echo esc_html( $invoice->data['tier']->data['phone'] ); ?></div>
-			<?php
-		endif;
-		?>
+		<?php endif; ?>
 	</div>
 	<div class="table-cell table-150"><?php echo Doli_Statut::g()->display_status( $invoice ); ?></div>
 	<div class="table-cell table-100"><?php echo esc_html( Payment::g()->get_payment_title( $invoice->data['payment_method'] ) ); ?></div>
