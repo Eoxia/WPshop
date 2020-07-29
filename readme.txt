@@ -2,11 +2,12 @@
 Contributors: Eoxia
 Tags: boutique, catalog, catalogue, commerce, e-commerce, ecommerce, m-commerce, mcommerce, produits,  shop, shopping cart, wp shop, wordpress ecommerce, wordpress shop, WPShop, wp-shop, french payment gateway, 
 Donate link: https://www.wpshop.fr/
-Requires at least: 5.4.1
-Tested up to: 5.4.1
+Requires at least: 4.4
+Tested up to: 5.4.2
 Requires PHP: 7.0
 Stable tag: 2.0.0
 License: GPLv3 or later
+License URI: https://spdx.org/licenses/GPL-3.0-or-later.html
 
 == Description ==
 

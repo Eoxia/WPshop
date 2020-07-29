@@ -1,8 +1,10 @@
 {
-	"name": "wpshop",
+	"name": "WPshop",
 	"slug": "wpshop",
+    "since": "2.0.0",
 	"version": "2.0.0",
-    "description": "L'application WPshop2",
+    "description": "L'application WPshop 2",
+    "externals": [],
 	"modules": [
 		"core/core.config.json",
 
@@ -32,7 +34,6 @@
         "modules/dashboard/dashboard.config.json",
     
         "modules/search/search.config.json",
-        "modules/wishlist/wishlist.config.json",
     
         "modules/dolibarr/doli-shipping-cost/doli-shipping-cost.config.json",
         "modules/dolibarr/doli-statut/doli-statut.config.json",
