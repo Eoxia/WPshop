@@ -1,6 +1,6 @@
 <?php
 /**
- * La vue de la page "FRAIS DE LIVRAISON" dans les réglages.
+ * La vue affichant la page "FRAIS DE LIVRAISON" dans les réglages.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>

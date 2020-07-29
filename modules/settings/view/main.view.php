@@ -1,6 +1,6 @@
 <?php
 /**
- * La vue principale de la page de réglages
+ * La vue principale de la page des réglages.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>

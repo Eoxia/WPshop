@@ -1,6 +1,6 @@
 <?php
 /**
- * Gestion des actions des réglages.
+ * La classe gérant les actions des réglages.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -21,9 +21,10 @@ defined( 'ABSPATH' ) || exit;
 class Settings_Action {
 
 	/**
-	 * Constructor.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function __construct() {
 		add_action( 'admin_menu', array( $this, 'callback_admin_menu' ), 70 );
@@ -43,9 +44,10 @@ class Settings_Action {
 	}
 
 	/**
-	 * Initialise la page "Product".
+	 * Initialise la page "Réglages".
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_admin_menu() {
 		add_submenu_page( 'wpshop', __( 'Settings', 'wpshop' ), __( 'Settings', 'wpshop' ), 'manage_options', 'wps-settings', array( $this, 'callback_add_menu_page' ) );
@@ -54,7 +56,8 @@ class Settings_Action {
 	/**
 	 * Call notice activate erp view if dolibarr url and secret is empty.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function notice_activate_erp() {
 		$user = wp_get_current_user();
@@ -62,19 +65,19 @@ class Settings_Action {
 		if ( in_array( 'administrator', (array) $user->roles ) ) {
 			$dolibarr_option = get_option('wps_dolibarr', Settings::g()->default_settings);
 
-			if (!empty($dolibarr_option['error']) && $dolibarr_option['notice'] && $dolibarr_option['notice']['error_erp']) {
-				View_Util::exec('wpshop', 'settings', 'notice-error-erp', array('error' => $dolibarr_option['error']));
-			} elseif ((empty($dolibarr_option['dolibarr_url']) || empty($dolibarr_option['dolibarr_secret'])) &&
-				($dolibarr_option['notice'] && $dolibarr_option['notice']['activate_erp'])) {
-				View_Util::exec('wpshop', 'settings', 'notice-activate-erp');
+			if ( ! mpty( $dolibarr_option['error'] ) && $dolibarr_option['notice'] && $dolibarr_option['notice']['error_erp'] ) {
+				View_Util::exec( 'wpshop', 'settings', 'notice-error-erp', array('error' => $dolibarr_option['error']  ) );
+			} elseif ( ( empty($dolibarr_option['dolibarr_url'] ) || empty( $dolibarr_option['dolibarr_secret'] ) ) && ( $dolibarr_option['notice'] && $dolibarr_option['notice']['activate_erp'] ) ) {
+				View_Util::exec('wpshop', 'settings', 'notice-activate-erp' );
 			}
 		}
 	}
 
 	/**
-	 * Appel la vue "main" du module "Product".
+	 * Appel la vue "main" du module "Réglages".
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_add_menu_page() {
 		$tab     = ! empty( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'general';
@@ -91,9 +94,10 @@ class Settings_Action {
 	}
 
 	/**
-	 * Redirige vers le bon onglet dans la page option.
+	 * Redirige vers le bon onglet dans la page réglages.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_load_tab() {
 		check_admin_referer( 'callback_load_tab' );
@@ -113,7 +117,8 @@ class Settings_Action {
 	/**
 	 * Met à jour les options général.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_update_general_settings() {
 		check_admin_referer( 'callback_update_general_settings' );
@@ -157,7 +162,8 @@ class Settings_Action {
 	/**
 	 * Met à jour les options "pages".
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_update_pages_settings() {
 		check_admin_referer( 'callback_update_pages_settings' );
@@ -193,7 +199,8 @@ class Settings_Action {
 	/**
 	 * Met à jour les données pour la méthode de paiement "Payer en boutique".
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_update_method_payment() {
 		check_admin_referer( 'wps_update_method_payment' );
@@ -225,7 +232,8 @@ class Settings_Action {
 	/**
 	 * Met à jour les options "frais de port".
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_update_shipping_cost() {
 		check_admin_referer( 'callback_update_shipping_cost' );
@@ -253,7 +261,8 @@ class Settings_Action {
 	/**
 	 * Met à jour les options erp.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_update_erp_settings() {
 		check_admin_referer( 'callback_update_erp_settings' );
@@ -312,10 +321,12 @@ class Settings_Action {
 
 		wp_redirect( admin_url( 'admin.php?page=wps-settings&tab= ' . $tab ) );
 	}
+
 	/**
 	 * Ajoute la taille des images des produits.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_add_product_thumbnail_size() {
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
@@ -325,6 +336,12 @@ class Settings_Action {
 		}
 	}
 
+	/**
+	 * Chache la notice concernant l'ERP.
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 */
 	public function dismiss_notice_erp() {
 		check_ajax_referer( 'wps_hide_notice_erp' );
 

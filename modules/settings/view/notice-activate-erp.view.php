@@ -1,6 +1,6 @@
 <?php
 /**
- * La notice pour informer l'utilisateur d'activer son ERP.
+ * La vue affichant la notice pour informer l'utilisateur d'activer son ERP.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -8,7 +8,6 @@
  * @since     2.0.0
  * @version   2.0.0
  */
-
 
 namespace wpshop;
 

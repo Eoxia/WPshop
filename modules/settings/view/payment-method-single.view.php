@@ -16,8 +16,8 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Documentation des variables utilisées dans la vue.
  *
- * @var Payment $payment_data  Les données d'une méthode de paiement.
- * @var string  $section       La méthode de paiement.
+ * @var Payment $payment_data Les données d'une méthode de paiement.
+ * @var string  $section      La méthode de paiement.
  */
 ?>
 

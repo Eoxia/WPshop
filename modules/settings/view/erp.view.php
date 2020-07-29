@@ -1,6 +1,6 @@
 <?php
 /**
- * La vue de la page "ERP" dans les réglages.
+ * La vue affichant la page "ERP" dans les réglages.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -36,17 +36,11 @@ defined( 'ABSPATH' ) || exit;
 		<span class="form-label">
 			<span><?php esc_html_e( 'Dolibarr Secret Key', 'wpshop' ); ?></span>
 			<span class="wpeo-button button-square-40 button-rounded wpeo-tooltip-event" aria-label="<?php esc_attr_e( 'Secret key used for sell with Dolibarr', 'wpshop' ); ?>">?</span>
-			<?php
-			if (Settings::g()->dolibarr_is_active()):
-				?>
+			<?php if (Settings::g()->dolibarr_is_active()): ?>
 				<span class="wpeo-button button-light button-square-40 button-rounded wpeo-tooltip-event" aria-label="<?php esc_attr_e( 'Connected to Dolibarr', 'wpshop' ); ?>">✔</span>
-			<?php
-			else:
-				?>
+			<?php else: ?>
 				<span class="wpeo-button button-light button-square-40 button-rounded wpeo-tooltip-event" aria-label="<?php esc_attr_e( 'Connection to dolibarr failed', 'wpshop' ); ?>">❌</span>
-			<?php
-			endif;
-			?>
+			<?php endif; ?>
 		</span>
 		<label class="form-field-container">
 			<input type="text" class="form-field" name="dolibarr_secret" value="<?php echo esc_attr( $dolibarr_option['dolibarr_secret'] ); ?>" />

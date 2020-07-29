@@ -1,6 +1,6 @@
 <?php
 /**
- * La notice pour informer l'utilisateur d'une erreur sur la connexion avec son ERP.
+ * La vue affichant la notice pour informer l'utilisateur d'une erreur sur la connexion avec son ERP.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>

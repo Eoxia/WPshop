@@ -1,6 +1,6 @@
 <?php
 /**
- * La vue de la page "GENERAL" dans les réglages.
+ * La vue affichant la page "GENERAL" dans les réglages.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>

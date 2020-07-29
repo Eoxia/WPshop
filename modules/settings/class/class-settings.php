@@ -1,6 +1,6 @@
 <?php
 /**
- * Les fonctions principales des réglages.
+ * La classe gérant les fonctions principales des réglages.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -24,7 +24,8 @@ class Settings extends Singleton_Util {
 	/**
 	 * Les options par défauts.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var array
 	 */
@@ -33,16 +34,18 @@ class Settings extends Singleton_Util {
 	/**
 	 * TVA.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var array
 	 */
 	public $tva = array( 0, 2.1, 5.5, 10, 20 );
 
 	/**
-	 * Constructeur.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	protected function construct() {
 		$this->default_settings = array(
@@ -107,9 +110,10 @@ class Settings extends Singleton_Util {
 	/**
 	 * Affiche l'onglet "Général" de la page réglages.
 	 *
-	 * @param  string $section La section.
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @since 2.0.0
+	 * @param string $section La section.
 	 */
 	public function display_general( $section = '' ) {
 		$dolibarr_option = get_option( 'wps_dolibarr', $this->default_settings );
@@ -122,9 +126,10 @@ class Settings extends Singleton_Util {
 	/**
 	 * Affiche l'onglet "Pages" de la page réglages.
 	 *
-	 * @param  string $section La section.
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @since 2.0.0
+	 * @param string $section La section.
 	 */
 	public function display_pages( $section = '' ) {
 		$pages = get_pages();
@@ -145,9 +150,10 @@ class Settings extends Singleton_Util {
 	/**
 	 * Affiche l'onglet "Emails" de la page réglages.
 	 *
-	 * @param  string $section La section.
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @since 2.0.0
+	 * @param string $section La section.
 	 */
 	public function display_emails( $section = '' ) {
 		if ( ! empty( $section ) ) {
@@ -180,9 +186,10 @@ class Settings extends Singleton_Util {
 	/**
 	 * Affiche l'onglet "Méthode de paiement" de la page options.
 	 *
-	 * @param  string $section La section.
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @since 2.0.0
+	 * @param string $section La section.
 	 */
 	public function display_payment_method( $section = '' ) {
 		$payment_methods = get_option( 'wps_payment_methods', Payment::g()->default_options );
@@ -204,9 +211,10 @@ class Settings extends Singleton_Util {
 	/**
 	 * Affiche l'onglet "Frais de port" de la page options.
 	 *
-	 * @param  string $section La section.
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @since 2.0.0
+	 * @param string $section La section.
 	 */
 	public function display_shipping_cost( $section = '' ) {
 		$shipping_cost_option = get_option( 'wps_shipping_cost', Settings::g()->shipping_cost_default_settings );
@@ -231,9 +239,10 @@ class Settings extends Singleton_Util {
 	/**
 	 * Affiche l'onglet "ERP" de la page options.
 	 *
-	 * @param  string $section La section.
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @since 2.0.0
+	 * @param string $section La section.
 	 */
 	public function display_erp( $section = '' ) {
 		$dolibarr_option = get_option( 'wps_dolibarr', $this->default_settings );
@@ -246,7 +255,8 @@ class Settings extends Singleton_Util {
 	/**
 	 * Vérifie si dolibarr est actif.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @return boolean true or false.
 	 */
@@ -260,6 +270,16 @@ class Settings extends Singleton_Util {
 		return false;
 	}
 
+	/**
+	 * Vérifie si la liste d'envie est activé.
+	 *
+	 * @todo a revoir
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 *
+	 * @return boolean true ou false.
+	 */
 	public function use_quotation() {
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * La vue de la page "PAGES" dans les réglages.
+ * La vue affichant la page "PAGES" dans les réglages.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -16,13 +16,13 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Documentation des variables utilisées dans la vue.
  *
- * @var array   $page_state_titles Le tableau contenant toutes les données des pages.
- * @var string  $key               La page.
- * @var array   $page_option       Le tableau contenant toutes les données des options d'une page.
- * @var array   $pages             Le tableau contenant toutes les données des pages.
- * @var array   $page              Le tableau contenant toutes les données d'une page.
- * @var string  $selected          L'attribut HTML "selected".
- * @var array   $page_ids_options  Le tableau contenant toutes les id des pages.
+ * @var array  $page_state_titles Le tableau contenant toutes les données des pages.
+ * @var string $key               La page.
+ * @var array  $page_option       Le tableau contenant toutes les données des options d'une page.
+ * @var array  $pages             Le tableau contenant toutes les données des pages.
+ * @var array  $page              Le tableau contenant toutes les données d'une page.
+ * @var string $selected          L'attribut HTML "selected".
+ * @var array  $page_ids_options  Le tableau contenant toutes les id des pages.
  */
 ?>
 
