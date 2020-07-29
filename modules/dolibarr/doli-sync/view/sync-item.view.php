@@ -1,24 +1,29 @@
 <?php
 /**
- * Ajoutes l'état de synchronisation d'une entité dans les listing.
+ * La vue affichant l'état de synchronisation d'une entité dans les listing.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Templates
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
-/**
- * @var mixed $object Object can be Product/Propal/Third_Party.
- */
+defined( 'ABSPATH' ) || exit;
 
-defined( 'ABSPATH' ) || exit; ?>
+/**
+ * Documentation des variables utilisées dans la vue.
+ *
+ * @var mixed   $object          Les données d'une entité.
+ * @var boolean $can_sync        True si on peut faire une synchronisation.
+ * @var string  $title           Le titre d'une synchronisation.
+ * @var string  $type            Le type d'entité.
+ * @var string  $status_color    La couleur du statut d'une synchronisation.
+ * @var string  $message_tooltip Le message de la tooltip.
+ */
+?>
 
 <div class="table-cell table-100 wps-sync">
 	<ul class="reference-id">

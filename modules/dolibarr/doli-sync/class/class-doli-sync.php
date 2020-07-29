@@ -1,51 +1,52 @@
 <?php
 /**
- * Les fonctions principales des synchronisations.
+ * La classe gérant les fonctions principales des synchronisations des entités de dolibarr.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
+use eoxia\Singleton_Util;
 use eoxia\View_Util;
 use stdClass;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- *  Doli Synchro Class.
+ *  Doli Sync Class.
  */
-class Doli_Sync extends \eoxia\Singleton_Util {
+class Doli_Sync extends Singleton_Util {
 
 	/**
-	 * Tableau contenant les synchronisations à effectuer.
+	 * Le tableau contenant toutes les donnés des synchronisations à effectuer.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var array
 	 */
 	public $sync_infos = array();
 
 	/**
-	 * Limites de synchronisation par requête.
+	 * Limite de synchronisation par requête.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var integer
 	 */
 	public $limit_entries_by_request = 50;
 
 	/**
-	 * Constructor.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	protected function construct() {
 		$this->sync_infos = array(
@@ -85,11 +86,14 @@ class Doli_Sync extends \eoxia\Singleton_Util {
 	/**
 	 * Get sync info by type.
 	 *
-	 * @param $type
-	 *
 	 * @todo: Mal nommé
 	 *
-	 * @return array
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 *
+	 * @param  string $post_type Le type de l'entité.
+	 *
+	 * @return array             Les données d'une synchronisation.
 	 */
 	public function get_sync_infos( $post_type ) {
 		return $this->sync_infos[ $post_type ];
@@ -98,12 +102,12 @@ class Doli_Sync extends \eoxia\Singleton_Util {
 	/**
 	 * Compte le nombre d'entrée.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @param  array $sync_info Les informations de synchro.
 	 *
-	 * @return array            Les informations de synchro avec le nombre
-	 * total d'élement en plus.
+	 * @return array            Les informations de synchro avec le nombre total d'élement en plus.
 	 */
 	public function count_entries( $sync_info ) {
 		if ( ! empty( $sync_info['endpoint'] ) ) {
@@ -133,16 +137,18 @@ class Doli_Sync extends \eoxia\Singleton_Util {
 	}
 
 	/**
-	 * Associes et synchronises les données d'une entité.
+	 * Associe et synchronise les données d'une entité.
 	 *
 	 * @todo: Translate to english.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param  integer $wp_id    L'ID de l'entitée sur WordPress.
-	 * @param  integer $entry_id L'ID de l'entitée sur Dolibarr.
+	 * @param  integer $wp_id    L'id de l'entitée sur WordPress.
+	 * @param  integer $entry_id L'id de l'entitée sur Dolibarr.
+	 * @param  string  $type     Le type de l'entitée.
 	 *
-	 * @return array             Les informations de la société.
+	 * @return array             Les données d'une synchronisation.
 	 *
 	 * // @todo: Handle Error sync.
 	 */
@@ -194,12 +200,13 @@ class Doli_Sync extends \eoxia\Singleton_Util {
 	/**
 	 * Vérifie la SHA256 entre une entité WPShop et une entité Dolibarr.
 	 *
-	 * @param   integer  $id  L'ID de l'entité WP.
-	 * @param            $type
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @return array|bool
-	 * @since 2.0.0
+	 * @param   integer $id   L'id de l'entité WordPress.
+	 * @param   string  $type Le type de l'entité.
 	 *
+	 * @return array          Le statut de la synchronisation.
 	 */
 	public function check_status( $id, $type ) {
 		$external_id = 0;
@@ -271,6 +278,18 @@ class Doli_Sync extends \eoxia\Singleton_Util {
 		);
 	}
 
+	/**
+	 * Affiche le statut de synchronisation d'une entité.
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 *
+	 * @param  mixed   $object          Les données de l'entité.
+	 * @param  string  $type            Le type de l'entité.
+	 * @param  boolean $load_erp_status Le statut de l'ERP.
+	 *
+	 * @return string                   Le statut de la synchronisation.
+	 */
 	public function display_sync_status( $object, $type, $load_erp_status = true )
 	{
 		$data_view = array(
@@ -278,16 +297,16 @@ class Doli_Sync extends \eoxia\Singleton_Util {
 			'type' => $type,
 			'status_color' => 'grey',
 			'title' => '',
-			'message_tooltip' => __('Looking for sync status', 'wpshop'),
+			'message_tooltip' => __( 'Looking for sync status', 'wpshop' ),
 			'can_sync' => false,
 		);
 
-		if (!$load_erp_status) {
+		if ( ! $load_erp_status ) {
 			View_Util::exec('wpshop', 'doli-sync', 'sync-item', $data_view);
 			return;
 		}
 
-		if (empty($object->data['external_id'])) {
+		if ( empty($object->data['external_id'] ) ) {
 			$data_view['status_color'] = 'red';
 			$data_view['message_tooltip'] = __('No associated to an ERP Entity', 'wpshop');
 
@@ -297,7 +316,7 @@ class Doli_Sync extends \eoxia\Singleton_Util {
 
 		$response = Doli_Sync::g()->check_status($object->data['id'], $type);
 
-		if (!$response || !$response['status']) {
+		if ( ! $response || ! $response['status'] ) {
 			$data_view['status_color'] = 'red';
 		} else {
 			// @todo: Do Const for status_code.
@@ -320,13 +339,11 @@ class Doli_Sync extends \eoxia\Singleton_Util {
 			}
 		}
 
-		$data_view['message_tooltip'] = isset ($response['status_message']) ? $response['status_message'] : __('Error not defined', 'wpshop');
+		$data_view['message_tooltip'] = isset ( $response['status_message'] ) ? $response['status_message'] : __( 'Error not defined', 'wpshop' );
 		View_Util::exec( 'wpshop', 'doli-sync', 'sync-item', $data_view );
 
 		return $response;
 	}
-
-//	public function
 }
 
 Doli_Sync::g();

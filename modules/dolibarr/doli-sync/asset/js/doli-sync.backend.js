@@ -1,19 +1,17 @@
 /**
- * Initialise l'objet "wpshop" ainsi que la méthode "init" obligatoire pour la bibliothèque EoxiaJS.
+ * Gestion JS des synchronisations.
  *
- * @since 1.0.0
- * @version 1.0.0
+ * @since   2.0.0
+ * @version 2.0.0
  */
 window.eoxiaJS.wpshop.doliSync = {};
 window.eoxiaJS.wpshop.doliSync.completed = false;
 
 /**
- * La méthode appelée automatiquement par la bibliothèque EoxiaJS.
+ * La méthode "init" est appelé automatiquement par la lib JS de Eo-Framework.
  *
- * @return {void}
- *
- * @since 1.0.0
- * @version 1.0.0
+ * @since   2.0.0
+ * @version 2.0.0
  */
 window.eoxiaJS.wpshop.doliSync.init = function() {
 	jQuery( document ).on( 'modal-opened', '.modal-sync', function() {
@@ -28,7 +26,8 @@ window.eoxiaJS.wpshop.doliSync.init = function() {
 /**
  * Déclare les formulaires pour les mises à jour et leur fonctionnement.
  *
- * @type {void}
+ * @since   2.0.0
+ * @version 2.0.0
  */
 window.eoxiaJS.wpshop.doliSync.declareUpdateForm = function() {
 	jQuery( '.item' ).find( 'form' ).ajaxForm({
@@ -72,9 +71,10 @@ window.eoxiaJS.wpshop.doliSync.declareUpdateForm = function() {
 };
 
 /**
- * Lancement du processus de mixe à jour: On prned le premier formulaire ayant la classe 'waiting-item'
+ * Lancement du processus de mixe à jour: On prend le premier formulaire ayant la classe 'waiting-item'
  *
- * @return {void}
+ * @since   2.0.0
+ * @version 2.0.0
  */
 window.eoxiaJS.wpshop.doliSync.requestUpdate = function() {
 	if ( ! window.eoxiaJS.wpshop.doliSync.completed ) {
@@ -89,8 +89,8 @@ window.eoxiaJS.wpshop.doliSync.requestUpdate = function() {
 /**
  * Vérification avant la fermeture de la page si la mise à jour est terminée.
  *
- * @since 1.0.0
- * @version 1.0.0
+ * @since   2.0.0
+ * @version 2.0.0
  *
  * @param  {WindowEventHandlers} event L'évènement de la fenêtre.
  * @return {string}
@@ -103,6 +103,16 @@ window.eoxiaJS.wpshop.doliSync.safeExit = function( event ) {
 	}
 };
 
+/**
+ * Le callback en cas de réussite à la requête Ajax "sync_entry".
+ * Synchronise une entrée.
+ *
+ * @since   2.0.0
+ * @version 2.0.0
+ *
+ * @param {HTMLDivElement} triggeredElement L'élement HTML déclenchant la requête Ajax.
+ * @param {Object}         response         Les données renvoyées par la requête Ajax.
+ */
 window.eoxiaJS.wpshop.doliSync.syncEntrySuccess = function( triggeredElement, response ) {
 	var modal = jQuery( '.wpeo-modal.modal-active' );
 

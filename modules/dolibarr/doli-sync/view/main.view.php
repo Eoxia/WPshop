@@ -1,27 +1,33 @@
 <?php
 /**
- * Le contenu de la modal de synchronisation.
+ * La vue affichant le contenu de la modal de synchronisation.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Templates
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
-defined( 'ABSPATH' ) || exit; ?>
+defined( 'ABSPATH' ) || exit;
+
+
+/**
+ * Documentation des variables utilisées dans la vue.
+ *
+ * @var array  $sync_infos Le tableau contenant toutes les données des synchronisations d'une entité.
+ * @var string $key        La donné à synchroniser.
+ * @var array  $info       Les données d'une synchronisation.
+ * @var string  $stats     La barre de progression.
+ */
+?>
 
 <div class="wpeo-gridlayout grid-3">
-	<?php
-	if ( ! empty( $sync_infos ) ) :
+	<?php if ( ! empty( $sync_infos ) ) :
 		foreach ( $sync_infos as $key => $info ) :
-			$stats = '0 / ' . $info['total_number'];
-			?>
+			$stats = '0 / ' . $info['total_number']; ?>
 			<div>
 				<div class="item waiting-item" id="wpeo-upate-item-<?php echo $key; ?>" >
 					<div class="item-spin">
@@ -50,8 +56,6 @@ defined( 'ABSPATH' ) || exit; ?>
 					</div>
 				</div>
 			</div>
-			<?php
-		endforeach;
-	endif;
-	?>
+		<?php endforeach;
+	endif; ?>
 </div>

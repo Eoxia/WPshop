@@ -1,21 +1,19 @@
 <?php
 /**
- * Gestion des actions de synchronisations des entités avec dolibarr.
+ * La classe gérant les actions de synchronisations des entités de dolibarr.
  *
  * @todo: Translate to English.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2019-2020 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
+use eoxia\LOG_Util;
 use eoxia\View_Util;
 
 defined( 'ABSPATH' ) || exit;
@@ -26,9 +24,10 @@ defined( 'ABSPATH' ) || exit;
 class Doli_Sync_Action {
 
 	/**
-	 * Constructor.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function __construct() {
 		add_action( 'wp_ajax_load_modal_sync', array( $this, 'load_modal_sync' ) );
@@ -43,11 +42,12 @@ class Doli_Sync_Action {
 	}
 
 	/**
-	 * Charges la modal de synchronisation.
+	 * Charge la modal de synchronisation.
 	 *
 	 * @todo: Clear
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function load_modal_sync() {
 		check_ajax_referer( 'load_modal_sync' );
@@ -90,12 +90,13 @@ class Doli_Sync_Action {
 	}
 
 	/**
-	 * Sync
+	 * Fait la synchronisation.
 	 *
 	 * @todo: Use Doli_Sync::g()->get_sync_infos
 	 * @todo: Refactoring
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function sync() {
 		check_ajax_referer( 'sync' );
@@ -118,7 +119,7 @@ class Doli_Sync_Action {
 			foreach ( $doli_entries as $doli_entry ) {
 
 				// translators: Try to sync %s.
-				\eoxia\LOG_Util::log( sprintf( 'Try to sync %s', json_encode( $doli_entry ) ), 'wpshop2' );
+				LOG_Util::log( sprintf( 'Try to sync %s', json_encode( $doli_entry ) ), 'wpshop2' );
 				$wp_entry = $sync_info['wp_class']::g()->get( array(
 					'meta_key'   => '_external_id',
 					'meta_value' => (int) $doli_entry->id,
@@ -133,7 +134,7 @@ class Doli_Sync_Action {
 				do_action( 'wps_sync_' . $type . '_after', $doli_entry, $wp_entry );
 
 				// translators: Sync done for the entry {json_data}.
-				\eoxia\LOG_Util::log( sprintf( 'Sync done for the entry %s', json_encode( $doli_entry ) ), 'wpshop2' );
+				LOG_Util::log( sprintf( 'Sync done for the entry %s', json_encode( $doli_entry ) ), 'wpshop2' );
 
 				$done_number++;
 			}
@@ -164,7 +165,8 @@ class Doli_Sync_Action {
 	 *
 	 * @todo: Translate to english and comment.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function sync_entry() {
 		check_ajax_referer( 'sync_entry' );
@@ -200,7 +202,8 @@ class Doli_Sync_Action {
 	 *
 	 * @todo: Translate to English.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function add_sync_header( $type ) {
 		if ( in_array( $type, array( 'products', 'thirdparties', 'proposals' ) ) && Settings::g()->dolibarr_is_active() ) {
@@ -209,19 +212,16 @@ class Doli_Sync_Action {
 	}
 
 	/**
-	 * Prépares les données pour l'état de synchronisation de l'entité.
+	 * Prépare les données pour l'état de synchronisation de l'entité.
 	 * et appel la vue sync-item.
 	 *
 	 * @todo: Translate to English.
 	 *
-	 * @param   mixed   $object  Peut être Order, Product ou Tier.
-	 * @param   string  $route   La route pour l'api dolibarr.
-	 * @param           $doli_class
-	 * @param           $wp_class
-	 * @param   string  $mode    Peut être view ou edit.
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @since 2.0.0
-	 *
+	 * @param mixed   $object      Les données d'une entité.
+	 * @param boolean $sync_status Le statut de la synchronisation.
 	 */
 	public function add_sync_item( $object, $sync_status ) {
 		if ( Settings::g()->dolibarr_is_active() && in_array( $object->data['type'], array( 'wps-product', 'wps-third-party', 'wps-proposal' ) ) ) {
@@ -230,9 +230,11 @@ class Doli_Sync_Action {
 	}
 
 	/**
+	 * Vérifie le statut de la synchronisation.
+	 *
 	 * @todo: nonce
-	 * @todo: Description
-	 * @return [type] [description]
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function check_sync_status() {
 		$wp_id = ! empty( $_POST['wp_id'] ) ? (int) $_POST['wp_id'] : 0;

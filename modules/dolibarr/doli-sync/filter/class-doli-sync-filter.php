@@ -1,30 +1,30 @@
 <?php
 /**
- * Les filtres pour la synchronisation.
+ * La classe gérant les filtres des synchronisations des entités de dolibarr.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
+use eoxia\Singleton_Util;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Doli Synchro Filter Class.
+ * Doli Sync Filter Class.
  */
-class Doli_Sync_Filter extends \eoxia\Singleton_Util {
+class Doli_Sync_Filter extends Singleton_Util {
 
 	/**
-	 * Constructeur.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	protected function construct() {
 		add_filter( 'wps_countries', array( $this, 'doli_countries' ) );
@@ -34,14 +34,14 @@ class Doli_Sync_Filter extends \eoxia\Singleton_Util {
 	}
 
 	/**
-	 * Récupères tous les pays depuis Dolibarr.
+	 * Récupère tous les pays depuis Dolibarr.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param  array $countries Les pays venant de WPshop.
+	 * @param  array $countries Les données des pays venant de WPshop.
 	 *
-	 * @return array            Les pays modifié de WPshop avec les données de
-	 * dolibarr.
+	 * @return array            Les données des pays modifié de WPshop avec ceux de Dolibarr.
 	 */
 	public function doli_countries( $countries ) {
 		if ( Settings::g()->dolibarr_is_active() ) {
@@ -75,22 +75,27 @@ class Doli_Sync_Filter extends \eoxia\Singleton_Util {
 	}
 
 	/**
-	 * @todo: comments
+	 * La construction du SHA256 d'une synchronisation d'un produit.
 	 *
-	 * @param $response
-	 * @return
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 *
+	 * @param  Product $response Les données d'un produit.
+	 * @param  integer $wp_id    L'id d'un produit WordPress.
+	 *
+	 * @return Product           Les données d'un produit avec le SHA256.
 	 */
 	public function build_sha_product( $response, $wp_id ) {
 		$data_sha = array();
 
-		$data_sha['doli_id']   = $response->id;
-		$data_sha['wp_id']     = $wp_id;
-		$data_sha['label']     = $response->label;
+		$data_sha['doli_id']     = $response->id;
+		$data_sha['wp_id']       = $wp_id;
+		$data_sha['label']       = $response->label;
 		$data_sha['description'] = $response->description;
-		$data_sha['price']     = $response->price;
-		$data_sha['price_ttc'] = $response->price_ttc;
-		$data_sha['tva_tx']    = $response->tva_tx;
-		$data_sha['status']    = $response->array_options->options__wps_status;
+		$data_sha['price']       = $response->price;
+		$data_sha['price_ttc']   = $response->price_ttc;
+		$data_sha['tva_tx']      = $response->tva_tx;
+		$data_sha['status']      = $response->array_options->options__wps_status;
 
 		if ( $response->array_options->options__wps_status == 1  || $response->array_options->options__wps_status == 'publish' ) {
 			$data_sha['status'] = 'publish';
@@ -104,10 +109,15 @@ class Doli_Sync_Filter extends \eoxia\Singleton_Util {
 	}
 
 	/**
-	 * @todo: comments
+	 * La construction du SHA256 d'une synchronisation d'un tier.
 	 *
-	 * @param $response
-	 * @return
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 *
+	 * @param  Third_Party $response Les données d'un tier.
+	 * @param  integer     $wp_id    L'id d'un tier WordPress.
+	 *
+	 * @return Third_Party           Les données d'un tier avec le SHA256.
 	 */
 	public function build_sha_third_party( $response, $wp_id ) {
 		$data_sha = array();
