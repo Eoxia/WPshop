@@ -19,9 +19,9 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Documentation des variables utilisées dans la vue.
  *
- * @var array              $contacts    Le tableau contenant toutes les données des utilisateurs.
- * @var User               $contact     Les données d'un utilisateur.
- * @var Doli_Third_Parties $third_party Les données d'un tier.
+ * @var array       $contacts    Le tableau contenant toutes les données des utilisateurs.
+ * @var User        $contact     Les données d'un utilisateur.
+ * @var Third_Party $third_party Les données d'un tier.
  */
 ?>
 

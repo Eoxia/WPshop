@@ -17,7 +17,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Documentation des variables utilisées dans la vue.
  *
- * @var Doli_Third_Parties $third_party Les données d'un tier.
+ * @var Third_Party $third_party Les données d'un tier.
  */
 ?>
 

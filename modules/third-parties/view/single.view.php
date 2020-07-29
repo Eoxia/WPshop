@@ -18,8 +18,8 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Documentation des variables utilisées dans la vue.
  *
- * @var Doli_Third_Parties $third_party Les données d'un tier.
- * @var boolean            $sync_status True si on affiche le statut de la synchronisation.
+ * @var Third_Party $third_party Les données d'un tier.
+ * @var boolean     $sync_status True si on affiche le statut de la synchronisation.
  */
 ?>
 

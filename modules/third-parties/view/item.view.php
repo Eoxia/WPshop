@@ -16,9 +16,9 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Documentation des variables utilisées dans la vue.
  *
- * @var Doli_Third_Parties $third_party Les données d'un tier.
- * @var string             $doli_url    L'url de Dolibarr.
- * @var string             $sync_status True si on affiche le statut de la synchronisation.
+ * @var Third_Party $third_party Les données d'un tier.
+ * @var string      $doli_url    L'url de Dolibarr.
+ * @var string      $sync_status True si on affiche le statut de la synchronisation.
  */
 ?>
 
