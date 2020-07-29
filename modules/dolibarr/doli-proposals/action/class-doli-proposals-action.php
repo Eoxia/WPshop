@@ -1,39 +1,40 @@
 <?php
 /**
- * Gestion des actions des devis venant de dolibarr.
+ * La classe gérant les actions des des propositions commerciales de Dolibarr.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
+use eoxia\View_Util;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Doli Porposals Action.
+ * Doli Proposals Action Class.
  */
 class Doli_Proposals_Action {
 
 	/**
-	 * Définition des metabox sur la page.
+	 * Définition des metaboxes sur la page.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var array
 	 */
 	public $metaboxes = null;
 
 	/**
-	 * Constructeur.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function __construct() {
 		add_action( 'admin_menu', array( $this, 'callback_admin_menu' ), 50 );
@@ -58,9 +59,10 @@ class Doli_Proposals_Action {
 	}
 
 	/**
-	 * Initialise la page "Devis pour Dolibarr".
+	 * Initialise la page "Propositions commerciales".
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_admin_menu() {
 		if ( Settings::g()->dolibarr_is_active() ) {
@@ -74,9 +76,10 @@ class Doli_Proposals_Action {
 	}
 
 	/**
-	 * Ajoutes la page "Options de l'écran" pour les devis.
+	 * Ajoute la page "Options de l'écran" pour les propositions commerciales.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_add_screen_option() {
 		add_screen_option(
@@ -90,9 +93,10 @@ class Doli_Proposals_Action {
 	}
 
 	/**
-	 * Affichage de la vue du menu
+	 * Affichage de la vue du menu.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_add_menu_page() {
 		if ( isset( $_GET['id'] ) ) {
@@ -110,7 +114,7 @@ class Doli_Proposals_Action {
 				}
 			}
 
-			\eoxia\View_Util::exec( 'wpshop', 'proposals', 'single', array(
+			View_Util::exec( 'wpshop', 'proposals', 'single', array(
 				'third_party' => $third_party,
 				'proposal'    => $wp_proposal,
 			) );
@@ -145,7 +149,7 @@ class Doli_Proposals_Action {
 				$next_url  .= '&s=' . $s;
 			}
 
-			\eoxia\View_Util::exec( 'wpshop', 'doli-proposals', 'main', array(
+			View_Util::exec( 'wpshop', 'doli-proposals', 'main', array(
 				'number_page'  => $number_page,
 				'current_page' => $current_page,
 				'count'        => $count,
@@ -162,12 +166,12 @@ class Doli_Proposals_Action {
 	}
 
 	/**
-	 * La metabox des détails de la commande
+	 * La metabox des détails d'une proposition commerciale.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param  WP_Post $post          Les données du post.
-	 * @param  array   $callback_args Tableau contenu les données de la commande.
+	 * @param Proposals $proposal Les données d'une proposition commerciale.
 	 */
 	public function metabox_proposal_details( $proposal ) {
 		$third_party  = Third_Party::g()->get( array( 'id' => $proposal->data['parent_id'] ), true );
@@ -184,7 +188,7 @@ class Doli_Proposals_Action {
 			}
 		}
 
-		\eoxia\View_Util::exec( 'wpshop', 'proposals', 'metabox-proposal-details', array(
+		View_Util::exec( 'wpshop', 'proposals', 'metabox-proposal-details', array(
 			'proposal'     => $proposal,
 			'third_party'  => $third_party,
 			'invoice'      => $invoice,
@@ -195,10 +199,10 @@ class Doli_Proposals_Action {
 	/**
 	 * La metabox contenant l'adresse du client.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param  WP_Post $post          Les données du post.
-	 * @param  array   $callback_args Tableau contenu les données de la commande.
+	 * @param Proposals $proposal Les données d'une proposition commerciale.
 	 */
 	public function metabox_proposal_address( $proposal ) {
 		$third_party  = Third_Party::g()->get( array( 'id' => $proposal->data['parent_id'] ), true );
@@ -215,7 +219,7 @@ class Doli_Proposals_Action {
 			}
 		}
 
-		\eoxia\View_Util::exec( 'wpshop', 'proposals', 'metabox-proposal-address', array(
+		View_Util::exec( 'wpshop', 'proposals', 'metabox-proposal-address', array(
 			'proposal'     => $proposal,
 			'third_party'  => $third_party,
 			'invoice'      => $invoice,
@@ -224,12 +228,12 @@ class Doli_Proposals_Action {
 	}
 
 	/**
-	 * Box affichant les produits de la commande
+	 * La métabox affichant un résumé d'une proposition commerciale.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param  WP_Post $post          Les données du post.
-	 * @param  array   $callback_args Tableau contenu les données de la commande.
+	 * @param Proposals $proposal Les données d'une proposition commerciale.
 	 */
 	public function metabox_proposal_review( $proposal ) {
 		$tva_lines = array();
@@ -256,12 +260,12 @@ class Doli_Proposals_Action {
 		}
 
 		if ( Settings::g()->dolibarr_is_active() ) {
-			\eoxia\View_Util::exec( 'wpshop', 'order', 'review-order', array(
+			View_Util::exec( 'wpshop', 'order', 'review-order', array(
 				'object'    => $proposal,
 				'tva_lines' => $tva_lines,
 			) );
 		} else {
-			\eoxia\View_Util::exec( 'wpshop', 'proposals', 'metabox-proposal-products', array(
+			View_Util::exec( 'wpshop', 'proposals', 'metabox-proposal-products', array(
 				'proposal'  => $proposal,
 				'tva_lines' => $tva_lines,
 			) );
@@ -269,9 +273,10 @@ class Doli_Proposals_Action {
 	}
 
 	/**
-	 * Télécharges le devis.
+	 * Télécharges le une proposition commerciale.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function download_proposal() {
 		check_admin_referer( 'download_proposal' );
@@ -309,7 +314,8 @@ class Doli_Proposals_Action {
 	/**
 	 * Create Order from Proposal and go to pay page.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @todo: nonce
 	 */
@@ -345,6 +351,14 @@ class Doli_Proposals_Action {
 	}
 
 	// @todo: Old Data Database
+	/**
+	 * Passe la proposition commerciale à payée.
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 *
+	 * @param array $data Les données d'une proposition commerciale.
+	 */
 	public function set_to_billed( $data ) {
 		$wp_order = Doli_Order::g()->get( array( 'id' => (int) $data['custom'] ), true );
 

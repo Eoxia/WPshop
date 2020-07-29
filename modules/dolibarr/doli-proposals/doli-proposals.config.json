@@ -1,11 +1,12 @@
 {
-	"name": "Gestion des prospets",
+	"name": "Doli Proposals",
 	"slug": "doli-proposals",
 	"since": "2.0.0",
-	"description": "Le module gérant les prospets",
+    "version": "2.0.0",
+	"description": "Le module gérant les propositions commerciales",
 	"path": "modules/dolibarr/doli-proposals/",
 	"dependencies": {
-    "class": {},
-    "action": {}
+     "class": {},
+     "action": {}
 	}
 }

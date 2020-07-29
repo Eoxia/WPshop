@@ -1,20 +1,34 @@
 <?php
 /**
- * La vue principale de la page des produits (wps-third-party)
+ * La vue principale de la page des propositions commerciales.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Templates
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
-defined( 'ABSPATH' ) || exit; ?>
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * Documentation des variables utilisées dans la vue.
+ *
+ * @var string  $dolibarr_url             L'url de Dolibarr.
+ * @var string  $dolibarr_create_proposal L'url de la liste des propositions commerciales sur Dolibarr.
+ * @var string  $s                        Le paramètre de la recherche.
+ * @var integer $count                    Le nombre de tier.
+ * @var integer $number_page              Le nombre de page.
+ * @var string  $current_page             La page actuel.
+ * @var string  $begin_url                L'url de début de recherche.
+ * @var string  $prev_url                 L'url précédante.
+ * @var string  $next_url                 L'url suivante.
+ * @var string  $end_url                  L'url de fin de recherche.
+ */
+?>
+
 
 <div class="wrap wpeo-wrap">
 	<h2><?php esc_html_e( 'Dolibarr Proposals', 'wpshop' ); ?>
@@ -36,23 +50,17 @@ defined( 'ABSPATH' ) || exit; ?>
 		</form>
 	</div>
 
-	<?php
-	if ( ! empty( $s ) ) :
-		// @todo: Translate
-		?>
+	<?php if ( ! empty( $s ) ) :
+		// @todo: Translate ?>
 		<p>Résultats de recherche pour « <?php echo $s; ?> »</p>
-		<?php
-	endif;
-	?>
+	<?php endif; ?>
 
 	<div class="alignright" style="display: flex; margin-top: 35px;">
 		<p style="line-height: 0px; margin-right: 5px;"><?php echo $count . ' ' . __( 'element(s)', 'wpshop' ); ?></p>
 
 		<?php if ( $number_page > 1 ) : ?>
 			<ul class="wpeo-pagination">
-				<?php
-				if ( 1 !== $current_page ) :
-					?>
+				<?php if ( 1 !== $current_page ) : ?>
 					<li class="pagination-element pagination-prev">
 						<a href="<?php echo esc_attr( $begin_url ); ?>"><<</a>
 					</li>
@@ -60,9 +68,7 @@ defined( 'ABSPATH' ) || exit; ?>
 					<li class="pagination-element pagination-prev">
 						<a href="<?php echo esc_attr( $prev_url ); ?>"><</a>
 					</li>
-					<?php
-				endif;
-				?>
+				<?php endif; ?>
 
 				<form method="GET" action="<?php echo admin_url( 'admin.php' ); ?>" />
 					<input type="hidden" name="page" value="wps-proposal-doli" />
@@ -72,9 +78,7 @@ defined( 'ABSPATH' ) || exit; ?>
 
 				sur <?php echo $number_page; ?>
 
-				<?php
-				if ( $current_page !== $number_page ) :
-					?>
+				<?php if ( $current_page !== $number_page ) : ?>
 					<li class="pagination-element pagination-next">
 						<a href="<?php echo esc_attr( $next_url ); ?>">></a>
 					</li>
@@ -82,9 +86,7 @@ defined( 'ABSPATH' ) || exit; ?>
 					<li class="pagination-element pagination-next">
 						<a href="<?php echo esc_attr( $end_url ); ?>">>></a>
 					</li>
-					<?php
-				endif;
-				?>
+				<?php endif; ?>
 			</ul>
 		<?php endif; ?>
 	</div>

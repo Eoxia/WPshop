@@ -1,30 +1,31 @@
 <?php
 /**
- * Gestion des devis avec Dolibarr.
+ * La classe gérant les fonction principales des propositions commerciales de Dolibarr.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
+
+use eoxia\Singleton_Util;
+use stdClass;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
  * Doli Proposals Class.
  */
-class Doli_Proposals extends \eoxia\Singleton_Util {
+class Doli_Proposals extends Singleton_Util {
 
 	/**
 	 * La limite par page.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var integer
 	 */
@@ -33,33 +34,31 @@ class Doli_Proposals extends \eoxia\Singleton_Util {
 	/**
 	 * Le nom de l'option pour la limite par page.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var string
 	 */
 	public $option_per_page = 'proposal_doli_per_page';
 
 	/**
-	 * Récupères la liste des devis et appel la vue "list" du module "order".
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
-	 */
-
-	/**
-	 * Constructeur.
-	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	protected function construct() {}
 
 	/**
 	 * Synchronise Dolibarr vers WPshop.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param  stdClass       $doli_proposal Les données de dolibarr.
+	 * @param  stdClass $doli_proposal Les données d'une proposition commerciale Dolibarr.
+	 * @param  Proposals $wp_proposal  Les données d'une proposition commerciale WordPress.
 	 *
-	 * @param  Proposal_Model $wp_proposal   Les données de WP.
+	 * @return Proposals               Les données d'une proposition commerciale WordPress avec ceux de Dolibarr.
 	 */
 	public function doli_to_wp( $doli_proposal, $wp_proposal ) {
 		if ( is_object( $wp_proposal ) ) {
@@ -132,9 +131,10 @@ class Doli_Proposals extends \eoxia\Singleton_Util {
 	}
 
 	/**
-	 * Récupères la liste des devis et appel la vue "list" du module "order".
+	 * Appel la vue "list" du module "doli-proposals".
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function display() {
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
@@ -171,6 +171,16 @@ class Doli_Proposals extends \eoxia\Singleton_Util {
 		) );
 	}
 
+	/**
+	 * Appel la vue "item" d'une proposition commerciale.
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 *
+	 * @param Proposals  $proposal    Les données d'une proposition commerciale.
+	 * @param boolean    $sync_status Le statut de la synchronisation.
+	 * @param string     $doli_url    L'url de Dolibarr.
+	 */
 	public function display_item( $proposal, $sync_status, $doli_url = '' ) {
 		\eoxia\View_Util::exec( 'wpshop', 'doli-proposals', 'item', array(
 			'proposal'    => $proposal,
@@ -180,17 +190,16 @@ class Doli_Proposals extends \eoxia\Singleton_Util {
 	}
 
 	/**
-	 * Fonctions de recherche
+	 * Fonction de recherche.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @param  string  $s            Le terme de la recherche.
 	 * @param  array   $default_args Les arguments par défaut.
-	 * @param  boolean $count        Si true compte le nombre d'élement, sinon
-	 * renvoies l'ID des éléments trouvés.
+	 * @param  boolean $count        Si true compte le nombre d'élement, sinon renvoies l'ID des éléments trouvés.
 	 *
-	 * @return array|integer         Les ID des éléments trouvés ou le nombre
-	 * d'éléments trouvés.
+	 * @return array|integer         Les ID des éléments trouvés ou le nombre d'éléments trouvés.
 	 */
 	public function search( $s = '', $default_args = array(), $count = false ) {
 		$route = 'proposals?sortfield=t.rowid&sortorder=DESC';
@@ -209,13 +218,14 @@ class Doli_Proposals extends \eoxia\Singleton_Util {
 	}
 
 	/**
-	 * Convertis un tableau Proposal Object provenant de dolibarr vers un format Porposal Object WPShop afin de normisé pour l'affichage.
+	 * Convertit un tableau Proposal Object provenant de dolibarr vers un format Porposal Object WPShop afin de normisé pour l'affichage.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param array $doli_proposals Tableau Order Object provenant de Dolibarr.
+	 * @param  array $doli_proposals Le tableau contenant toutes les données des propositions commerciales provenant de Dolibarr.
 	 *
-	 * @return array $wp_proposals Tableau Order Object de WPshop convertis depuis le format de Dolibarr.
+	 * @return array                 Le tableau contenant toutes les données des propositions commerciales convertis depuis le format de Dolibarr.
 	 */
 	public function convert_to_wp_proposal_format( $doli_proposals ) {
 		$wp_proposals = array();
