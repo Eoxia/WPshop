@@ -1,57 +1,61 @@
 <?php
 /**
- * Les fonctions principales des paiements.
+ * La classe gérant les fonctions principales des paiements de Dolibarr.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
+
+use eoxia\Post_Class;
+use stdClass;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
  * Doli Payment Class.
  */
-class Doli_Payment extends \eoxia\Post_Class {
+class Doli_Payment extends Post_Class {
 
 	/**
-	 * Model name @see ../model/*.model.php.
+	 * Le nom du modèle.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var string
 	 */
 	protected $model_name = '\wpshop\Doli_Payment_Model';
 
 	/**
-	 * Post type
+	 * Le post type.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var string
 	 */
 	protected $type = 'wps-doli-payment';
 
 	/**
-	 * La clé principale du modèle
+	 * La clé principale du modèle.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var string
 	 */
 	protected $meta_key = 'doli-payment';
 
 	/**
-	 * La route pour accéder à l'objet dans la rest API
+	 * La route pour accéder à l'objet dans la rest API.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var string
 	 */
@@ -60,7 +64,8 @@ class Doli_Payment extends \eoxia\Post_Class {
 	/**
 	 * La taxonomy lié à ce post type.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var string
 	 */
@@ -69,7 +74,8 @@ class Doli_Payment extends \eoxia\Post_Class {
 	/**
 	 * Le nom du post type.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var string
 	 */
@@ -78,14 +84,15 @@ class Doli_Payment extends \eoxia\Post_Class {
 	/**
 	 * Synchronise Dolibarr vers WPshop.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param integer  $wp_invoice_id L'ID de la facture.
-	 * @param stdClass $doli_payment  Les données de dolibarr.
-	 * @param Payment  $wp_payment    Les données de WP.
-	 * @param  Boolean $only_convert  Only Convert Dolibarr Object to WP. Don't save the WP Object on the database.
+	 * @param  integer      $wp_invoice_id L'id d'une facture.
+	 * @param  stdClass     $doli_payment  Les données d'un paiement Dolibarr.
+	 * @param  Doli_Payment $wp_payment    Les données d'un paiement WordPress.
+	 * @param  boolean      $only_convert  Only Convert Dolibarr Object to WP. Don't save the WP Object on the database.
 	 *
-	 * @return Doli_Payment_Model     Les données du paiement WP avec les données de Dolibarr.
+	 * @return Doli_Payment                Les données d'un paiement WordPress avec ceux de Dolibarr.
 	 */
 	public function doli_to_wp( $wp_invoice_id, $doli_payment, $wp_payment, $only_convert = false ) {
 		$wp_payment->data['title']        = $doli_payment->ref;
@@ -103,13 +110,14 @@ class Doli_Payment extends \eoxia\Post_Class {
 	}
 
 	/**
-	 * Convertie vers l'ID de dolibarr
+	 * Convertit vers l'id de Dolibarr
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param array $payment_method Méthode de paiement.
+	 * @param  array $payment_method Les données d'une méthode de paiement.
 	 *
-	 * @return integer l'ID de dolibarr.
+	 * @return integer               L'id de Dolibarr.
 	 */
 	public function convert_to_doli_id( $payment_method ) {
 		$payment_methods_option = get_option( 'wps_payment_methods', Payment::g()->default_options );
@@ -129,13 +137,14 @@ class Doli_Payment extends \eoxia\Post_Class {
 	}
 
 	/**
-	 * Convertie vers un texte lisible.
+	 * Convertit vers un texte lisible.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param  string $payment_method Méthode de paiement venant de Dolibarr.
+	 * @param  string $payment_method La méthode de paiement venant de Dolibarr.
 	 *
-	 * @return mixed                  Texte lisible ou null
+	 * @return string                 Texte lisible ou null
 	 */
 	public function convert_to_wp( $payment_method ) {
 		if ( empty( $payment_method ) ) {

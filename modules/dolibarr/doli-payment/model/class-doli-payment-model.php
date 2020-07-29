@@ -1,33 +1,33 @@
 <?php
 /**
- * Classe définisant le modèle d'un paiement dolibarr.
+ * La Classe définisant le modèle d'un paiement de Dolibarr.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
+
+use eoxia\Post_Model;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
  * Doli Payement Model.
  */
-class Doli_Payment_Model extends \eoxia\Post_Model {
+class Doli_Payment_Model extends Post_Model {
 
 	/**
-	 * Constructor.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param Product $object     Les données de l'objet.
-	 * @param string  $req_method La méthode de la requête.
+	 * @param Doli_Payment $object     Les données de l'objet.
+	 * @param string       $req_method La méthode de la requête.
 	 */
 	public function __construct( $object, $req_method = null ) {
 		$this->schema['payment_type'] = array(
@@ -35,7 +35,8 @@ class Doli_Payment_Model extends \eoxia\Post_Model {
 			'meta_type'   => 'single',
 			'field'       => '_payment_type',
 			'since'       => '2.0.0',
-			'description' => '',
+			'version'     => '2.0.0',
+			'description' => 'Le type de paiement',
 		);
 
 		$this->schema['amount'] = array(
@@ -43,15 +44,9 @@ class Doli_Payment_Model extends \eoxia\Post_Model {
 			'meta_type'   => 'single',
 			'field'       => '_amount',
 			'since'       => '2.0.0',
-			'description' => '',
+			'version'     => '2.0.0',
+			'description' => 'Le montant du paiement',
 		);
-
-//		$this->schema['last_sync'] = array(
-//			'type'      => 'wpeo_date',
-//			'meta_type' => 'single',
-//			'field'     => '_last_sync',
-//			'context'   => array( 'GET' ),
-//		);
 
 		parent::__construct( $object, $req_method );
 	}

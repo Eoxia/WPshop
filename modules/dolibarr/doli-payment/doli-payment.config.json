@@ -1,11 +1,13 @@
 {
-	"name": "Payment",
+	"name": "Doli Payment",
 	"slug": "doli-payment",
 	"since": "2.0.0",
+    "version": "2.0.0",
+    "description": "Le module gérant les paiements de Dolibarr",
 	"path": "modules/dolibarr/doli-payment",
 	"dependencies": {
-    "class": {},
-    "filter": {},
-    "model": {}
+     "filter": {},
+     "class": {},
+     "model": {}
 	}
 }
