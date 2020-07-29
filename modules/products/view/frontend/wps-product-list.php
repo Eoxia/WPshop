@@ -1,31 +1,35 @@
 <?php
 /**
- * Product list view
+ * La vue affichant la liste des produits dans le frontend.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2006-2018 Eoxia <dev@eoxia.com>
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- * @package   WPshop\Templates
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * Documentation des variables utilisées dans la vue.
+ *
+ * @var Product $product Les données d'un produit.
+ */
 ?>
+
 <div itemscope itemtype="https://schema.org/Product" class="wps-product">
 	<figure class="wps-product-thumbnail">
-		<?php
-		if ( ! empty( $product['thumbnail_id'] ) ) :
+		<?php if ( ! empty( $product['thumbnail_id'] ) ) :
 			echo wp_get_attachment_image( $product['thumbnail_id'], 'thumbnail', '', array(
 				'class'    => 'attachment-wps-product-thumbnail',
 				'itemprop' => 'image',
 			) );
 		else :
 			echo '<img src="' . PLUGIN_WPSHOP_URL . '/core/asset/image/default-product-thumbnail-min.jpg" class="attachment-wps-product-thumbnail" itemprop="image" /> ';
-		endif;
-		?>
+		endif; ?>
 	</figure>
 	<div class="wps-product-content">
 		<div itemprop="name" class="wps-product-title"><?php echo esc_html( $product['title'] ); ?></div>

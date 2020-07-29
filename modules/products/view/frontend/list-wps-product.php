@@ -1,24 +1,29 @@
 <?php
 /**
- * Taxonomy Product view.
+ * La vue affichant la liste des produits dans la boutique.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2006-2018 Eoxia <dev@eoxia.com>
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- * @package   WPshop\Templates
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
 defined( 'ABSPATH' ) || exit;
 
-if ( ! empty( $products ) ) :
-	?>
+/**
+ * Documentation des variables utilisées dans la vue.
+ *
+ * @var array   $products Le tableau contenant toutes les données des produits.
+ * @var Product $product  Les données d'un produit.
+ */
+?>
+
+<?php if ( ! empty( $products ) ) : ?>
 	<div class="wpeo-gridlayout grid-4">
-	<?php
-	foreach ( $products as $product ) :
-		?>
+	<?php foreach ( $products as $product ) : ?>
 		<div class="wps-product">
 			<a href="<?php echo get_permalink( $product->data['id'] ); ?>">
 				<figure class="wps-product-thumbnail">
@@ -36,9 +41,6 @@ if ( ! empty( $products ) ) :
 				</div>
 			</a>
 		</div>
-		<?php
-	endforeach;
-	?>
+	<?php endforeach; ?>
 	</div>
-	<?php
-endif;
+<?php endif; ?>

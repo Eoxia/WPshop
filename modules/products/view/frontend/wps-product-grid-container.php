@@ -1,24 +1,30 @@
 <?php
 /**
- * Product grid view
+ * La vue affichant le container du produit.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2006-2018 Eoxia <dev@eoxia.com>
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- * @package   WPshop\Templates
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
 defined( 'ABSPATH' ) || exit;
 
-if ( $wps_query->have_posts() ) :
-	?>
+/**
+ * Documentation des variables utilisées dans la vue.
+ *
+ * @var \WP_Query $wps_query La requête pour récupérer les données d'un produit.
+ * @var integer   $big       Un grand nombre.
+ */
+?>
+
+<?php if ( $wps_query->have_posts() ) : ?>
 	<div class="wps-product-grid wpeo-gridlayout grid-4">
 
-		<?php
-		while ( $wps_query->have_posts() ) :
+		<?php while ( $wps_query->have_posts() ) :
 			$wps_query->the_post();
 			include( Template_Util::get_template_part( 'products', 'wps-product-grid' ) );
 		endwhile;
@@ -36,4 +42,4 @@ if ( $wps_query->have_posts() ) :
 		'next_text' => '<i class="dashicons dashicons-arrow-right"></i>',
 		'prev_text' => '<i class="dashicons dashicons-arrow-left"></i>',
 	) );
-endif;
+endif; ?>

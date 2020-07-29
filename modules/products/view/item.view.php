@@ -1,20 +1,26 @@
 <?php
 /**
- * Affichage d'un produit dans le listing  de la page des produits (wps-product)
+ * La vue affichant un produit dans la liste des produits.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Templates
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
-defined( 'ABSPATH' ) || exit; ?>
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * Documentation des variables utilisées dans la vue.
+ *
+ * @var Product $product     Les données d'un produit.
+ * @var string  $doli_url    L'url de Dolibarr.
+ * @var string  $sync_status True si on affiche le statut de la synchronisation.
+ */
+?>
 
 <div class="table-row" data-id="<?php echo esc_attr( $product->data['id'] ); ?>">
 	<div class="table-cell table-50"><input type="checkbox" /></div>

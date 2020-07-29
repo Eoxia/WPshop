@@ -1,57 +1,61 @@
 <?php
 /**
- * Les fonctions principales des produits.
+ * La classe gérant les fonctions principales des produits.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
+
+use eoxia\Post_Class;
+use eoxia\View_Util;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
  * Product Class.
  */
-class Product extends \eoxia\Post_Class {
+class Product extends Post_Class {
 
 	/**
-	 * Model name @see ../model/*.model.php.
+	 * Le nom du modèle.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var string
 	 */
 	protected $model_name = '\wpshop\Product_Model';
 
 	/**
-	 * Post type
+	 * Le post type.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var string
 	 */
 	protected $type = 'wps-product';
 
 	/**
-	 * La clé principale du modèle
+	 * La clé principale du modèle.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var string
 	 */
 	protected $meta_key = 'product';
 
 	/**
-	 * La route pour accéder à l'objet dans la rest API
+	 * La route pour accéder à l'objet dans la rest API.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var string
 	 */
@@ -60,7 +64,8 @@ class Product extends \eoxia\Post_Class {
 	/**
 	 * La taxonomy lié à ce post type.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var string
 	 */
@@ -69,7 +74,8 @@ class Product extends \eoxia\Post_Class {
 	/**
 	 * Le nom du post type.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var string
 	 */
@@ -78,7 +84,8 @@ class Product extends \eoxia\Post_Class {
 	/**
 	 * La limite par page.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var integer
 	 */
@@ -87,20 +94,20 @@ class Product extends \eoxia\Post_Class {
 	/**
 	 * Le nom de l'option pour la limite par page.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var string
 	 */
 	public $option_per_page = 'product_per_page';
 
 	/**
-	 * Récupères la liste des produits et appel la vue "list" du module
-	 * "Product".
+	 * Récupère la liste des produits et appel la vue "list" du module "Product".
 	 *
-	 * @param string $mode Le mode d'affichage de la vue. Soit en mode "view"
-	 * ou en mode "edit".
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @since 2.0.0
+	 * @param string $mode Le mode d'affichage de la vue. Soit en mode "view" ou en mode "edit".
 	 */
 	public function display( $mode = 'view' ) {
 		$per_page = get_user_meta( get_current_user_id(), $this->option_per_page, true );
@@ -145,17 +152,27 @@ class Product extends \eoxia\Post_Class {
 
 		$view = 'view' === $mode ? '' : '-edit';
 
-		\eoxia\View_Util::exec( 'wpshop', 'products', 'list', array(
+		View_Util::exec( 'wpshop', 'products', 'list', array(
 			'products' => $products,
 			'doli_url' => $dolibarr_option['dolibarr_url'],
 			'view'     => $view,
 		) );
 	}
 
+	/**
+	 * Appel la vue "item" du produit.
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 *
+	 * @param Product $product     Les données d'un produit.
+	 * @param string  $sync_status Le statut de la synchronisation.
+	 * @param string  $doli_url    L'url de Dolibarr.
+	 */
 	public function display_item( $product, $sync_status, $doli_url = '' ) {
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
 
-		\eoxia\View_Util::exec( 'wpshop', 'products', 'item', array(
+		View_Util::exec( 'wpshop', 'products', 'item', array(
 			'product'     => $product,
 			'sync_status' => $sync_status,
 			'doli_url'    => $dolibarr_option['dolibarr_url'],
@@ -163,9 +180,10 @@ class Product extends \eoxia\Post_Class {
 	}
 
 	/**
-	 * Ajoutes une metabox pour configurer le produit.
+	 * Ajoute une metabox pour configurer le produit.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_register_meta_box() {
 		add_meta_box(
@@ -177,11 +195,12 @@ class Product extends \eoxia\Post_Class {
 	}
 
 	/**
-	 * La vue de la metabox pour configurer le produit
+	 * La vue de la metabox pour configurer le produit.
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @param WP_Post $post Le produit.
-	 *
-	 * @since 2.0.0
 	 */
 	public function callback_add_meta_box( $post ) {
 		$product = $this->get( array( 'id' => $post->ID ), true );
@@ -203,7 +222,7 @@ class Product extends \eoxia\Post_Class {
 		}
 
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
-		\eoxia\View_Util::exec( 'wpshop', 'products', 'metabox/main', array(
+		View_Util::exec( 'wpshop', 'products', 'metabox/main', array(
 			'id'               => ! empty( $product->data['id'] ) ? $product->data['id'] : $post->ID,
 			'product'          => $product,
 			'doli_url'         => $dolibarr_option['dolibarr_url'],
@@ -213,17 +232,16 @@ class Product extends \eoxia\Post_Class {
 	}
 
 	/**
-	 * Fonctions de recherche
+	 * Fonction de recherche.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @param  string  $s            Le terme de la recherche.
 	 * @param  array   $default_args Les arguments par défaut.
-	 * @param  boolean $count        Si true compte le nombre d'élement, sinon
-	 * renvoies l'ID des éléments trouvés.
+	 * @param  boolean $count        Si true compte le nombre d'élement, sinon renvoies l'ID des éléments trouvés.
 	 *
-	 * @return array|integer         Les ID des éléments trouvés ou le nombre
-	 * d'éléments trouvés.
+	 * @return array|integer         Les ID des éléments trouvés ou le nombre d'éléments trouvés.
 	 */
 	public function search( $s = '', $default_args = array(), $count = false ) {
 		$args = array(

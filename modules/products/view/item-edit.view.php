@@ -1,20 +1,27 @@
 <?php
 /**
- * Affichage d'un produit en mode édition dans le listing de la page des produits (wps-product)
+ * La vue affichant un produit en mode édition.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Templates
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
-defined( 'ABSPATH' ) || exit; ?>
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * Documentation des variables utilisées dans la vue.
+ *
+ * @var Product $product      Les données d'un produit.
+ * @var boolean $has_selected True si le produit est selectionné.
+ * @var array   $tva          Les types de TVA.
+ * @var string  $selected     L'attribut HTML "selected".
+ */
+?>
 
 <div class="table-row">
 	<input type="hidden" name="action" value="quick_save" />
@@ -25,12 +32,6 @@ defined( 'ABSPATH' ) || exit; ?>
 	<div class="table-cell table-50"><input type="checkbox" /></div>
 	<div class="table-cell table-100 table-padding-0"><?php echo do_shortcode( '[wpeo_upload id="' . $product->data['id'] . '" single="true" model_name="/wpshop/Product"]' ); ?></div>
 	<div class="table-cell table-full">
-		<ul class="reference-id">
-			<li><i class="fas fa-hashtag"></i>WP : <?php echo esc_html( $product->data['id'] ); ?></li>
-			<?php if ( ! empty( $product->data['external_id'] ) ) : ?>
-				<li><i class="fas fa-hashtag"></i>Doli : <?php echo esc_html( $product->data['external_id'] ); ?></li>
-			<?php endif; ?>
-		</ul>
 		<div class="reference-title">
 			<input type="text" name="title" value="<?php echo $product->data['title']; ?>" />
 		</div>
@@ -50,24 +51,20 @@ defined( 'ABSPATH' ) || exit; ?>
 					if ( (float) $tva === (float) $product->data['tva_tx'] || ( ! $has_selected && 20 === $tva ) ) :
 						$selected     = 'selected="selected"';
 						$has_selected = true;
-					endif;
-					?>
+					endif; ?>
 					<option <?php echo esc_attr( $selected ); ?> value="<?php echo esc_attr( $tva ); ?>"><?php echo esc_html( $tva ); ?>%</option>
 					<?php
 				endforeach;
-			endif;
-			?>
+			endif; ?>
 		</select>
 	</div>
 	<div class="table-cell table-100"><strong><?php echo esc_html( number_format( $product->data['price_ttc'], 2, ',', '' ) ); ?>€</strong></div>
 	<div class="table-cell table-100">
-		<?php
-		if ( ! empty( $product->data['parent_post'] ) ) :
+		<?php if ( ! empty( $product->data['parent_post'] ) ) :
 			echo esc_html( $product->data['parent_post']->post_title );
 		else :
 			esc_html_e( 'No product parent', 'wpshop' );
-		endif;
-		?>
+		endif; ?>
 	</div>
 	<div class="table-cell">
 		<div class="form-element stock-field">

@@ -1,18 +1,17 @@
 <?php
 /**
- * Gestion des shortcodes des produits.
+ * La classe gérant les shortcodes des produits.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
+
+use eoxia\View_Util;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -22,9 +21,10 @@ defined( 'ABSPATH' ) || exit;
 class Products_Shortcode {
 
 	/**
-	 * Constructor.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function __construct() {
 		add_shortcode( 'wps_product', array( $this, 'do_shortcode_product' ) );
@@ -32,12 +32,12 @@ class Products_Shortcode {
 	}
 
 	/**
-	 * Shortcode permattant d'afficher les produits
+	 * Le shortcode permattant d'afficher les produits.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param  array $atts Les paramètres du shortcode. (Voir shorcode_atts
-	 * ci dessous pour les paramètres disponibles).
+	 * @param array $atts Les paramètres du shortcode.
 	 */
 	public function do_shortcode_product( $atts ) {
 		if ( ! is_admin() ) {
@@ -98,12 +98,14 @@ class Products_Shortcode {
 	}
 
 	/**
-	 * Shortcode permattant d'afficher les categories
+	 * Le shortcode permattant d'afficher les categories.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param  array $atts Les paramètres du shortcode. (Voir shorcode_atts
-	 * ci dessous pour les paramètres disponibles).
+	 * @param  array $atts Les paramètres du shortcode.
+	 *
+	 * @return string      La vue.
 	 */
 	public function do_shortcode_categories( $atts ) {
 		if ( ! is_admin() ) {

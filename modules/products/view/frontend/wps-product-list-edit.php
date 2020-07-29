@@ -1,19 +1,26 @@
 <?php
 /**
- * Product list view
+ * La vue affichant l'édition de la liste des produits dans le frontend.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2006-2018 Eoxia <dev@eoxia.com>
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- * @package   WPshop\Templates
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * Documentation des variables utilisées dans la vue.
+ *
+ * @var string  $key     Le type de produit.
+ * @var Product $product Les données d'un produit.
+ */
 ?>
+
 <input type="hidden" name="products[<?php echo esc_attr( $key ); ?>][id]" value="<?php echo esc_attr( $product['id'] ); ?>" />
 
 <div itemscope itemtype="https://schema.org/Product" class="wps-product">

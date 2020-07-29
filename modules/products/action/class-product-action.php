@@ -1,20 +1,17 @@
 <?php
 /**
- * Gestion des actions des produits.
+ * La classe gérant les actions des produits.
  *
- * Ajoutes une page "Product" dans le menu de WordPress.
- *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
+
+use eoxia\View_Util;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -24,9 +21,10 @@ defined( 'ABSPATH' ) || exit;
 class Product_Action {
 
 	/**
-	 * Constructor.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function __construct() {
 		add_action( 'admin_menu', array( $this, 'callback_admin_menu' ), 30 );
@@ -42,10 +40,10 @@ class Product_Action {
 	/**
 	 * Initialise la page "Product".
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_admin_menu() {
-		//add_menu_page( __( 'Products', 'wpshop' ), __( 'Products', 'wpshop' ), 'manage_options', 'wps-product', '', 'dashicons-cart' );
 		$hook = add_submenu_page( 'wpshop', __( 'Products', 'wpshop' ), __( 'Products', 'wpshop' ), 'manage_options', 'wps-product', array( $this, 'callback_add_menu_page' ) );
 		if ( ! Settings::g()->dolibarr_is_active() ) {
 			add_submenu_page( 'wpshop', __( 'Add', 'wpshop' ), __( 'Add', 'wpshop' ), 'manage_options', 'post-new.php?post_type=wps-product' );
@@ -57,7 +55,8 @@ class Product_Action {
 	/**
 	 * Appel la vue "main" du module "Product".
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_add_menu_page() {
 		$per_page = get_user_meta( get_current_user_id(), Product::g()->option_per_page, true );
@@ -91,7 +90,7 @@ class Product_Action {
 			$next_url  .= '&s=' . $s;
 		}
 
-		\eoxia\View_Util::exec( 'wpshop', 'products', 'main', array(
+		View_Util::exec( 'wpshop', 'products', 'main', array(
 			'number_page'  => $number_page,
 			'current_page' => $current_page,
 			'count'        => $count,
@@ -107,9 +106,10 @@ class Product_Action {
 	}
 
 	/**
-	 * Ajoutes le menu "Options de l'écran" dans la page produit.
+	 * Ajoute le menu "Options de l'écran" dans la page produit.
 	 *
-	 * @since 2.0.0.
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function callback_add_screen_option() {
 		$args = array(
@@ -122,9 +122,10 @@ class Product_Action {
 	}
 
 	/**
-	 * Enregistres les métadonnées d'un produit.
+	 * Enregistre les métadonnées d'un produit.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @param  integer $post_id L'ID du produit.
 	 * @param  WP_Post $post    Les données du produit.
@@ -172,9 +173,10 @@ class Product_Action {
 	}
 
 	/**
-	 * Création d'une page spéciale pour afficher les archives
+	 * Création d'une page spéciale pour afficher les archives.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function init_product_archive_page() {
 		global $post;
@@ -244,11 +246,13 @@ class Product_Action {
 	}
 
 	/**
-	 * Force l'affichage d'un template single
+	 * Force l'affichage d'un template single.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param string $template Chemin du template.
+	 * @param  string $template Chemin du template.
+	 *
 	 * @return string
 	 */
 	public function force_single_template_filter( $template ) {
@@ -270,11 +274,12 @@ class Product_Action {
 	}
 
 	/**
-	 * Génère le HTML de la page archive
+	 * Génère le HTML de la page archive.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @return string Output HTML content
+	 * @return string Output HTML content.
 	 */
 	public function generate_archive_page_content() {
 		global $wp_query;
@@ -322,7 +327,8 @@ class Product_Action {
 	/**
 	 * Créer une page temporaire lors du recherche avec WPshop.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function search_page() {
 		global $wp_query;
@@ -405,6 +411,12 @@ class Product_Action {
 
 	}
 
+	/**
+	 * Récupère le produit par l'external id.
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 */
 	public function get_product_by_external_id() {
 		$id = ! empty( $_POST['id'] ) ? (int) $_POST['id'] : 0;
 

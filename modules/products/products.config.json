@@ -1,13 +1,15 @@
 {
-	"name": "product",
+	"name": "Products",
 	"slug": "products",
 	"since": "2.0.0",
+    "version": "2.0.0",
+    "description": "Le module gérant les produits",
 	"path": "modules/products",
 	"dependencies": {
-    "shortcode": {},
-		"class": {},
-		"action": {},
-    "filter": {},
-    "model": {}
+      "shortcode": {},
+      "filter": {},
+	  "class": {},
+	  "action": {},
+      "model": {}
 	}
 }

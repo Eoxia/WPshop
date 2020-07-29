@@ -1,19 +1,29 @@
 /**
- * Gestion JS du tunnel de vente.
+ * Gestion JS du produit.
  *
- * @since 2.0.0
+ * @since   2.0.0
+ * @version 2.0.0
  */
 window.eoxiaJS.wpshopFrontend.product = {};
 
 /**
- * La méthode "init" est appelé automatiquement par la lib JS de Eo-Framework
+ * La méthode "init" est appelé automatiquement par la lib JS de Eo-Framework.
  *
  * @since 2.0.0
+ * @version 2.0.0
  */
 window.eoxiaJS.wpshopFrontend.product.init = function() {
 	jQuery( document ).on( 'click', '.single-wps-product .wps-product .wps-quantity-minus, .single-wps-product .wps-product .wps-quantity-plus', window.eoxiaJS.wpshopFrontend.product.updateQty );
 };
 
+/**
+ * Met à jour la quantité d'un produit.
+ *
+ * @since   2.0.0
+ * @version 2.0.0
+ *
+ * @param {ClickEvent} event [updateQty].
+ */
 window.eoxiaJS.wpshopFrontend.product.updateQty = function( event ) {
 	qty = parseInt( jQuery( '.single-wps-product .wps-product .wps-product-quantity .qty' ).text() );
 	var price = parseFloat( jQuery( '.single-wps-product .wps-product .base-price' ).val() );
@@ -37,4 +47,4 @@ window.eoxiaJS.wpshopFrontend.product.updateQty = function( event ) {
 		jQuery( '.single-wps-product .wps-product .wps-product-buy' ).attr( 'data-qty', qty );
 	}
 	jQuery( '.single-wps-product .wps-product .wps-product-price' ).text( price );
-}
+};

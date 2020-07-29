@@ -1,20 +1,15 @@
 <?php
 /**
- * Gestion des filtres des produits.
+ * La classe gérant les filtres des produits.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Filters
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
-
-use digi\Setting_Class;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -24,9 +19,10 @@ defined( 'ABSPATH' ) || exit;
 class Product_Filter {
 
 	/**
-	 * Constructeur.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function __construct() {
 		add_filter( 'eo_model_wps-product_register_post_type_args', array( $this, 'callback_register_post_type_args' ) );
@@ -55,9 +51,11 @@ class Product_Filter {
 	/**
 	 * Permet d'ajouter l'argument public à true pour le register_post_type de EOModel.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @param  array $args Les arguments pour le register_post_type.
+	 *
 	 * @return array       Les arguments pour le register_post_type avec public à true.
 	 */
 	public function callback_register_post_type_args( $args ) {
@@ -115,11 +113,13 @@ class Product_Filter {
 	}
 
 	/**
-	 * Entregistres la taxonomy catégorie de produit.
+	 * Entregistre la taxonomy catégorie de produit.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @param  array $args Les données à filtrer.
+	 *
 	 * @return array       Les données filtrées.
 	 */
 	public function callback_taxonomy( $args ) {
@@ -153,12 +153,14 @@ class Product_Filter {
 	}
 
 	/**
-	 * Affihe la grille des produits sur les pages concernées
+	 * Affiche la grille des produits sur les pages concernées.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param  string $content Contenu de la page.
-	 * @return string
+	 * @param  string $content le contenu de la page.
+	 *
+	 * @return string          le contenu de la page.
 	 */
 	public function display_content_grid_product( $content ) {
 		if ( ! is_admin() ) {
@@ -215,12 +217,14 @@ class Product_Filter {
 	}
 
 	/**
-	 * Affihe la page single des produits
+	 * Affiche la page single des produits.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param  string $content Contenu de la page.
-	 * @return string
+	 * @param  string $content Le contenu de la page.
+	 *
+	 * @return string          Le contenu de la page.
 	 */
 	public function display_single_page_product( $content ) {
 		global $post;
@@ -239,17 +243,16 @@ class Product_Filter {
 		return $content;
 	}
 
-	public function change_product_category_title( $title ) {
-		return 'yo';
-	}
-
 	/**
-	 * Ajoutes le message "Rupture de stock" sur le produit.
+	 * Ajoute le message "Rupture de stock" sur le produit.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param string        $attr    Attribut du bouton.
-	 * @param Product_Model $product Les données du produit.
+	 * @param  string  $attr    Attribut du bouton.
+	 * @param  Product $product Les données du produit.
+	 *
+	 * @return string          Attribut du bouton.
 	 */
 	public function button_add_to_cart_tooltip( $attr, $product ) {
 		if ( $product->data['manage_stock'] && 0 >= $product->data['stock'] ) {
@@ -262,10 +265,13 @@ class Product_Filter {
 	/**
 	 * Rend le bouton "Ajouter au panier" grisé.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param string        $class   Les classes du bouton.
-	 * @param Product_Model $product Les données du produit.
+	 * @param  string  $class   Les classes du bouton.
+	 * @param  Product $product Les données du produit.
+	 *
+	 * @return string          Les classes du bouton.
 	 */
 	public function disable_button_add_to_cart( $class, $product ) {
 		if ( $product->data['manage_stock'] && 0 >= $product->data['stock'] ) {
@@ -278,12 +284,13 @@ class Product_Filter {
 	/**
 	 * Affichage du stock.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param  string        $content Le contenu.
-	 * @param  Product_Model $product Les données du produit.
+	 * @param  string  $content Le contenu.
+	 * @param  Product $product Les données du produit.
 	 *
-	 * @return string                 Le contenu modifié.
+	 * @return string           Le contenu modifié.
 	 */
 	public function display_stock( $content, $product ) {
 		if ( $product->data['manage_stock'] ) {

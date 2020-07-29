@@ -1,20 +1,29 @@
 <?php
 /**
- * Affichage du listing de produit dans le backend.
+ * La vue affichant la liste de produit dans le backend.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Templates
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
-defined( 'ABSPATH' ) || exit; ?>
+use eoxia\View_Util;
+
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * Documentation des variables utilisées dans la vue.
+ *
+ * @var array   $products Le tableau contenant toutes les données des produits.
+ * @var Product $product  Les données d'un produit.
+ * @var string  $view     Le type de vue.
+ * @var string  $doli_url L'url de Dolibarr.
+ */
+?>
 
 <div class="wps-list-product wpeo-table table-flex table-7">
 	<div class="table-row table-header">
@@ -32,7 +41,7 @@ defined( 'ABSPATH' ) || exit; ?>
 	<?php
 	if ( ! empty( $products ) ) :
 		foreach ( $products as $product ) :
-			\eoxia\View_Util::exec( 'wpshop', 'products', 'item' . $view, array(
+			View_Util::exec( 'wpshop', 'products', 'item' . $view, array(
 				'product'     => $product,
 				'sync_status' => false,
 				'doli_url'    => $doli_url,

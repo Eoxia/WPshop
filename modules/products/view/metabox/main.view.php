@@ -1,20 +1,31 @@
 <?php
 /**
- * La vue principale de la page des produits (wps-product)
+ * La vue principale de la page des produits.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Templates
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
-defined( 'ABSPATH' ) || exit; ?>
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * Documentation des variables utilisées dans la vue.
+ *
+ * @var Product $product          Les données d'un produit.
+ * @var string  $sync_status      True si on affiche le statut de la synchronisation.
+ * @var string  $doli_url         L'url de Dolibarr.
+ * @var boolean $has_selected     True si le produit est selectionné.
+ * @var array   $tva              Les types de TVA.
+ * @var string  $selected         L'attribut HTML "selected".
+ * @var array   $similar_products Le tableau  contenant toutes les données des produits similaires.
+ * @var Product $similar_product  Les données d'un produit similaire.
+ */
+?>
 
 <div class="wpeo-wrap">
 	<h2 style="font-size: 1.6em; font-weight: bold; display: inline-flex;">Modification du produit <?php echo $product->data['title']; ?> 	</h2><span style="display: inline-flex; position: relative; left: 35%"> <?php do_action( 'wps_listing_table_end', $product, $sync_status ); ?> </span>
