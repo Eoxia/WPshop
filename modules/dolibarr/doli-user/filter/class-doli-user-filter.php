@@ -1,15 +1,12 @@
 <?php
 /**
- * Les filtres des contact de dolibarr.
+ * La classe gérant Les filtres des utilisateurs de Dolibarr.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2019-2020 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
@@ -17,19 +14,26 @@ namespace wpshop;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Contact Filter class.
+ * Doli User Filter Class.
  */
 class Doli_User_Filter {
 
 	/**
-	 * Initialise les filtres.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function __construct() {
 		add_action( 'wp_footer_end', array( $this, 'check_user' ) );
 	}
 
+	/**
+	 * Vérifie si l'utilisateur est connecté à l'ERP.
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 */
 	public function check_user() {
 		if ( Settings::g()->dolibarr_is_active() ) {
 			$response = Doli_User::g()->check_connected_to_erp();

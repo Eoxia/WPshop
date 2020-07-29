@@ -1,11 +1,13 @@
 {
-	"name": "User avec dolibarr",
+	"name": "Doli User",
 	"slug": "doli-user",
 	"since": "2.0.0",
+    "version": "2.0.0",
+    "description": "Le module gérant les utilisateurs de Dolibarr",
 	"path": "modules/dolibarr/doli-user",
 	"dependencies": {
+        "filter": {},
 		"class": {},
-		"action": {},
-        "filter": {}
+		"action": {}
 	}
 }

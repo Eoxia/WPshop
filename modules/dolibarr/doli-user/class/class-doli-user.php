@@ -1,44 +1,46 @@
 <?php
 /**
- * Les fonctions principales des contact avec dolibarr.
+ * La classe gérant les fonctions principales des utilisateurs de Dolibarr.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
+use eoxia\LOG_Util;
+use eoxia\Singleton_Util;
+use stdClass;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Doli Contact Class.
+ * Doli User Class.
  */
-class Doli_User extends \eoxia\Singleton_Util {
+class Doli_User extends Singleton_Util {
 
 	/**
-	 * Constructeur
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	protected function construct() {}
 
 	/**
 	 * Synchronise les contact de dolibarr vers WP.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param  stdClass      $doli_contact Les données provenant de Dolibarr.
-	 * @param  Contact_Model $wp_contact   Les données de WP.
-	 * @param  boolean       $save         True pour enregister le contact en
-	 * base de donnée. Sinon false pour seulement récupérer un objet remplis.
+	 * @param  stdClass $doli_contact Les données d'un utilisateur Dolibarr.
+	 * @param  User     $wp_contact   Les données d'un utilisateur WordPress.
+	 * @param  boolean  $save         True pour enregister le contact en base de donnée. Sinon false pour seulement récupérer un objet remplis.
 	 *
-	 * @return boolean|Contact_Model       Les données du contact.
+	 * @return User|boolean           Les données d'un utilisateur WordPress avec ceux de Dolibarr.
 	 */
 	public function doli_to_wp( $doli_contact, $wp_contact, $save = true ) {
 		$wp_third_party = null;
@@ -66,7 +68,7 @@ class Doli_User extends \eoxia\Singleton_Util {
 		if ( $save ) {
 			// @todo: Vérifier cette condition.
 			if ( 0 === $wp_contact->data['id'] && false !== email_exists( $wp_contact->data['email'] ) ) {
-				\eoxia\LOG_Util::log( sprintf( 'Contact: doli_to_wp can\'t create %s email already exist', json_encode( $wp_contact->data ) ), 'wpshop2' );
+				LOG_Util::log( sprintf( 'Contact: doli_to_wp can\'t create %s email already exist', json_encode( $wp_contact->data ) ), 'wpshop2' );
 				return false;
 			}
 
@@ -78,7 +80,7 @@ class Doli_User extends \eoxia\Singleton_Util {
 
 			if ( is_wp_error( $contact_saved ) ) {
 				// translators: Contact: doli_to_wp error when update or create contact {json_data}.
-				\eoxia\LOG_Util::log( sprintf( 'Contact: doli_to_wp error when update or create contact: %s', json_encode( $contact_saved ) ), 'wpshop2' );
+				LOG_Util::log( sprintf( 'Contact: doli_to_wp error when update or create contact: %s', json_encode( $contact_saved ) ), 'wpshop2' );
 				return false;
 			}
 
@@ -103,14 +105,14 @@ class Doli_User extends \eoxia\Singleton_Util {
 	}
 
 	/**
-	 * Synchronise WP vers Dolibarr
+	 * Synchronise WP vers Dolibarr.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param  Contact_Model $wp_contact   Les données du contact provenant de WP.
-	 * @param  stdClass      $doli_contact Les données du contact dolibarr.
+	 * @param  User $wp_contact Les données d'un utilisateur.
 	 *
-	 * @return integer                     L'ID de dolibarr.
+	 * @return User             Les données d'un utilisateur.
 	 */
 	public function wp_to_doli( $wp_contact ) {
 		/*$third_party = Third_Party::g()->get( array(
@@ -139,13 +141,14 @@ class Doli_User extends \eoxia\Singleton_Util {
 	}
 
 	/**
-	 * Récupères l'ID de WP depuis l'ID de dolibarr
+	 * Récupère l'id de WordPress depuis l'id de Dolibarr.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param  integer $doli_id L'ID du contact venant de dolibarr.
+	 * @param  integer $doli_id L'id d'un utilisateur de dolibarr.
 	 *
-	 * @return integer          L'ID WP du contact.
+	 * @return integer          L'id d'un utilisateur de WordPress.
 	 */
 	public function get_wp_id_by_doli_id( $doli_id ) {
 		$users = get_users( array(
@@ -163,11 +166,12 @@ class Doli_User extends \eoxia\Singleton_Util {
 	}
 
 	/**
-	 * @todo: Comment.
+	 * Vérifie si l'utilisateur est connecté à un ERP.
 	 *
-	 * @return array
-	 *@since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
+	 * @return array          Les données de connexion d'un utilisateur à l'ERP.
 	 */
 	public function check_connected_to_erp() {
 		if ( ! is_user_logged_in() ) {
@@ -231,6 +235,17 @@ class Doli_User extends \eoxia\Singleton_Util {
 		);
 	}
 
+	/**
+	 * Créer un utilisateur à partir d'un tier.
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 *
+	 * @param Third_Party $third_party   Les données d'un tier Wordpress.
+	 * @param stdClass $doli_third_party Les données d'un tier Dolibarr.
+	 *
+	 * @return User | boolean            L'utilisateur créé.
+	 */
 	public function create_user( $third_party, $doli_third_party ) {
 		$contact = array();
 
@@ -252,13 +267,24 @@ class Doli_User extends \eoxia\Singleton_Util {
 
 		if ( is_wp_error( $contact_saved ) ) {
 			// translators: Contact: doli_to_wp error when update or create contact {json_data}.
-			\eoxia\LOG_Util::log( sprintf( 'Contact: doli_to_wp error when update or create contact: %s', json_encode( $contact_saved ) ), 'wpshop2' );
+			LOG_Util::log( sprintf( 'Contact: doli_to_wp error when update or create contact: %s', json_encode( $contact_saved ) ), 'wpshop2' );
 			return false;
 		}
 
 		return $contact_saved;
 	}
 
+	/**
+	 * Met à jour l'utilisateur.
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 *
+	 * @param User $user               Les données d'un utilisateur.
+	 * @param Third_Party $third_party Les données d'un tier.
+	 *
+	 * @return User                    Les données d'un utilisateur mise à jour.
+	 */
 	public function update_user( $user, $third_party ) {
 		return $user;
 	}

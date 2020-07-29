@@ -1,15 +1,12 @@
 <?php
 /**
- * Gestion des actions des contact  avec dolibarr.
+ * La classe gérant les actions des utilisateur de Dolibarr.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
@@ -17,14 +14,15 @@ namespace wpshop;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Doli Contact Action Class.
+ * Doli User Action Class.
  */
 class Doli_User_Action {
 
 	/**
-	 * Constructor.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function __construct() {
 		// add_action( 'wps_checkout_create_contact', array( $this, 'checkout_create_contact' ) );
@@ -33,11 +31,12 @@ class Doli_User_Action {
 	}
 
 	/**
-	 * Création d'un contact lors du tunnel de vente
+	 * Création d'un utilisateur lors du tunnel de vente.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param  Contact_Model $wp_contact Les données du contact.
+	 * @param User $wp_contact Les données d'un utilisateur.
 	 */
 	public function checkout_create_contact( $wp_contact ) {
 		if ( Settings::g()->dolibarr_is_active() ) {
@@ -55,12 +54,13 @@ class Doli_User_Action {
 	}
 
 	/**
-	 * Supprimes un contact
+	 * Supprime un utilisateur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param  Third_Party_Model $third_party Les données du tier.
-	 * @param  Contact_Model     $contact     Les données du contact.
+	 * @param Third_Party $third_party Les données d'un tier.
+	 * @param User        $contact     Les données d'un utilisateur.
 	 */
 	public function delete_contact( $third_party, $contact ) {
 		$data = array(
