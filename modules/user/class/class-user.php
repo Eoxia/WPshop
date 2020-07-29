@@ -1,57 +1,61 @@
 <?php
 /**
- * Les fonctions principales des contact.
+ * La classe gérant les fonctions principales des utilisateurs.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
 
+use eoxia\User_Class;
+use eoxia\View_Util;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Contact class.
+ * User Class.
  */
-class User extends \eoxia\User_Class {
+class User extends User_Class {
 
 	/**
-	 * Model name @see ../model/*.model.php.
+	 * Le nom du modèle.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var string
 	 */
 	protected $model_name = '\wpshop\User_Model';
 
 	/**
-	 * Post type
+	 * Le post type.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var string
 	 */
 	protected $type = 'wps-user';
 
 	/**
-	 * La clé principale du modèle
+	 * La clé principale du modèle.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var string
 	 */
 	protected $meta_key = 'user';
 
 	/**
-	 * La route pour accéder à l'objet dans la rest API
+	 * La route pour accéder à l'objet dans la rest API.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var string
 	 */
@@ -60,18 +64,20 @@ class User extends \eoxia\User_Class {
 	/**
 	 * La taxonomy lié à ce post type.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
 	 * @var string
 	 */
 	protected $attached_taxonomy_type = '';
 
 	/**
-	 * Affiches les tiers
+	 * Affiche les tiers.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param Third_Party_Model $third_party Les données du tier.
+	 * @param Third_Party $third_party Les données du tier.
 	 */
 	public function display( $third_party ) {
 		$contacts = array();
@@ -82,7 +88,7 @@ class User extends \eoxia\User_Class {
 			) );
 		}
 
-		\eoxia\View_Util::exec( 'wpshop', 'user', 'list', array(
+		View_Util::exec( 'wpshop', 'user', 'list', array(
 			'contacts' => $contacts,
 		) );
 	}

@@ -1,15 +1,12 @@
 <?php
 /**
- * Les filtres des contact.
+ * La classe gérant les filtres des utilisateurs.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
@@ -17,14 +14,15 @@ namespace wpshop;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Contact Filter class.
+ * User Filter Class.
  */
 class User_Filter {
 
 	/**
 	 * Initialise les filtres.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function __construct() {
 		add_filter( 'wps_contact_item_contact_title_after', array( $this, 'add_user_switching' ) );
@@ -32,11 +30,12 @@ class User_Filter {
 	}
 
 	/**
-	 * Affiches le lien pour switcher vers l'utilisateur.
+	 * Affiche le lien pour switcher vers l'utilisateur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param Contact_Model $contact Les données du contact.
+	 * @param User $contact Les données du contact.
 	 */
 	public function add_user_switching( $contact ) {
 		if ( class_exists( '\user_switching' ) ) {
