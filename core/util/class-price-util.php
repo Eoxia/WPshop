@@ -9,6 +9,8 @@
  * @version   2.0.0
  */
 
+namespace wpshop;
+
 defined( 'ABSPATH' ) || exit;
 
 /**

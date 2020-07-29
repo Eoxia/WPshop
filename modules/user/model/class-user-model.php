@@ -58,9 +58,9 @@ class User_Model extends \eoxia\User_Model {
 		);
 
 		$this->schema['third_party_id'] = array(
-			'type'      => 'integer',
-			'meta_type' => 'single',
-			'field'     => '_third_party_id',
+			'type'        => 'integer',
+			'meta_type'   => 'single',
+			'field'       => '_third_party_id',
 			'since'       => '2.0.0',
 			'version'     => '2.0.0',
 			'description' => 'L\'id du tier.',

@@ -100,52 +100,52 @@ class Doli_Invoice_Model extends Post_Model {
 		);
 
 		$this->schema['lines'] = array(
-			'type'      => 'array',
-			'meta_type' => 'single',
-			'field'     => '_lines',
+			'type'        => 'array',
+			'meta_type'   => 'single',
+			'field'       => '_lines',
 			'since'       => '2.0.0',
 			'version'     => '2.0.0',
 			'description' => 'Les lignes d\'information de la facture.',
-			'default'   => null,
+			'default'     => null,
 		);
 
 		$this->schema['payment_method'] = array(
-			'type'      => 'string',
-			'meta_type' => 'single',
-			'field'     => 'payment_method',
+			'type'        => 'string',
+			'meta_type'   => 'single',
+			'field'       => 'payment_method',
 			'since'       => '2.0.0',
 			'version'     => '2.0.0',
 			'description' => 'La méthode de paiement utilisé pour la facture.',
-			'default'   => '',
+			'default'     => '',
 		);
 
 		$this->schema['paye'] = array(
-			'type'      => 'integer',
-			'meta_type' => 'single',
-			'field'     => 'paye',
+			'type'        => 'integer',
+			'meta_type'   => 'single',
+			'field'       => 'paye',
 			'since'       => '2.0.0',
 			'version'     => '2.0.0',
 			'description' => 'Le prix payé de la facture.',
-			'default'   => 0,
+			'default'     => 0,
 		);
 
 		$this->schema['third_party_id'] = array(
-			'type'      => 'integer',
-			'meta_type' => 'single',
-			'field'     => '_third_party_id',
+			'type'        => 'integer',
+			'meta_type'   => 'single',
+			'field'       => '_third_party_id',
 			'since'       => '2.0.0',
 			'version'     => '2.0.0',
 			'description' => 'L\'id du tier.',
 		);
 
 		$this->schema['avoir'] = array(
-			'type'      => 'integer',
-			'meta_type' => 'single',
-			'field'     => '_avoir',
+			'type'        => 'integer',
+			'meta_type'   => 'single',
+			'field'       => '_avoir',
 			'since'       => '2.0.0',
 			'version'     => '2.0.0',
 			'description' => 'L\'avoir sur une facture.',
-			'default'   => 0,
+			'default'     => 0,
 		);
 
 		$this->schema['date_last_synchro'] = array(
@@ -159,13 +159,13 @@ class Doli_Invoice_Model extends Post_Model {
 		);
 
 		$this->schema['linked_objects_ids'] = array(
-			'type'      => 'array',
-			'meta_type' => 'single',
-			'field'     => '_linked_objects_ids',
+			'type'        => 'array',
+			'meta_type'   => 'single',
+			'field'       => '_linked_objects_ids',
 			'since'       => '2.0.0',
 			'version'     => '2.0.0',
 			'description' => 'L\'id des objets liés.',
-			'default'   => null,
+			'default'     => null,
 		);
 
 		parent::__construct( $object, $req_method );

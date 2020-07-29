@@ -1,6 +1,6 @@
 <?php
 /**
- * La vue du champ pour générér la clé API.
+ * La vue affichant le champ pour générér la clé API.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>

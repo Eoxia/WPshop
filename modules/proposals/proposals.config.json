@@ -1,13 +1,13 @@
 {
-  "name": "Gestion des prospets",
+  "name": "Gestion des devis",
   "slug": "proposals",
   "since": "2.0.0",
-  "description": "Le module gérant les prospets",
+  "description": "Le module gérant les devis",
   "path": "modules/proposals/",
   "dependencies": {
-    "action": {},
-    "model": {},
     "filter": {},
-    "class": {}
+    "class": {},
+    "action": {},
+    "model": {}
   }
 }

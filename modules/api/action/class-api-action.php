@@ -71,7 +71,7 @@ class API_Action {
 	}
 
 	/**
-	 * Ajoute la route pour PayPal.
+	 * Initialise les routes de l'API.
 	 *
 	 * @since   2.0.0
 	 * @version 2.0.0
