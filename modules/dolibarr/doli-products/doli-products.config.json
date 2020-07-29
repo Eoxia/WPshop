@@ -1,11 +1,13 @@
 {
-	"name": "doli-products",
+	"name": "Doli Products",
 	"slug": "doli-products",
 	"since": "2.0.0",
-	"path": "modules/dolibarr/doli-products",
+    "version": "2.0.0",
+    "description": "Le module gérant les produits de Dolibarr",
+    "path": "modules/dolibarr/doli-products",
 	"dependencies": {
-        "action": {},
+        "filter": {},
         "class": {},
-        "filter": {}
+        "action": {}
 	}
 }

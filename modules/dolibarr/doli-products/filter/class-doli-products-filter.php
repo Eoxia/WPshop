@@ -1,15 +1,12 @@
 <?php
 /**
- * Gestion des filtres des produits Dolibarr.
+ * La classe gérant les filtres des produits de Dolibarr.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
  * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Filters
- *
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
@@ -22,9 +19,10 @@ defined( 'ABSPATH' ) || exit;
 class Doli_Product_Filter {
 
 	/**
-	 * Constructeur.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function __construct() {
 		if ( Settings::g()->dolibarr_is_active() ) {
@@ -33,6 +31,17 @@ class Doli_Product_Filter {
 		}
 	}
 
+	/**
+	 * La synchronisation automatique d'un produit.
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 *
+	 * @param  Product $object  Les données d'un produit.
+	 * @param  array   $args_cb Les arguments supplémentaires.
+	 *
+	 * @return Product          Les données d'un produit synchronisé.
+	 */
 	public function auto_sync( $object, $args_cb ) {
 		if ( empty( $object->data['external_id'] ) ) {
 			return $object;
@@ -49,6 +58,16 @@ class Doli_Product_Filter {
 		return $object;
 	}
 
+	/**
+	 * La synchronisation manuelle d'un produit.
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 *
+	 * @param  Product $product Les données d'un produit.
+	 *
+	 * @return Product          Les données d'un produit synchronisé.
+	 */
 	public function product_sync( $product ) {
 		$external_id = get_post_meta( $product->ID, '_external_id', true );
 		$status = Doli_Sync::g()->check_status( $product->ID, $product->post_type );
@@ -64,8 +83,7 @@ class Doli_Product_Filter {
 		$product = get_post( $product->ID );
 
 		return $product;
-}
-
+	}
 }
 
 new Doli_Product_Filter();

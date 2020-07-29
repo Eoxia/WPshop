@@ -1,41 +1,43 @@
 <?php
 /**
- * Gestion des actions des produits avec dolibarr.
- *
- * Gestion de la création d'un nouveau produit.
- * Gestion de la mise à jour d'un produit.
- * Gestion de la suppression d'un produit.
- *
- * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
- * @since     2.0.0
+ * La classe gérant les actions des produits de Dolibarr.
  *
  * @todo      File really useful ?
+ *
+ * @package   WPshop
+ * @author    Eoxia <dev@eoxia.com>
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
+ * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
+
+use eoxia\Singleton_Util;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
  * Doli Products Action Class.
  */
-class Doli_Products_Action extends \eoxia\Singleton_Util {
+class Doli_Products_Action extends Singleton_Util {
 
 	/**
-	 * Constructor.
+	 * le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	protected function construct() {
 		add_action( 'admin_notices', array( $this, 'admin_notices' ) );
 	}
 
+	/**
+	 * Ajoute une notice.
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 */
 	public function admin_notices() {
 		if ( ! isset( $_REQUEST['action'] ) ) {
 			return;

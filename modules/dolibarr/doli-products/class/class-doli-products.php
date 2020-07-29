@@ -1,47 +1,46 @@
 <?php
 /**
- * Les fonctions principales des produits avec dolibarr.
+ * La classe gérant les fonctions principales des produits de Dolibarr.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
+
+use eoxia\Singleton_Util;
+use stdClass;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
  * Doli Product Class.
  */
-class Doli_Products extends \eoxia\Singleton_Util {
+class Doli_Products extends Singleton_Util {
 
 	/**
-	 * Constructeur.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	protected function construct() {}
 
 	/**
 	 * Synchronise de Dolibarr vers WP.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param  stdClass      $doli_product Les données du produit venant de
-	 * dolibarr.
-	 * @param  Product_Model $wp_product   Les données du produit de WP.
-	 * @param  boolean       $save         Enregistres les données sinon
-	 * renvoies l'objet remplit sans l'enregistrer en base de donnée.
-	 * @param  array         $notices      Gestion des erreurs et
-	 * informations de l'évolution de la méthode.
+	 * @param  stdClass $doli_product Les données d'un produit Dolibarr.
+	 * @param  Product  $wp_product   Les données d'un produit WordPress.
+	 * @param  boolean  $save         Enregistres les données sinon renvoies l'objet remplit sans l'enregistrer en base de donnée.
+	 * @param  array    $notices      Gestion des erreurs et informations de l'évolution de la méthode.
 	 *
-	 * @return Product_Model Les données du produit.
+	 * @return Product                Les données d'un produit Wordpress avec ceux de Dolibarr.
 	 */
 	public function doli_to_wp( $doli_product, $wp_product, $save = true, &$notices = array(
 		'errors'   => array(),
@@ -90,12 +89,14 @@ class Doli_Products extends \eoxia\Singleton_Util {
 	}
 
 	/**
-	 * Récupères l'ID WP selon l'ID de dolibarr.
+	 * Récupère l'id d'un produit WordPress selon l'id d'un produit de Dolibarr.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 *
-	 * @param  integer $doli_id L'ID de dolibarr.
-	 * @return integer          L'ID de WP.
+	 * @param  integer $doli_id L'id d'un produit de Dolibarr.
+	 *
+	 * @return integer          L'id d'un produit de WordPress.
 	 */
 	public function get_wp_id_by_doli_id( $doli_id ) {
 		$product = Product::g()->get( array(
