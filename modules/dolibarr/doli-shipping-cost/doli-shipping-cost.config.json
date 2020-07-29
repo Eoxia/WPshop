@@ -1,7 +1,9 @@
 {
-	"name": "Gestion des frais de port",
+	"name": "Doli Shipping Cost",
 	"slug": "doli-shipping-cost",
 	"since": "2.0.0",
+    "version": "2.0.0",
+    "description": "Le module gérant les frais de port",
 	"path": "modules/dolibarr/doli-shipping-cost",
 	"dependencies": {
 		"action": {}

@@ -1,15 +1,12 @@
 <?php
 /**
- * Gestion des actions des frais de port.
+ * La classe gérant les actions des frais de port.
  *
+ * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
- *
- * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
- *
- * @package   WPshop\Classes
- *
+ * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
+ * @version   2.0.0
  */
 
 namespace wpshop;
@@ -22,18 +19,20 @@ defined( 'ABSPATH' ) || exit;
 class Doli_Shipping_Cost_Action {
 
 	/**
-	 * Constructeur.
+	 * Le constructeur.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function __construct() {
 		add_action( 'wps_after_calculate_totals', array( $this, 'add_shipping_cost' ), 10, 0 );
 	}
 
 	/**
-	 * Ajoutes le frais de transport
+	 * Ajoute le frais de port.
 	 *
-	 * @since 2.0.0
+	 * @since   2.0.0
+	 * @version 2.0.0
 	 */
 	public function add_shipping_cost() {
 		$shipping_cost_option = get_option( 'wps_shipping_cost', Settings::g()->shipping_cost_default_settings );
