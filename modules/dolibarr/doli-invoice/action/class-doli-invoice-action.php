@@ -40,7 +40,7 @@ class Doli_Invoice_Action {
 	public function __construct() {
 		add_action( 'init', array( $this, 'create_tmp_invoice_dir' ) );
 
-		// add_action( 'admin_menu', array( $this, 'callback_admin_menu' ) );
+		add_action( 'admin_menu', array( $this, 'callback_admin_menu' ) , 70 );
 
 		add_action( 'wps_payment_complete', array( $this, 'create_invoice' ), 20, 1 );
 
@@ -116,9 +116,16 @@ class Doli_Invoice_Action {
 	 */
 	public function callback_add_menu_page() {
 		if ( isset( $_GET['id'] ) ) {
+			// Single page.
 			$id = ! empty( $_GET['id'] ) ? (int) $_GET['id'] : 0;
 
-			$invoice = Doli_Invoice::g()->get( array( 'id' => $id ), true );
+			$doli_invoice = Request_Util::get( 'invoices/' . $id );
+			$wp_invoice   = Doli_Order::g()->get( array( 'schema' => true ), true );
+			$wp_invoice   = Doli_Order::g()->doli_to_wp( $doli_invoice, $wp_invoice, true );
+
+			$wp_invoice->data['datec'] = \eoxia\Date_Util::g()->fill_date( $wp_invoice->data['datec'] );
+
+			$third_party = Third_Party::g()->get( array( 'id' => $wp_invoice->data['parent_id'] ), true );
 
 			if ( ! empty( $this->metaboxes ) ) {
 				foreach ( $this->metaboxes as $key => $metabox ) {
@@ -126,18 +133,49 @@ class Doli_Invoice_Action {
 				}
 			}
 
-			View_Util::exec( 'wpshop', 'doli-invoice', 'single', array( 'invoice' => $invoice ) );
+			View_Util::exec( 'wpshop', 'doli-invoice', 'single', array(
+				'third_party' => $third_party,
+				'invoice'     => $wp_invoice,
+			) );
 		} else {
-			$args = array(
-				'post_type'      => 'wps-doli-invoice',
-				'posts_per_page' => -1,
-				'post_status'    => 'any',
-			);
+			// Listing page.
+			// @todo: Doublon avec Class Doli Order display() ?
+			$per_page = get_user_meta( get_current_user_id(), Doli_Invoice::g()->option_per_page, true );
 
-			$count = count( get_posts( $args ) );
+			if ( empty( $per_page ) || 1 > $per_page ) {
+				$per_page = Doli_Invoice::g()->limit;
+			}
+
+			$s = ! empty( $_GET['s'] ) ? sanitize_text_field( $_GET['s'] ) : '';
+
+			$count        = Doli_Invoice::g()->search( $s, array(), true );
+			$number_page  = ceil( $count / $per_page );
+			$current_page = isset( $_GET['current_page'] ) ? (int) $_GET['current_page'] : 1;
+
+			$base_url = admin_url( 'admin.php?page=wps-invoice' );
+
+			$begin_url = $base_url . '&current_page=1';
+			$end_url   = $base_url . '&current_page=' . $number_page;
+
+			$prev_url = $base_url . '&current_page=' . ( $current_page - 1 );
+			$next_url = $base_url . '&current_page=' . ( $current_page + 1 );
+
+			if ( ! empty( $s ) ) {
+				$begin_url .= '&s=' . $s;
+				$end_url   .= '&s=' . $s;
+				$prev_url  .= '&s=' . $s;
+				$next_url  .= '&s=' . $s;
+			}
 
 			View_Util::exec( 'wpshop', 'doli-invoice', 'main', array(
-				'count' => $count,
+				'number_page'  => $number_page,
+				'current_page' => $current_page,
+				'count'        => $count,
+				'begin_url'    => $begin_url,
+				'end_url'      => $end_url,
+				'prev_url'     => $prev_url,
+				'next_url'     => $next_url,
+				's'            => $s,
 			) );
 		}
 	}

@@ -33,7 +33,6 @@ defined( 'ABSPATH' ) || exit;
 		<div class="table-cell table-150"><?php esc_html_e( 'Statut', 'wpshop' ); ?></div>
 		<div class="table-cell table-100"><?php esc_html_e( 'Method of payment', 'wpshop' ); ?></div>
 		<div class="table-cell table-100"><?php esc_html_e( 'Price TTC(€)', 'wpshop' ); ?></div>
-		<div class="table-cell table-100"><?php esc_html_e( 'Synchro', 'wpshop' ); ?></div>
 	</div>
 
 	<?php if ( ! empty( $invoices ) ) :

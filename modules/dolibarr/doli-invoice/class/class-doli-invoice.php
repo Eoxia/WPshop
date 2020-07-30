@@ -83,23 +83,63 @@ class Doli_Invoice extends Post_Class {
 	protected $post_type_name = 'Doli Invoice';
 
 	/**
+	 * La limite par page.
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 *
+	 * @var integer
+	 */
+	public $limit = 10;
+
+	/**
+	 * Le nom de l'option pour la limite par page.
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 *
+	 * @var string
+	 */
+	public $option_per_page = 'invoice_doli_per_page';
+
+	/**
 	 * Appel la vue "list" du module "doli-invoice".
 	 *
 	 * @since   2.0.0
 	 * @version 2.0.0
 	 */
 	public function display() {
-		$invoices = $this->get( array(
-			'post_status' => 'any',
-		) );
+		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
+		$per_page        = get_user_meta( get_current_user_id(), Doli_Invoice::g()->option_per_page, true );
+
+		if ( empty( $per_page ) || 1 > $per_page ) {
+			$per_page = Doli_Invoice::g()->limit;
+		}
+
+		$current_page = isset( $_GET['current_page'] ) ? (int) $_GET['current_page'] : 1;
+
+		$s = ! empty( $_GET['s'] ) ? sanitize_text_field( $_GET['s'] ) : '';
+
+		$route = 'invoices?sortfield=t.rowid&sortorder=DESC&limit=' . $per_page . '&page=' . ( $current_page - 1 );
+
+		if ( ! empty( $s ) ) {
+			// La route de dolibarr ne fonctionne pas avec des caractères en base10
+			$route .= '&sqlfilters=(t.ref%3Alike%3A\'%25' . $s . '%25\')';
+		}
+
+		$doli_invoices = Request_Util::get( $route );
+		$invoices      = $this->convert_to_wp_invoice_format( $doli_invoices );
 
 		if ( ! empty( $invoices ) ) {
 			foreach ( $invoices as &$element ) {
+
 				$element->data['tier']  = null;
 				$element->data['order'] = null;
 
-				if ( ! empty( $element->data['parent_id'] ) ) {
-					$element->data['order'] = Doli_Order::g()->get( array( 'id' => $element->data['parent_id'] ), true );
+				if ( isset( $element->data['linked_objects_ids']['commande'][0] ) ) {
+					$doli_order = Request_Util::get( 'orders/' . $element->data['linked_objects_ids']['commande'][0] );
+					$wp_order   = Doli_Order::g()->get( array( 'schema' => true ), true );
+					$element->data['order'] = Doli_Order::g()->doli_to_wp( $doli_order, $wp_order, true );
 				}
 
 				if ( ! empty( $element->data['third_party_id'] ) ) {
@@ -107,8 +147,6 @@ class Doli_Invoice extends Post_Class {
 				}
 			}
 		}
-
-		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
 
 		View_Util::exec( 'wpshop', 'doli-invoice', 'list', array(
 			'invoices' => $invoices,
@@ -293,79 +331,30 @@ class Doli_Invoice extends Post_Class {
 	}
 
 	/**
-	 * Ajoute une ligne sur la commande.
+	 * Fonction de recherche.
 	 *
 	 * @since   2.0.0
 	 * @version 2.0.0
 	 *
-	 * @param Doli_Order $order      Les données d'une commande.
-	 * @param array      $line_data  La donnée à ajouté.
-	 */
-	public function add_line( $order, $line_data ) {
-		$order->data['lines'][] = $line_data;
-
-		$this->update( $order->data );
-	}
-
-	/**
-	 * Met à jour une ligne sur la commande.
+	 * @param  string  $s            Le terme de la recherche.
+	 * @param  array   $default_args Les arguments par défaut.
+	 * @param  boolean $count        Si true compte le nombre d'élement, sinon renvoies l'ID des éléments trouvés.
 	 *
-	 * @since   2.0.0
-	 * @version 2.0.0
-	 *
-	 * @param Doli_Order $order      Les données d'une commande.
-	 * @param array      $line_data  La donnée à ajouté.
+	 * @return array|integer         Les ID des éléments trouvés ou le nombre d'éléments trouvés.
 	 */
-	public function update_line( $order, $line_data ) {
-		$founded_line = null;
-		$key_line     = null;
-		// Search line by rowid.
-		if ( ! empty( $order->data['lines'] ) ) {
-			foreach ( $order->data['lines'] as $key => $line ) {
-				if ( $line['rowid'] == $line_data['rowid'] ) {
-					$founded_line = $line;
-					$key_line     = $key;
-					break;
-				}
-			}
+	public function search( $s = '', $default_args = array(), $count = false ) {
+		$route = 'invoices?sortfield=t.rowid&sortorder=DESC';
+
+		if ( ! empty( $s ) ) {
+			$route .= '&sqlfilters=(t.ref%3Alike%3A\'%25' . $s . '%25\')';
 		}
 
-		if ( $founded_line != null ) {
-			array_splice( $order->data['lines'], $key_line, 1 );
+		$doli_invoices = Request_Util::get( $route );
 
-			$order->data['lines'][] = $line_data;
-
-			$this->update( $order->data );
-		}
-	}
-
-	/**
-	 * Supprime une ligne sur la commande.
-	 *
-	 * @since   2.0.0
-	 * @version 2.0.0
-	 *
-	 * @param Doli_Order $order   Les données d'une commande.
-	 * @param integer    $row_id  L'id d'une ligne.
-	 */
-	public function delete_line( $order, $row_id ) {
-		$founded_line = null;
-		$key_line     = null;
-		// Search line by rowid.
-		if ( ! empty( $order->data['lines'] ) ) {
-			foreach ( $order->data['lines'] as $key => $line ) {
-				if ( $line['rowid'] == $row_id ) {
-					$founded_line = $line;
-					$key_line     = $key;
-					break;
-				}
-			}
-		}
-
-		if ( $founded_line != null ) {
-			array_splice( $order->data['lines'], $key_line, 1 );
-
-			$this->update( $order->data );
+		if ( $count && ! empty( $doli_invoices ) ) {
+			return count( $doli_invoices );
+		} else {
+			return 0;
 		}
 	}
 }
