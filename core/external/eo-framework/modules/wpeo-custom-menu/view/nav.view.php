@@ -54,7 +54,7 @@ $minimize_menu = empty( $minimize_menu ) ? false : true;
 									if ( ! empty( $item->icon_url ) ) :
 										if ( strpos( $item->icon_url, 'http' ) !== FALSE ) :
 											?>
-											<img src="nav-icon <?php echo esc_attr( $item->icon_url ); ?>" />
+											<img src="<?php echo esc_attr( $item->icon_url ); ?>" class="nav-icon" />
 										<?php
 										else:
 											?>

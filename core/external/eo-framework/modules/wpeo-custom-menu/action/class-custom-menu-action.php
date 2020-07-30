@@ -58,7 +58,7 @@ if ( ! class_exists( '\eoxia\Custom_Menu_Action' ) ) {
 		}
 
 		public function add_others() {
-			Custom_Menu_Handler::register_menu( 'others', __( 'Go to WP Admin' ), __( 'Go to WP Admin' ), 'read', 'go-to-wp-admin', '', 'fa fa-tachometer-alt', 'bottom' );
+			Custom_Menu_Handler::register_menu( 'others', __( 'Tableau de bord' ), __( 'Tableau de bord' ), 'read', 'go-to-wp-admin', '', 'fa fa-tachometer-alt', 'bottom' );
 			Custom_Menu_Handler::$menus['others']['items']['go-to-wp-admin']->link = admin_url( 'index.php' );
 
 			$minimize_menu = get_user_meta( get_current_user_id(), '_eo_menu_minimize', true );

@@ -48,8 +48,8 @@ if ( ! class_exists( '\eoxia\Custom_Menu_Handler' ) ) {
 			);
 		}
 
-		public static function register_container( $page_title, $menu_title, $capability, $menu_slug ) {
-			add_menu_page( $page_title, $menu_title, $capability, $menu_slug );
+		public static function register_container( $page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position ) {
+			add_menu_page( $page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position );
 		}
 
 		/**
