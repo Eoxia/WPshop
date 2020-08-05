@@ -16,8 +16,9 @@ defined( 'ABSPATH' ) || exit;
 /**
 * Documentation des variables utilisées dans la vue.
 *
-* @var array   $cart_contents           Les données du panier.
-* @var Product $product                 La donnée d'un produit.
+* @var array   $cart_contents           Le tableau contenant toutes les données du panier.
+ *@var integer $key                     Le produit.
+* @var Product $product                 Les données d'un produit.
 * @var array   $shipping_cost_option    Les données de frais de livraison.
 * @var integer $total_price_no_shipping Prix total sans frais de livraison.
 * @var integer $tva_amount              Montant de la TVA.
@@ -33,15 +34,13 @@ defined( 'ABSPATH' ) || exit;
 
 	<div class="wpeo-gridlayout grid-3">
 		<div class="wps-list-product gridw-2">
-			<?php
-			if ( ! empty( $cart_contents ) ) :
+			<?php if ( ! empty( $cart_contents ) ) :
 				foreach ( $cart_contents as $key => $product ) :
 					if ( $shipping_cost_option['shipping_product_id'] !== $product['id'] ) :
 						include( Template_Util::get_template_part( 'products', 'wps-product-list-edit' ) );
 					endif;
 				endforeach;
-			endif;
-			?>
+			endif; ?>
 			<div data-parent="wps-cart" data-action="wps_update_cart"
 				class="wpeo-util-hidden update-cart wpeo-button action-input">
 				<?php esc_html_e( 'Update cart', 'wpshop' ); ?>
