@@ -6,7 +6,7 @@
  * @author    Eoxia <dev@eoxia.com>
  * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
- * @version   2.0.0
+ * @version   2.1.0
  */
 
 namespace wpshop;
@@ -118,7 +118,7 @@ class Settings_Action {
 	 * Met à jour les options général.
 	 *
 	 * @since   2.0.0
-	 * @version 2.0.0
+	 * @version 2.1.0
 	 */
 	public function callback_update_general_settings() {
 		check_admin_referer( 'callback_update_general_settings' );
@@ -133,15 +133,15 @@ class Settings_Action {
 		$thumbnail_size['width']  = ! empty( $thumbnail_size['width'] ) ? (int) $thumbnail_size['width'] : 0;
 		$thumbnail_size['height'] = ! empty( $thumbnail_size['height'] ) ? (int) $thumbnail_size['height'] : 0;
 		$use_quotation            = isset( $_POST['use_quotation'] ) && 'on' == $_POST['use_quotation'] ? true : false;
+		$split_product            = isset( $_POST['split_product'] ) && 'on' == $_POST['split_product'] ? true : false;
 
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
 
-		$dolibarr_option['shop_email']          = $shop_email;
-
+		$dolibarr_option['shop_email']               = $shop_email;
 		$dolibarr_option['thumbnail_size']['width']  = $thumbnail_size['width'];
 		$dolibarr_option['thumbnail_size']['height'] = $thumbnail_size['height'];
-
-		$dolibarr_option['use_quotation'] = $use_quotation;
+		$dolibarr_option['use_quotation']            = $use_quotation;
+		$dolibarr_option['split_product']            = $split_product;
 
 		update_option( 'wps_dolibarr', $dolibarr_option );
 

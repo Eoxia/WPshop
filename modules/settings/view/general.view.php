@@ -57,6 +57,13 @@ defined( 'ABSPATH' ) || exit;
 		</label>
 	</div>
 
+	<div class="form-element">
+		<label class="form-field-container">
+			<input type="checkbox" id="split_product" class="form-field" name="split_product" <?php echo $dolibarr_option['split_product'] ? 'checked="checked"' : ''; ?> />
+			<label for="split_product"><?php esc_html_e( 'Split product', 'wpshop' ); ?></label>
+		</label>
+	</div>
+
 	<div>
 		<input type="submit" class="wpeo-button button-main" value="<?php esc_html_e( 'Save Changes', 'wpshop' ); ?>" />
 	</div>

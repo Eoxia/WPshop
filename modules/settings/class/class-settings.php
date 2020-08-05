@@ -6,7 +6,7 @@
  * @author    Eoxia <dev@eoxia.com>
  * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
- * @version   2.0.0
+ * @version   2.1.0
  */
 
 namespace wpshop;
@@ -45,7 +45,7 @@ class Settings extends Singleton_Util {
 	 * Le constructeur.
 	 *
 	 * @since   2.0.0
-	 * @version 2.0.0
+	 * @version 2.1.0
 	 */
 	protected function construct() {
 		$this->default_settings = array(
@@ -59,6 +59,7 @@ class Settings extends Singleton_Util {
 				'height' => 460,
 			),
 			'use_quotation' => true,
+			'split_product' => true,
 			'notice' => array(
 				'error_erp'    => true,
 				'activate_erp' => true,
@@ -284,6 +285,22 @@ class Settings extends Singleton_Util {
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
 
 		return $dolibarr_option['use_quotation'];
+	}
+
+	/**
+	 * Vérifie si la séparation des produits est activé.
+	 *
+	 * @todo a revoir
+	 *
+	 * @since   2.1.0
+	 * @version 2.1.0
+	 *
+	 * @return boolean true ou false.
+	 */
+	public function split_product() {
+		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
+
+		return $dolibarr_option['split_product'];
 	}
 }
 
