@@ -6,7 +6,7 @@
  * @author    Eoxia <dev@eoxia.com>
  * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
- * @version   2.0.0
+ * @version   2.1.0
  */
 
 namespace wpshop;
@@ -373,7 +373,9 @@ class Doli_Order_Action {
 	 * Création d'une commande lors du tunnel de vente.
 	 *
 	 * @since   2.0.0
-	 * @version 2.0.0
+	 * @version 2.1.0
+	 *
+	 * @todo mettre la langue de l'user API pour la génération du doc
 	 *
 	 * @param  stdClass $proposal Les données d'une proposition commerciale.
 	 *
@@ -394,6 +396,7 @@ class Doli_Order_Action {
 		Request_Util::put( 'documents/builddoc', array(
 			'modulepart'    => 'order',
 			'original_file' => $doli_order->ref . '/' . $doli_order->ref . '.pdf',
+			'langcode' => 'fr_FR',
 		) );
 
 		$current_user = wp_get_current_user();
