@@ -69,10 +69,9 @@ class Cart extends Singleton_Util {
 
 		$index = -1;
 
-
 		if ( ! empty( Cart_Session::g()->cart_contents ) ) {
 			foreach ( Cart_Session::g()->cart_contents as $key => $line ) {
-				$data['content'] = $line['content'] . $desc;
+				$data['content'] = $desc;
 				if ( $line['id'] === $product->data['id'] && Settings::g()->split_product() == false ) {
 					$data['qty'] = $line['qty'] + $qty;
 					$index       = $key;
@@ -85,6 +84,7 @@ class Cart extends Singleton_Util {
 
 		if ( $can_add ) {
 			if ( -1 === $index ) {
+				$data['content'] = $desc;
 				Cart_Session::g()->add_product( $data );
 			} else {
 				Cart_Session::g()->update_product( $index, $data );
