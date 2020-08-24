@@ -33,13 +33,33 @@ jQuery(function($){
 		frame.on( 'select', function() {
 
 			// Get media attachment details from the frame state
-			var attachment = frame.state().get('selection').first().toJSON();
+			var attachments = frame.state().get('selection').map( function ( attachment ) {
+				attachment.toJSON();
+				return attachment;
+				//imgContainer.append( '<img src="'+attachment.url+'" alt="" style="max-width:100%;"/>' );
+				//imgIdInput.val( attachment.id );
+			});
+
+			var i;
+
+			for (i = 0; i < attachments.length; ++i) {
+
+				//sample function 1: add image preview
+				imgContainer.append(
+					'<div class="myplugin-image-preview"><img src="' +
+					attachments[i].attributes.url + '" alt="" style="max-width:100%;"></div>'
+				);
+
+				//sample function 2: add hidden input for each image
+				imgIdInput.after(
+					'<input type="hidden" name="myplugin_attachment_id_array[]" value="' +
+					attachments[i].id + '" id="myplugin-image-input' + attachments[i].id + '">'
+				);
+			}
 
 			// Send the attachment URL to our custom image input field.
-			imgContainer.append( '<img src="'+attachment.url+'" alt="" style="max-width:100%;"/>' );
 
 			// Send the attachment id to our hidden input
-			imgIdInput.val( attachment.id );
 
 			// Hide the add image link
 			//addImgLink.addClass( 'hidden' );

@@ -64,7 +64,7 @@ $you_have_img = is_array( $your_img_src );
 
 <!-- Your image container, which can be manipulated with js -->
 <div class="custom-img-container">
-	<ul class="product_images ui-sortable">-->
+	<ul class="product_images ui-sortable">
 		<?php if ( ! empty ( $attachments ) ) :
 			foreach ( $attachments as $attachment ) : ?>
 				<?php //echo '<pre>'; print_r($attachment); echo '</pre>'; exit; ?>

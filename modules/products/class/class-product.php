@@ -264,12 +264,16 @@ class Product extends Post_Class {
 
 		$doli_documents = Request_Util::get( 'documents?modulepart=product&id=' . $product->data['external_id'] );
 		$wp_documents   = Doli_Documents::g()->convert_to_wp_documents_format( $doli_documents );
-		if ( ! empty ( $wp_documents ) ) {
-			$attachments = get_children( array( 'post_parent' => $product->data['external_id'], 'post_type' => 'attachment' ) );
-			if ( empty ( $attachments ) ) {
+		if ( ! empty( $wp_documents ) ) {
+			$attachments = get_children(
+				array(
+					'post_parent' => $product->data['external_id'],
+					'post_type'   => 'attachment',
+				)
+			);
+			if ( empty( $attachments ) ) {
 				foreach ( $wp_documents as $key => $wp_document ) {
-
-					$uploadfile    = $wp_upload_dir['path'] . '/' . $wp_document->data['name'];
+					$uploadfile = $wp_upload_dir['path'] . '/' . $wp_document->data['name'];
 
 					$contents = file_get_contents( $wp_document->data['fullpath'] );
 					$savefile = fopen( $uploadfile, 'w' );
@@ -278,11 +282,11 @@ class Product extends Post_Class {
 
 					$filetype = wp_check_filetype( basename( $wp_document->data['fullpath'] ), null );
 
-					$args = array(
+					$args          = array(
 						'post_name'      => $wp_document->data['name'],
 						'post_mime_type' => $filetype['type'],
-						'post_title'     => preg_replace( '/\.[^.]+$/', '',  basename( $wp_document->data['fullpath'] ) ),
-						'meta_input' => array(
+						'post_title'     => preg_replace( '/\.[^.]+$/', '', basename( $wp_document->data['fullpath'] ) ),
+						'meta_input'     => array(
 							'path'          => $wp_document->data['path'],
 							'fullpath'      => $wp_document->data['fullpath'],
 							'date'          => $wp_document->data['date'],
@@ -291,34 +295,41 @@ class Product extends Post_Class {
 						),
 					);
 					$attachment_id = wp_insert_attachment( $args, $uploadfile, $product->data['external_id'] );
-					require_once( ABSPATH . 'wp-admin/includes/image.php' );
-					$attached_file = get_post_meta( $attachment_id , '_wp_attached_file', true );
-					$attach_data = wp_generate_attachment_metadata( $attachment_id,$wp_upload_dir['baseurl'] . '/' . $attached_file );
+					require_once ABSPATH . 'wp-admin/includes/image.php';
+					$attached_file = get_post_meta( $attachment_id, '_wp_attached_file', true );
+					$attach_data   = wp_generate_attachment_metadata( $attachment_id, $wp_upload_dir['baseurl'] . '/' . $attached_file );
 					wp_update_attachment_metadata( $attachment_id, $attach_data );
 				}
 			}
 		}
 
 		$attachment = array();
-		foreach ( $attachments as $key => $attachment_object ) {
-			foreach ( $attachment_object as $key => $attachment_data ) {
-				$attachment[$key]       = $attachment_data;
-				$attachment['fullpath'] = get_post_meta( $attachment_object->ID , 'fullpath', true );
-				$attachment['size']     = get_post_meta( $attachment_object->ID , 'size', true );
-				$attachment['attached_file']     = get_post_meta( $attachment_object->ID , '_wp_attached_file', true );
+		if ( ! empty( $attachments ) ) {
+			foreach ( $attachments as $key => $attachment_object ) {
+				foreach ( $attachment_object as $id => $attachment_data ) {
+					$attachment[ $id ]           = $attachment_data;
+					$attachment['fullpath']      = get_post_meta( $attachment_object->ID, 'fullpath', true );
+					$attachment['size']          = get_post_meta( $attachment_object->ID, 'size', true );
+					$attachment['attached_file'] = get_post_meta( $attachment_object->ID, '_wp_attached_file', true );
+				}
+				$attachments[ $attachment_object->ID ] = $attachment;
 			}
-			$attachments[$attachment_object->ID] = $attachment;
 		}
 
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
-		View_Util::exec( 'wpshop', 'products', 'metabox/gallery', array(
-			'id'               => ! empty( $product->data['id'] ) ? $product->data['id'] : $post->ID,
-			'wp_upload_dir'    => $wp_upload_dir,
-			'attachments'      => $attachments,
-			'product'          => $product,
-			'doli_url'         => $dolibarr_option['dolibarr_url'],
-			'sync_status'      => false,
-		) );
+		View_Util::exec(
+			'wpshop',
+			'products',
+			'metabox/gallery',
+			array(
+				'id'            => ! empty( $product->data['id'] ) ? $product->data['id'] : $post->ID,
+				'wp_upload_dir' => $wp_upload_dir,
+				'attachments'   => ! empty( $attachments ) ? $attachments : '',
+				'product'       => $product,
+				'doli_url'      => $dolibarr_option['dolibarr_url'],
+				'sync_status'   => false,
+			)
+		);
 	}
 
 	/**

@@ -31,6 +31,7 @@ class Doli_Sync_Filter extends Singleton_Util {
 
 		add_filter( 'doli_build_sha_wps-product', array( $this, 'build_sha_product' ), 10, 2 );
 		add_filter( 'doli_build_sha_wps-third-party', array( $this, 'build_sha_third_party' ), 10, 2 );
+		add_filter( 'doli_build_sha_wps-document', array( $this, 'build_sha_document' ), 10, 2 );
 	}
 
 	/**
@@ -132,6 +133,33 @@ class Doli_Sync_Filter extends Singleton_Util {
 		$data_sha['address']  = $response->address;
 		$data_sha['phone']    = $response->phone;
 		$data_sha['email']    = $response->email;
+
+		$response->sha = hash( 'sha256', implode( ',', $data_sha ) );
+
+		return $response;
+	}
+
+	/**
+	 * La construction du SHA256 d'une synchronisation d'un document.
+	 *
+	 * @since   2.01.0
+	 * @version 2.1.0
+	 *
+	 * @param  Doli_Documents $response Les données d'un document.
+	 * @param  integer        $wp_id    L'id d'un tier WordPress.
+	 *
+	 * @return Doli_Documents           Les données d'un document avec le SHA256.
+	 */
+	public function build_sha_document( $response, $wp_id ) {
+		$data_sha = array();
+
+		$data_sha['doli_id']       = $response->id;
+		$data_sha['wp_id']         = $wp_id;
+		$data_sha['path']          = $response->data['path'];
+		$data_sha['fullpath']      = $response->data['fullpath'];
+		$data_sha['date']          = $response->data['date'];
+		$data_sha['size']          = $response->data['size'];
+		$data_sha['dolibarr_type'] = $response->data['dolibarr_type'];
 
 		$response->sha = hash( 'sha256', implode( ',', $data_sha ) );
 

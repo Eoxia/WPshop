@@ -11,14 +11,14 @@
 
 namespace wpshop;
 
-use eoxia\Post_Model;
+use eoxia\Attachment_Model;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
  * Doli Documents Model Class.
  */
-class Doli_Documents_Model extends Post_Model {
+class Doli_Documents_Model extends Attachment_Model {
 
 	/**
 	 * Le constructeur.
@@ -35,8 +35,8 @@ class Doli_Documents_Model extends Post_Model {
 			'type'        => 'integer',
 			'meta_type'   => 'single',
 			'field'       => '_external_id',
-			'since'       => '2.0.0',
-			'version'     => '2.0.0',
+			'since'       => '2.1.0',
+			'version'     => '2.1.0',
 			'description' => 'L\'ID du customer (dolibarr). Relation avec dolibarr.',
 		);
 
