@@ -186,6 +186,14 @@ class Doli_Sync extends Singleton_Util {
 
 				$wp_object = $wp_proposal;
 				break;
+			/*case 'wps-documents':
+				$doli_documents = Request_Util::get( 'documents?modulepart=product&id=' . $entry_id );
+				$wp_document    = Doli_Documents::g()->get( array( 'id' => $wp_id ), true );
+
+				Doli_Proposals::g()->doli_to_wp( $doli_documents, $wp_proposal );
+
+				$wp_object = $wp_proposal;
+				break;*/
 			default:
 				break;
 		}

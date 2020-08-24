@@ -45,7 +45,8 @@
         "modules/dolibarr/doli-payment/doli-payment.config.json",
         "modules/dolibarr/doli-products/doli-products.config.json",
         "modules/dolibarr/doli-sync/doli-sync.config.json",
-        "modules/dolibarr/doli-associate/doli-associate.config.json"
+        "modules/dolibarr/doli-associate/doli-associate.config.json",
+        "modules/dolibarr/doli-documents/doli-documents.config.json"
 	],
     "use_global_sync": true
 }
