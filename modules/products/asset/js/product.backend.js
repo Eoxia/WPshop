@@ -26,6 +26,7 @@ window.eoxiaJS.wpshop.product.event = function() {
 	jQuery( document ).on( 'wps-change-toggle', '.stock-field .toggle', window.eoxiaJS.wpshop.product.displayBlockStock );
 	jQuery( document ).on( 'click', '.wps-list-product .table-header input[type="checkbox"]', window.eoxiaJS.wpshop.product.checkAll );
 	jQuery( document ).on( 'click', '.button-apply', window.eoxiaJS.wpshop.product.apply );
+	jQuery( document ).on( 'change', '.selectit', window.eoxiaJS.wpshop.product.updateCategories );
 	jQuery( document ).ready( window.eoxiaJS.wpshop.product.autoSynchro );
 	jQuery( '.similar-product' ).select2({
 		ajax: {
@@ -112,7 +113,9 @@ window.eoxiaJS.wpshop.product.apply = function() {
 		} );
 	}
 };
-
+window.eoxiaJS.wpshop.product.updateCategories = function() {
+console.log('ytes')
+}
 /**
  * Fait une synchronisation automatique des produits au chargement de la page.
  *

@@ -19,6 +19,7 @@ defined( 'ABSPATH' ) || exit;
  * @var Product  $product Les données d'un produit.
  * @var \WP_Post $post    Les données d'un post.
  */
+
 ?>
 
 <div class="wps-product-content">

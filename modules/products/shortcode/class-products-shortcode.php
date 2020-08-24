@@ -40,6 +40,7 @@ class Products_Shortcode {
 	 * @param array $atts Les paramètres du shortcode.
 	 */
 	public function do_shortcode_product( $atts ) {
+
 		if ( ! is_admin() ) {
 			$a = shortcode_atts( array(
 				'id'         => 0,
@@ -94,6 +95,7 @@ class Products_Shortcode {
 			setup_postdata( $post );
 
 			include( Template_Util::get_template_part( 'products', 'wps-product-grid-container' ) );
+
 		}
 	}
 
@@ -108,37 +110,44 @@ class Products_Shortcode {
 	 * @return string      La vue.
 	 */
 	public function do_shortcode_categories( $atts ) {
-		if ( ! is_admin() ) {
-			$default_atts = shortcode_atts( array(
-				'slug'    => '',
-				'id'      => '',
-				'orderby' => 'include',
-				'order'   => 'ASC',
-			), $atts );
 
-			$args = array(
-				'taxonomy'   => 'wps-product-cat',
-				'hide_empty' => false,
-				'orderby'    => $default_atts['orderby'],
-				'order'      => $default_atts['order'],
-			);
-
-			if ( ! empty( $default_atts['slug'] ) ) {
-				$default_atts['slug'] = explode( ',', $default_atts['slug'] );
-				$args['slug']         = $default_atts['slug'];
-			}
-
-			if ( ! empty( $default_atts['id'] ) ) {
-				$default_atts['id'] = explode( ',', $default_atts['id'] );
-				$args['include']    = $default_atts['id'];
-			}
-
-			$product_taxonomies = get_terms( $args );
-
-			ob_start();
-			include( Template_Util::get_template_part( 'products', 'wps-product-taxonomy-container' ) );
-			return ob_get_clean();
+		$doli_categories = Request_Util::get( 'categories/'  );
+		foreach( $doli_categories as $doli_category) {
+			wp_insert_term($doli_category->label, 'wps-product-cat', array('description'=>$doli_category->description ));
 		}
+
+//
+//		if (  is_admin() ) {
+//			$default_atts = shortcode_atts( array(
+//				'slug'    => '',
+//				'id'      => '',
+//				'orderby' => 'include',
+//				'order'   => 'ASC',
+//			), $atts );
+//
+//			$args = array(
+//				'taxonomy'   => 'wps-product-cat',
+//				'hide_empty' => false,
+//				'orderby'    => $default_atts['orderby'],
+//				'order'      => $default_atts['order'],
+//			);
+//
+//			if ( ! empty( $default_atts['slug'] ) ) {
+//				$default_atts['slug'] = explode( ',', $default_atts['slug'] );
+//				$args['slug']         = $default_atts['slug'];
+//			}
+//
+//			if ( ! empty( $default_atts['id'] ) ) {
+//				$default_atts['id'] = explode( ',', $default_atts['id'] );
+//				$args['include']    = $default_atts['id'];
+//			}
+//
+//			$product_taxonomies = get_terms( $args );
+//
+//			ob_start();
+//			include( Template_Util::get_template_part( 'products', 'wps-product-taxonomy-container' ) );
+//			return ob_get_clean();
+//		}
 	}
 }
 

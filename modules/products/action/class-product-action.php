@@ -50,6 +50,7 @@ class Product_Action {
 		}
 		add_submenu_page( 'wpshop', __( 'Products Category', 'wpshop' ), __( 'Products Category', 'wpshop' ), 'manage_options', 'edit-tags.php?taxonomy=wps-product-cat&post_type=wps-product' );
 		add_action( 'load-' . $hook, array( $this, 'callback_add_screen_option' ) );
+		echo do_shortcode('[wps_categories]');
 	}
 
 	/**
@@ -317,6 +318,7 @@ class Product_Action {
 		) );
 
 		ob_start();
+
 		include( Template_Util::get_template_part( 'products', 'wps-product-taxonomy-container' ) );
 		include( Template_Util::get_template_part( 'products', 'wps-product-grid-container' ) );
 		$view = ob_get_clean();
