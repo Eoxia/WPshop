@@ -219,6 +219,7 @@ class Doli_Sync extends Singleton_Util {
 	public function check_status( $id, $type ) {
 		$external_id = 0;
 		$sha_256 = 0;
+		global $wpdb;
 
 		if ( $type == 'wps-user' ) {
 			$external_id = get_user_meta( $id, '_external_id', true );
@@ -268,10 +269,29 @@ class Doli_Sync extends Singleton_Util {
 			);
 		}
 
+		$object_id = $response->array_options->options__wps_id;
+		$doli_categories = Request_Util::get('categories/object/product/' . $response->id . '?');
+		$wp_categories   = $wpdb->get_results("SELECT * FROM ".$wpdb->term_relationships." WHERE object_id = $object_id", ARRAY_A);
+
 		$response = apply_filters( 'doli_build_sha_' . $type, $response, $id );
 
+		$wp_category_labels = array();
+		$doli_category_labels = array();
+
+		if ( ! empty ($doli_categories) ) {
+			foreach ($doli_categories as $doli_category) {
+				$doli_category_labels[] = get_term_by('name', $doli_category->label, 'wps-product-cat' )->term_id;
+			}
+		}
+
+		if ( ! empty ( $wp_categories) ) {
+			foreach ($wp_categories as $wp_category){
+				$wp_category_labels[] = $wp_category['term_taxonomy_id'];
+			}
+		}
+		
 		// WP Object is not equal Dolibarr Object.
-		if ($response->sha !== $sha_256) {
+		if ($response->sha !== $sha_256 || $wp_category_labels <=> $doli_category_labels ) {
 			return array(
 				'status' => true,
 				'status_code' => '0x3',

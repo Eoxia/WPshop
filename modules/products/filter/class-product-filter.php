@@ -123,7 +123,6 @@ class Product_Filter {
 	 * @return array       Les données filtrées.
 	 */
 	public function callback_taxonomy( $args ) {
-
 		$labels = array(
 			'name'              => _x( 'Products category', 'taxonomy general name', 'wpshop' ),
 			'singular_name'     => _x( 'Product category', 'taxonomy singular name', 'wpshop' ),
@@ -150,10 +149,6 @@ class Product_Filter {
 			),
 		);
 	$args['register_meta_box_cb'] = array( Product::g(), 'callback_register_meta_box' );
-//
-//
-
-
 		return $args;
 	}
 

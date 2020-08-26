@@ -170,53 +170,21 @@ class Doli_Sync_Action {
 	 */
 	public function sync_entry() {
 		check_ajax_referer( 'sync_entry' );
-
-		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
-
-
-		/////// SI ON VEUT SYNCHRO LES CATEGORIES EN MEME TEMPS QUE LE RESTE //////
-		
-		/////// Solution qui nécessite d'inclure les catégories dans les SHA des produits //////
-		/////// A voir comment fonctionne la synchronisation des médias //////////////
-/* 
-		
+		global $wpdb;
 		echo do_shortcode('[wps_categories]');
 
-		global $wpdb;
-		
+		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
+		$wp_id   		 = ! empty( $_POST['wp_id'] ) ? (int) $_POST['wp_id'] : 0;
+		$entry_id		 = ! empty( $_POST['entry_id'] ) ? (int) $_POST['entry_id'] : 0;
+		$type    		 = ! empty( $_POST['type'] ) ? sanitize_text_field( $_POST['type'] ) : '';
+		$doli_categories = Request_Util::get('categories/object/product/' . $entry_id . '?');
 
-		$product 		 = Product::g()->get( array( 'id' => $wp_id ), true );
-		$doli_categories = Request_Util::get('categories/object/product/' . $product->data['external_id'] . '?');
-		$wp_categories   = $wpdb->get_results("SELECT * FROM ".$wpdb->term_relationships." WHERE object_id = 780", ARRAY_A);
-
-		$wp_category_labels = array();
-		$doli_category_labels = array();
-
-		if ( ! empty ($doli_categories) ) { 
+		$wpdb->delete('wp_term_relationships', array('object_id' => $wp_id));
+		if ( ! empty($doli_categories)) {
 			foreach ($doli_categories as $doli_category) {
-				$doli_category_labels[] = get_term_by('name', $doli_category->label, 'wps-product-cat' )->term_id;
+				$wpdb->insert('wp_term_relationships', array('object_id' => $wp_id , 'term_taxonomy_id' => get_term_by('name', $doli_category->label, 'wps-product-cat' )->term_id, 'term_order' => 0));
 			}
 		}
-
-		if ( ! empty ( $wp_categories) ) {
-			foreach ($wp_categories as $wp_category){
-				$wp_category_labels[] = $wp_category['term_taxonomy_id'];
-			}
-		}
-
-		if ($wp_category_labels !== $doli_category_labels) {
-			$wpdb->delete('wp_term_relationships', array('object_id' => $product->data['id']));
-			if ( ! empty($doli_categories)) {
-				foreach ($doli_categories as $doli_category) {
-					$wpdb->insert('wp_term_relationships', array('object_id' => $product->data['id'] , 'term_taxonomy_id' => get_term_by('name', $doli_category->label, 'wps-product-cat' )->term_id, 'term_order' => 0));
-				}
-			}
-		}	
-*/
-
-		$wp_id    = ! empty( $_POST['wp_id'] ) ? (int) $_POST['wp_id'] : 0;
-		$entry_id = ! empty( $_POST['entry_id'] ) ? (int) $_POST['entry_id'] : 0;
-		$type     = ! empty( $_POST['type'] ) ? sanitize_text_field( $_POST['type'] ) : '';
 
 		$sync_status = Doli_Sync::g()->sync( $wp_id, $entry_id, $type );
 		$sync_info   = Doli_Sync::g()->get_sync_infos( $type );
@@ -288,7 +256,7 @@ class Doli_Sync_Action {
 		$sync_info = Doli_Sync::g()->get_sync_infos( $type );
 
 		$object = $sync_info['wp_class']::g()->get( array( 'id' => $wp_id ), true );
-		
+
 		ob_start();
 		$status = Doli_Sync::g()->display_sync_status( $object, $type );
 		$view = ob_get_clean();
