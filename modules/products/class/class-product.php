@@ -157,7 +157,6 @@ class Product extends Post_Class {
 			'doli_url' => $dolibarr_option['dolibarr_url'],
 			'view'     => $view,
 		) );
-
 	}
 
 	/**
@@ -210,53 +209,9 @@ class Product extends Post_Class {
 		);
 	}
 	public function callback_add_meta_box_category( $post ) {
-		
+
 		echo do_shortcode('[wps_categories]');
-		global $wpdb;
-		$product = $this->get( array( 'id' => $post->ID ), true );
 
-		$doli_categories = Request_Util::get('categories/object/product/' . $product->data['external_id'] . '?');
-		$wp_categories   = $wpdb->get_results("SELECT * FROM ".$wpdb->term_relationships." WHERE object_id = 780", ARRAY_A);
-
-	
-		//// SOLUTION 1 ///// Si les catégories WPshop et Dolibarr ne sont pas les mêmes, les taxonomies Wordpress sont supprimées et remplacées par celles de Dolibarr
-
-		$wp_category_labels = array();
-		$doli_category_labels = array();
-
-		if ( ! empty ($doli_categories) ) { 
-			foreach ($doli_categories as $doli_category) {
-				$doli_category_labels[] = get_term_by('name', $doli_category->label, 'wps-product-cat' )->term_id;
-			}
-		}
-
-		if ( ! empty ( $wp_categories) ) {
-			foreach ($wp_categories as $wp_category){
-				$wp_category_labels[] = $wp_category['term_taxonomy_id'];
-			}
-		}
-
-		if ($wp_category_labels !== $doli_category_labels) {
-			$wpdb->delete('wp_term_relationships', array('object_id' => $product->data['id']));
-			if ( ! empty($doli_categories)) {
-				foreach ($doli_categories as $doli_category) {
-					$wpdb->insert('wp_term_relationships', array('object_id' => $product->data['id'] , 'term_taxonomy_id' => get_term_by('name', $doli_category->label, 'wps-product-cat' )->term_id, 'term_order' => 0));
-				}
-			}
-		}
-
-		
-		
-		//// SOLUTION 2 ///// Supprime toutes les taxonomies et les actualise sans condition à chaque rafraichissement
-
-	/*	$wpdb->delete('wp_term_relationships', array('object_id' => $product->data['id']));
-		if ( ! empty($doli_categories)) {
-			foreach ($doli_categories as $doli_category) {
-		
-				$wpdb->insert('wp_term_relationships', array('object_id' => $product->data['id'] , 'term_taxonomy_id' => get_term_by('name', $doli_category->label, 'wps-product-cat' )->term_id, 'term_order' => 0));
-			}
-		}
-*/
 		$defaults = array( 'taxonomy' => 'wps-product-cat' );
 		if ( ! isset( $box['args'] ) || ! is_array( $box['args'] ) ) {
 			$args = array();
@@ -266,17 +221,14 @@ class Product extends Post_Class {
 		$parsed_args = wp_parse_args( $args, $defaults );
 		$tax_name    = esc_attr( $parsed_args['taxonomy'] );
 		$taxonomy    = get_taxonomy( $parsed_args['taxonomy'] );
-		
+
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
 		View_Util::exec( 'wpshop', 'products', 'metabox/categories', array(
 			'parsed_args' => $parsed_args,
 			'tax_name'    => $tax_name,
 			'taxonomy'    => $taxonomy,
 			'post'        => $post
-		) ); 
-
-		//echo do_shortcode('[wps_categories]');
-
+		) );
 	}
 	/**
 	 * La vue de la metabox pour configurer le produit.
@@ -287,28 +239,24 @@ class Product extends Post_Class {
 	 * @param WP_Post $post Le produit.
 	 */
 	public function callback_add_meta_box( $post ) {
-		global $wpdb;
 		$product = $this->get( array( 'id' => $post->ID ), true );
-		
+
 		if ( empty( $product ) ) {
 			$product = $this->get( array( 'schema' => true ), true );
 		}
-		
+
 		if ( ! empty( $product->data['fk_product_parent'] ) ) {
 			$parent_post = get_post( Doli_Products::g()->get_wp_id_by_doli_id( $product->data['fk_product_parent'] ) );
 
 			$product->data['parent_post'] = $parent_post;
 		}
-	
+
 		$similar_products = array();
 
 		if ( ! empty( $product->data['similar_products_id'] ) ) {
 			$similar_products = Product::g()->get( array( 'post__in' => $product->data['similar_products_id'] ) );
 		}
-		//
-	
-	
-	
+
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
 		View_Util::exec( 'wpshop', 'products', 'metabox/main', array(
 			'id'               => ! empty( $product->data['id'] ) ? $product->data['id'] : $post->ID,
@@ -343,8 +291,6 @@ class Product extends Post_Class {
 		$wp_upload_dir = wp_upload_dir();
 
 		$doli_documents = Request_Util::get( 'documents?modulepart=product&id=' . $product->data['external_id'] );
-
-
 		$wp_documents   = Doli_Documents::g()->convert_to_wp_documents_format( $doli_documents );
 		if ( ! empty ( $wp_documents ) ) {
 			$attachments = get_children( array( 'post_parent' => $product->data['external_id'], 'post_type' => 'attachment' ) );

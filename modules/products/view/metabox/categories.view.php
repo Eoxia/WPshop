@@ -16,14 +16,9 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Documentation des variables utilisées dans la vue.
  *
- * @var Product $product          Les données d'un produit.
- * @var string  $sync_status      True si on affiche le statut de la synchronisation.
- * @var string  $doli_url         L'url de Dolibarr.
- * @var boolean $has_selected     True si le produit est selectionné.
- * @var array   $tva              Les types de TVA.
- * @var string  $selected         L'attribut HTML "selected".
- * @var array   $similar_products Le tableau  contenant toutes les données des produits similaires.
- * @var Product $similar_product  Les données d'un produit similaire.
+ * @var Product $post          Les données d'un produit.
+ * @var string  $tax_name      Le nom de la taxonomie.
+ * @var array   $taxonomy      Le tableau  contenant toutes les données de la taxonomie.
  */
 
 ?>

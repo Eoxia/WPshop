@@ -19,7 +19,6 @@ defined( 'ABSPATH' ) || exit;
  * @var array $product_taxonomies Le tableau contenant toutes les données des catégories de produits.
  * @var array $product_taxonomy   Les données de la catégorie d'un produit.
  */
-
 ?>
 
 <?php if ( ! empty( $product_taxonomies ) ) : ?>

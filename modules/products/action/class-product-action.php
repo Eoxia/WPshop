@@ -318,7 +318,6 @@ class Product_Action {
 		) );
 
 		ob_start();
-
 		include( Template_Util::get_template_part( 'products', 'wps-product-taxonomy-container' ) );
 		include( Template_Util::get_template_part( 'products', 'wps-product-grid-container' ) );
 		$view = ob_get_clean();

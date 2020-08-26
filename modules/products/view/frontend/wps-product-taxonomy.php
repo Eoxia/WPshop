@@ -18,18 +18,14 @@ defined( 'ABSPATH' ) || exit;
  *
  * @var array $product_taxonomy Les données de la catégorie d'un produit.
  */
-
 ?>
 
 <div class="wps-taxonomy">
 	<?php if ( ! empty( $product_taxonomy->name ) ) : ?>
 		<div class="wps-taxonomy-title"><?php echo esc_html( $product_taxonomy->name ); ?></div>
-
-	<?php  endif; ?>
+	<?php endif; ?>
 	<?php if ( ! empty( $product_taxonomy->description ) ) : ?>
 		<div class="wps-taxonomy-description"><?php echo $product_taxonomy->description; ?></div>
 	<?php endif; ?>
-	<a href="<?php echo esc_url('term.php?taxonomy=wps-product-cat&tag_ID=' . $product_taxonomy->term_id ); ?>" class="wps-taxonomy-link"><?php esc_html_e( 'Read more', 'wpshop' ); ?></a>
-	<input class="selectit" type="checkbox" name="tax_input[wps-product-cat][]">
-
+	<a href="<?php echo esc_url( get_term_link( $product_taxonomy ) ); ?>" class="wps-taxonomy-link"><?php esc_html_e( 'Read more', 'wpshop' ); ?></a>
 </div>
