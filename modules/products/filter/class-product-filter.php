@@ -145,10 +145,10 @@ class Product_Filter {
 			'show_in_nav_menus' => true,
 			'query_var'         => true,
 			'rewrite'           => array(
-				'slug' => __( 'category-product', 'wpshop' ),
+				'slug' => __( 'wps-product-cat', 'wpshop' ),
 			),
 		);
-
+	$args['register_meta_box_cb'] = array( Product::g(), 'callback_register_meta_box' );
 		return $args;
 	}
 

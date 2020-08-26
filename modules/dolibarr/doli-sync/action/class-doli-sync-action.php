@@ -170,12 +170,21 @@ class Doli_Sync_Action {
 	 */
 	public function sync_entry() {
 		check_ajax_referer( 'sync_entry' );
+		global $wpdb;
+		echo do_shortcode('[wps_categories]');
 
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
+		$wp_id   		 = ! empty( $_POST['wp_id'] ) ? (int) $_POST['wp_id'] : 0;
+		$entry_id		 = ! empty( $_POST['entry_id'] ) ? (int) $_POST['entry_id'] : 0;
+		$type    		 = ! empty( $_POST['type'] ) ? sanitize_text_field( $_POST['type'] ) : '';
+		$doli_categories = Request_Util::get('categories/object/product/' . $entry_id . '?');
 
-		$wp_id    = ! empty( $_POST['wp_id'] ) ? (int) $_POST['wp_id'] : 0;
-		$entry_id = ! empty( $_POST['entry_id'] ) ? (int) $_POST['entry_id'] : 0;
-		$type     = ! empty( $_POST['type'] ) ? sanitize_text_field( $_POST['type'] ) : '';
+		$wpdb->delete('wp_term_relationships', array('object_id' => $wp_id));
+		if ( ! empty($doli_categories)) {
+			foreach ($doli_categories as $doli_category) {
+				$wpdb->insert('wp_term_relationships', array('object_id' => $wp_id , 'term_taxonomy_id' => get_term_by('name', $doli_category->label, 'wps-product-cat' )->term_id, 'term_order' => 0));
+			}
+		}
 
 		$sync_status = Doli_Sync::g()->sync( $wp_id, $entry_id, $type );
 		$sync_info   = Doli_Sync::g()->get_sync_infos( $type );

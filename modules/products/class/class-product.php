@@ -200,8 +200,36 @@ class Product extends Post_Class {
 			'wps-product',
 			'side'
 		);
+		add_meta_box(
+			'wps-product-catdiv',
+			__( 'Product category', 'wpshop'),
+			array( $this, 'callback_add_meta_box_category' ),
+			'wps-product',
+			'side'
+		);
 	}
+	public function callback_add_meta_box_category( $post ) {
 
+		echo do_shortcode('[wps_categories]');
+
+		$defaults = array( 'taxonomy' => 'wps-product-cat' );
+		if ( ! isset( $box['args'] ) || ! is_array( $box['args'] ) ) {
+			$args = array();
+		} else {
+			$args = $box['args'];
+		}
+		$parsed_args = wp_parse_args( $args, $defaults );
+		$tax_name    = esc_attr( $parsed_args['taxonomy'] );
+		$taxonomy    = get_taxonomy( $parsed_args['taxonomy'] );
+
+		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
+		View_Util::exec( 'wpshop', 'products', 'metabox/categories', array(
+			'parsed_args' => $parsed_args,
+			'tax_name'    => $tax_name,
+			'taxonomy'    => $taxonomy,
+			'post'        => $post
+		) );
+	}
 	/**
 	 * La vue de la metabox pour configurer le produit.
 	 *
