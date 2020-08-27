@@ -170,7 +170,7 @@ class Doli_Sync_Action {
 	 */
 	public function sync_entry() {
 		check_ajax_referer( 'sync_entry' );
-
+    
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
 		
 		$wp_id   		 = ! empty( $_POST['wp_id'] ) ? (int) $_POST['wp_id'] : 0;

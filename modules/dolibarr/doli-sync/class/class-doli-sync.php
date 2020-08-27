@@ -300,8 +300,10 @@ class Doli_Sync extends Singleton_Util {
 				$wp_category_labels[] = $wp_category['term_taxonomy_id'];
 			}
 		}
+
 		// WP Object is not equal Dolibarr Object.
 		if ($response->sha !== $sha_256 || $wp_category_labels != $doli_category_labels ) {
+
 			return array(
 				'status' => true,
 				'status_code' => '0x3',
