@@ -39,6 +39,7 @@
         "modules/dolibarr/doli-statut/doli-statut.config.json",
         "modules/dolibarr/doli-proposals/doli-proposals.config.json",
         "modules/dolibarr/doli-order/doli-order.config.json",
+        "modules/dolibarr/doli-categories/doli-categories.config.json",
         "modules/dolibarr/doli-third-parties/doli-third-parties.config.json",
         "modules/dolibarr/doli-user/doli-user.config.json",
         "modules/dolibarr/doli-invoice/doli-invoice.config.json",

@@ -31,6 +31,7 @@ class Doli_Sync_Filter extends Singleton_Util {
 
 		add_filter( 'doli_build_sha_wps-product', array( $this, 'build_sha_product' ), 10, 2 );
 		add_filter( 'doli_build_sha_wps-third-party', array( $this, 'build_sha_third_party' ), 10, 2 );
+		add_filter( 'doli_build_sha_wps-product-cat', array( $this, 'build_sha_categories' ), 10, 2 );
 	}
 
 	/**
@@ -132,6 +133,30 @@ class Doli_Sync_Filter extends Singleton_Util {
 		$data_sha['address']  = $response->address;
 		$data_sha['phone']    = $response->phone;
 		$data_sha['email']    = $response->email;
+
+		$response->sha = hash( 'sha256', implode( ',', $data_sha ) );
+
+		return $response;
+	}
+
+	/**
+	 * La construction du SHA256 d'une synchronisation d'une catégorie.
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 *
+	 * @param  Third_Party $response Les données d'un tier.
+	 * @param  integer     $wp_id    L'id d'un tier WordPress.
+	 *
+	 * @return Third_Party           Les données d'un tier avec le SHA256.
+	 */
+	public function build_sha_categories( $response, $wp_id ) {
+		$data_sha = array();
+		
+		$data_sha['doli_id']  = (int) $response->id;
+		$data_sha['wp_id']    = $wp_id;
+		$data_sha['name']    = $response->label;
+		$data_sha['slug']  	  = $response->array_options->options__wps_slug;
 
 		$response->sha = hash( 'sha256', implode( ',', $data_sha ) );
 
