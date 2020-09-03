@@ -140,6 +140,79 @@ class Doli_Documents extends Attachment_Class {
 		}
 			return $wp_document;
 	}
+
+	public function get_attachments( $product, $mine_type ) {
+		global $wpdb;
+		$mine_type = $mine_type . "%";
+		$attachments = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->posts} WHERE post_parent = %d AND post_mime_type LIKE %s", $product->data['external_id'], $mine_type ) );
+		$attachments = json_decode( json_encode( $attachments ), true );
+
+		return $attachments;
+	}
+
+	public function create_attachments( $wp_documents, $product , $mine_type ) {
+		$wp_upload_dir = wp_upload_dir();
+		foreach ( $wp_documents as $key => $wp_document ) {
+			$filetype = wp_check_filetype( basename( $wp_document->data['fullpath'] ), null );
+			if ( strstr( $filetype['type'], $mine_type ) ) {
+				$uploadfile = $wp_upload_dir['path'] . '/' . $wp_document->data['name'];
+
+				$contents = file_get_contents( $wp_document->data['fullpath'] );
+				$savefile = fopen( $uploadfile, 'w' );
+				fwrite( $savefile, $contents );
+				fclose( $savefile );
+
+				$args          = array(
+					'post_name'      => $wp_document->data['name'],
+					'post_mime_type' => $filetype['type'],
+					'post_title'     => preg_replace( '/\.[^.]+$/', '', basename( $wp_document->data['fullpath'] ) ),
+					'meta_input'     => array(
+						'path'          => $wp_document->data['path'],
+						'fullpath'      => $wp_document->data['fullpath'],
+						'date'          => $wp_document->data['date'],
+						'size'          => $wp_document->data['size'],
+						'dolibarr_type' => $wp_document->data['dolibarr_type'],
+					),
+				);
+				$attachment_id = wp_insert_attachment( $args, $uploadfile, $product->data['external_id'] );
+				require_once ABSPATH . 'wp-admin/includes/image.php';
+				$attached_file = get_post_meta( $attachment_id, '_wp_attached_file', true );
+				$attach_data   = wp_generate_attachment_metadata( $attachment_id, $wp_upload_dir['baseurl'] . '/' . $attached_file );
+				wp_update_attachment_metadata( $attachment_id, $attach_data );
+			}
+		}
+	}
+
+	public function build_sha_documents( $id, $doli_documents ) {
+		$doli_documents_array = json_decode( json_encode( $doli_documents ), true );
+		$data_sha_array = array();
+		if ( ! empty( $doli_documents_array ) ) {
+			foreach ( $doli_documents_array as  $doli_documents_array_single ) {
+				$data_sha_array[] = implode ( ',', $doli_documents_array_single );
+			}
+		}
+		$data_sha = hash( 'sha256', implode ( ',', $data_sha_array ) );
+		update_post_meta( $id, 'sha256_documents', $data_sha );
+
+		return $data_sha;
+	}
+
+	public function add_metadata_attachements( $attachments ) {
+		$attachment = array();
+		if ( ! empty( $attachments ) ) {
+			foreach ( $attachments as $key => $attachment_object ) {
+				foreach ( $attachment_object as $id => $attachment_data ) {
+					$attachment[ $id ]           = $attachment_data;
+					$attachment['fullpath']      = get_post_meta( $attachment_object['ID'], 'fullpath', true );
+					$attachment['size']          = get_post_meta( $attachment_object['ID'], 'size', true );
+					$attachment['attached_file'] = get_post_meta( $attachment_object['ID'], '_wp_attached_file', true );
+				}
+				$attachments[$key] = $attachment;
+			}
+		}
+
+		return $attachments;
+	}
 }
 
 Doli_Documents::g();

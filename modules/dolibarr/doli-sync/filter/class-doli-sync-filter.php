@@ -104,6 +104,15 @@ class Doli_Sync_Filter extends Singleton_Util {
 			$data_sha['status'] = 'draft';
 		}
 
+		$doli_documents = Request_Util::get( 'documents?modulepart=product&id=' . $response->id );
+		$doli_documents_array = json_decode( json_encode( $doli_documents ), true );
+		$data_sha_array = array();
+		if ( ! empty( $doli_documents_array ) ) {
+			foreach ($doli_documents_array as $doli_documents_array_single) {
+				$data_sha_array[] = implode(',', $doli_documents_array_single);
+			}
+			$response->sha_documents = hash('sha256', implode(',', $data_sha_array));
+		}
 		$response->sha = hash( 'sha256', implode( ',', $data_sha ) );
 
 		return $response;
@@ -151,17 +160,7 @@ class Doli_Sync_Filter extends Singleton_Util {
 	 * @return Doli_Documents           Les données d'un document avec le SHA256.
 	 */
 	public function build_sha_document( $response, $wp_id ) {
-		$data_sha = array();
 
-		$data_sha['doli_id']       = $response->id;
-		$data_sha['wp_id']         = $wp_id;
-		$data_sha['path']          = $response->data['path'];
-		$data_sha['fullpath']      = $response->data['fullpath'];
-		$data_sha['date']          = $response->data['date'];
-		$data_sha['size']          = $response->data['size'];
-		$data_sha['dolibarr_type'] = $response->data['dolibarr_type'];
-
-		$response->sha = hash( 'sha256', implode( ',', $data_sha ) );
 
 		return $response;
 	}

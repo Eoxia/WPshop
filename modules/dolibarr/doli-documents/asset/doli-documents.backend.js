@@ -5,8 +5,8 @@ jQuery(function($){
 		metaBox = $('#wps_product_gallery.postbox'), // Your meta box id here
 		addImgLink = metaBox.find('.upload-custom-img'),
 		delImgLink = metaBox.find( '.delete-custom-img'),
-		imgContainer = metaBox.find( '.custom-img-container'),
-		imgIdInput = metaBox.find( '.custom-img-id' );
+		imgContainer = metaBox.find( '.wps-product-gallery-container' ),
+		imgIdInput = metaBox.find( '.wps-product-gallery-attachments-hidden-id' );
 
 	// ADD IMAGE LINK
 	addImgLink.on( 'click', function( event ){
@@ -92,3 +92,21 @@ jQuery(function($){
 	});
 
 });
+
+/**
+ * Gestion JS des assoications Dolibarr.
+ *
+ * @since   2.1.0
+ * @version 2.1.0
+ */
+window.eoxiaJS.wpshop.doliDocument = {};
+
+/**
+ * La méthode "init" est appelé automatiquement par la lib JS de Eo-Framework.
+ *
+ * @since   2.1.0
+ * @version 2.1.0
+ */
+window.eoxiaJS.wpshop.doliDocument.init = function() {
+
+};
