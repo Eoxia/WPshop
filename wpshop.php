@@ -3,7 +3,7 @@
  * Plugin Name: WPshop 2
  * Plugin URI:  https://wpshop.fr/
  * Description: Simple, fast, efficient it will transform your WordPress into an internet sales site
- * Version:     2.0.0
+ * Version:     2.1.0
  * Author:      Eoxia <dev@eoxia.com>
  * Author URI:  http://www.eoxia.com/
  * License:     GPLv3
@@ -34,3 +34,12 @@ require_once 'vendor/autoload.php';
 
 // Boot your plugin.
 Init_Util::g()->exec( PLUGIN_WPSHOP_PATH, basename( __FILE__, '.php' ) );
+
+add_filter('site_transient_update_plugins',
+	function ($value) {
+		if ( $value->checked[plugin_basename(__FILE__)] <= "1.6.4" ) {
+			unset( $value->response[plugin_basename(__FILE__)] );
+		}
+			return $value;
+	}
+);
