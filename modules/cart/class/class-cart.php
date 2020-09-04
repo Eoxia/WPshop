@@ -6,7 +6,7 @@
  * @author    Eoxia <dev@eoxia.com>
  * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
- * @version   2.0.0
+ * @version   2.1.0
  */
 
 namespace wpshop;
@@ -48,14 +48,14 @@ class Cart extends Singleton_Util {
 	 * Ajoute un produit dans le panier.
 	 *
 	 * @since   2.0.0
-	 * @version 2.0.0
+	 * @version 2.1.0
 	 *
 	 * @param  Product  $product Les données du produit.
 	 * @param  integer  $qty     La quantité à ajouter.
 	 *
 	 * @return boolean           True si tout s'est bien passé.
 	 */
-	public function add_to_cart( $product, $qty = 1 ) {
+	public function add_to_cart( $product, $qty = 1, $desc = '' ) {
 		if ( ! $this->can_add_product() ) {
 			return;
 		}
@@ -71,7 +71,8 @@ class Cart extends Singleton_Util {
 
 		if ( ! empty( Cart_Session::g()->cart_contents ) ) {
 			foreach ( Cart_Session::g()->cart_contents as $key => $line ) {
-				if ( $line['id'] === $product->data['id'] ) {
+				$data['content'] = $desc;
+				if ( $line['id'] === $product->data['id'] && Settings::g()->split_product() == false ) {
 					$data['qty'] = $line['qty'] + $qty;
 					$index       = $key;
 					break;
@@ -83,6 +84,7 @@ class Cart extends Singleton_Util {
 
 		if ( $can_add ) {
 			if ( -1 === $index ) {
+				$data['content'] = $desc;
 				Cart_Session::g()->add_product( $data );
 			} else {
 				Cart_Session::g()->update_product( $index, $data );

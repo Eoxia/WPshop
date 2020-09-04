@@ -1,0 +1,13 @@
+{
+  "name": "Doli Documennts",
+  "slug": "doli-documents",
+  "since": "2.0.0",
+  "version": "2.0.0",
+  "description": "Le module gérant les documents de Dolibarr",
+  "path": "modules/dolibarr/doli-documents/",
+  "dependencies": {
+    "class": {},
+    "action": {},
+    "model": {}
+  }
+}

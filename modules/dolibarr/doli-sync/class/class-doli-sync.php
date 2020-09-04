@@ -239,6 +239,7 @@ class Doli_Sync extends Singleton_Util {
 		} else {
 			$external_id = get_post_meta( $id, '_external_id', true );
 			$sha_256     = get_post_meta( $id, '_sync_sha_256', true );
+			$sha_documents = get_post_meta( $id, 'sha256_documents', true );
 		}
 		
 		$sync_info = $this->sync_infos[ $type ];
@@ -288,9 +289,8 @@ class Doli_Sync extends Singleton_Util {
 		}
 	
 		$response = apply_filters( 'doli_build_sha_' . $type, $response, $id );
-
 		// WP Object is not equal Dolibarr Object.
-		if ($response->sha !== $sha_256) {
+		if ( $response->sha !== $sha_256 || $response->sha_documents != $sha_documents ) {
 			return array(
 				'status' => true,
 				'status_code' => '0x3',

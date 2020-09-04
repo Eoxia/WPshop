@@ -84,8 +84,9 @@ class Cart_Action {
 	public function callback_add_to_cart() {
 		check_ajax_referer( 'add_to_cart' );
 
-		$id  = ! empty( $_POST['id'] ) ? (int) $_POST['id'] : 0;
-		$qty = ! empty( $_POST['qty'] ) ? (int) $_POST['qty'] : 1;
+		$id   = ! empty( $_POST['id'] ) ? (int) $_POST['id'] : 0;
+		$qty  = ! empty( $_POST['qty'] ) ? (int) $_POST['qty'] : 1;
+		$desc = ! empty( $_POST['desc'] ) ? sanitize_text_field( $_POST['desc'] ) : '';
 
 		if ( empty( $id ) ) {
 			wp_send_json_error();
@@ -93,7 +94,7 @@ class Cart_Action {
 
 		$product = Product::g()->get( array( 'id' => $id ), true );
 
-		$added = Cart::g()->add_to_cart( $product, $qty );
+		$added = Cart::g()->add_to_cart( $product, $qty, $desc );
 
 		ob_start();
 		include( Template_Util::get_template_part( 'cart', 'link-cart' ) );

@@ -2,7 +2,7 @@
 	"name": "WPshop",
 	"slug": "wpshop",
     "since": "2.0.0",
-	"version": "2.0.0",
+	"version": "2.1.0",
     "description": "L'application WPshop 2",
     "externals": [],
 	"modules": [
@@ -46,7 +46,8 @@
         "modules/dolibarr/doli-payment/doli-payment.config.json",
         "modules/dolibarr/doli-products/doli-products.config.json",
         "modules/dolibarr/doli-sync/doli-sync.config.json",
-        "modules/dolibarr/doli-associate/doli-associate.config.json"
+        "modules/dolibarr/doli-associate/doli-associate.config.json",
+        "modules/dolibarr/doli-documents/doli-documents.config.json"
 	],
     "use_global_sync": true
 }
