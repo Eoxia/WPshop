@@ -34,3 +34,12 @@ require_once 'vendor/autoload.php';
 
 // Boot your plugin.
 Init_Util::g()->exec( PLUGIN_WPSHOP_PATH, basename( __FILE__, '.php' ) );
+
+add_filter('site_transient_update_plugins',
+	function ($value) {
+		if ( $value->checked[plugin_basename(__FILE__)] <= "1.6.4" ) {
+			unset( $value->response[plugin_basename(__FILE__)] );
+		}
+			return $value;
+	}
+);
