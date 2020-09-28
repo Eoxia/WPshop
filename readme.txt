@@ -67,7 +67,7 @@ Il n'est pas possible de migrer les données vers la version WPShop 2.X.X.
 
 = Version 2.1.0 =
 
-= IMPROVMENT =
+= IMPROVEMENT =
 
 Synchronisation des catégories Dolibarr avec ceux de WordPress.
 Synchronisation des médias Dolibarr avec ceux de WordPress.
