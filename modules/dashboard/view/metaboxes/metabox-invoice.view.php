@@ -39,7 +39,11 @@ defined( 'ABSPATH' ) || exit;
 			foreach ( $invoices as $invoice ) : ?>
 				<div class="table-row">
 					<div class="table-cell"><a href="<?php echo esc_attr( $dolibarr_url . '/compta/facture/card.php?facid=' . $invoice->data['external_id'] ); ?>"><?php echo esc_html( $invoice->data['title'] ); ?></a></div>
+				<?php if ( ! empty( $invoice->data['third_party']->data['id'] ) ): ?>
 					<div class="table-cell break-word"><a href="<?php echo esc_attr( admin_url( 'admin.php?page=wps-third-party&id=' . $invoice->data['third_party']->data['id'] ) ); ?>"><?php echo esc_html( $invoice->data['third_party']->data['title'] ); ?></a></div>
+				<?php else : ?>
+					<div class="table-cell"><?php esc_html_e('unknown', 'wpshop' ); ?></div>
+				<?php endif; ?>
 					<div class="table-cell"><?php echo esc_html( number_format( $invoice->data['total_ttc'], 2, ',', '' ) ); ?>€</div>
 					<div class="table-cell"><?php echo esc_html( date( 'd/m/Y H:i', strtotime( $invoice->data['datec'] ) ) ); ?></div>
 				</div>
