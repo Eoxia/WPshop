@@ -6,7 +6,7 @@
  * @author    Eoxia <dev@eoxia.com>
  * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
- * @version   2.0.0
+ * @version   2.1.0
  */
 
 namespace wpshop;
@@ -238,7 +238,9 @@ class Doli_Invoice_Action {
 	 * Créer la facture si la commande est payé.
 	 *
 	 * @since   2.0.0
-	 * @version 2.0.0
+	 * @version 2.1.0
+	 *
+	 * @todo mettre la langue de l'user API pour la génération du doc
 	 *
 	 * @param array $data Data from PayPal.
 	 */
@@ -287,6 +289,7 @@ class Doli_Invoice_Action {
 		Request_Util::put( 'documents/builddoc', array(
 			'modulepart'   => 'invoice',
 			'original_file' => $doli_invoice->ref . '/' . $doli_invoice->ref . '.pdf',
+			'langcode' => 'fr_FR',
 		) );
 
 		$invoice_file = Request_Util::get( 'documents/download?modulepart=facture&original_file=' . $doli_invoice->ref . '/' . $doli_invoice->ref . '.pdf' );

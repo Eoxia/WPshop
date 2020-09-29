@@ -6,7 +6,7 @@
  * @author    Eoxia <dev@eoxia.com>
  * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
- * @version   2.0.0
+ * @version   2.1.0
  */
 
 namespace wpshop;
@@ -180,10 +180,10 @@ class Product extends Post_Class {
 	}
 
 	/**
-	 * Ajoute une metabox pour configurer le produit.
+	 * Ajoute des metabox pour configurer le produit.
 	 *
 	 * @since   2.0.0
-	 * @version 2.0.0
+	 * @version 2.1.0
 	 */
 	public function callback_register_meta_box() {
 		add_meta_box(
@@ -191,6 +191,22 @@ class Product extends Post_Class {
 			__( 'Product configuration', 'wpshop'),
 			array( $this, 'callback_add_meta_box' ),
 			'wps-product'
+		);
+
+		add_meta_box(
+			'wps_product_gallery',
+			__( 'Product Gallery', 'wpshop'),
+			array( $this, 'callback_add_meta_box_gallery' ),
+			'wps-product',
+			'side'
+		);
+
+		add_meta_box(
+			'wps_product_document',
+			__( 'Product Document', 'wpshop'),
+			array( $this, 'callback_add_meta_box_document' ),
+			'wps-product',
+			'side'
 		);
 	}
 
@@ -229,6 +245,147 @@ class Product extends Post_Class {
 			'similar_products' => $similar_products,
 			'sync_status'      => false,
 		) );
+	}
+
+	/**
+	 * La vue de la metabox pour configurer la galerie d'image du produit.
+	 *
+	 * @since   2.1.0
+	 * @version 2.1.0
+	 *
+	 * @param WP_Post $post Le produit.
+	 */
+	public function callback_add_meta_box_gallery( $post ) {
+		$product = $this->get( array( 'id' => $post->ID ), true );
+
+		if ( empty( $product ) ) {
+			$product = $this->get( array( 'schema' => true ), true );
+		}
+
+		if ( ! empty( $product->data['fk_product_parent'] ) ) {
+			$parent_post = get_post( Doli_Products::g()->get_wp_id_by_doli_id( $product->data['fk_product_parent'] ) );
+
+			$product->data['parent_post'] = $parent_post;
+		}
+
+		// Get Dolibarr documents.
+		$doli_documents = Request_Util::get( 'documents?modulepart=product&id=' . $product->data['external_id'] );
+		$wp_documents = Doli_Documents::g()->convert_to_wp_documents_format( $doli_documents );
+
+		$mine_type = 'image';
+		$wp_upload_dir = wp_upload_dir();
+
+		// create the sha256 for documents.
+		$sha256   = get_post_meta( $post->ID, 'sha256_documents', true );
+		$data_sha = Doli_Documents::g()->build_sha_documents( $post->ID, $doli_documents );
+
+		if ( $sha256 != $data_sha ) {
+
+			$attachments = Doli_Documents::g()->get_attachments( $product, $mine_type );
+
+			if ( ! empty( $attachments ) ) {
+				foreach ( $attachments as $attachment ) {
+					wp_delete_attachment( $attachment['ID'] );
+				}
+			}
+
+			Doli_Documents::g()->create_attachments( $wp_documents, $product , $mine_type );
+		}
+
+		$attachments = Doli_Documents::g()->get_attachments( $product, $mine_type );
+		$attachments = Doli_Documents::g()->add_metadata_attachements( $attachments );
+
+		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
+
+		$dolibarr_product_document = $dolibarr_option['dolibarr_product_document'];
+		$dolibarr_url              = $dolibarr_option['dolibarr_url'];
+
+		$upload_link = esc_url( get_upload_iframe_src( 'image', $product->data['id'] ) );
+
+		View_Util::exec(
+			'wpshop',
+			'products',
+			'metabox/gallery',
+			array(
+				'id'                        => ! empty( $product->data['id'] ) ? $product->data['id'] : $post->ID,
+				'wp_upload_dir'             => $wp_upload_dir,
+				'upload_link'               => $upload_link,
+				'attachments'               => ! empty( $attachments ) ? $attachments : '',
+				'product'                   => $product,
+				'dolibarr_url'              => $dolibarr_url,
+				'dolibarr_product_document' => $dolibarr_product_document,
+			)
+		);
+	}
+
+	/**
+	 * La vue de la metabox pour configurer les documents du produit.
+	 *
+	 * @since   2.1.0
+	 * @version 2.1.0
+	 *
+	 * @param WP_Post $post Le produit.
+	 */
+	public function callback_add_meta_box_document( $post ) {
+		$product = $this->get( array( 'id' => $post->ID ), true );
+
+		if ( empty( $product ) ) {
+			$product = $this->get( array( 'schema' => true ), true );
+		}
+
+		if ( ! empty( $product->data['fk_product_parent'] ) ) {
+			$parent_post = get_post( Doli_Products::g()->get_wp_id_by_doli_id( $product->data['fk_product_parent'] ) );
+
+			$product->data['parent_post'] = $parent_post;
+		}
+
+		// Get Dolibarr documents.
+		$doli_documents = Request_Util::get( 'documents?modulepart=product&id=' . $product->data['external_id'] );
+		$wp_documents   = Doli_Documents::g()->convert_to_wp_documents_format( $doli_documents );
+
+		$mine_type     = 'application';
+		$wp_upload_dir = wp_upload_dir();
+
+		// create the sha256 for documents.
+		$sha256   = get_post_meta( $post->ID, 'sha256_documents', true );
+		$data_sha = Doli_Documents::g()->build_sha_documents( $post->ID, $doli_documents );
+
+		if ( $sha256 == $data_sha ) {
+
+			$attachments = Doli_Documents::g()->get_attachments( $product, $mine_type );
+
+			if ( ! empty( $attachments ) ) {
+				foreach ( $attachments as $attachment ) {
+					wp_delete_attachment( $attachment['ID'] );
+				}
+			}
+
+			Doli_Documents::g()->create_attachments( $wp_documents, $product , $mine_type );
+		}
+
+		$attachments = Doli_Documents::g()->get_attachments( $product, $mine_type );
+		$attachments = Doli_Documents::g()->add_metadata_attachements( $attachments );
+
+		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
+
+		$dolibarr_url              = $dolibarr_option['dolibarr_url'];
+		$dolibarr_product_document = $dolibarr_option['dolibarr_product_document'];
+		$upload_link               = esc_url( get_upload_iframe_src( 'image', $product->data['id'] ) );
+
+		View_Util::exec(
+			'wpshop',
+			'products',
+			'metabox/document',
+			array(
+				'id'                        => ! empty( $product->data['id'] ) ? $product->data['id'] : $post->ID,
+				'wp_upload_dir'             => $wp_upload_dir,
+				'upload_link'               => $upload_link,
+				'attachments'               => ! empty( $attachments ) ? $attachments : '',
+				'product'                   => $product,
+				'dolibarr_url'              => $dolibarr_url,
+				'dolibarr_product_document' => $dolibarr_product_document,
+			)
+		);
 	}
 
 	/**

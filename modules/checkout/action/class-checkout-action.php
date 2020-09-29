@@ -6,7 +6,7 @@
  * @author    Eoxia <dev@eoxia.com>
  * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
- * @version   2.0.0
+ * @version   2.1.0
  */
 
 namespace wpshop;
@@ -408,7 +408,9 @@ class Checkout_Action {
 	 * Créer la proposition commerciale lors du tunnel de vente.
 	 *
 	 * @since   2.0.0
-	 * @version 2.0.0
+	 * @version 2.1.0
+	 *
+	 * @todo mettre la langue de l'user API pour la génération du doc
 	 *
 	 * @param Third_Party $third_party Les données du tier.
 	 * @param User        $contact     Les données du contact.
@@ -461,6 +463,7 @@ class Checkout_Action {
 		Request_Util::put( 'documents/builddoc', array(
 			'modulepart'   => 'propal',
 			'original_file' => $doli_proposal->ref . '/' . $doli_proposal->ref . '.pdf',
+			'langcode' => 'fr_FR',
 		) );
 
 		Cart_Session::g()->add_external_data( 'doli_proposal_id', $doli_proposal_id );
