@@ -148,7 +148,7 @@ class Product_Filter {
 				'slug' => __( 'wps-product-cat', 'wpshop' ),
 			),
 		);
-
+	$args['register_meta_box_cb'] = array( Product::g(), 'callback_register_meta_box' );
 		return $args;
 	}
 

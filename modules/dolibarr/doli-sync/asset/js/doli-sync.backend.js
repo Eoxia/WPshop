@@ -125,4 +125,5 @@ window.eoxiaJS.wpshop.doliSync.syncEntrySuccess = function( triggeredElement, re
 		// If it is sync action per entry.
 		jQuery( triggeredElement ).closest( '.table-row' ).replaceWith( response.data.item_view );
 	}
+	location.reload(); // reloading page
 };

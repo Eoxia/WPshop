@@ -163,6 +163,7 @@ class Doli_Sync extends Singleton_Util {
 	 * // @todo: Handle Error sync.
 	 */
 	public function sync( $wp_id, $entry_id, $type ) {
+		global $wpdb;
 		$wp_error  = new \WP_Error();
 		$wp_object = null;
 		$messages  = array();
@@ -186,7 +187,17 @@ class Doli_Sync extends Singleton_Util {
 				
 				$messages[] = sprintf( __( 'Erase data for the product <strong>%s</strong> with the <strong>dolibarr</strong> data', 'wpshop' ), $wp_product->data['title'] );
 
-				$wp_object = $wp_product;
+				echo do_shortcode('[wps_categories]');
+
+				$doli_categories = Request_Util::get('categories/object/product/' . $entry_id . '?');
+				$wpdb->delete('wp_term_relationships', array('object_id' => $wp_product->data['id']));
+				if ( ! empty($doli_categories)) {
+					foreach ($doli_categories as $doli_category) {
+						$wpdb->insert('wp_term_relationships', array('object_id' => $wp_product->data['id'] , 'term_taxonomy_id' => get_term_by('name', $doli_category->label, 'wps-product-cat' )->term_id, 'term_order' => 0));
+					}
+				}
+
+				$wp_object =$wp_product;
 				break;
 			case 'wps-proposal':
 				$doli_proposal = Request_Util::get( 'proposals/' . $entry_id );
@@ -287,10 +298,29 @@ class Doli_Sync extends Singleton_Util {
 				'status_message' => 'Dolibarr Object is not linked to this WP Object.',
 			);
 		}
-	
+    
+		$object_id = $response->array_options->options__wps_id;
+		$doli_categories = Request_Util::get('categories/object/product/' . $response->id . '?');
+		$wp_categories   = $wpdb->get_results("SELECT * FROM ".$wpdb->term_relationships." WHERE object_id = $object_id", ARRAY_A);
+
+		$wp_category_labels = array();
+		$doli_category_labels = array();
+
+		if ( ! empty ($doli_categories) ) {
+			foreach ($doli_categories as $doli_category) {
+				$doli_category_labels[] = get_term_by('name', $doli_category->label, 'wps-product-cat' )->term_id;
+			}
+		}
+
+		if ( ! empty ( $wp_categories) ) {
+			foreach ($wp_categories as $wp_category){
+				$wp_category_labels[] = $wp_category['term_taxonomy_id'];
+			}
+		}
+
 		$response = apply_filters( 'doli_build_sha_' . $type, $response, $id );
 		// WP Object is not equal Dolibarr Object.
-		if ( $response->sha !== $sha_256 || $response->sha_documents != $sha_documents ) {
+		if ( $response->sha !== $sha_256 || $response->sha_documents != $sha_documents || $wp_category_labels != $doli_category_labels ) {
 			return array(
 				'status' => true,
 				'status_code' => '0x3',

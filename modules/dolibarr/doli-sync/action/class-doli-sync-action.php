@@ -170,12 +170,12 @@ class Doli_Sync_Action {
 	 */
 	public function sync_entry() {
 		check_ajax_referer( 'sync_entry' );
-
+    
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
-
-		$wp_id    = ! empty( $_POST['wp_id'] ) ? (int) $_POST['wp_id'] : 0;
-		$entry_id = ! empty( $_POST['entry_id'] ) ? (int) $_POST['entry_id'] : 0;
-		$type     = ! empty( $_POST['type'] ) ? sanitize_text_field( $_POST['type'] ) : '';
+		
+		$wp_id   		 = ! empty( $_POST['wp_id'] ) ? (int) $_POST['wp_id'] : 0;
+		$entry_id		 = ! empty( $_POST['entry_id'] ) ? (int) $_POST['entry_id'] : 0;
+		$type    		 = ! empty( $_POST['type'] ) ? sanitize_text_field( $_POST['type'] ) : '';
 
 		$sync_status = Doli_Sync::g()->sync( $wp_id, $entry_id, $type );	
 		$sync_info   = Doli_Sync::g()->get_sync_infos( $type );
