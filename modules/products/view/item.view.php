@@ -38,6 +38,10 @@ defined( 'ABSPATH' ) || exit;
 			<li class="delete"><a href="<?php echo esc_attr( admin_url( 'post.php?post=' . $product->data['id'] . '&action=delete&_wpnonce='. wp_create_nonce('delete-post_' . $product->data['id'] ) ) ); ?>"><?php esc_html_e( 'Delete', 'wpshop' ); ?></a></li>
 		</ul>
 	</div>
+	<div class="table-cell table-100"><?php $related_categories = Doli_Category::g()->get_related_categories($product) ;
+		foreach	($related_categories as $related_category) :
+			echo $related_category . ', ';
+		endforeach; ?></div>
 	<div class="table-cell table-100"><?php echo esc_html( number_format( $product->data['price'], 2, ',', '' ) ); ?>€</div>
 	<div class="table-cell table-100"><?php echo esc_html( number_format( $product->data['tva_tx'], 2, ',', '' ) ); ?>%</div>
 	<div class="table-cell table-100"><strong><?php echo esc_html( number_format( $product->data['price_ttc'], 2, ',', '' ) ); ?>€</strong></div>
