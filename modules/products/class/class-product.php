@@ -200,15 +200,15 @@ class Product extends Post_Class {
 			'wps-product',
 			'side'
 		);
-    
+
 		add_meta_box(
 			'wps-product-catdiv',
 			__( 'Product category', 'wpshop'),
 			array( $this, 'callback_add_meta_box_category' ),
       	'wps-product',
-			  'side'
+		'side'
 		);
-  )
+
 		add_meta_box(
 			'wps_product_document',
 			__( 'Product Document', 'wpshop'),
@@ -299,6 +299,9 @@ class Product extends Post_Class {
 
 		// Get Dolibarr documents.
 		$doli_documents = Request_Util::get( 'documents?modulepart=product&id=' . $product->data['external_id'] );
+		if ( empty( $doli_documents ) ) {
+			$doli_documents = array();
+		}
 		$wp_documents = Doli_Documents::g()->convert_to_wp_documents_format( $doli_documents );
 
 		$mine_type = 'image';
@@ -306,7 +309,9 @@ class Product extends Post_Class {
 
 		// create the sha256 for documents.
 		$sha256   = get_post_meta( $post->ID, 'sha256_documents', true );
+
 		$data_sha = Doli_Documents::g()->build_sha_documents( $post->ID, $doli_documents );
+
 
 		if ( $sha256 != $data_sha ) {
 
