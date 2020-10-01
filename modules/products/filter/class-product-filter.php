@@ -124,7 +124,7 @@ class Product_Filter {
 	 */
 	public function callback_taxonomy( $args ) {
 		$labels = array(
-			'name'              => _x( 'Products category', 'taxonomy general name', 'wpshop' ),
+			'name'              => _x( 'Product category', 'taxonomy general name', 'wpshop' ),
 			'singular_name'     => _x( 'Product category', 'taxonomy singular name', 'wpshop' ),
 			'search_items'      => __( 'Search Products category', 'wpshop' ),
 			'all_items'         => __( 'All Products category', 'wpshop' ),
@@ -132,7 +132,7 @@ class Product_Filter {
 			'parent_item_colon' => __( 'Parent Product: category', 'wpshop' ),
 			'edit_item'         => __( 'Edit Product category', 'wpshop' ),
 			'update_item'       => __( 'Update Product category', 'wpshop' ),
-			'add_new_item'      => __( 'Add New Product category', 'wpshop' ),
+			'add_new_item'      => __( 'Add with Dolibarr', 'wpshop' ),
 			'new_item_name'     => __( 'New Product  categoryName', 'wpshop' ),
 			'menu_name'         => __( 'Product category', 'wpshop' ),
 		);

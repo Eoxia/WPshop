@@ -6,7 +6,7 @@
  * @author    Eoxia <dev@eoxia.com>
  * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
- * @version   2.0.0
+ * @version   2.1.0
  */
 
 namespace wpshop;
@@ -24,13 +24,14 @@ class Doli_Sync_Filter extends Singleton_Util {
 	 * Le constructeur.
 	 *
 	 * @since   2.0.0
-	 * @version 2.0.0
+	 * @version 2.1.0
 	 */
 	protected function construct() {
 		add_filter( 'wps_countries', array( $this, 'doli_countries' ) );
 
 		add_filter( 'doli_build_sha_wps-product', array( $this, 'build_sha_product' ), 10, 2 );
 		add_filter( 'doli_build_sha_wps-third-party', array( $this, 'build_sha_third_party' ), 10, 2 );
+		add_filter( 'doli_build_sha_wps-product-cat', array( $this, 'build_sha_categories' ), 10, 2 );
 	}
 
 	/**
@@ -78,7 +79,7 @@ class Doli_Sync_Filter extends Singleton_Util {
 	 * La construction du SHA256 d'une synchronisation d'un produit.
 	 *
 	 * @since   2.0.0
-	 * @version 2.0.0
+	 * @version 2.1.0
 	 *
 	 * @param  Product $response Les données d'un produit.
 	 * @param  integer $wp_id    L'id d'un produit WordPress.
@@ -103,6 +104,15 @@ class Doli_Sync_Filter extends Singleton_Util {
 			$data_sha['status'] = 'draft';
 		}
 
+		$doli_documents = Request_Util::get( 'documents?modulepart=product&id=' . $response->id );
+		$doli_documents_array = json_decode( json_encode( $doli_documents ), true );
+		$data_sha_array = array();
+		if ( ! empty( $doli_documents_array ) ) {
+			foreach ($doli_documents_array as $doli_documents_array_single) {
+				$data_sha_array[] = implode(',', $doli_documents_array_single);
+			}
+			$response->sha_documents = hash('sha256', implode(',', $data_sha_array));
+		}
 		$response->sha = hash( 'sha256', implode( ',', $data_sha ) );
 
 		return $response;
@@ -132,6 +142,30 @@ class Doli_Sync_Filter extends Singleton_Util {
 		$data_sha['address']  = $response->address;
 		$data_sha['phone']    = $response->phone;
 		$data_sha['email']    = $response->email;
+
+		$response->sha = hash( 'sha256', implode( ',', $data_sha ) );
+
+		return $response;
+	}
+
+	/**
+	 * La construction du SHA256 d'une synchronisation d'une catégorie.
+	 *
+	 * @since   2.1.0
+	 * @version 2.1.0
+	 *
+	 * @param  Doli_Category $response Les données d'une catégorie.
+	 * @param  integer       $wp_id    L'id d'un tier WordPress.
+	 *
+	 * @return Doli_Category           Les données d'un catégorie avec le SHA256.
+	 */
+	public function build_sha_categories( $response, $wp_id ) {
+		$data_sha = array();
+		
+		$data_sha['doli_id']  = (int) $response->id;
+		$data_sha['wp_id']    = $wp_id;
+		$data_sha['name']    = $response->label;
+		$data_sha['slug']  	  = $response->array_options->options__wps_slug;
 
 		$response->sha = hash( 'sha256', implode( ',', $data_sha ) );
 

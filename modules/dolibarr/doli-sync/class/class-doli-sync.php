@@ -80,6 +80,16 @@ class Doli_Sync extends Singleton_Util {
 				'doli_class'         => '\wpshop\\Doli_Proposals',
 				'doli_type'          => 'propal',
 			),
+			'wps-product-cat'     => array(
+				'title'              => __( 'Categories', 'wpshop' ),
+				'action'             => 'sync_categories',
+				'nonce'              => 'sync_categories',
+				'endpoint'           => 'categories',
+				'associate_endpoint' => 'Category',
+				'wp_class'           => '\wpshop\\Doli_Category',
+				'doli_class'         => '\wpshop\\Doli_Category',
+				'doli_type'          => 'category',
+			),
 		);
 	}
 
@@ -174,7 +184,7 @@ class Doli_Sync extends Singleton_Util {
 				$doli_product = Request_Util::get( 'products/' . $entry_id );
 				$wp_product   = Product::g()->get( array( 'id' => $wp_id ), true );
 				$wp_product   = Doli_Products::g()->doli_to_wp( $doli_product, $wp_product );
-
+				
 				$messages[] = sprintf( __( 'Erase data for the product <strong>%s</strong> with the <strong>dolibarr</strong> data', 'wpshop' ), $wp_product->data['title'] );
 
 				echo do_shortcode('[wps_categories]');
@@ -194,21 +204,20 @@ class Doli_Sync extends Singleton_Util {
 				$wp_proposal   = Proposals::g()->get( array( 'id' => $wp_id ), true );
 
 				Doli_Proposals::g()->doli_to_wp( $doli_proposal, $wp_proposal );
-
+			
 				$wp_object = $wp_proposal;
 				break;
-			/*case 'wps-documents':
-				$doli_documents = Request_Util::get( 'documents?modulepart=product&id=' . $entry_id );
-				$wp_document    = Doli_Documents::g()->get( array( 'id' => $wp_id ), true );
-
-				Doli_Proposals::g()->doli_to_wp( $doli_documents, $wp_proposal );
-
-				$wp_object = $wp_proposal;
-				break;*/
+			case 'wps-product-cat':
+				$doli_category = Request_Util::get( 'categories/' . $entry_id );
+				$wp_category   = Doli_Category::g()->get( array( 'id' => $wp_id ), true );
+				$wp_category   = Doli_Category::g()->doli_to_wp( $doli_category, $wp_category);
+			
+				$wp_object = $wp_category;
+				break;
 			default:
 				break;
 		}
-
+		
 		return array(
 			'messages'  => $messages,
 			'wp_error'  => $wp_error,
@@ -235,22 +244,29 @@ class Doli_Sync extends Singleton_Util {
 		if ( $type == 'wps-user' ) {
 			$external_id = get_user_meta( $id, '_external_id', true );
 			$sha_256     = get_user_meta( $id, '_sync_sha_256', true );
+		} elseif  ( $type == 'wps-product-cat' ) {
+			$external_id = get_term_meta( $id, '_external_id', true );
+			$sha_256     = get_term_meta( $id, '_sync_sha_256', true );
 		} else {
 			$external_id = get_post_meta( $id, '_external_id', true );
 			$sha_256     = get_post_meta( $id, '_sync_sha_256', true );
+			$sha_documents = get_post_meta( $id, 'sha256_documents', true );
 		}
-
+		
 		$sync_info = $this->sync_infos[ $type ];
-
+		
 		$response = Request_Util::get( $sync_info['endpoint'] . '/' . $external_id );
-
+		
 		// Dolibarr return false when object is not found.
 		if ( ! $response ) {
 			// @todo: Doublon
 			if ( $type == 'wps-user' ) {
 				delete_user_meta( $id, '_external_id' );
 				delete_user_meta( $id, '_sync_sha_256' );
-			} else {
+			} elseif ( $type == 'wps-product-cat' ) {
+				delete_term_meta( $id, '_external_id' );
+				delete_term_meta( $id, '_sync_sha_256' );
+			}  else {
 				delete_post_meta( $id, '_external_id' );
 				delete_post_meta( $id, '_sync_sha_256' );
 			}
@@ -261,13 +277,16 @@ class Doli_Sync extends Singleton_Util {
 				'status_message' => 'Dolibarr Object: #' . $external_id . ' not exist. Automatically delete external_id.',
 			);
 		}
-
+	
 		// Dolibarr Object is not linked to this WP Object.
 		if ( $response->array_options->options__wps_id != $id ) {
 			// @todo: Doublon
 			if ( $type == 'wps-user' ) {
 				delete_user_meta( $id, '_external_id' );
 				delete_user_meta( $id, '_sync_sha_256' );
+			} elseif ( $type == 'wps-product-cat' ) {
+				delete_term_meta( $id, '_external_id' );
+				delete_term_meta( $id, '_sync_sha_256' );
 			} else {
 				delete_post_meta( $id, '_external_id' );
 				delete_post_meta( $id, '_sync_sha_256' );
@@ -279,12 +298,10 @@ class Doli_Sync extends Singleton_Util {
 				'status_message' => 'Dolibarr Object is not linked to this WP Object.',
 			);
 		}
-
+    
 		$object_id = $response->array_options->options__wps_id;
 		$doli_categories = Request_Util::get('categories/object/product/' . $response->id . '?');
 		$wp_categories   = $wpdb->get_results("SELECT * FROM ".$wpdb->term_relationships." WHERE object_id = $object_id", ARRAY_A);
-
-		$response = apply_filters( 'doli_build_sha_' . $type, $response, $id );
 
 		$wp_category_labels = array();
 		$doli_category_labels = array();
@@ -301,9 +318,9 @@ class Doli_Sync extends Singleton_Util {
 			}
 		}
 
+		$response = apply_filters( 'doli_build_sha_' . $type, $response, $id );
 		// WP Object is not equal Dolibarr Object.
-		if ($response->sha !== $sha_256 || $wp_category_labels != $doli_category_labels ) {
-
+		if ( $response->sha !== $sha_256 || $response->sha_documents != $sha_documents || $wp_category_labels != $doli_category_labels ) {
 			return array(
 				'status' => true,
 				'status_code' => '0x3',
@@ -331,7 +348,7 @@ class Doli_Sync extends Singleton_Util {
 	 * @return string                   Le statut de la synchronisation.
 	 */
 	public function display_sync_status( $object, $type, $load_erp_status = true )
-	{
+	{	
 		$data_view = array(
 			'object' => $object,
 			'type' => $type,
@@ -340,24 +357,24 @@ class Doli_Sync extends Singleton_Util {
 			'message_tooltip' => __( 'Looking for sync status', 'wpshop' ),
 			'can_sync' => false,
 		);
-
+		
 		if ( ! $load_erp_status ) {
 			View_Util::exec('wpshop', 'doli-sync', 'sync-item', $data_view);
 			return;
 		}
 
 		if ( empty($object->data['external_id'] ) ) {
-			$data_view['status_color'] = 'red';
+			$data_view['status_color'] = 'none';
 			$data_view['message_tooltip'] = __('No associated to an ERP Entity', 'wpshop');
 
 			View_Util::exec('wpshop', 'doli-sync', 'sync-item', $data_view);
 			return;
 		}
-
+		
 		$response = Doli_Sync::g()->check_status($object->data['id'], $type);
-
+		
 		if ( ! $response || ! $response['status'] ) {
-			$data_view['status_color'] = 'red';
+			$data_view['status_color'] = 'none';
 		} else {
 			// @todo: Do Const for status_code.
 			switch ($response['status_code']) {
@@ -366,22 +383,22 @@ class Doli_Sync extends Singleton_Util {
 					$data_view['can_sync'] = true;
 					break;
 				case '0x1':
-					$data_view['status_color'] = 'red';
+					$data_view['status_color'] = 'none';
 					break;
 				case '0x2':
-					$data_view['status_color'] = 'red';
+					$data_view['status_color'] = 'none';
 					$object->data['external_id'] =  '';
 					break;
 				case '0x3':
-					$data_view['status_color'] = 'orange';
+					$data_view['status_color'] = 'red';
 					$data_view['can_sync'] = true;
 					break;
 			}
 		}
-
+		
 		$data_view['message_tooltip'] = isset ( $response['status_message'] ) ? $response['status_message'] : __( 'Error not defined', 'wpshop' );
 		View_Util::exec( 'wpshop', 'doli-sync', 'sync-item', $data_view );
-
+		
 		return $response;
 	}
 }

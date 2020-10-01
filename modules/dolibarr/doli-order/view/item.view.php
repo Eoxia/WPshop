@@ -41,14 +41,18 @@ defined( 'ABSPATH' ) || exit;
 		</ul>
 	</div>
 	<div class="table-cell table-200">
-		<div>
-			<a href="<?php echo esc_attr( admin_url( 'admin.php?page=wps-third-party&id=' . $order->data['tier']->data['id'] ) ); ?>">
-				<strong><?php echo esc_html( $order->data['tier']->data['title'] ); ?></strong>
-			</a>
-		</div>
-		<div><?php echo esc_html( $order->data['tier']->data['address'] ); ?></div>
-		<div><?php echo esc_html( $order->data['tier']->data['zip'] ) . ' ' . esc_html( $order->data['tier']->data['country'] ); ?></div>
-		<div><?php echo esc_html( $order->data['tier']->data['phone'] ); ?></div>
+		<?php if ( ! empty(  $order->data['tier'] ) ) : ?>
+			<div>
+				<a href="<?php echo esc_attr( admin_url( 'admin.php?page=wps-third-party&id=' . $order->data['tier']->data['id'] ) ); ?>">
+					<strong><?php echo esc_html( $order->data['tier']->data['title'] ); ?></strong>
+				</a>
+			</div>
+			<div><?php echo esc_html( $order->data['tier']->data['address'] ); ?></div>
+			<div><?php echo esc_html( $order->data['tier']->data['zip'] ) . ' ' . esc_html( $order->data['tier']->data['country'] ); ?></div>
+			<div><?php echo esc_html( $order->data['tier']->data['phone'] ); ?></div>
+		<?php else : ?>
+			<div><?php esc_html_e( 'unknown', 'wpshop' ); ?></div>
+		<?php endif; ?>
 	</div>
 	<div class="table-cell table-150"><?php echo Doli_Statut::g()->display_status( $order ); ?></div>
 	<div class="table-cell table-100"><?php echo esc_html( Payment::g()->get_payment_title( $order->data['payment_method'] ) ); ?></div>

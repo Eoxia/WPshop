@@ -48,9 +48,6 @@ class Product_Action {
 		if ( ! Settings::g()->dolibarr_is_active() ) {
 			add_submenu_page( 'wpshop', __( 'Add', 'wpshop' ), __( 'Add', 'wpshop' ), 'manage_options', 'post-new.php?post_type=wps-product' );
 		}
-		add_submenu_page( 'wpshop', __( 'Products Category', 'wpshop' ), __( 'Products Category', 'wpshop' ), 'manage_options', 'edit-tags.php?taxonomy=wps-product-cat&post_type=wps-product' );
-		add_action( 'load-' . $hook, array( $this, 'callback_add_screen_option' ) );
-		echo do_shortcode('[wps_categories]');
 	}
 
 	/**
@@ -90,7 +87,7 @@ class Product_Action {
 			$prev_url  .= '&s=' . $s;
 			$next_url  .= '&s=' . $s;
 		}
-
+		
 		View_Util::exec( 'wpshop', 'products', 'main', array(
 			'number_page'  => $number_page,
 			'current_page' => $current_page,

@@ -73,6 +73,7 @@ class Settings extends Singleton_Util {
 			//-Liens Produits
 			'dolibarr_create_product'   => 'product/card.php?leftmenu=product&action=create&type=0',
 			'dolibarr_products_lists'   => 'product/list.php?leftmenu=product&type=0',
+			'dolibarr_product_document' => 'product/document.php?id=',
 			/**-Liens Services
 			//@todo 'dolibarr_create_service'   => 'product/card.php?leftmenu=service&action=create&type=1',
 			//@todo 'dolibarr_services_lists'   => 'product/list.php?leftmenu=service&type=1',

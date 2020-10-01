@@ -1,0 +1,14 @@
+{
+	"name": "Doli categories",
+	"slug": "doli-categories",
+	"since": "2.1.0",
+    "version": "2.1.0",
+    "description": "Le module gérant les catégories de Dolibarr",
+	"path": "modules/dolibarr/doli-categories",
+	"dependencies": {
+      "filter": {},
+      "class": {},
+      "action": {},
+      "model": {}
+	}
+}

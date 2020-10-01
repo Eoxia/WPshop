@@ -117,7 +117,6 @@ window.eoxiaJS.wpshop.doliSync.syncEntrySuccess = function( triggeredElement, re
 	var modal = jQuery( '.wpeo-modal.modal-active' );
 
 	// If it is associate action.
-
 	if ( modal.length > 0 ) {
 		modal.addClass( 'modal-force-display' );
 		modal.find( '.modal-content' ).html( response.data.modal_view );

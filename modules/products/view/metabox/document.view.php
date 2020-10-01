@@ -1,6 +1,6 @@
 <?php
 /**
- * La vue affichant la metabox de la gallery d'images d'un produit.
+ * La vue affichant la metabox des documents d'un produit.
  *
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
@@ -26,13 +26,13 @@ defined( 'ABSPATH' ) || exit;
  */
 ?>
 
-<div class="wps-product-gallery-container" data-id="<?php echo esc_attr( $product->data['id'] ) ?>">
-	<ul class="wps-product-gallery-attachments">
+<div class="wps-product-document-container" data-id="<?php echo esc_attr( $product->data['id'] ) ?>">
+	<ul class="wps-product-document-attachments">
 		<?php if ( ! empty ( $attachments ) ) :
 			foreach ( $attachments as $attachment ) : ?>
-				<li class="wps-product-gallery-attachment" data-attachment-id="<?php echo esc_attr( $attachment['ID'] ) ?>" >
-					<img class="wps-product-gallery-attachment-thumbnail size-thumbnail" width="150" height="150" src="<?php echo esc_attr( $wp_upload_dir['baseurl'] . '/' . $attachment['attached_file'] ) ?>">
-				</li>
+				<a class="wps-product-document-attachment" data-attachment-id="<?php echo esc_attr( $attachment['ID'] ) ?>" href="<?php echo esc_attr( $wp_upload_dir['baseurl'] . '/' . $attachment['attached_file'] ) ?>" target="_blank">
+					<?php echo esc_attr( $attachment['post_name'] ); ?>
+				</a>
 			<?php endforeach ?>
 		<?php endif; ?>
 	</ul>
@@ -40,14 +40,14 @@ defined( 'ABSPATH' ) || exit;
 	<p class="hide-if-no-js">
 		<?php if ( Settings::g()->dolibarr_is_active() ) : ?>
 			<a class="wps-product-gallery-attachment-link" target="_blank" href="<?php echo esc_attr( $dolibarr_url . $dolibarr_product_document . $product->data['external_id'] ) ?>">
-				<?php esc_html_e( 'Modify the gallery on Dolibarr', 'wpshop' ) ?>
+				<?php esc_html_e( 'Modify documents on Dolibarr', 'wpshop' ) ?>
 			</a>
 		<?php else : ?>
 			<a class="wps-product-gallery-attachment-link" href="<?php echo $upload_link ?>">
-				<?php esc_html_e( 'Add an image to the gallery', 'wpshop' ) ?>
+				<?php esc_html_e( 'Add a file to the document', 'wpshop' ) ?>
 			</a>
 		<?php endif; ?>
 	</p>
 
-	<input class="wps-product-gallery-attachments-hidden-id" name="wps-product-gallery-attachments-hidden-id" type="hidden" value="" />
+	<input class="wps-product-document-attachments-hidden-id" name="wps-product-document-attachments-hidden-id" type="hidden" value="" />
 </div>

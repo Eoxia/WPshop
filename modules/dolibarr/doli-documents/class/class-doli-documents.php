@@ -11,7 +11,7 @@
 
 namespace wpshop;
 
-use eoxia\Post_Class;
+use eoxia\Attachment_Class;
 use stdClass;
 
 defined( 'ABSPATH' ) || exit;
@@ -19,7 +19,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Doli Documents Class.
  */
-class Doli_Documents extends Post_Class {
+class Doli_Documents extends Attachment_Class {
 
 	/**
 	 * Le nom du modèle.
@@ -70,66 +70,6 @@ class Doli_Documents extends Post_Class {
 	 * @var string
 	 */
 	protected $post_type_name = 'documents';
-
-	/**
-	 * Appel la vue "list" du module "doli-order".
-	 *
-	 * @since   2.0.0
-	 * @version 2.0.0
-	 */
-	public function display() {
-		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
-		$per_page        = get_user_meta( get_current_user_id(), Doli_Order::g()->option_per_page, true );
-
-		if ( empty( $per_page ) || 1 > $per_page ) {
-			$per_page = Doli_Order::g()->limit;
-		}
-
-		$current_page = isset( $_GET['current_page'] ) ? (int) $_GET['current_page'] : 1;
-
-		$s = ! empty( $_GET['s'] ) ? sanitize_text_field( $_GET['s'] ) : '';
-
-		$route = 'orders?sortfield=t.rowid&sortorder=DESC&limit=' . $per_page . '&page=' . ( $current_page - 1 );
-
-		if ( ! empty( $s ) ) {
-			// La route de dolibarr ne fonctionne pas avec des caractères en base10
-			$route .= '&sqlfilters=(t.ref%3Alike%3A\'%25' . $s . '%25\')';
-		}
-
-		$doli_orders = Request_Util::get( $route );
-		$orders      = $this->convert_to_wp_order_format( $doli_orders );
-
-		if ( ! empty( $orders ) ) {
-			foreach ( $orders as &$element ) {
-				$element->data['tier']  = Third_Party::g()->get( array( 'id' => $element->data['parent_id'] ), true );
-				$element->data['datec'] = \eoxia\Date_Util::g()->fill_date( $element->data['datec'] );
-			}
-		}
-
-		View_Util::exec( 'wpshop', 'doli-order', 'list', array(
-			'orders'   => $orders,
-			'doli_url' => $dolibarr_option['dolibarr_url'],
-		) );
-	}
-
-	/**
-	 * Appel la vue "item" d'une commande.
-	 *
-	 * @since   2.0.0
-	 * @version 2.0.0
-	 *
-	 * @param Doli_Order $order    Les données d'une commande.
-	 * @param string     $doli_url L'url de Dolibarr.
-	 */
-	public function display_item( $order, $doli_url = '' ) {
-		if ( empty( $order->data['tier'] ) ) {
-			$order->data['tier'] = Third_Party::g()->get( array( 'id' => $order->data['parent_id'] ), true );
-		}
-		View_Util::exec( 'wpshop', 'doli-order', 'item', array(
-			'order'    => $order,
-			'doli_url' => $doli_url,
-		) );
-	}
 
 	/**
 	 * Convertit un tableau Documents Object provenant de Dolibarr vers un format Documents Object WPshop afin de normisé pour l'affichage.
@@ -201,32 +141,77 @@ class Doli_Documents extends Post_Class {
 			return $wp_document;
 	}
 
-	/**
-	 * Fonction de recherche.
-	 *
-	 * @since   2.0.0
-	 * @version 2.0.0
-	 *
-	 * @param  string  $s            Le terme de la recherche.
-	 * @param  array   $default_args Les arguments par défaut.
-	 * @param  boolean $count        Si true compte le nombre d'élement, sinon renvoies l'ID des éléments trouvés.
-	 *
-	 * @return array|integer         Les ID des éléments trouvés ou le nombre d'éléments trouvés.
-	 */
-	public function search( $s = '', $default_args = array(), $count = false ) {
-		$route = 'orders?sortfield=t.rowid&sortorder=DESC';
+	public function get_attachments( $product, $mine_type ) {
+		global $wpdb;
+		$mine_type = $mine_type . "%";
+		$attachments = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->posts} WHERE post_parent = %d AND post_mime_type LIKE %s", $product->data['external_id'], $mine_type ) );
+		$attachments = json_decode( json_encode( $attachments ), true );
 
-		if ( ! empty( $s ) ) {
-			$route .= '&sqlfilters=(t.ref%3Alike%3A\'%25' . $s . '%25\')';
+		return $attachments;
+	}
+
+	public function create_attachments( $wp_documents, $product , $mine_type ) {
+		$wp_upload_dir = wp_upload_dir();
+		foreach ( $wp_documents as $key => $wp_document ) {
+			$filetype = wp_check_filetype( basename( $wp_document->data['fullpath'] ), null );
+			if ( strstr( $filetype['type'], $mine_type ) ) {
+				$uploadfile = $wp_upload_dir['path'] . '/' . $wp_document->data['name'];
+
+				$contents = file_get_contents( $wp_document->data['fullpath'] );
+				$savefile = fopen( $uploadfile, 'w' );
+				fwrite( $savefile, $contents );
+				fclose( $savefile );
+
+				$args          = array(
+					'post_name'      => $wp_document->data['name'],
+					'post_mime_type' => $filetype['type'],
+					'post_title'     => preg_replace( '/\.[^.]+$/', '', basename( $wp_document->data['fullpath'] ) ),
+					'meta_input'     => array(
+						'path'          => $wp_document->data['path'],
+						'fullpath'      => $wp_document->data['fullpath'],
+						'date'          => $wp_document->data['date'],
+						'size'          => $wp_document->data['size'],
+						'dolibarr_type' => $wp_document->data['dolibarr_type'],
+					),
+				);
+				$attachment_id = wp_insert_attachment( $args, $uploadfile, $product->data['external_id'] );
+				require_once ABSPATH . 'wp-admin/includes/image.php';
+				$attached_file = get_post_meta( $attachment_id, '_wp_attached_file', true );
+				$attach_data   = wp_generate_attachment_metadata( $attachment_id, $wp_upload_dir['baseurl'] . '/' . $attached_file );
+				wp_update_attachment_metadata( $attachment_id, $attach_data );
+			}
+		}
+	}
+
+	public function build_sha_documents( $id, $doli_documents ) {
+		$doli_documents_array = json_decode( json_encode( $doli_documents ), true );
+		$data_sha_array = array();
+		if ( ! empty( $doli_documents_array ) ) {
+			foreach ( $doli_documents_array as  $doli_documents_array_single ) {
+				$data_sha_array[] = implode ( ',', $doli_documents_array_single );
+			}
+		}
+		$data_sha = hash( 'sha256', implode ( ',', $data_sha_array ) );
+		update_post_meta( $id, 'sha256_documents', $data_sha );
+
+		return $data_sha;
+	}
+
+	public function add_metadata_attachements( $attachments ) {
+		$attachment = array();
+		if ( ! empty( $attachments ) ) {
+			foreach ( $attachments as $key => $attachment_object ) {
+				foreach ( $attachment_object as $id => $attachment_data ) {
+					$attachment[ $id ]           = $attachment_data;
+					$attachment['fullpath']      = get_post_meta( $attachment_object['ID'], 'fullpath', true );
+					$attachment['size']          = get_post_meta( $attachment_object['ID'], 'size', true );
+					$attachment['attached_file'] = get_post_meta( $attachment_object['ID'], '_wp_attached_file', true );
+				}
+				$attachments[$key] = $attachment;
+			}
 		}
 
-		$doli_orders = Request_Util::get( $route );
-
-		if ( $count && ! empty( $doli_orders ) ) {
-			return count( $doli_orders );
-		} else {
-			return 0;
-		}
+		return $attachments;
 	}
 }
 

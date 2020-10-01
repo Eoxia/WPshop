@@ -5,8 +5,8 @@ jQuery(function($){
 		metaBox = $('#wps_product_gallery.postbox'), // Your meta box id here
 		addImgLink = metaBox.find('.upload-custom-img'),
 		delImgLink = metaBox.find( '.delete-custom-img'),
-		imgContainer = metaBox.find( '.custom-img-container'),
-		imgIdInput = metaBox.find( '.custom-img-id' );
+		imgContainer = metaBox.find( '.wps-product-gallery-container' ),
+		imgIdInput = metaBox.find( '.wps-product-gallery-attachments-hidden-id' );
 
 	// ADD IMAGE LINK
 	addImgLink.on( 'click', function( event ){
@@ -33,13 +33,33 @@ jQuery(function($){
 		frame.on( 'select', function() {
 
 			// Get media attachment details from the frame state
-			var attachment = frame.state().get('selection').first().toJSON();
+			var attachments = frame.state().get('selection').map( function ( attachment ) {
+				attachment.toJSON();
+				return attachment;
+				//imgContainer.append( '<img src="'+attachment.url+'" alt="" style="max-width:100%;"/>' );
+				//imgIdInput.val( attachment.id );
+			});
+
+			var i;
+
+			for (i = 0; i < attachments.length; ++i) {
+
+				//sample function 1: add image preview
+				imgContainer.append(
+					'<div class="myplugin-image-preview"><img src="' +
+					attachments[i].attributes.url + '" alt="" style="max-width:100%;"></div>'
+				);
+
+				//sample function 2: add hidden input for each image
+				imgIdInput.after(
+					'<input type="hidden" name="myplugin_attachment_id_array[]" value="' +
+					attachments[i].id + '" id="myplugin-image-input' + attachments[i].id + '">'
+				);
+			}
 
 			// Send the attachment URL to our custom image input field.
-			imgContainer.append( '<img src="'+attachment.url+'" alt="" style="max-width:100%;"/>' );
 
 			// Send the attachment id to our hidden input
-			imgIdInput.val( attachment.id );
 
 			// Hide the add image link
 			//addImgLink.addClass( 'hidden' );
@@ -72,3 +92,21 @@ jQuery(function($){
 	});
 
 });
+
+/**
+ * Gestion JS des assoications Dolibarr.
+ *
+ * @since   2.1.0
+ * @version 2.1.0
+ */
+window.eoxiaJS.wpshop.doliDocument = {};
+
+/**
+ * La méthode "init" est appelé automatiquement par la lib JS de Eo-Framework.
+ *
+ * @since   2.1.0
+ * @version 2.1.0
+ */
+window.eoxiaJS.wpshop.doliDocument.init = function() {
+
+};
