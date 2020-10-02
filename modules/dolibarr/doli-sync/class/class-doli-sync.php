@@ -332,12 +332,31 @@ class Doli_Sync extends Singleton_Util {
 //		print_r($sha_documents);
 //		echo '</pre>';
 //		exit;
-		if ( $response->sha !== $sha_256 || $response->sha_documents != $sha_documents || $wp_category_labels != $doli_category_labels ) {
-			return array(
-				'status' => true,
-				'status_code' => '0x3',
-				'status_message' => __('WP Object is not equal Dolibarr Object', 'wpshop'),
-			);
+
+		if  ( $type == 'wps-product-cat' ) {
+			if ( $response->sha !== $sha_256 ) {
+				return array(
+					'status' => true,
+					'status_code' => '0x3',
+					'status_message' => __('WP Object is not equal Dolibarr Object', 'wpshop'),
+					'response->sha' => $response->sha,
+					'sha_256' => $sha_256,
+				);
+			}
+		} else {
+			if ( $response->sha !== $sha_256 || $response->sha_documents != $sha_documents || $wp_category_labels != $doli_category_labels ) {
+				return array(
+					'status' => true,
+					'status_code' => '0x3',
+					'status_message' => __('WP Object is not equal Dolibarr Object', 'wpshop'),
+					'response->sha' => $response->sha,
+					'sha_256' => $sha_256,
+					'response->sha_documents' => $response->sha_documents,
+					'sha_documents' => $sha_documents,
+					'wp_category_labels' => $wp_category_labels,
+					'doli_category_labels' => $doli_category_labels,
+				);
+			}
 		}
 
 		return array(
