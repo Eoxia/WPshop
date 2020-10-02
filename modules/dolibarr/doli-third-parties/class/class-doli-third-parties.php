@@ -164,7 +164,11 @@ class Doli_Third_Parties extends Singleton_Util {
 			'meta_value' => (int) $doli_id,
 		), true ); // WPCS: slow query ok.
 
-		return $third_party->data['id'];
+		if ( ! empty( $third_party ) ) {
+			return $third_party->data['id'];
+		}else {
+			return;
+		}
 	}
 }
 

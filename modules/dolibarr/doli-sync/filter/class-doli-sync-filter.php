@@ -112,7 +112,10 @@ class Doli_Sync_Filter extends Singleton_Util {
 				$data_sha_array[] = implode(',', $doli_documents_array_single);
 			}
 			$response->sha_documents = hash('sha256', implode(',', $data_sha_array));
+		} else {
+			$response->sha_documents = hash('sha256', implode(',', array()));
 		}
+		update_post_meta( $wp_id, 'sha256_documents', $response->sha_documents );
 		$response->sha = hash( 'sha256', implode( ',', $data_sha ) );
 
 		return $response;
@@ -161,7 +164,7 @@ class Doli_Sync_Filter extends Singleton_Util {
 	 */
 	public function build_sha_categories( $response, $wp_id ) {
 		$data_sha = array();
-		
+
 		$data_sha['doli_id']  = (int) $response->id;
 		$data_sha['wp_id']    = $wp_id;
 		$data_sha['name']    = $response->label;

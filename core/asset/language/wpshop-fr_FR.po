@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wpshop\n"
 "POT-Creation-Date: 2020-09-03 17:12+0200\n"
-"PO-Revision-Date: 2020-09-03 17:21+0200\n"
+"PO-Revision-Date: 2020-10-02 16:26+0200\n"
 "Last-Translator: \n"
 "Language-Team: Eoxia\n"
 "Language: fr_FR\n"
@@ -948,7 +948,7 @@ msgstr "Déjà payé"
 #: modules/dolibarr/doli-statut/class/class-doli-statut.php:82
 #: modules/dolibarr/doli-statut/class/class-doli-statut.php:100
 msgid "Billed"
-msgstr "Payé"
+msgstr "Facturé"
 
 #: modules/dolibarr/doli-order/view/metabox-order-payment.view.php:68
 msgid "Remaining unpaid"

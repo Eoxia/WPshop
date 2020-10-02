@@ -202,6 +202,14 @@ class Product extends Post_Class {
 		);
 
 		add_meta_box(
+			'wps-product-catdiv',
+			__( 'Product category', 'wpshop'),
+			array( $this, 'callback_add_meta_box_category' ),
+      	'wps-product',
+		'side'
+		);
+
+		add_meta_box(
 			'wps_product_document',
 			__( 'Product Document', 'wpshop'),
 			array( $this, 'callback_add_meta_box_document' ),
@@ -209,7 +217,28 @@ class Product extends Post_Class {
 			'side'
 		);
 	}
+	public function callback_add_meta_box_category( $post ) {
 
+		echo do_shortcode('[wps_categories]');
+
+		$defaults = array( 'taxonomy' => 'wps-product-cat' );
+		if ( ! isset( $box['args'] ) || ! is_array( $box['args'] ) ) {
+			$args = array();
+		} else {
+			$args = $box['args'];
+		}
+		$parsed_args = wp_parse_args( $args, $defaults );
+		$tax_name    = esc_attr( $parsed_args['taxonomy'] );
+		$taxonomy    = get_taxonomy( $parsed_args['taxonomy'] );
+
+		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
+		View_Util::exec( 'wpshop', 'products', 'metabox/categories', array(
+			'parsed_args' => $parsed_args,
+			'tax_name'    => $tax_name,
+			'taxonomy'    => $taxonomy,
+			'post'        => $post
+		) );
+	}
 	/**
 	 * La vue de la metabox pour configurer le produit.
 	 *
@@ -270,6 +299,9 @@ class Product extends Post_Class {
 
 		// Get Dolibarr documents.
 		$doli_documents = Request_Util::get( 'documents?modulepart=product&id=' . $product->data['external_id'] );
+		if ( empty( $doli_documents ) ) {
+			$doli_documents = array();
+		}
 		$wp_documents = Doli_Documents::g()->convert_to_wp_documents_format( $doli_documents );
 
 		$mine_type = 'image';
@@ -277,7 +309,9 @@ class Product extends Post_Class {
 
 		// create the sha256 for documents.
 		$sha256   = get_post_meta( $post->ID, 'sha256_documents', true );
+
 		$data_sha = Doli_Documents::g()->build_sha_documents( $post->ID, $doli_documents );
+
 
 		if ( $sha256 != $data_sha ) {
 

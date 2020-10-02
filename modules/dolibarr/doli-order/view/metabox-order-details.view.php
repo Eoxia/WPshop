@@ -30,8 +30,13 @@ defined( 'ABSPATH' ) || exit;
 			<h4 class="metabox-list-title"><i class="fas fa-building"></i> <?php esc_html_e( 'Informations', 'wpshop' ); ?></h4>
 			<ul class="metabox-list">
 				<li><span><?php esc_html_e( 'Date', 'wpshop' ); ?></span> <?php echo esc_html( $order->data['datec']['date_time'] ); ?></li>
-				<li><span><?php esc_html_e( 'Customer', 'wpshop' ); ?></span> <a href="<?php echo admin_url( 'admin.php?page=wps-third-party&id=' . $third_party->data['id'] ); ?>"><?php echo esc_html( $third_party->data['title'] ); ?></a></li>
-				<li><span><?php esc_html_e( 'Phone', 'wpshop' ); ?></span> <?php echo esc_html( $third_party->data['phone'] ); ?></li>
+				<?php if ( ! empty( $third_party->data['id'] ) ): ?>
+					<li><span><?php esc_html_e( 'Customer', 'wpshop' ); ?></span> <a href="<?php echo admin_url( 'admin.php?page=wps-third-party&id=' . $third_party->data['id'] ); ?>"><?php echo esc_html( $third_party->data['title'] ); ?></a></li>
+					<li><span><?php esc_html_e( 'Phone', 'wpshop' ); ?></span> <?php echo esc_html( $third_party->data['phone'] ); ?></li>
+				<?php else : ?>
+					<li><span><?php esc_html_e('Customer', 'wpshop' ); ?></span> <?php esc_html_e('unknown', 'wpshop' ); ?></li>
+					<li><span><?php esc_html_e('Phone', 'wpshop' ); ?></span> <?php esc_html_e('unknown', 'wpshop' ); ?></li>
+				<?php endif; ?>
 				<li><span><?php esc_html_e( 'Order status', 'wpshop' ); ?></span> <?php echo Doli_Statut::g()->display_status( $order ); ?></li>
 				<li><span><?php esc_html_e( 'Payment method', 'wpshop' ); ?></span> <?php echo esc_html( Payment::g()->get_payment_title( $order->data['payment_method'] ) ); ?></li>
 			</ul>

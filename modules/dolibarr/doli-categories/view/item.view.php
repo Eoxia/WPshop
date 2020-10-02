@@ -29,7 +29,7 @@ defined( 'ABSPATH' ) || exit;
 				<li><i class="fas fa-hashtag"></i>Doli : <?php echo esc_html( $category->data['external_id'] ); ?></li>
 			<?php endif; ?>
 			<li><i class="fas fa-calendar-alt"></i> <?php echo esc_html( $category->data['datec']['rendered']['date_time'] ); ?></li>
-		</ul>	
+		</ul>
 		<ul class="reference-title ">
 			<?php if ( ! empty( $category->data['name'] ) ) : ?>
 				<?php echo esc_html( $category->data['name'] ); ?>
@@ -41,6 +41,7 @@ defined( 'ABSPATH' ) || exit;
 			<?php if ( ! empty( $category->data['external_id'] ) ) : ?>
 				<li><a href="<?php echo esc_attr( $doli_url ); ?>/categories/viewcat.php?id=<?php echo $category->data['external_id']; ?>&type=product" target="_blank"><?php esc_html_e( 'See in Dolibarr', 'wpshop' ); ?></a></li>
 			<?php endif; ?>
+			<li><a href="<?php echo esc_attr( home_url() . '/' . $category->data['type'] . '/' . $category->data['slug']  ); ?>" target="_blank"><?php esc_html_e( 'See', 'wpshop' ); ?></a></li>
 		</ul>
 	</div>
 	<div class="table-cell table-300">
