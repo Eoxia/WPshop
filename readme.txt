@@ -1,11 +1,11 @@
-﻿﻿=== WPShop 2 - e-commerce ===
+﻿WPshop 2 - E-Commerce
 Contributors: Eoxia
 Tags: boutique, catalog, catalogue, commerce, e-commerce, ecommerce, m-commerce, mcommerce, produits,  shop, shopping cart, wp shop, wordpress ecommerce, wordpress shop, WPShop, wp-shop, french payment gateway, 
 Donate link: https://www.wpshop.fr/
 Requires at least: 4.4
 Tested up to: 5.5.1
 Requires PHP: 7.0
-Stable tag: 2.1.0
+Stable tag: 2.2.0
 License: GPLv3 or later
 License URI: https://spdx.org/licenses/GPL-3.0-or-later.html
 
@@ -46,7 +46,7 @@ L'installation du plugin peut se faire de 2 façons :
 Commandez du temps d'[assistance pour votre site WordPress](https://shop.eoxia.com/ecommerce/assistance-1-heure-wordpress/ "assistance wordpress et wpshop"), du dépannage ou de la formation.
 
 == Frequently Asked Questions ==
-= Peux t'on passer de WPShop 1.X.X à WPShop 2.X.X =
+= Peux t'on passer de WPshop 1.X.X à WPshop 2.X.X =
 
 Il n'est pas possible de migrer les données vers la version WPShop 2.X.X.
 
@@ -64,6 +64,12 @@ Il n'est pas possible de migrer les données vers la version WPShop 2.X.X.
 9. Check-Out
 
 == Changelog ==
+
+= Version 2.2.0 =
+
+* Fix - Synchronisation des catégories.
+* Fix - Page des catégories.
+* Fix - Synchronisation des produits avec les médias et les catégories.
 
 = Version 2.1.0 =
 
