@@ -693,8 +693,7 @@
 }
 
 .wpeo-wrap .wpeo-table.table-flex .reference-id li {
-  display: inline-block;
-  margin: 0 0.6em 0 0;
+  margin-right: 0.6em;
   color: rgba(0, 0, 0, 0.4);
 }
 
@@ -886,7 +885,46 @@
   margin-right: 1em;
 }
 
-.wpeo-wrap .wps-sync .button-synchro {
+.wpeo-wrap .wps-sync .wps-sync-container {
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+          flex-direction: row;
+  flex-wrap: nowrap;
+  padding: 0.5em;
+}
+
+.wpeo-wrap .wps-sync .reference-id li {
+  display: block;
+  margin-bottom: 0.4em;
+}
+
+.wpeo-wrap .wps-sync .reference-id li::after {
+  display: block;
+  content: '';
+  clear: both;
+}
+
+.wpeo-wrap .wps-sync .reference-id li:last-child {
+  margin-bottom: 0;
+}
+
+.wpeo-wrap .wps-sync .reference-id img {
+  width: 20px;
+  height: auto;
+  border-radius: 50%;
+  float: left;
+  margin-right: 0.4em;
+}
+
+.wpeo-wrap .wps-sync .sync-action {
+  margin: auto 0 auto auto;
+}
+
+.wpeo-wrap .wps-sync .sync-action .button-synchro {
   float: left;
   width: 25px;
   height: 25px;
@@ -899,22 +937,22 @@
   transition: all 0.2s ease-out;
 }
 
-.wpeo-wrap .wps-sync .button-synchro i {
+.wpeo-wrap .wps-sync .sync-action .button-synchro i {
   -webkit-transition: all 0.2s ease-out;
   transition: all 0.2s ease-out;
 }
 
-.wpeo-wrap .wps-sync .button-synchro:hover {
+.wpeo-wrap .wps-sync .sync-action .button-synchro:hover {
   cursor: pointer;
   background: rgba(0, 0, 0, 0.2);
 }
 
-.wpeo-wrap .wps-sync .button-synchro:hover i {
+.wpeo-wrap .wps-sync .sync-action .button-synchro:hover i {
   -webkit-transform: rotate(180deg);
           transform: rotate(180deg);
 }
 
-.wpeo-wrap .wps-sync .statut {
+.wpeo-wrap .wps-sync .sync-action .statut {
   float: left;
   width: 25px;
   height: 25px;
@@ -923,19 +961,19 @@
   background: rgba(0, 0, 0, 0.1);
 }
 
-.wpeo-wrap .wps-sync .statut.statut-grey {
+.wpeo-wrap .wps-sync .sync-action .statut.statut-grey {
   background: #ececec;
 }
 
-.wpeo-wrap .wps-sync .statut.statut-green {
+.wpeo-wrap .wps-sync .sync-action .statut.statut-green {
   background: #47e58e;
 }
 
-.wpeo-wrap .wps-sync .statut.statut-orange {
+.wpeo-wrap .wps-sync .sync-action .statut.statut-orange {
   background: #e9ad4f;
 }
 
-.wpeo-wrap .wps-sync .statut.statut-red {
+.wpeo-wrap .wps-sync .sync-action .statut.statut-red {
   background: #e05353;
 }
 

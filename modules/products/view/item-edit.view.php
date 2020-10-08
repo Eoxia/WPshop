@@ -66,7 +66,7 @@ defined( 'ABSPATH' ) || exit;
 			esc_html_e( 'No product parent', 'wpshop' );
 		endif; ?>
 	</div>
-	<div class="table-cell">
+	<div class="table-cell table-100">
 		<div class="form-element stock-field">
 			<span class="form-label"><?php esc_html_e( 'Manage Stock', 'wpshop' ); ?></span>
 			<input type="hidden" name="product_data[manage_stock]" class="manage_stock" value="<?php echo (int) 1 === (int) $product->data['manage_stock'] ? 'true' : 'false'; ?>" />
