@@ -48,67 +48,73 @@ endif;
 	<input type="hidden" name="action" value="update_account_details" />
 	<?php wp_nonce_field( 'update_account_details' ); ?>
 
-	<div class="form-element">
-		<span class="form-label"><?php echo esc_html_e( 'Email', 'wpshop' ); ?></span>
-		<label class="form-field-container">
-			<input type="text" class="form-field" name="email" value="<?php echo esc_attr( $contact->data['email'] ); ?>" readonly/>
-		</label>
-	</div>
-
-	<div class="form-element">
-		<span class="form-label"><?php echo esc_html_e( 'Phone', 'wpshop' ); ?></span>
-		<label class="form-field-container">
-			<input type="text" class="form-field" name="email" value="<?php echo esc_attr( $contact->data['phone'] ); ?>" readonly/>
-		</label>
-	</div>
-
-	<div class="form-element">
+	<div class="form-element form-element-disable">
 		<span class="form-label"><?php echo esc_html_e( 'Login', 'wpshop' ); ?></span>
 		<label class="form-field-container">
 			<input type="text" class="form-field" name="email" value="<?php echo esc_attr( $contact->data['login'] ); ?>" readonly/>
 		</label>
 	</div>
 
-	<div class="form-element">
-		<span class="form-label"><?php echo esc_html_e( 'Firstname', 'wpshop' ); ?></span>
-		<label class="form-field-container">
-			<input type="text" class="form-field" name="email" value="<?php echo esc_attr( $contact->data['firstname'] ); ?>" readonly/>
-		</label>
+	<div class="gridlayout grid-2">
+		<div class="form-element form-element-disable">
+			<span class="form-label"><?php echo esc_html_e( 'Firstname', 'wpshop' ); ?></span>
+			<label class="form-field-container">
+				<input type="text" class="form-field" name="email" value="<?php echo esc_attr( $contact->data['firstname'] ); ?>" readonly/>
+			</label>
+		</div>
+
+		<div class="form-element form-element-disable">
+			<span class="form-label"><?php echo esc_html_e( 'Lastname', 'wpshop' ); ?></span>
+			<label class="form-field-container">
+				<input type="text" class="form-field" name="email" value="<?php echo esc_attr( $contact->data['lastname'] ); ?>" readonly/>
+			</label>
+		</div>
 	</div>
 
-	<div class="form-element">
-		<span class="form-label"><?php echo esc_html_e( 'Lastname', 'wpshop' ); ?></span>
-		<label class="form-field-container">
-			<input type="text" class="form-field" name="email" value="<?php echo esc_attr( $contact->data['lastname'] ); ?>" readonly/>
-		</label>
+	<div class="gridlayout grid-2">
+		<div class="form-element form-element-disable">
+			<span class="form-label"><?php echo esc_html_e( 'Email', 'wpshop' ); ?></span>
+			<label class="form-field-container">
+				<input type="text" class="form-field" name="email" value="<?php echo esc_attr( $contact->data['email'] ); ?>" readonly/>
+			</label>
+		</div>
+
+		<div class="form-element form-element-disable">
+			<span class="form-label"><?php echo esc_html_e( 'Phone', 'wpshop' ); ?></span>
+			<label class="form-field-container">
+				<input type="text" class="form-field" name="email" value="<?php echo esc_attr( $contact->data['phone'] ); ?>" readonly/>
+			</label>
+		</div>
 	</div>
 
-	<div class="form-element">
+	<div class="form-element form-element-disable">
 		<span class="form-label"><?php echo esc_html_e( 'Address', 'wpshop' ); ?></span>
 		<label class="form-field-container">
 			<input type="text" class="form-field" name="email" value="<?php echo esc_attr( $third_party->data['address'] ); ?>" readonly/>
 		</label>
 	</div>
 
-	<div class="form-element">
-		<span class="form-label"><?php echo esc_html_e( 'Zip', 'wpshop' ); ?></span>
-		<label class="form-field-container">
-			<input type="text" class="form-field" name="email" value="<?php echo esc_attr( $third_party->data['zip'] ); ?>" readonly/>
-		</label>
-	</div>
+	<div class="gridlayout grid-3">
+		<div class="form-element form-element-disable">
+			<span class="form-label"><?php echo esc_html_e( 'Zip', 'wpshop' ); ?></span>
+			<label class="form-field-container">
+				<input type="text" class="form-field" name="email" value="<?php echo esc_attr( $third_party->data['zip'] ); ?>" readonly/>
+			</label>
+		</div>
 
-	<div class="form-element">
-		<span class="form-label"><?php echo esc_html_e( 'Town', 'wpshop' ); ?></span>
-		<label class="form-field-container">
-			<input type="text" class="form-field" name="email" value="<?php echo esc_attr( $third_party->data['town'] ); ?>" readonly/>
-		</label>
-	</div>
+		<div class="form-element form-element-disable">
+			<span class="form-label"><?php echo esc_html_e( 'Town', 'wpshop' ); ?></span>
+			<label class="form-field-container">
+				<input type="text" class="form-field" name="email" value="<?php echo esc_attr( $third_party->data['town'] ); ?>" readonly/>
+			</label>
+		</div>
 
-	<div class="form-element">
-		<span class="form-label"><?php echo esc_html_e( 'Country', 'wpshop' ); ?></span>
-		<label class="form-field-container">
-			<input type="text" class="form-field" name="email" value="<?php echo esc_attr( $third_party->data['country'] ); ?>" readonly/>
-		</label>
+		<div class="form-element form-element-disable">
+			<span class="form-label"><?php echo esc_html_e( 'Country', 'wpshop' ); ?></span>
+			<label class="form-field-container">
+				<input type="text" class="form-field" name="email" value="<?php echo esc_attr( $third_party->data['country'] ); ?>" readonly/>
+			</label>
+		</div>
 	</div>
 
 <!--	<input type="submit" class="wpeo-button" value="--><?php //esc_html_e( 'Save changes', 'wpshop' ); ?><!--" />-->
