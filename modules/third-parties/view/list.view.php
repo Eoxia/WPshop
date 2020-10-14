@@ -26,10 +26,9 @@ defined( 'ABSPATH' ) || exit;
 
 <div class="wps-list-third-parties wpeo-table table-flex table-6">
 	<div class="table-row table-header">
-		<div class="table-cell table-200"><?php esc_html_e( 'Society name', 'wpshop' ); ?></div>
-		<div class="table-cell table-300"><?php esc_html_e( 'User', 'wpshop' ); ?></div>
+		<div class="table-cell table-full"><?php esc_html_e( 'Society name', 'wpshop' ); ?></div>
+		<div class="table-cell table-275"><?php esc_html_e( 'User', 'wpshop' ); ?></div>
 		<div class="table-cell table-350"><?php esc_html_e( 'Commercial', 'wpshop' ); ?></div>
-		<div class="table-cell table-full"><?php esc_html_e( 'Actions', 'wpshop' ); ?></div>
 		<?php do_action( 'wps_listing_table_header_end', 'thirdparties' ); ?>
 	</div>
 

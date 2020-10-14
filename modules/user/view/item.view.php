@@ -26,7 +26,7 @@ defined( 'ABSPATH' ) || exit;
 			<a href="<?php echo esc_attr( admin_url( 'user-edit.php?user_id=' . $contact->data['id'] . '&action=edit' ) ); ?>"><?php echo esc_html( $contact->data['displayname'] ); ?></a>
 		<?php endif; ?>
 		<?php if ( ! empty( $contact->data['email'] ) ) : ?>
-			<a href="mailto:<?php echo esc_html( $contact->data['email'] ); ?>" class="wpeo-tooltip-event" aria-label="<?php echo esc_html( $contact->data['email'] ); ?>"><i class="fas fa-envelope"></i></a>
+			<a href="mailto:<?php echo esc_html( $contact->data['email'] ); ?>" class="wpeo-tooltip-event contact-email" aria-label="<?php echo esc_html( $contact->data['email'] ); ?>"><i class="fas fa-envelope"></i></a>
 		<?php endif; ?>
 
 		<?php do_action( 'wps_contact_item_contact_title_after', $contact ); ?>

@@ -23,7 +23,7 @@ defined( 'ABSPATH' ) || exit;
 ?>
 
 <div class="table-row" data-id="<?php echo esc_attr( $third_party->data['id'] ); ?>">
-	<div class="table-cell table-200">
+	<div class="table-cell table-full">
 		<div class="reference-title">
 			<a href="<?php echo esc_attr( admin_url( 'admin.php?page=wps-third-party&id=' . $third_party->data['id'] ) ); ?>"><?php echo esc_html( $third_party->data['title'] ); ?></a>
 		</div>
@@ -39,8 +39,7 @@ defined( 'ABSPATH' ) || exit;
 			<?php endif; ?>
 		</ul>
 	</div>
-	<div class="table-cell table-300"><?php User::g()->display( $third_party ); ?></div>
+	<div class="table-cell table-275"><?php User::g()->display( $third_party ); ?></div>
 	<div class="table-cell table-350"><?php Third_Party::g()->display_commercial( $third_party->data ); ?></div>
-	<div class="table-cell table-full"></div>
 	<?php do_action( 'wps_listing_table_end', $third_party, $sync_status ); ?>
 </div>
