@@ -82,9 +82,11 @@ class Third_Party_Action {
 	public function callback_add_menu_page() {
 		// If it is a single page.
 		if ( isset( $_GET['id'] ) ) {
-			$id = ! empty( $_GET['id'] ) ? (int) $_GET['id'] : 0;
-			$third_party  = Third_Party::g()->get( array( 'id' => $id ), true );
-			$args_metabox = array(
+			$id              = ! empty( $_GET['id'] ) ? (int) $_GET['id'] : 0;
+			$third_party     = Third_Party::g()->get( array( 'id' => $id ), true );
+			$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
+			$dolibarr_url    = $dolibarr_option['dolibarr_url'];
+			$args_metabox    = array(
 				'third_party' => $third_party,
 				'id'          => $id,
 			);
@@ -95,7 +97,7 @@ class Third_Party_Action {
 				}
 			}
 
-			View_Util::exec( 'wpshop', 'third-parties', 'single', array( 'third_party' => $third_party ) );
+			View_Util::exec( 'wpshop', 'third-parties', 'single', array( 'third_party' => $third_party, 'doli_url' => $dolibarr_url ) );
 		} else {
 			// Or it is the listing.
 			$per_page = get_user_meta( get_current_user_id(), Third_Party::g()->option_per_page, true );

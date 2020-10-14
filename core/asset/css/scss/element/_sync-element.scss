@@ -7,6 +7,10 @@
 		flex-direction: row;
 		flex-wrap: nowrap;
 		padding: 0.5em;
+
+		ul {
+			margin: 0;
+		}
 	}
 
 	.reference-id {
