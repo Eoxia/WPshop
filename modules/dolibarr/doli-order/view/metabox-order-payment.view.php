@@ -25,7 +25,7 @@ defined( 'ABSPATH' ) || exit;
  */
 ?>
 
-<div class="wps-metabox wps-order-payment">
+<div class="wps-metabox wps-order-payment gridw-2">
 	<h3 class="metabox-title"><?php esc_html_e( 'Payments', 'wpshop' ); ?></h3>
 
 	<table class="wpeo-table">

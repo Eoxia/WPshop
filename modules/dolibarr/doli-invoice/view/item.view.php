@@ -45,7 +45,9 @@ defined( 'ABSPATH' ) || exit;
 			<?php if ( ! empty( $invoice->data['order']->data['external_id'] ) ) : ?>
 				<li><i class="fas fa-hashtag"></i>Doli : <?php echo esc_html( $invoice->data['order']->data['external_id'] ); ?></li>
 			<?php endif; ?>
-			<li><i class="fas fa-calendar-alt"></i> <?php echo esc_html( date( "d/m/Y h:i" , strtotime( $invoice->data['order']->data['datec'] ) ) ); ?></li>
+			<?php if ( ! empty( $invoice->data['order']->data['datec'] ) ) : ?>
+				<li><i class="fas fa-calendar-alt"></i> <?php echo esc_html( date( "d/m/Y h:i" , strtotime( $invoice->data['order']->data['datec'] ) ) ); ?></li>
+			<?php endif; ?>
 		</ul>
 		<div class="reference-title">
 			<?php if ( ! empty( $invoice->data['order'] ) ) : ?>

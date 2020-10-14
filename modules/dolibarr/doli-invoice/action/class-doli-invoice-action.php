@@ -133,9 +133,12 @@ class Doli_Invoice_Action {
 				}
 			}
 
+			$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
+
 			View_Util::exec( 'wpshop', 'doli-invoice', 'single', array(
 				'third_party' => $third_party,
 				'invoice'     => $wp_invoice,
+				'doli_url'    => $dolibarr_option['dolibarr_url'],
 			) );
 		} else {
 			// Listing page.

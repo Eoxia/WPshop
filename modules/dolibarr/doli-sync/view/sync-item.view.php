@@ -26,7 +26,7 @@ defined( 'ABSPATH' ) || exit;
 ?>
 <div class="table-cell table-200 wps-sync">
 	<div class="wps-sync-container">
-		<ul class="reference-id">
+		<ul class="sync-id">
 			<li><img src="<?php echo PLUGIN_WPSHOP_URL . '/core/asset/image/logo-wordpress.jpg'; ?>" /> <strong><i class="fas fa-hashtag"></i><?php echo esc_html( $object->data['id'] ); ?></strong></li>
 			<li><img src="<?php echo PLUGIN_WPSHOP_URL . '/core/asset/image/logo-dolibarr.jpg'; ?>" /> <strong><i class="fas fa-hashtag"></i><?php echo ! empty( $object->data['external_id'] ) ? esc_html( $object->data['external_id'] ) : "N/A"; ?></strong></li>
 		</ul>

@@ -21,8 +21,13 @@ defined( 'ABSPATH' ) || exit;
 ?>
 
 <div class="wrap wpeo-wrap">
-	<div class="page-header">
-		<h2><?php echo esc_html__( 'Invoice', 'wpshop' ) . ' ' . esc_html( $invoice->data['title'] ); ?></h2>
+	<div class="wps-page-header">
+		<div class="wps-page-header-title-container">
+			<div class="wps-page-header-title"><?php echo esc_html__( 'Invoice', 'wpshop' ) . ' <strong>' . esc_html( $invoice->data['title'] ) . '</strong>'; ?></div>
+			<div class="wps-page-header-actions">
+				<a class="button <?php echo empty( $invoice->data['external_id'] ) ? 'disabled' : ''; ?>" href="<?php echo esc_attr( $doli_url ); ?>/compta/facture/card.php?facid=<?php echo $invoice->data['external_id']; ?>" target="_blank"><?php esc_html_e( 'Edit in Dolibarr', 'wpshop' ); ?></a>
+			</div>
+		</div>
 	</div>
 
 	<div class="wps-page-content wpeo-gridlayout grid-4">

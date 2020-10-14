@@ -16,9 +16,16 @@ namespace wpshop;
 
 defined( 'ABSPATH' ) || exit; ?>
 
-<div class="wrap wpeo-wrap page-single">
-	<div class="page-header">
-		<h2><?php echo esc_html__( 'Proposal', 'wpshop' ) . ' ' . esc_html( $proposal->data['title'] ); ?></h2>
+<div class="wrap wpeo-wrap wpeo-page-single">
+	<div class="wps-page-header">
+		<div class="wps-page-header-title-container">
+			<div class="wps-page-header-title"><?php echo esc_html__( 'Proposal', 'wpshop' ) . ' <strong>' . esc_html( $proposal->data['title'] ) . '</strong>'; ?></div>
+			<div class="wps-page-header-actions">
+				<?php if ( ! empty( $proposal->data['external_id'] ) ) : ?>
+					<a class="button <?php echo empty( $proposal->data['external_id'] ) ? 'disabled' : ''; ?>" href="<?php echo esc_attr( $doli_url ); ?>/comm/propal/card.php?id=<?php echo $proposal->data['external_id']; ?>" target="_blank"><?php esc_html_e( 'Edit in Dolibarr', 'wpshop' ); ?></a>
+				<?php endif; ?>
+			</div>
+		</div>
 	</div>
 
 	<div class="wps-page-content wpeo-gridlayout grid-3">

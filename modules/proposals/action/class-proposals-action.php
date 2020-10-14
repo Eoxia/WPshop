@@ -89,9 +89,10 @@ class Proposals_Action {
 	 */
 	public function callback_add_menu_page() {
 		if ( isset( $_GET['id'] ) ) {
-			$id = ! empty( $_GET['id'] ) ? (int) $_GET['id'] : 0;
-			$proposal    = Proposals::g()->get( array( 'id' => $id ), true );
-			$third_party = Third_Party::g()->get( array( 'id' => $proposal->data['parent_id'] ), true );
+			$id              = ! empty( $_GET['id'] ) ? (int) $_GET['id'] : 0;
+			$proposal        = Proposals::g()->get( array( 'id' => $id ), true );
+			$third_party     = Third_Party::g()->get( array( 'id' => $proposal->data['parent_id'] ), true );
+			$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
 
 			if ( ! empty( $this->metaboxes ) ) {
 				foreach ( $this->metaboxes as $key => $metabox ) {
@@ -102,10 +103,10 @@ class Proposals_Action {
 			\eoxia\View_Util::exec( 'wpshop', 'proposals', 'single', array(
 				'third_party' => $third_party,
 				'proposal'    => $proposal,
+				'doli_url'    => $dolibarr_option['dolibarr_url'],
 			) );
 		} else {
 			$per_page = get_user_meta( get_current_user_id(), Proposals::g()->option_per_page, true );
-
 
 			if ( empty( $per_page ) || 1 > $per_page ) {
 				$per_page = Third_Party::g()->limit;
