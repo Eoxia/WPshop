@@ -122,7 +122,7 @@ class Doli_Category extends Term_Class {
 
 		if ( ! empty($wp_categories)) {
 			foreach( $wp_categories as $wp_category) {
-				if (empty($wp_category->data['external_id'] )) {
+				if (empty($wp_category->data['external_id'] || $wp_category->data['external_id'] == 0)) {
 					wp_delete_term($wp_category->data['id'],'wps-product-cat');
 				}
 			}

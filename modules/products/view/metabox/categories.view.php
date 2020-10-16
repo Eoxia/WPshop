@@ -34,23 +34,29 @@ defined( 'ABSPATH' ) || exit;
 					<?php $popular_ids = wp_popular_terms_checklist( $tax_name ); ?>
 				</ul>
 			</div>
-
+			
 			<div id="<?php echo $tax_name; ?>-all" class="tabs-panel">
-				<?php
-				$name = ( 'category' === $tax_name ) ? 'post_category' : 'tax_input[' . $tax_name . ']';
-				// Allows for an empty term set to be sent. 0 is an invalid term ID and will be ignored by empty() checks.
-				echo "<input type='hidden' name='{$name}[]' value='0' />";
-				?>
 				<ul id="<?php echo $tax_name; ?>checklist" data-wp-lists="list:<?php echo $tax_name; ?>" class="categorychecklist form-no-clear">
-					<?php
-					wp_terms_checklist(
-						$post->ID,
-						array(
-							'taxonomy'     => $tax_name,
-							'popular_cats' => $popular_ids,
-						)
-					);
-					?>
+					<div class="form-element ">
+						<label class="form-field-container">
+							<div class="form-field-inline">
+								<?php if ( ! empty($categories)) :
+										foreach( $categories as $wp_category) : 
+											if ($wp_category->data['external_id'] != 0 ) :
+												if (has_term($wp_category->data['name'],$tax_name,$post->ID)) :?>
+													<input type="checkbox" id="checkbox10" class="form-field" name="type" checked value="checkbox10">
+													<label for="checkbox10"><?php echo $wp_category->data['name'] ?></label>
+													<br/>
+										<?php else : ?>
+													<input type="checkbox" id="checkbox10" class="form-field" name="type" value="checkbox10">
+													<label for="checkbox10"><?php echo $wp_category->data['name'] ?></label>
+													<br/>
+										<?php endif; 
+											endif; 
+										endforeach; 
+									endif;?>
+						</label>
+					</div>
 				</ul>
 			</div>
 			<?php if ( current_user_can( $taxonomy->cap->edit_terms ) ) : ?>

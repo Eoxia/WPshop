@@ -246,13 +246,15 @@ class Product extends Post_Class {
 		$parsed_args = wp_parse_args( $args, $defaults );
 		$tax_name    = esc_attr( $parsed_args['taxonomy'] );
 		$taxonomy    = get_taxonomy( $parsed_args['taxonomy'] );
+		$categories  = Doli_Category::g()->get();
 
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
 		View_Util::exec( 'wpshop', 'products', 'metabox/categories', array(
 			'parsed_args' => $parsed_args,
 			'tax_name'    => $tax_name,
 			'taxonomy'    => $taxonomy,
-			'post'        => $post
+			'post'        => $post,
+			'categories'  => $categories
 		) );
 	}
 
