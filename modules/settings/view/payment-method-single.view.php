@@ -26,7 +26,7 @@ defined( 'ABSPATH' ) || exit;
 <?php do_action( 'wps_setting_payment_method_' . $section . '_before_form' ); ?>
 
 
-<form class="wpeo-form" action="<?php echo admin_url( 'admin-post.php' ); ?>" method="POST">
+<form class="wpeo-form payment-method" action="<?php echo admin_url( 'admin-post.php' ); ?>" method="POST">
 	<?php do_action( 'wps_setting_payment_method_' . $section . '_prepend_form' ); ?>
 
 	<input type="hidden" name="action" value="<?php echo esc_attr( 'wps_update_method_payment' ); ?>" />
@@ -43,7 +43,7 @@ defined( 'ABSPATH' ) || exit;
 	<div class="form-element bloc-activate">
 		<span class="form-label"><?php esc_html_e( 'Activate', 'wpshop' ); ?></span>
 		<input type="hidden" name="activate" class="activate" value="<?php echo (int) 1 === (int) $payment_data['active'] ? 'true' : 'false'; ?>" />
-		<i style="font-size: 2em;" class="toggle fas fa-toggle-<?php echo $payment_data['active'] ? 'on' : 'off'; ?>" data-bloc="bloc-activate" data-input="activate"></i>
+		<i style="font-size: 2em;" class="button-toggle fas fa-toggle-<?php echo $payment_data['active'] ? 'on' : 'off'; ?>" data-bloc="bloc-activate" data-input="activate"></i>
 	</div>
 
 	<div class="form-element">

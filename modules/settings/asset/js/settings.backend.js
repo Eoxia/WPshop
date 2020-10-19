@@ -10,9 +10,39 @@ window.eoxiaJS.wpshop.settings = {};
  * La méthode "init" est appelé automatiquement par la lib JS de Eo-Framework
  *
  * @since   2.0.0
- * @version 2.0.0
+ * @version 2.3.0
  */
-window.eoxiaJS.wpshop.settings.init = function() {};
+window.eoxiaJS.wpshop.settings.init = function() {
+	window.eoxiaJS.wpshop.settings.event();
+};
+
+window.eoxiaJS.wpshop.settings.event = function() {
+	jQuery( document ).on( 'click', '.wpeo-form.payment-method .bloc-activate .button-toggle', window.eoxiaJS.wpshop.settings.buttonToggle );
+};
+
+/**
+ * Récupère l'état du bouton toggle.
+ *
+ * @since   2.3.0
+ * @version 2.3.0
+ *
+ * @param  {ClickEvent} event [t]
+ *
+ * @return {void}
+ */
+window.eoxiaJS.wpshop.settings.buttonToggle = function( event ) {
+	console.log( 'test');
+	var toggleON = jQuery( this ).hasClass( 'fa-toggle-on' );
+	var nextStep = '';
+	if (toggleON) {
+		nextStep = 'false';
+		jQuery( this ).removeClass( "fa-toggle-on" ).addClass( "fa-toggle-off" );
+	} else {
+		nextStep = 'true';
+		jQuery( this ).removeClass( "fa-toggle-off" ).addClass( "fa-toggle-on" );
+	}
+	jQuery( this ).closest( '.wpeo-form.payment-method' ).find( '.activate' ).attr( 'value' , nextStep );
+};
 
 /**
  * Le callback en cas de réussite à la requête Ajax "dismiss".
