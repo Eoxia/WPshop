@@ -186,18 +186,20 @@ class Product extends Post_Class {
 	 * @version 2.1.0
 	 */
 	public function callback_register_meta_box() {
-		add_meta_box(
-			'wp_product_title',
-			__( 'Product title', 'wpshop' ),
-			array( $this, 'callback_add_meta_box_title' ),
-			'wps-product',
-			'normal',
-			'high'
-		);
+		if ( Settings::g()->dolibarr_is_active() ) {
+			add_meta_box(
+				'wp_product_title',
+				__( 'Product title', 'wpshop' ),
+				array( $this, 'callback_add_meta_box_title' ),
+				'wps-product',
+				'normal',
+				'high'
+			);
+		}
 
 		add_meta_box(
 			'wps_product_configuration',
-			__( 'Product configuration', 'wpshop'),
+			__( 'Dolibarr Product configuration', 'wpshop'),
 			array( $this, 'callback_add_meta_box' ),
 			'wps-product'
 		);

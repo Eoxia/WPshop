@@ -694,22 +694,22 @@
   color: red !important;
 }
 
-#wp_product_title.postbox {
+body.wps-dolibarr-active #wp_product_title.postbox {
   border: 0;
   box-shadow: none;
   background: none;
 }
 
-#wp_product_title.postbox .postbox-header {
+body.wps-dolibarr-active #wp_product_title.postbox .postbox-header {
   display: none;
 }
 
-#wp_product_title.postbox .inside {
+body.wps-dolibarr-active #wp_product_title.postbox .inside {
   margin-top: 0;
   padding: 0;
 }
 
-#wp_product_title.postbox .inside .wpeo-wrap {
+body.wps-dolibarr-active #wp_product_title.postbox .inside .wpeo-wrap {
   display: -webkit-box;
   display: flex;
   -webkit-box-orient: horizontal;
@@ -718,34 +718,34 @@
   flex-wrap: wrap;
 }
 
-#wp_product_title.postbox .inside .wps-product-title {
+body.wps-dolibarr-active #wp_product_title.postbox .inside .wps-product-title {
   font-size: 23px;
   font-weight: 400;
   line-height: 1.3;
 }
 
-#wp_product_title.postbox .inside .wps-product-title-actions {
+body.wps-dolibarr-active #wp_product_title.postbox .inside .wps-product-title-actions {
   margin-top: 0.4em;
 }
 
-#wp_product_title.postbox .inside .wps-sync {
+body.wps-dolibarr-active #wp_product_title.postbox .inside .wps-sync {
   min-width: 200px;
   margin-left: auto;
 }
 
-#wp_product_title.postbox .inside .wps-sync .reference-id {
+body.wps-dolibarr-active #wp_product_title.postbox .inside .wps-sync .reference-id {
   margin: 0;
 }
 
-body.post-type-wps-product #post-body-content {
+body.wps-dolibarr-active.post-type-wps-product #post-body-content {
   margin-bottom: 0;
 }
 
-body.post-type-wps-product .wrap {
+body.wps-dolibarr-active.post-type-wps-product .wrap {
   margin-top: 30px !important;
 }
 
-body.post-type-wps-product h1.wp-heading-inline {
+body.wps-dolibarr-active.post-type-wps-product h1.wp-heading-inline {
   display: none !important;
 }
 

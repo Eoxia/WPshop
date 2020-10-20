@@ -40,7 +40,9 @@ defined( 'ABSPATH' ) || exit;
 				?>
 			</div>
 			<div class="wps-page-header-actions">
-				<a class="button <?php echo empty( $third_party->data['external_id'] ) ? 'disabled' : ''; ?>" href="<?php echo esc_attr( $doli_url ); ?>/societe/card.php?id=<?php echo $third_party->data['external_id']; ?>" target="_blank"><?php esc_html_e( 'Edit in Dolibarr', 'wpshop' ); ?></a>
+				<?php if ( Settings::g()->dolibarr_is_active() ) : ?>
+					<a class="button <?php echo empty( $third_party->data['external_id'] ) ? 'disabled' : ''; ?>" href="<?php echo esc_attr( $doli_url ); ?>/societe/card.php?id=<?php echo $third_party->data['external_id']; ?>" target="_blank"><?php esc_html_e( 'Edit in Dolibarr', 'wpshop' ); ?></a>
+				<?php endif; ?>
 			</div>
 		</div>
 		<?php do_action( 'wps_listing_table_end', $third_party, $sync_status = true ); ?>
