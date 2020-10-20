@@ -43,7 +43,7 @@ class Doli_Associate_Action {
 
 		$id   = ! empty( $_POST['wp_id'] ) ? (int) $_POST['wp_id'] : 0;
 		$type = ! empty( $_POST['type'] ) ? sanitize_text_field( $_POST['type'] ) : '';
-		
+
 		$sync_info = Doli_Sync::g()->get_sync_infos( $type );
 		$entries = Request_Util::get( $sync_info['endpoint'] . '?limit=-1' );
 
@@ -59,7 +59,7 @@ class Doli_Associate_Action {
 				}
 			}
 		}
-		if ($type == 'wps-product') {
+		if ( $type == 'wps-product' || $type == 'wps-third-party' ) {
 			ob_start();
 			View_Util::exec( 'wpshop', 'doli-associate', 'main', array(
 				'entries' => $entries,
@@ -68,11 +68,11 @@ class Doli_Associate_Action {
 				'label'   => $sync_info['title'],
 			) );
 			$view = ob_get_clean();
-	
+
 			ob_start();
 			View_Util::exec( 'wpshop', 'doli-associate', 'single-footer' );
 			$buttons_view = ob_get_clean();
-	
+
 			wp_send_json_success( array(
 				'view'         => $view,
 				'buttons_view' => $buttons_view,

@@ -247,7 +247,7 @@ class Doli_Sync extends Singleton_Util {
 		} elseif  ( $type == 'wps-product-cat' ) {
 			$external_id = get_term_meta( $id, '_external_id', true );
 			$sha_256     = get_term_meta( $id, '_sync_sha_256', true );
-		} else {
+		} elseif ( $type == 'wps-product' ) {
 			$external_id = get_post_meta( $id, '_external_id', true );
 			$sha_256     = get_post_meta( $id, '_sync_sha_256', true );
 			if ( ! empty(get_post_meta( $id, 'sha256_documents', true ))) {
@@ -255,6 +255,9 @@ class Doli_Sync extends Singleton_Util {
 			} else {
 				$sha_documents = hash('sha256', implode(',', array()));
 			}
+		} else {
+			$external_id = get_post_meta( $id, '_external_id' , true );
+			$sha_256 = get_post_meta( $id, '_sync_sha_256', true );
 		}
 
 		$sync_info = $this->sync_infos[ $type ];
@@ -324,16 +327,7 @@ class Doli_Sync extends Singleton_Util {
 
 		$response = apply_filters( 'doli_build_sha_' . $type, $response, $id );
 		// WP Object is not equal Dolibarr Object.
-//		echo '<pre>';
-//		print_r('$response->sha_documents');
-//		print_r($response->sha_documents);
-//		echo '<br>';
-//		print_r('sha_documents');
-//		print_r($sha_documents);
-//		echo '</pre>';
-//		exit;
-
-		if  ( $type == 'wps-product-cat' ) {
+		if  ( $type == 'wps-product-cat' || $type == 'wps-third-party' ) {
 			if ( $response->sha !== $sha_256 ) {
 				return array(
 					'status' => true,
