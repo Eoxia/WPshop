@@ -16,22 +16,31 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Documentation des variables utilisées dans la vue.
  *
- * @var Doli_Proposals $propal      Les données d'une proposition commerciale.
- * @var Doli_Order     $order       Les données d'une commande.
- * @var boolean        $doli_active True si Dolibarr est activé.
- * @var string         $doli_url    L'url de Dolibarr.
- * @var Doli_Invoice   $invoice     Les données d'une facture.
+ * @var Proposals    $proposal    Les données d'une proposition commerciale.
+ * @var Doli_Order   $order       Les données d'une commande.
+ * @var boolean      $doli_active True si Dolibarr est activé.
+ * @var string       $doli_url    L'url de Dolibarr.
+ * @var Doli_Invoice $invoice     Les données d'une facture.
  */
 ?>
 
 <ul class="list-commercial">
-	<?php if ( ! empty( $propal->data ) ) : ?>
-		<li class="commercial type-propal">
+<!--	--><?php //if ( ! empty( $propal->data ) ) : ?>
+	<!--		<li class="commercial type-propal">-->
+	<!--			<i class="fas fa-file-signature"></i>-->
+	<!--			<span class="commercial-date">--><?php //echo $propal->data['datec']['rendered']['date']; ?><!--</span>-->
+	<!--			<span class="commercial-title"><a href="--><?php //echo esc_attr( admin_url( 'admin.php?page=wps-proposal&id=' . $propal->data['id'] ) ); ?><!--">--><?php //echo $propal->data['title']; ?><!--</a></span>-->
+	<!--			<span class="commercial-price">--><?php //echo ! empty( $propal->data['total_ttc'] ) ? number_format( $propal->data['total_ttc'], 2, ',', '' ) . '€ TTC' : ''; ?><!--</span>-->
+	<!--			<span class="commercial-status">--><?php //echo Doli_Statut::g()->display_status( $propal ); ?><!--</span>-->
+	<!--		</li>-->
+	<!--	--><?php //endif; ?>
+	<?php if ( ! empty( $proposal->data ) && $doli_active ) : ?>
+		<li class="commercial type-propasal">
 			<i class="fas fa-file-signature"></i>
-			<span class="commercial-date"><?php echo $propal->data['datec']['rendered']['date']; ?></span>
-			<span class="commercial-title"><a href="<?php echo esc_attr( admin_url( 'admin.php?page=wps-proposal&id=' . $propal->data['id'] ) ); ?>"><?php echo $propal->data['title']; ?></a></span>
-			<span class="commercial-price"><?php echo ! empty( $propal->data['total_ttc'] ) ? number_format( $propal->data['total_ttc'], 2, ',', '' ) . '€ TTC' : ''; ?></span>
-			<span class="commercial-status"><?php echo Doli_Statut::g()->display_status( $propal ); ?></span>
+			<span class="commercial-date"><?php echo  Date_Util::readable_date( $proposal->data['datec'], 'date' ); ?></span>
+			<span class="commercial-title"><a href="<?php echo esc_attr(  $doli_url . '/comm/propal/card.php?id=' . $proposal->data['external_id'] ); ?>"><?php echo $proposal->data['title']; ?></a></span>
+			<span class="commercial-price"><?php echo ! empty( $proposal->data['total_ttc'] ) ? number_format( $proposal->data['total_ttc'], 2, ',', '' ) . '€ TTC' : ''; ?></span>
+			<span class="commercial-status"><?php echo Doli_Statut::g()->display_status( $proposal ); ?></span>
 		</li>
 	<?php endif; ?>
 	<?php if ( ! empty( $order->data ) && $doli_active ) : ?>

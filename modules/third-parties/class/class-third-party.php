@@ -153,7 +153,7 @@ class Third_Party extends Post_Class {
 	 * Affiche les trois dernières actions commerciales du tier.
 	 *
 	 * @since   2.0.0
-	 * @version 2.0.0
+	 * @version 2.3.0
 	 *
 	 * @param Third_Party $third_party Les données du tier.
 	 */
@@ -164,6 +164,7 @@ class Third_Party extends Post_Class {
 		// Move to doli module.
 		$order   = array();
 		$invoice = array();
+		$proposal = array();
 
 		$propal = Proposals::g()->get( array(
 			'post_parent'    => $third_party['id'],
@@ -171,11 +172,19 @@ class Third_Party extends Post_Class {
 		), true );
 
 		if ( $dolibarr_active && ! empty( $third_party['external_id'] ) ) {
-			$doli_order = Request_Util::get('orders?sortfield=t.rowid&sortorder=DESC&limit=1&thirdparty_ids=' . $third_party['external_id']);
 
-			if (isset($doli_order[0])) {
-				$wp_order = Doli_Order::g()->get(array('schema' => true), true);
-				$order = Doli_Order::g()->doli_to_wp($doli_order[0], $wp_order, true);
+			$doli_proposal = Request_Util::get( 'proposals?sortfield=t.rowid&sortorder=DESC&limit=1&thirdparty_ids=' . $third_party['external_id'] );
+
+			if ( isset( $doli_proposal[0] ) ) {
+				$wp_proposal = Proposals::g()->get( array( 'schema' => true ), true );
+				$proposal = Doli_Proposals::g()->doli_to_wp( $doli_proposal[0], $wp_proposal, true );
+			}
+
+			$doli_order = Request_Util::get( 'orders?sortfield=t.rowid&sortorder=DESC&limit=1&thirdparty_ids=' . $third_party['external_id'] );
+
+			if ( isset($doli_order[0] ) ) {
+				$wp_order = Doli_Order::g()->get( array( 'schema' => true ), true );
+				$order = Doli_Order::g()->doli_to_wp( $doli_order[0], $wp_order, true );
 			}
 
 			$doli_invoice = Request_Util::get( 'invoices?sortfield=t.rowid&sortorder=ASC&limit=100&thirdparty_ids=' . $third_party['external_id'] );
@@ -189,7 +198,8 @@ class Third_Party extends Post_Class {
 		View_Util::exec( 'wpshop', 'third-parties', 'commercial', array(
 			'doli_url'    => $dolibarr_option['dolibarr_url'],
 			'order'       => $order,
-			'propal'      => $propal,
+			//'propal'    => $propal,
+			'proposal'    => $proposal,
 			'invoice'     => $invoice,
 			'doli_active' => $dolibarr_active,
 		) );
