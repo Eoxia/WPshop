@@ -78,13 +78,13 @@ class Doli_Invoice_Action {
 	 * Ajoute la metabox details.
 	 *
 	 * @since   2.0.0
-	 * @version 2.0.0
+	 * @version 2.3.0
 	 */
 	public function add_meta_box() {
 		if ( isset( $_GET['id'] ) && isset( $_GET['page'] ) && 'wps-invoice' === $_GET['page'] ) {
 			$id = ! empty( $_GET['id'] ) ? (int) $_GET['id'] : 0;
 
-			$invoice = Doli_Invoice::g()->get( array( 'id' => $id ), true );
+			$invoice = Doli_Invoice::g()->get( array( 'external_id' => $id ), true );
 
 			$args_metabox = array(
 				'invoice' => $invoice,
@@ -112,7 +112,7 @@ class Doli_Invoice_Action {
 	 * Affichage de la vue du menu.
 	 *
 	 * @since   2.0.0
-	 * @version 2.0.0
+	 * @version 2.3.0
 	 */
 	public function callback_add_menu_page() {
 		if ( isset( $_GET['id'] ) ) {
@@ -120,8 +120,8 @@ class Doli_Invoice_Action {
 			$id = ! empty( $_GET['id'] ) ? (int) $_GET['id'] : 0;
 
 			$doli_invoice = Request_Util::get( 'invoices/' . $id );
-			$wp_invoice   = Doli_Order::g()->get( array( 'schema' => true ), true );
-			$wp_invoice   = Doli_Order::g()->doli_to_wp( $doli_invoice, $wp_invoice, true );
+			$wp_invoice   = Doli_Invoice::g()->get( array( 'schema' => true ), true );
+			$wp_invoice   = Doli_Invoice::g()->doli_to_wp( $doli_invoice, $wp_invoice, true );
 
 			$wp_invoice->data['datec'] = \eoxia\Date_Util::g()->fill_date( $wp_invoice->data['datec'] );
 
@@ -199,8 +199,11 @@ class Doli_Invoice_Action {
 			$invoice->data['payments'] = array();
 			$invoice->data['payments'] = Doli_Payment::g()->get( array( 'post_parent' => $invoice->data['id'] ) );
 			$link_invoice              = admin_url( 'admin-post.php?action=wps_download_invoice_wpnonce=' . wp_create_nonce( 'download_invoice' ) . '&invoice_id=' . $invoice->data['id'] );
-
-			$invoice->data['order'] = Doli_Order::g()->get( array( 'id' => $invoice->data['parent_id'] ), true );
+			if ( isset( $invoice->data['linked_objects_ids']['commande'][0] ) ) {
+				$doli_order = Request_Util::get( 'orders/' . $invoice->data['linked_objects_ids']['commande'][0] );
+				$wp_order   = Doli_Order::g()->get( array( 'schema' => true ), true );
+				$invoice->data['order'] = Doli_Order::g()->doli_to_wp( $doli_order, $wp_order, true );
+			}
 		}
 
 		View_Util::exec( 'wpshop', 'doli-invoice', 'metabox-invoice-details', array(
