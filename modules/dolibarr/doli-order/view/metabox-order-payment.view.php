@@ -57,15 +57,15 @@ defined( 'ABSPATH' ) || exit;
 
 		<tfoot>
 			<tr>
-				<td colspan="3"><?php esc_html_e( 'Already paid' ); ?></td>
+				<td colspan="3"><?php esc_html_e( 'Already paid', 'wpshop' ); ?></td>
 				<td class="table-end"><?php echo ( ! empty( $already_paid ) ) ? number_format( $already_paid, 2, ',', '' ) : '00,00'; ?>€</td>
 			</tr>
 			<tr>
-				<td colspan="3"><?php esc_html_e( 'Billed' ); ?></td>
+				<td colspan="3"><?php esc_html_e( 'Billed','wpshop' ); ?></td>
 				<td class="table-end"><?php echo ( ! empty( $total_ttc_invoices ) ) ? number_format( $total_ttc_invoices, 2, ',', '' ) : number_format( $order->data['total_ttc'], 2, ',', '' ); ?>€</td>
 			</tr>
 			<tr>
-				<td colspan="3"><?php esc_html_e( 'Remaining unpaid' ); ?></td>
+				<td colspan="3"><?php esc_html_e( 'Remaining unpaid', 'wpshop' ); ?></td>
 				<td class="table-end"><strong><?php echo number_format( $remaining_unpaid, 2, ',', '' ); ?>€</strong></td>
 			</tr>
 		</tfoot>
