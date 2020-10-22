@@ -28,7 +28,7 @@ defined( 'ABSPATH' ) || exit;
 	<div class="table-row table-header">
 		<div class="table-cell table-full"><?php esc_html_e( 'Society name', 'wpshop' ); ?></div>
 		<div class="table-cell table-275"><?php esc_html_e( 'User', 'wpshop' ); ?></div>
-		<div class="table-cell table-350"><?php esc_html_e( 'Commercial', 'wpshop' ); ?></div>
+		<div class="table-cell table-350"><?php esc_html_e( 'Customer', 'wpshop' ); ?></div>
 		<?php do_action( 'wps_listing_table_header_end', 'thirdparties' ); ?>
 	</div>
 

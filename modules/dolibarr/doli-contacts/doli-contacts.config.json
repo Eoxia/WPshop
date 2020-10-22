@@ -1,0 +1,12 @@
+{
+	"name": "Doli Contacts",
+	"slug": "doli-contacts",
+	"since": "2.3.0",
+    "version": "2.3.0",
+    "description": "Le module gérant les contacts/Adresses de Dolibarr",
+	"path": "modules/dolibarr/doli-contacts",
+	"dependencies": {
+      "class": {},
+      "model": {}
+	}
+}

@@ -192,7 +192,7 @@ class Third_Party_Action {
 			$contacts = User::g()->get( array( 'include' => $third_party->data['contact_ids'] ) );
 		}
 
-		View_Util::exec( 'wpshop', 'third-parties', 'metaboxes/metabox-contacts', array(
+		View_Util::exec( 'wpshop', 'third-parties', 'metaboxes/metabox-tier', array(
 			'third_party' => $third_party,
 			'contacts'    => $contacts,
 		) );
@@ -321,6 +321,37 @@ class Third_Party_Action {
 		View_Util::exec( 'wpshop', 'third-parties', 'metaboxes/metabox-invoices', array(
 			'doli_url' => $dolibarr_option['dolibarr_url'],
 			'invoices' => $invoices,
+		) );
+	}
+
+	/**
+	 * Appel la vue de la metabox des factures.
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 *
+	 * @param Third_Party $third_party Les données du tiers.
+	 */
+	public function metabox_contacts_address( $third_party ) {
+		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
+
+		$contacts = array();
+
+		if ( Settings::g()->dolibarr_is_active() ) {
+
+			$doli_contacts = Request_Util::get( 'contacts?sortfield=t.rowid&sortorder=ASC&limit=100&thirdparty_ids=' . $third_party->data['external_id'] );
+
+			if ( ! empty( $doli_contacts ) ) {
+				foreach ( $doli_contacts as $doli_contact ) {
+					$wp_contact = Doli_Contacts::g()->get( array( 'schema' => true ), true );
+					$contacts[] = Doli_Contacts::g()->doli_to_wp( $doli_contact, $wp_contact, true );
+				}
+			}
+		}
+
+		View_Util::exec( 'wpshop', 'third-parties', 'metaboxes/metabox-contacts', array(
+			'doli_url' => $dolibarr_option['dolibarr_url'],
+			'contacts' => $contacts,
 		) );
 	}
 }

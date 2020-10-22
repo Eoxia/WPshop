@@ -93,6 +93,10 @@ class Third_Party_Filter {
 			$metaboxes['wps-third-party-invoices'] = array(
 				'callback' => 'metabox_invoices',
 			);
+
+			$metaboxes['wps-third-party-contacts-address'] = array(
+				'callback' => 'metabox_contacts_address',
+			);
 		}
 
 		return $metaboxes;
