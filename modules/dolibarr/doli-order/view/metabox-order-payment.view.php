@@ -57,7 +57,7 @@ defined( 'ABSPATH' ) || exit;
 
 		<tfoot>
 			<tr>
-				<td colspan="3"><?php esc_html_e( 'Already paid', 'wpshop' ); ?></td>
+				<td colspan="3"><?php esc_html_e( 'Already settled', 'wpshop' ); ?></td>
 				<td class="table-end"><?php echo ( ! empty( $already_paid ) ) ? number_format( $already_paid, 2, ',', '' ) : '00,00'; ?>€</td>
 			</tr>
 			<tr>

@@ -26,7 +26,7 @@ defined( 'ABSPATH' ) || exit;
 ?>
 
 <div class="wps-metabox wps-billing-contact view gridw-3">
-	<h3 class="metabox-title"><?php esc_html_e( 'Tier', 'wpshop' ); ?></h3>
+	<h3 class="metabox-title"><?php esc_html_e( 'Tiers', 'wpshop' ); ?></h3>
 
 	<div class="wpeo-table table-flex table-5">
 		<div class="table-row table-header">
