@@ -189,15 +189,16 @@ class Doli_Sync extends Singleton_Util {
 
 				echo do_shortcode('[wps_categories]');
 
-				$doli_categories = Request_Util::get('categories/object/product/' . $entry_id . '?');
-				$wpdb->delete('wp_term_relationships', array('object_id' => $wp_product->data['id']));
-				if ( ! empty($doli_categories)) {
-					foreach ($doli_categories as $doli_category) {
-						$wpdb->insert('wp_term_relationships', array('object_id' => $wp_product->data['id'] , 'term_taxonomy_id' => get_term_by('name', $doli_category->label, 'wps-product-cat' )->term_id, 'term_order' => 0));
+				$doli_categories = Request_Util::get( 'categories/object/product/' . $entry_id . '?' );
+				$wpdb->delete($wpdb->prefix . 'term_relationships', array( 'object_id' => $wp_product->data['id'] ) );
+				if ( ! empty( $doli_categories ) ) {
+					foreach ( $doli_categories as $doli_category ) {
+						$term_taxonomy_id = get_term_by('name', $doli_category->label, 'wps-product-cat' )->term_id;
+						$wpdb->insert( $wpdb->prefix . 'term_relationships', array( 'object_id' => $wp_product->data['id'] , 'term_taxonomy_id' => $term_taxonomy_id, 'term_order' => 0 ) );
 					}
 				}
 
-				$wp_object =$wp_product;
+				$wp_object = $wp_product;
 				break;
 			case 'wps-proposal':
 				$doli_proposal = Request_Util::get( 'proposals/' . $entry_id );
