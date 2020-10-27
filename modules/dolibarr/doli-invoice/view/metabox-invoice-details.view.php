@@ -24,7 +24,7 @@ defined( 'ABSPATH' ) || exit;
 
 <div class="wps-metabox gridw-1 wps-customer-payment">
 	<h3 class="metabox-title"><?php esc_html_e( 'Payment', 'wpshop' ); ?></h3>
-	<p><strong><?php esc_html_e( 'Order', 'wpshop' ); ?></strong> : <?php echo ! empty( $invoice->data['order'] ) ? '<a href="' . admin_url( 'admin.php?page=wps-order&id=' . $invoice->data['order']->data['id'] ) . '">' . $invoice->data['order']->data['title'] . '</a>' : '-'; ?>
+	<p><strong><?php esc_html_e( 'Order', 'wpshop' ); ?></strong> : <?php echo ! empty( $invoice->data['order'] ) ? '<a href="' . admin_url( 'admin.php?page=wps-order&id=' . $invoice->data['order']->data['external_id'] ) . '">' . $invoice->data['order']->data['title'] . '</a>' : '-'; ?>
 	<p><strong><?php esc_html_e( 'Statut', 'wpshop' ); ?></strong> : <?php echo Doli_Statut::g()->display_status( $invoice ); ?></p>
 	<p><strong><?php esc_html_e( 'Payment method', 'wpshop' ); ?></strong> : <?php echo esc_html( Payment::g()->get_payment_title( $invoice->data['payment_method'] ) ); ?></p>
 	<p><strong><?php esc_html_e( 'Payment status', 'wpshop' ); ?></strong> : <?php echo Payment::g()->make_readable_statut( $invoice ); ?></p>
@@ -62,7 +62,7 @@ defined( 'ABSPATH' ) || exit;
 
 			<ul>
 				<li><?php echo ! empty( $third_party->data['title'] ) ? $third_party->data['title'] : 'N/D'; ?></li>
-				<li><?php echo ! empty( $third_party->data['contact'] ) ? $third_party->data['contact'] : 'N/D'; ?></li>
+				<li><?php echo ! empty( $third_party->data['address'] ) ? $third_party->data['address'] : 'N/D'; ?></li>
 				<li>
 					<?php echo ! empty( $third_party->data['zip'] ) ? $third_party->data['zip'] : 'N/D'; ?>
 					<?php echo ! empty( $third_party->data['town'] ) ? $third_party->data['town'] : 'N/D'; ?>

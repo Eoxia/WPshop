@@ -25,7 +25,7 @@ defined( 'ABSPATH' ) || exit;
  */
 ?>
 
-<div class="wps-metabox wps-order-payment">
+<div class="wps-metabox wps-order-payment gridw-2">
 	<h3 class="metabox-title"><?php esc_html_e( 'Payments', 'wpshop' ); ?></h3>
 
 	<table class="wpeo-table">
@@ -57,15 +57,15 @@ defined( 'ABSPATH' ) || exit;
 
 		<tfoot>
 			<tr>
-				<td colspan="3"><?php esc_html_e( 'Already paid' ); ?></td>
+				<td colspan="3"><?php esc_html_e( 'Already settled', 'wpshop' ); ?></td>
 				<td class="table-end"><?php echo ( ! empty( $already_paid ) ) ? number_format( $already_paid, 2, ',', '' ) : '00,00'; ?>€</td>
 			</tr>
 			<tr>
-				<td colspan="3"><?php esc_html_e( 'Billed' ); ?></td>
+				<td colspan="3"><?php esc_html_e( 'Billed','wpshop' ); ?></td>
 				<td class="table-end"><?php echo ( ! empty( $total_ttc_invoices ) ) ? number_format( $total_ttc_invoices, 2, ',', '' ) : number_format( $order->data['total_ttc'], 2, ',', '' ); ?>€</td>
 			</tr>
 			<tr>
-				<td colspan="3"><?php esc_html_e( 'Remaining unpaid' ); ?></td>
+				<td colspan="3"><?php esc_html_e( 'Remaining unpaid', 'wpshop' ); ?></td>
 				<td class="table-end"><strong><?php echo number_format( $remaining_unpaid, 2, ',', '' ); ?>€</strong></td>
 			</tr>
 		</tfoot>

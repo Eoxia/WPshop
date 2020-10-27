@@ -68,10 +68,10 @@ class Doli_Third_Parties extends Singleton_Util {
 			$data_sha['doli_id'] = (int)$doli_third_party->id;
 			$data_sha['wp_id'] = (int)$wp_third_party->data['id'];
 			$data_sha['title'] = $wp_third_party->data['title'];
+			$data_sha['town'] = $wp_third_party->data['town'];
 			$data_sha['zip'] = $wp_third_party->data['zip'];
 			$data_sha['state'] = $wp_third_party->data['state'];
 			$data_sha['country'] = $wp_third_party->data['country'];
-			$data_sha['town'] = $wp_third_party->data['town'];
 			$data_sha['address'] = $wp_third_party->data['address'];
 			$data_sha['phone'] = $wp_third_party->data['phone'];
 			$data_sha['email'] = $wp_third_party->data['email'];

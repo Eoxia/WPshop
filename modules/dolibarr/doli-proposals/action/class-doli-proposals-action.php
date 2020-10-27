@@ -101,10 +101,11 @@ class Doli_Proposals_Action {
 	public function callback_add_menu_page() {
 		if ( isset( $_GET['id'] ) ) {
 			$id = ! empty( $_GET['id'] ) ? (int) $_GET['id'] : 0;
-			$doli_proposal = Request_Util::get( 'proposals/' . $id );
-			$wp_proposal   = Proposals::g()->get( array( 'schema' => true ), true );
-			$wp_proposal   = Doli_Proposals::g()->doli_to_wp( $doli_proposal, $wp_proposal, true );
-			//$proposal    = Proposals::g()->get( array( 'id' => $id ), true );
+			$doli_proposal   = Request_Util::get( 'proposals/' . $id );
+			$wp_proposal     = Proposals::g()->get( array( 'schema' => true ), true );
+			$wp_proposal     = Doli_Proposals::g()->doli_to_wp( $doli_proposal, $wp_proposal, true );
+			//$proposal      = Proposals::g()->get( array( 'id' => $id ), true );
+			$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
 
 			$third_party = Third_Party::g()->get( array( 'id' => $wp_proposal->data['parent_id'] ), true );
 
@@ -117,6 +118,7 @@ class Doli_Proposals_Action {
 			View_Util::exec( 'wpshop', 'proposals', 'single', array(
 				'third_party' => $third_party,
 				'proposal'    => $wp_proposal,
+				'doli_url'    => $dolibarr_option['dolibarr_url'],
 			) );
 		} else {
 			$per_page = get_user_meta( get_current_user_id(), Doli_Proposals::g()->option_per_page, true );

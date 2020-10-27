@@ -14,6 +14,8 @@ window.eoxiaJS.wpshopFrontend = {};
  * @version 2.0.0
  */
 window.eoxiaJS.wpshop.init = function() {
+	window.eoxiaJS.wpshop.event();
+
 	if ( jQuery( '.wps-sync' ).length ) {
 		jQuery( '.wps-sync' ).each( function() {
 			var data = {
@@ -53,4 +55,26 @@ window.eoxiaJS.wpshop.init = function() {
 			jQuery( 'body' ).append( response.data.view );
 		}
 	} );
+};
+
+/**
+ * Les évènements du core.
+ *
+ * @since   2.3.0
+ * @version 2.3.0
+ */
+window.eoxiaJS.wpshop.event = function() {
+	jQuery( document ).on( 'click', '.wpeo-notification .notification-close', window.eoxiaJS.wpshop.close );
+};
+
+/**
+ * Fait disparaitre la popup notification.
+ *
+ * @since   2.3.0
+ * @version 2.3.0
+ *
+ * @param {ClickEvent}  event [displayBlockStock].
+ */
+window.eoxiaJS.wpshop.close = function( event) {
+	jQuery( this ).closest( '.wpeo-notification' ).fadeOut();
 };

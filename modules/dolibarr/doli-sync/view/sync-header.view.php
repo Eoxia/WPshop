@@ -13,4 +13,4 @@ namespace wpshop;
 
 defined( 'ABSPATH' ) || exit; ?>
 
-<div class="table-cell table-100"><?php esc_html_e( 'Synchro', 'wpshop' ); ?></div>
+<div class="table-cell table-200"><?php esc_html_e( 'Synchro', 'wpshop' ); ?></div>

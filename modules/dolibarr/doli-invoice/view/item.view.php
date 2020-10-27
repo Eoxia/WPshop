@@ -24,17 +24,17 @@ defined( 'ABSPATH' ) || exit;
 <div class="table-row">
 	<div class="table-cell table-25"><input type="checkbox" class="check"/></div>
 	<div class="table-cell table-full">
-		<ul class="reference-id">
+			<ul class="reference-id">
 			<?php if ( ! empty( $invoice->data['external_id'] ) ) : ?>
 				<li><i class="fas fa-hashtag"></i>Doli : <?php echo esc_html( $invoice->data['external_id'] ); ?></li>
 			<?php endif; ?>
-			<li><i class="fas fa-calendar-alt"></i> <?php echo esc_html( $invoice->data['date']['rendered']['date_time'] ); ?></li>
+			<li><i class="fas fa-calendar-alt"></i> <?php echo esc_html( date( "d/m/Y H:i" , strtotime( $invoice->data['date_invoice'] ) ) ); ?> </li>
 		</ul>
 		<div class="reference-title">
-			<a href="<?php echo esc_attr( admin_url( 'admin.php?page=wps-invoice&id=' . $invoice->data['id'] ) ); ?>"><?php echo esc_html( $invoice->data['title'] ); ?></a>
+			<a href="<?php echo esc_attr( admin_url( 'admin.php?page=wps-invoice&id=' . $invoice->data['external_id'] ) ); ?>"><?php echo esc_html( $invoice->data['title'] ); ?></a>
 		</div>
 		<ul class="reference-actions">
-			<li><a href="<?php echo esc_attr( admin_url( 'admin.php?page=wps-invoice&id=' . $invoice->data['id'] ) ); ?>"><?php esc_html_e( 'See', 'wpshop' ); ?></a></li>
+			<li><a href="<?php echo esc_attr( admin_url( 'admin.php?page=wps-invoice&id=' . $invoice->data['external_id'] ) ); ?>"><?php esc_html_e( 'See', 'wpshop' ); ?></a></li>
 			<?php if ( ! empty( $invoice->data['external_id'] ) ) : ?>
 				<li><a href="<?php echo esc_attr( $doli_url ); ?>/compta/facture/card.php?facid=<?php echo $invoice->data['external_id']; ?>" target="_blank"><?php esc_html_e( 'See in Dolibarr', 'wpshop' ); ?></a></li>
 			<?php endif; ?>
@@ -45,7 +45,9 @@ defined( 'ABSPATH' ) || exit;
 			<?php if ( ! empty( $invoice->data['order']->data['external_id'] ) ) : ?>
 				<li><i class="fas fa-hashtag"></i>Doli : <?php echo esc_html( $invoice->data['order']->data['external_id'] ); ?></li>
 			<?php endif; ?>
-			<li><i class="fas fa-calendar-alt"></i> <?php echo esc_html( date( "d/m/Y h:i" , strtotime( $invoice->data['order']->data['datec'] ) ) ); ?></li>
+			<?php if ( ! empty( $invoice->data['order']->data['datec'] ) ) : ?>
+				<li><i class="fas fa-calendar-alt"></i> <?php echo esc_html( date( "d/m/Y H:i" , strtotime( $invoice->data['order']->data['datec'] ) ) ); ?></li>
+			<?php endif; ?>
 		</ul>
 		<div class="reference-title">
 			<?php if ( ! empty( $invoice->data['order'] ) ) : ?>

@@ -23,23 +23,30 @@ defined( 'ABSPATH' ) || exit;
  */
 ?>
 
-<div class="wrap wpeo-wrap page-single">
-	<div class="page-header">
-		<h2>
-			<?php
-			if ( 0 === $third_party->data['id'] ) :
-				View_Util::exec( 'wpshop', 'third-parties', 'single-title-edit', array(
-					'third_party' => $third_party,
-				) );
-			else :
-				View_Util::exec( 'wpshop', 'third-parties', 'single-title', array(
-					'third_party' => $third_party,
-				) );
-			endif;
-			?>
-		</h2>
+<div class="wrap wpeo-wrap wpeo-page-single">
+	<div class="wps-page-header">
+		<div class="wps-page-header-title-container">
+			<div class="wps-page-header-title">
+				<?php
+				if ( 0 === $third_party->data['id'] ) :
+					View_Util::exec( 'wpshop', 'third-parties', 'single-title-edit', array(
+						'third_party' => $third_party,
+					) );
+				else :
+					View_Util::exec( 'wpshop', 'third-parties', 'single-title', array(
+						'third_party' => $third_party,
+					) );
+				endif;
+				?>
+			</div>
+			<div class="wps-page-header-actions">
+				<?php if ( Settings::g()->dolibarr_is_active() ) : ?>
+					<a class="button <?php echo empty( $third_party->data['external_id'] ) ? 'disabled' : ''; ?>" href="<?php echo esc_attr( $doli_url ); ?>/societe/card.php?id=<?php echo $third_party->data['external_id']; ?>" target="_blank"><?php esc_html_e( 'Edit in Dolibarr', 'wpshop' ); ?></a>
+				<?php endif; ?>
+			</div>
+		</div>
+		<?php do_action( 'wps_listing_table_end', $third_party, $sync_status = true ); ?>
 	</div>
-	<div style=""><?php do_action( 'wps_listing_table_end', $third_party, $sync_status = true ); ?></div>
 	<div class="wps-page-content wpeo-gridlayout grid-6">
 		<?php do_action( 'wps_third_party', $third_party ); ?>
 	</div>

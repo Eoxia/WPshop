@@ -31,7 +31,7 @@ defined( 'ABSPATH' ) || exit;
 		</div>
 		<ul class="reference-actions">
 			<li><a href="<?php echo esc_attr( admin_url( 'post.php?post=' . $product->data['id'] . '&action=edit' ) ); ?>"><?php esc_html_e( 'Edit', 'wpshop' ); ?></a></li>
-			<?php if ( ! empty( $product->data['external_id'] ) ) : ?>
+			<?php if ( Settings::g()->dolibarr_is_active() && ! empty( $product->data['external_id'] ) ) : ?>
 				<li><a href="<?php echo esc_attr( $doli_url ); ?>/product/card.php?id=<?php echo $product->data['external_id']; ?>" target="_blank"><?php esc_html_e( 'Edit in Dolibarr', 'wpshop' ); ?></a></li>
 			<?php endif; ?>
 			<li><a href="<?php echo esc_attr( get_post_permalink( $product->data['id'] ) ); ?>"><?php esc_html_e( 'Preview', 'wpshop' ); ?></a></li>
@@ -46,7 +46,7 @@ defined( 'ABSPATH' ) || exit;
 	<div class="table-cell table-100"><?php echo esc_html( number_format( $product->data['tva_tx'], 2, ',', '' ) ); ?>%</div>
 	<div class="table-cell table-100"><strong><?php echo esc_html( number_format( $product->data['price_ttc'], 2, ',', '' ) ); ?>€</strong></div>
 	<div class="table-cell table-100"><?php echo esc_html( ucfirst( get_post_status( $product->data['id'] ) ) ); ?></div>
-	<div class="table-cell"><strong><?php echo $product->data['manage_stock'] ? $product->data['stock'] : __( 'No handle stock', 'wpshop' ); ?></strong></div>
+	<div class="table-cell table-100"><strong><?php echo $product->data['manage_stock'] ? $product->data['stock'] : __( 'No handle stock', 'wpshop' ); ?></strong></div>
 	<?php do_action( 'wps_listing_table_end', $product, $sync_status ); ?>
 
 </div>

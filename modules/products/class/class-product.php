@@ -186,10 +186,28 @@ class Product extends Post_Class {
 	 * @version 2.1.0
 	 */
 	public function callback_register_meta_box() {
+		if ( Settings::g()->dolibarr_is_active() ) {
+			add_meta_box(
+				'wp_product_title',
+				__( 'Product title', 'wpshop' ),
+				array( $this, 'callback_add_meta_box_title' ),
+				'wps-product',
+				'normal',
+				'high'
+			);
+		}
+
 		add_meta_box(
 			'wps_product_configuration',
-			__( 'Product configuration', 'wpshop'),
+			__( 'Dolibarr Product configuration', 'wpshop'),
 			array( $this, 'callback_add_meta_box' ),
+			'wps-product'
+		);
+
+		add_meta_box(
+			'wps_product_configuration_wordpress',
+			__( 'WordPress Product configuration', 'wpshop'),
+			array( $this, 'callback_add_meta_box_configuration' ),
 			'wps-product'
 		);
 
@@ -230,15 +248,41 @@ class Product extends Post_Class {
 		$parsed_args = wp_parse_args( $args, $defaults );
 		$tax_name    = esc_attr( $parsed_args['taxonomy'] );
 		$taxonomy    = get_taxonomy( $parsed_args['taxonomy'] );
+		$categories  = Doli_Category::g()->get();
 
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
 		View_Util::exec( 'wpshop', 'products', 'metabox/categories', array(
 			'parsed_args' => $parsed_args,
 			'tax_name'    => $tax_name,
 			'taxonomy'    => $taxonomy,
-			'post'        => $post
+			'post'        => $post,
+			'categories'  => $categories
 		) );
 	}
+
+	/**
+	 * La metabox affichant le titre et l'état de synchro du produit.
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 *
+	 * @param WP_Post $post Le produit.
+	 */
+	public function callback_add_meta_box_title( $post ) {
+		$product = $this->get( array( 'id' => $post->ID ), true );
+		if ( empty( $product ) ) {
+			$product = $this->get( array( 'schema' => true ), true );
+		}
+		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
+
+		View_Util::exec( 'wpshop', 'products', 'metabox/title', array(
+			'id'               => ! empty( $product->data['id'] ) ? $product->data['id'] : $post->ID,
+			'product'          => $product,
+			'sync_status'      => false,
+			'doli_url'         => $dolibarr_option['dolibarr_url'],
+		) );
+	}
+
 	/**
 	 * La vue de la metabox pour configurer le produit.
 	 *
@@ -260,6 +304,34 @@ class Product extends Post_Class {
 			$product->data['parent_post'] = $parent_post;
 		}
 
+		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
+		View_Util::exec( 'wpshop', 'products', 'metabox/main', array(
+			'id'               => ! empty( $product->data['id'] ) ? $product->data['id'] : $post->ID,
+			'product'          => $product,
+		) );
+	}
+
+	/**
+	 * La vue de la metabox pour configurer le produit.
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 *
+	 * @param WP_Post $post Le produit.
+	 */
+	public function callback_add_meta_box_configuration( $post ) {
+		$product = $this->get( array( 'id' => $post->ID ), true );
+
+		if ( empty( $product ) ) {
+			$product = $this->get( array( 'schema' => true ), true );
+		}
+
+		if ( ! empty( $product->data['fk_product_parent'] ) ) {
+			$parent_post = get_post( Doli_Products::g()->get_wp_id_by_doli_id( $product->data['fk_product_parent'] ) );
+
+			$product->data['parent_post'] = $parent_post;
+		}
+
 		$similar_products = array();
 
 		if ( ! empty( $product->data['similar_products_id'] ) ) {
@@ -267,7 +339,7 @@ class Product extends Post_Class {
 		}
 
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
-		View_Util::exec( 'wpshop', 'products', 'metabox/main', array(
+		View_Util::exec( 'wpshop', 'products', 'metabox/configuration', array(
 			'id'               => ! empty( $product->data['id'] ) ? $product->data['id'] : $post->ID,
 			'product'          => $product,
 			'doli_url'         => $dolibarr_option['dolibarr_url'],

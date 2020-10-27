@@ -28,14 +28,14 @@ defined( 'ABSPATH' ) || exit;
 <div class="wps-list-product wpeo-table table-flex table-7">
 	<div class="table-row table-header">
 		<div class="table-cell table-50"><input type="checkbox" /></div>
-		<div class="table-cell table-150"><?php esc_html_e( 'Thumbnail', 'wpshop' ); ?></div>
+		<div class="table-cell table-100"><?php esc_html_e( 'Thumbnail', 'wpshop' ); ?></div>
 		<div class="table-cell table-full"><?php esc_html_e( 'Title', 'wpshop' ); ?></div>
 		<div class="table-cell table-100"><?php esc_html_e( 'Categories', 'wpshop' ); ?></div>
 		<div class="table-cell table-100"><?php esc_html_e( 'Price HT(€)', 'wpshop' ); ?></div>
 		<div class="table-cell table-100"><?php esc_html_e( 'Tax Rate', 'wpshop' ); ?>%</div>
 		<div class="table-cell table-100"><?php esc_html_e( 'Price TTC(€)', 'wpshop' ); ?></div>
 		<div class="table-cell table-100"><?php esc_html_e( 'Status', 'wpshop' ); ?></div>
-		<div class="table-cell"><?php esc_html_e( 'Stock', 'wpshop' ); ?></div>
+		<div class="table-cell table-100"><?php esc_html_e( 'Stock', 'wpshop' ); ?></div>
 		<?php do_action( 'wps_listing_table_header_end', 'products' ); ?>
 	</div>
 

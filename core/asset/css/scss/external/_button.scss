@@ -9,3 +9,7 @@
 		line-height: 24px;
 	}
 }
+
+.button.disabled {
+	pointer-events: none;
+}

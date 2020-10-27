@@ -163,9 +163,12 @@ class Doli_Order_Action {
 				}
 			}
 
+			$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
+
 			View_Util::exec( 'wpshop', 'doli-order', 'single', array(
 				'third_party' => $third_party,
 				'order'       => $wp_order,
+				'doli_url'    => $dolibarr_option['dolibarr_url'],
 			) );
 		} else {
 			// Listing page.

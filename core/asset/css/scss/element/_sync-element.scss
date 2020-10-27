@@ -1,49 +1,89 @@
 /** Synchro */
 .wps-sync {
-	.button-synchro {
-		float: left;
-		width: 25px;
-		height: 25px;
-		background: rgba(0,0,0,0.1);
-		color: rgba(0,0,0,0.6);
-		text-align: center;
-		line-height: 25px;
-		border-radius: 50%;
-		@include transition();
+	.wps-sync-container {
+		background: rgba(0,0,0,0.05);
+		border: 1px solid rgba(0,0,0,0.1);
+		display: flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		padding: 0.5em;
 
-		i {
-			@include transition();
-		}
-
-		&:hover {
-			cursor: pointer;
-			background: rgba(0,0,0,0.2);
-
-			i {
-				transform: rotate(180deg);
-			}
+		ul {
+			margin: 0;
 		}
 	}
 
-	.statut {
-		float: left;
-		width: 25px;
-		height: 25px;
-		border-radius: 50%;
-		margin-left: 0.6em;
-		background: rgba(0,0,0,0.1);
+	.sync-id {
+		li {
+			display: block;
+			margin-bottom: 0.4em;
 
-		&.statut-grey {
-			background: $color__grey;
+			&::after {
+				display: block;
+				content: '';
+				clear: both;
+			}
+			&:last-child {
+				margin-bottom: 0;
+			}
 		}
-		&.statut-green {
-			background: $color__green;
+		img {
+			width: 20px;
+			height: auto;
+			border-radius: 50%;
+			float: left;
+			margin-right: 0.4em;
 		}
-		&.statut-orange {
-			background: $color__yellow;
+	}
+
+	.sync-action {
+		margin: auto 0 auto auto;
+
+		.button-synchro {
+			float: left;
+			width: 25px;
+			height: 25px;
+			background: rgba(0,0,0,0.1);
+			color: rgba(0,0,0,0.6);
+			text-align: center;
+			line-height: 25px;
+			border-radius: 50%;
+			@include transition();
+
+			i {
+				@include transition();
+			}
+
+			&:hover {
+				cursor: pointer;
+				background: rgba(0,0,0,0.2);
+
+				i {
+					transform: rotate(180deg);
+				}
+			}
 		}
-		&.statut-red {
-			background: $color__red;
+
+		.statut {
+			float: left;
+			width: 25px;
+			height: 25px;
+			border-radius: 50%;
+			margin-left: 0.6em;
+			background: rgba(0,0,0,0.1);
+
+			&.statut-grey {
+				background: $color__grey;
+			}
+			&.statut-green {
+				background: $color__green;
+			}
+			&.statut-orange {
+				background: $color__yellow;
+			}
+			&.statut-red {
+				background: $color__red;
+			}
 		}
 	}
 }

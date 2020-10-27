@@ -23,7 +23,7 @@ defined( 'ABSPATH' ) || exit;
 ?>
 
 <div class="table-row" data-id="<?php echo esc_attr( $third_party->data['id'] ); ?>">
-	<div class="table-cell table-200">
+	<div class="table-cell table-full">
 		<div class="reference-title">
 			<a href="<?php echo esc_attr( admin_url( 'admin.php?page=wps-third-party&id=' . $third_party->data['id'] ) ); ?>"><?php echo esc_html( $third_party->data['title'] ); ?></a>
 		</div>
@@ -34,13 +34,12 @@ defined( 'ABSPATH' ) || exit;
 		<?php endif; ?>
 		<ul class="reference-actions">
 			<li><a href="<?php echo esc_attr( admin_url( 'admin.php?page=wps-third-party&id=' . $third_party->data['id'] ) ); ?>"><?php esc_html_e( 'See', 'wpshop' ); ?></a></li>
-			<?php if ( ! empty( $third_party->data['external_id'] ) ) : ?>
+			<?php if ( Settings::g()->dolibarr_is_active() && ! empty( $third_party->data['external_id'] ) ) : ?>
 				<li><a href="<?php echo esc_attr( $doli_url ); ?>/societe/card.php?id=<?php echo $third_party->data['external_id']; ?>" target="_blank"><?php esc_html_e( 'Edit in Dolibarr', 'wpshop' ); ?></a></li>
 			<?php endif; ?>
 		</ul>
 	</div>
-	<div class="table-cell table-300"><?php User::g()->display( $third_party ); ?></div>
+	<div class="table-cell table-275"><?php User::g()->display( $third_party ); ?></div>
 	<div class="table-cell table-350"><?php Third_Party::g()->display_commercial( $third_party->data ); ?></div>
-	<div class="table-cell table-full"></div>
 	<?php do_action( 'wps_listing_table_end', $third_party, $sync_status ); ?>
 </div>

@@ -45,7 +45,7 @@ defined( 'ABSPATH' ) || exit;
 					<div class="table-cell"><?php esc_html_e('unknown', 'wpshop' ); ?></div>
 				<?php endif; ?>
 					<div class="table-cell"><?php echo esc_html( number_format( $invoice->data['total_ttc'], 2, ',', '' ) ); ?>€</div>
-					<div class="table-cell"><?php echo esc_html( date( 'd/m/Y H:i', strtotime( $invoice->data['datec'] ) ) ); ?></div>
+					<div class="table-cell"><?php echo esc_html( date( 'd/m/Y H:i', strtotime( $invoice->data['date_invoice'] ) ) ); ?></div>
 				</div>
 			<?php endforeach;
 		else : ?>
