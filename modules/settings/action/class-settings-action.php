@@ -134,6 +134,7 @@ class Settings_Action {
 		$thumbnail_size['height'] = ! empty( $thumbnail_size['height'] ) ? (int) $thumbnail_size['height'] : 0;
 		$use_quotation            = isset( $_POST['use_quotation'] ) && 'on' == $_POST['use_quotation'] ? true : false;
 		$split_product            = isset( $_POST['split_product'] ) && 'on' == $_POST['split_product'] ? true : false;
+		$debug_mode               = isset( $_POST['debug_mode'] ) && 'on' == $_POST['debug_mode'] ? true : false;
 
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
 
@@ -144,6 +145,7 @@ class Settings_Action {
 		$dolibarr_option['split_product']            = $split_product;
 
 		update_option( 'wps_dolibarr', $dolibarr_option );
+		update_option( 'debug_mode', $debug_mode );
 
 		$response = Request_Util::get( 'status' );
 		if ( false === $response ) {

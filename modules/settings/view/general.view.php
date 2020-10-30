@@ -64,6 +64,13 @@ defined( 'ABSPATH' ) || exit;
 		</label>
 	</div>
 
+	<div class="form-element">
+		<label class="form-field-container">
+			<input type="checkbox" id="debug_mode" class="form-field" name="debug_mode" <?php echo $debug_mode ? 'checked="checked"' : ''; ?> />
+			<label for="debug_mode"><?php esc_html_e( 'Debug mode', 'wpshop' ); ?></label>
+		</label>
+	</div>
+
 	<div>
 		<input type="submit" class="wpeo-button button-main" value="<?php esc_html_e( 'Save Changes', 'wpshop' ); ?>" />
 	</div>

@@ -49,6 +49,8 @@ class Settings extends Singleton_Util {
 	 */
 	protected function construct() {
 		$this->default_settings = array(
+			'debug_mode'          => false,
+
 			'dolibarr_url'        => 'http://www.votredolibarr.ext',
 			'dolibarr_secret'     => '',
 			'dolibarr_public_key' => '',
@@ -119,8 +121,10 @@ class Settings extends Singleton_Util {
 	 */
 	public function display_general( $section = '' ) {
 		$dolibarr_option = get_option( 'wps_dolibarr', $this->default_settings );
+		$debug_mode      = get_option( 'debug_mode', $this->default_settings );
 
 		View_Util::exec( 'wpshop', 'settings', 'general', array(
+			'debug_mode'      => $debug_mode,
 			'dolibarr_option' => $dolibarr_option,
 		) );
 	}
@@ -302,6 +306,20 @@ class Settings extends Singleton_Util {
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
 
 		return $dolibarr_option['split_product'];
+	}
+
+	/**
+	 * Vérifie si dolibarr est actif.
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 *
+	 * @return boolean true or false.
+	 */
+	public function debug_mode() {
+		$debug_mode = get_option( 'debug_mode', Settings::g()->default_settings );
+
+		return $debug_mode;
 	}
 }
 
