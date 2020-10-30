@@ -85,7 +85,7 @@ class Cart_Action {
 		check_ajax_referer( 'add_to_cart' );
 
 		$id   = ! empty( $_POST['id'] ) ? (int) $_POST['id'] : 0;
-		$qty  = ! empty( $_POST['qty'] ) ? (int) $_POST['qty'] : 1;
+		$qty  = ! empty( $_POST['qty'] ) ? (float) $_POST['qty'] : 1;
 		$desc = ! empty( $_POST['desc'] ) ? sanitize_text_field( $_POST['desc'] ) : '';
 
 		if ( empty( $id ) ) {
