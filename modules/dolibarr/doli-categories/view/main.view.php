@@ -22,7 +22,7 @@ defined( 'ABSPATH' ) || exit;
 
 <div class="wrap wpeo-wrap">
 	<h2>
-		<?php esc_html_e( 'Categories', 'wpshop' ); ?>
+		<?php esc_html_e( 'Categories WPshop', 'wpshop' ); ?>
 		<?php if ( ! Settings::g()->dolibarr_is_active() ) : ?>
 			<a href="<?php echo esc_attr( admin_url( 'post-new.php?post_type=wps-product-cat' ) ); ?>" class="wpeo-button button-main"><?php esc_html_e( 'Add', 'wpshop' ); ?></a>
 		<?php else: ?>
