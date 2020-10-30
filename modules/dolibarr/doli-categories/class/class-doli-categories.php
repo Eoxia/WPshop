@@ -119,6 +119,13 @@ class Doli_Category extends Term_Class {
 		}
 
 		$doli_categories = Request_Util::get( $route );
+
+		foreach ( $doli_categories as $key => $doli_category ) {
+			if ( $doli_category->array_options->options__wps_id == 0 ) {
+				unset( $doli_categories[$key] );
+			}
+		}
+
 		$wp_categories   = $this->convert_to_wp_category_format( $doli_categories );
 
 //		if ( ! empty($wp_categories)) {
