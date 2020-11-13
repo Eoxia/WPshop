@@ -6,7 +6,7 @@
  * @author    Eoxia <dev@eoxia.com>
  * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
- * @version   2.1.0
+ * @version   2.3.1
  */
 
 namespace wpshop;
@@ -45,7 +45,7 @@ class Settings extends Singleton_Util {
 	 * Le constructeur.
 	 *
 	 * @since   2.0.0
-	 * @version 2.1.0
+	 * @version 2.3.1
 	 */
 	protected function construct() {
 		$this->default_settings = array(
@@ -309,10 +309,10 @@ class Settings extends Singleton_Util {
 	}
 
 	/**
-	 * Vérifie si dolibarr est actif.
+	 * Vérifie si le mode debug est actif.
 	 *
-	 * @since   2.0.0
-	 * @version 2.0.0
+	 * @since   2.3.1
+	 * @version 2.3.1
 	 *
 	 * @return boolean true or false.
 	 */

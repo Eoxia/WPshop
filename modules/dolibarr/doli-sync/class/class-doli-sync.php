@@ -6,7 +6,7 @@
  * @author    Eoxia <dev@eoxia.com>
  * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
- * @version   2.0.0
+ * @version   2.3.1
  */
 
 namespace wpshop;
@@ -152,7 +152,7 @@ class Doli_Sync extends Singleton_Util {
 	 * @todo: Translate to english.
 	 *
 	 * @since   2.0.0
-	 * @version 2.0.0
+	 * @version 2.3.1
 	 *
 	 * @param  integer $wp_id    L'id de l'entitée sur WordPress.
 	 * @param  integer $entry_id L'id de l'entitée sur Dolibarr.
@@ -242,7 +242,7 @@ class Doli_Sync extends Singleton_Util {
 	 * Vérifie la SHA256 entre une entité WPShop et une entité Dolibarr.
 	 *
 	 * @since   2.0.0
-	 * @version 2.0.0
+	 * @version 2.3.1
 	 *
 	 * @param   integer $id   L'id de l'entité WordPress.
 	 * @param   string  $type Le type de l'entité.

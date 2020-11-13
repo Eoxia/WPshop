@@ -6,7 +6,7 @@
  * @author    Eoxia <dev@eoxia.com>
  * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
- * @version   2.1.0
+ * @version   2.3.1
  */
 
 namespace wpshop;
@@ -352,7 +352,7 @@ class Product extends Post_Class {
 	 * La vue de la metabox pour configurer la galerie d'image du produit.
 	 *
 	 * @since   2.1.0
-	 * @version 2.1.0
+	 * @version 2.3.1
 	 *
 	 * @param WP_Post $post Le produit.
 	 */
