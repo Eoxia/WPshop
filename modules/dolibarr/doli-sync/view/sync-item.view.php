@@ -31,6 +31,7 @@ defined( 'ABSPATH' ) || exit;
 			<li><img src="<?php echo PLUGIN_WPSHOP_URL . '/core/asset/image/logo-dolibarr.jpg'; ?>" /> <strong><i class="fas fa-hashtag"></i><?php echo ! empty( $object->data['external_id'] ) ? esc_html( $object->data['external_id'] ) : "N/A"; ?></strong></li>
 		</ul>
 		<div class="sync-action">
+			<?php if ( $status_color != 'green' ) : ?>
 			<div class="button-synchro <?php echo $can_sync ? 'action-attribute' : 'wpeo-modal-event'; ?>"
 				 data-class="synchro-single wpeo-wrap"
 				<?php // translators: Associate and synchronize object name. ?>
@@ -39,8 +40,9 @@ defined( 'ABSPATH' ) || exit;
 				 data-wp-id="<?php echo esc_attr( $object->data['id'] ); ?>"
 				 data-entry-id="<?php echo esc_attr( $object->data['external_id'] ); ?>"
 				 data-type="<?php echo esc_attr( $type ); ?>"
-				 data-nonce="<?php echo esc_attr( wp_create_nonce( $can_sync ? 'sync_entry' : 'load_associate_modal' ) ); ?>"><i class="fas fa-sync"></i></div>
-
+				 data-nonce="<?php echo esc_attr( wp_create_nonce( $can_sync ? 'sync_entry' : 'load_associate_modal' ) ); ?>"><i class="fas fa-sync"></i>
+			</div>
+			<?php endif; ?>
 			<div class="statut statut-<?php echo esc_attr( $status_color ); ?> wpeo-tooltip-event" data-direction="left" aria-label="<?php echo esc_html( $message_tooltip ); ?>"></div>
 		</div>
 	</div>
