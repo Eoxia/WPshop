@@ -384,6 +384,17 @@ class Product extends Post_Class {
 
 		$data_sha = Doli_Documents::g()->build_sha_documents( $post->ID, $doli_documents );
 
+		if ( $sha256 == $data_sha && count($wp_documents) > 0 ) {
+			$attachments = Doli_Documents::g()->get_attachments( $product, $mine_type );
+
+			if ( ! empty( $attachments ) ) {
+				foreach ( $attachments as $attachment ) {
+					wp_delete_attachment( $attachment['ID'] );
+				}
+			}
+
+			Doli_Documents::g()->create_attachments( $wp_documents, $product , $mine_type );
+		}
 
 		if ( $sha256 != $data_sha ) {
 
@@ -456,7 +467,19 @@ class Product extends Post_Class {
 		$sha256   = get_post_meta( $post->ID, 'sha256_documents', true );
 		$data_sha = Doli_Documents::g()->build_sha_documents( $post->ID, $doli_documents );
 
-		if ( $sha256 == $data_sha ) {
+		if ( $sha256 == $data_sha && count($wp_documents) > 0 ) {
+			$attachments = Doli_Documents::g()->get_attachments( $product, $mine_type );
+
+			if ( ! empty( $attachments ) ) {
+				foreach ( $attachments as $attachment ) {
+					wp_delete_attachment( $attachment['ID'] );
+				}
+			}
+
+			Doli_Documents::g()->create_attachments( $wp_documents, $product , $mine_type );
+		}
+
+		if ( $sha256 != $data_sha ) {
 
 			$attachments = Doli_Documents::g()->get_attachments( $product, $mine_type );
 
