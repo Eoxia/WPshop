@@ -265,6 +265,18 @@ class Doli_Sync extends Singleton_Util {
 
 		$response = Request_Util::get( $sync_info['endpoint'] . '/' . $external_id );
 
+		if ( Settings::g()->debug_mode() ) {
+			//Start
+			echo '<pre>';
+			print_r(266 );
+			print_r($response);
+			print_r('check dolibarr');
+			print_r(4);
+			echo '</pre>';
+			//exit;
+			//End
+		}
+
 		// Dolibarr return false when object is not found.
 		if ( ! $response ) {
 			// @todo: Doublon
