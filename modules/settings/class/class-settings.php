@@ -121,7 +121,7 @@ class Settings extends Singleton_Util {
 	 */
 	public function display_general( $section = '' ) {
 		$dolibarr_option = get_option( 'wps_dolibarr', $this->default_settings );
-		$debug_mode      = get_option( 'debug_mode', $this->default_settings );
+		$debug_mode      = get_option( 'debug_mode', $this->default_settings['debug_mode'] );
 
 		View_Util::exec( 'wpshop', 'settings', 'general', array(
 			'debug_mode'      => $debug_mode,
