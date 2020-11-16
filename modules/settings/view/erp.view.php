@@ -43,7 +43,7 @@ defined( 'ABSPATH' ) || exit;
 			<?php endif; ?>
 		</span>
 		<label class="form-field-container">
-			<input type="text" class="form-field" name="dolibarr_secret" value="<?php echo esc_attr( $dolibarr_option['dolibarr_secret'] ); ?>" />
+			<input type="password" class="form-field" name="dolibarr_secret" value="<?php echo esc_attr( $dolibarr_option['dolibarr_secret'] ); ?>" />
 		</label>
 	</div>
 

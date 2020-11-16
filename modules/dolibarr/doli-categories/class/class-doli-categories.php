@@ -118,15 +118,23 @@ class Doli_Category extends Term_Class {
 			$route .= '&sqlfilters=(t.ref%3Alike%3A\'%25' . $s . '%25\')';
 		}
 
-		$wp_categories = Doli_Category::g()->get();
+		$doli_categories = Request_Util::get( $route );
 
-		if ( ! empty($wp_categories)) {
-			foreach( $wp_categories as $wp_category) {
-				if (empty($wp_category->data['external_id'] || $wp_category->data['external_id'] == 0)) {
-					wp_delete_term($wp_category->data['id'],'wps-product-cat');
-				}
+		foreach ( $doli_categories as $key => $doli_category ) {
+			if ( $doli_category->array_options->options__wps_id == 0 ) {
+				unset( $doli_categories[$key] );
 			}
 		}
+
+		$wp_categories   = $this->convert_to_wp_category_format( $doli_categories );
+
+//		if ( ! empty($wp_categories)) {
+//			foreach( $wp_categories as $wp_category) {
+//				if (empty($wp_category->data['external_id'] || $wp_category->data['external_id'] == 0)) {
+//					wp_delete_term($wp_category->data['id'],'wps-product-cat');
+//				}
+//			}
+//		}
 
 		View_Util::exec( 'wpshop', 'doli-categories', 'list', array(
 			'categories' => $wp_categories,
@@ -189,6 +197,7 @@ class Doli_Category extends Term_Class {
 		'messages' => array(),
 	) ) {
 		$category = null;
+
 		$doli_category = Request_Util::get( 'categories/' . $doli_category->id ); // Charges par la route single des factures pour avoir accès à linkedObjectsIds->commande.
 
 		$wp_category->data['external_id'] = (int) $doli_category->id;
@@ -196,9 +205,6 @@ class Doli_Category extends Term_Class {
 		$wp_category->data['name'] = $doli_category->label;
 		if ( ! empty($doli_category->array_options->options__wps_slug) ) {
 			$wp_category->data['slug'] = $doli_category->array_options->options__wps_slug;
-		}
-		if ( ! empty($doli_category->array_options->options__wps_id) ) {
-			$wp_category->data['id'] = (int) $doli_category->array_options->options__wps_id;
 		}
 
 		$wp_category = Doli_Category::g()->update( $wp_category->data );

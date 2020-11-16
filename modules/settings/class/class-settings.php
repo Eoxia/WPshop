@@ -6,7 +6,7 @@
  * @author    Eoxia <dev@eoxia.com>
  * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
- * @version   2.1.0
+ * @version   2.3.1
  */
 
 namespace wpshop;
@@ -45,10 +45,12 @@ class Settings extends Singleton_Util {
 	 * Le constructeur.
 	 *
 	 * @since   2.0.0
-	 * @version 2.1.0
+	 * @version 2.3.1
 	 */
 	protected function construct() {
 		$this->default_settings = array(
+			'debug_mode'          => false,
+
 			'dolibarr_url'        => 'http://www.votredolibarr.ext',
 			'dolibarr_secret'     => '',
 			'dolibarr_public_key' => '',
@@ -119,8 +121,10 @@ class Settings extends Singleton_Util {
 	 */
 	public function display_general( $section = '' ) {
 		$dolibarr_option = get_option( 'wps_dolibarr', $this->default_settings );
+		$debug_mode      = get_option( 'debug_mode', $this->default_settings['debug_mode'] );
 
 		View_Util::exec( 'wpshop', 'settings', 'general', array(
+			'debug_mode'      => $debug_mode,
 			'dolibarr_option' => $dolibarr_option,
 		) );
 	}
@@ -302,6 +306,20 @@ class Settings extends Singleton_Util {
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
 
 		return $dolibarr_option['split_product'];
+	}
+
+	/**
+	 * Vérifie si le mode debug est actif.
+	 *
+	 * @since   2.3.1
+	 * @version 2.3.1
+	 *
+	 * @return boolean true or false.
+	 */
+	public function debug_mode() {
+		$debug_mode = get_option( 'debug_mode', Settings::g()->default_settings );
+
+		return $debug_mode;
 	}
 }
 

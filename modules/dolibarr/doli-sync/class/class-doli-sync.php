@@ -6,7 +6,7 @@
  * @author    Eoxia <dev@eoxia.com>
  * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
- * @version   2.0.0
+ * @version   2.3.1
  */
 
 namespace wpshop;
@@ -152,7 +152,7 @@ class Doli_Sync extends Singleton_Util {
 	 * @todo: Translate to english.
 	 *
 	 * @since   2.0.0
-	 * @version 2.0.0
+	 * @version 2.3.1
 	 *
 	 * @param  integer $wp_id    L'id de l'entitée sur WordPress.
 	 * @param  integer $entry_id L'id de l'entitée sur Dolibarr.
@@ -189,15 +189,28 @@ class Doli_Sync extends Singleton_Util {
 
 				echo do_shortcode('[wps_categories]');
 
-				$doli_categories = Request_Util::get('categories/object/product/' . $entry_id . '?');
-				$wpdb->delete('wp_term_relationships', array('object_id' => $wp_product->data['id']));
-				if ( ! empty($doli_categories)) {
-					foreach ($doli_categories as $doli_category) {
-						$wpdb->insert('wp_term_relationships', array('object_id' => $wp_product->data['id'] , 'term_taxonomy_id' => get_term_by('name', $doli_category->label, 'wps-product-cat' )->term_id, 'term_order' => 0));
+				$doli_categories = Request_Util::get( 'categories/object/product/' . $entry_id . '?' );
+				$wpdb->delete($wpdb->prefix . 'term_relationships', array( 'object_id' => $wp_product->data['id'] ) );
+				if ( ! empty( $doli_categories ) ) {
+					foreach ( $doli_categories as $doli_category ) {
+						$term_taxonomy_id = get_term_by('name', $doli_category->label, 'wps-product-cat' )->term_id;
+						$wpdb->insert( $wpdb->prefix . 'term_relationships', array( 'object_id' => $wp_product->data['id'] , 'term_taxonomy_id' => $term_taxonomy_id, 'term_order' => 0 ) );
 					}
 				}
 
-				$wp_object =$wp_product;
+				$mine_type = 'image';
+
+				$doli_documents = Request_Util::get( 'documents?modulepart=product&id=' . $wp_product->data['external_id'] );
+				if ( empty( $doli_documents ) ) {
+					$doli_documents = array();
+				}
+				$wp_documents = Doli_Documents::g()->convert_to_wp_documents_format( $doli_documents );
+
+				Doli_Documents::g()->create_attachments( $wp_documents, $wp_product , $mine_type );
+				$mine_type = 'application';
+				Doli_Documents::g()->create_attachments( $wp_documents, $wp_product , $mine_type );
+
+				$wp_object = $wp_product;
 				break;
 			case 'wps-proposal':
 				$doli_proposal = Request_Util::get( 'proposals/' . $entry_id );
@@ -229,7 +242,7 @@ class Doli_Sync extends Singleton_Util {
 	 * Vérifie la SHA256 entre une entité WPShop et une entité Dolibarr.
 	 *
 	 * @since   2.0.0
-	 * @version 2.0.0
+	 * @version 2.3.1
 	 *
 	 * @param   integer $id   L'id de l'entité WordPress.
 	 * @param   string  $type Le type de l'entité.
@@ -263,6 +276,18 @@ class Doli_Sync extends Singleton_Util {
 		$sync_info = $this->sync_infos[ $type ];
 
 		$response = Request_Util::get( $sync_info['endpoint'] . '/' . $external_id );
+
+		if ( Settings::g()->debug_mode() ) {
+			//Start
+			echo '<pre>';
+			print_r(266 );
+			print_r($response);
+			print_r('check dolibarr');
+			print_r(4);
+			echo '</pre>';
+			//exit;
+			//End
+		}
 
 		// Dolibarr return false when object is not found.
 		if ( ! $response ) {

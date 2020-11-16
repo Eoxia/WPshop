@@ -6,7 +6,7 @@
  * @author    Eoxia <dev@eoxia.com>
  * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
- * @version   2.1.0
+ * @version   2.3.1
  */
 
 namespace wpshop;
@@ -352,7 +352,7 @@ class Product extends Post_Class {
 	 * La vue de la metabox pour configurer la galerie d'image du produit.
 	 *
 	 * @since   2.1.0
-	 * @version 2.1.0
+	 * @version 2.3.1
 	 *
 	 * @param WP_Post $post Le produit.
 	 */
@@ -383,7 +383,6 @@ class Product extends Post_Class {
 		$sha256   = get_post_meta( $post->ID, 'sha256_documents', true );
 
 		$data_sha = Doli_Documents::g()->build_sha_documents( $post->ID, $doli_documents );
-
 
 		if ( $sha256 != $data_sha ) {
 
@@ -456,7 +455,7 @@ class Product extends Post_Class {
 		$sha256   = get_post_meta( $post->ID, 'sha256_documents', true );
 		$data_sha = Doli_Documents::g()->build_sha_documents( $post->ID, $doli_documents );
 
-		if ( $sha256 == $data_sha ) {
+		if ( $sha256 != $data_sha ) {
 
 			$attachments = Doli_Documents::g()->get_attachments( $product, $mine_type );
 

@@ -144,8 +144,12 @@ class Doli_Documents extends Attachment_Class {
 	public function get_attachments( $product, $mine_type ) {
 		global $wpdb;
 		$mine_type = $mine_type . "%";
-		$attachments = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->posts} WHERE post_parent = %d AND post_mime_type LIKE %s", $product->data['external_id'], $mine_type ) );
-		$attachments = json_decode( json_encode( $attachments ), true );
+		if ( $product->data['external_id'] != 0 ) {
+			$attachments = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->posts} WHERE post_parent = %d AND post_mime_type LIKE %s", $product->data['external_id'], $mine_type ) );
+			$attachments = json_decode( json_encode( $attachments ), true );
+		} else {
+			$attachments = array();
+		}
 
 		return $attachments;
 	}
