@@ -29,7 +29,7 @@ WPshop vous propose également des [thèmes wordpress eCommerce](https://shop.eo
 
 == Installation ==
 
-Consultez notre [documentation en ligne](http://www.wpshop.fr/documentations/presentation-wpshop "documentation wpshop").
+Consultez notre [documentation en ligne](http://www.wpshop.fr/documentation/ "documentation wpshop").
 L'installation du plugin peut se faire de 2 façons :
 
 * Méthode 1
