@@ -5,7 +5,7 @@ Donate link: https://www.wpshop.fr/
 Requires at least: 4.4
 Tested up to: 5.5.3
 Requires PHP: 7.0
-Stable tag: 2.3.1
+Stable tag: 2.3.2
 License: GPLv3 or later
 License URI: https://spdx.org/licenses/GPL-3.0-or-later.html
 
@@ -64,6 +64,13 @@ Il n'est pas possible de migrer les données vers la version WPShop 2.X.X.
 9. Check-Out
 
 == Changelog ==
+
+= Version 2.3.2 =
+
+* Add - Add stock to product synchronisation.
+
+* Fix - Stripe API request error.
+* Fix - Media.
 
 = Version 2.3.1 =
 
