@@ -23,7 +23,7 @@ window.eoxiaJS.wpshop.product.init = function() {
  * @version 2.0.0
  */
 window.eoxiaJS.wpshop.product.event = function() {
-	jQuery( document ).on( 'wps-change-toggle', '.stock-field .toggle', window.eoxiaJS.wpshop.product.displayBlockStock );
+	jQuery( document ).on( 'click', '.stock-field .toggle', window.eoxiaJS.wpshop.product.displayBlockStock );
 	jQuery( document ).on( 'click', '.wps-list-product .table-header input[type="checkbox"]', window.eoxiaJS.wpshop.product.checkAll );
 	jQuery( document ).on( 'click', '.button-apply', window.eoxiaJS.wpshop.product.apply );
 	jQuery( document ).ready( window.eoxiaJS.wpshop.product.autoSynchro );
@@ -69,12 +69,19 @@ window.eoxiaJS.wpshop.product.event = function() {
  * @param {ClickEvent}  event [displayBlockStock].
  * @param {toggleState} L'état du toggle.
  */
-window.eoxiaJS.wpshop.product.displayBlockStock = function( event, toggleState ) {
-	if ( toggleState ) {
-		jQuery( '.stock-block' ).fadeIn();
-	} else {
+window.eoxiaJS.wpshop.product.displayBlockStock = function() {
+	var toggleON = jQuery( this ).hasClass( 'fa-toggle-on' );
+	var nextStep = '';
+	if ( toggleON ) {
+		nextStep = 'false';
+		jQuery( this ).removeClass( "fa-toggle-on" ).addClass( "fa-toggle-off" );
 		jQuery( '.stock-block' ).fadeOut();
+	} else {
+		nextStep = 'true';
+		jQuery( this ).removeClass( "fa-toggle-off" ).addClass( "fa-toggle-on" );
+		jQuery( '.stock-block' ).fadeIn();
 	}
+	jQuery( this ).closest( '.wpeo-form' ).find( '.manage_stock' ).attr( 'value' , nextStep );
 };
 
 /**
