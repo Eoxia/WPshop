@@ -31,7 +31,6 @@ window.eoxiaJS.wpshop.settings.event = function() {
  * @return {void}
  */
 window.eoxiaJS.wpshop.settings.buttonToggle = function( event ) {
-	console.log( 'test');
 	var toggleON = jQuery( this ).hasClass( 'fa-toggle-on' );
 	var nextStep = '';
 	if (toggleON) {

@@ -40,7 +40,7 @@ defined( 'ABSPATH' ) || exit;
 		<div class="form-element stock-block" style="<?php echo $product->data['manage_stock'] ? '' : 'display: none;'; ?>">
 			<span class="form-label"><?php esc_html_e( 'Stock', 'wpshop' ); ?></span>
 			<label class="form-field-container">
-				<input type="text" class="form-field" name="product_data[stock]" value="<?php echo esc_attr( $product->data['stock'] ); ?>" />
+				<input type="text" class="form-field" name="product_data[stock]" value="<?php echo esc_attr( $product->data['stock'] ); ?>" readonly/>
 			</label>
 		</div>
 

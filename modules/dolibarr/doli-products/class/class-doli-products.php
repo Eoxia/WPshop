@@ -56,6 +56,7 @@ class Doli_Products extends Singleton_Util {
 			$wp_product->data['price_ttc']         = $doli_product->price_ttc;
 			$wp_product->data['tva_amount']        = $doli_product->price_ttc - $doli_product->price;
 			$wp_product->data['tva_tx']            = $doli_product->tva_tx;
+			$wp_product->data['stock']             = (int) $doli_product->stock_reel;
 			$wp_product->data['barcode']           = $doli_product->barcode;
 			$wp_product->data['fk_product_type']   = (int) $doli_product->type; // Product 0 or Service 1.
 			$wp_product->data['status']            = $doli_product->array_options->options__wps_status;
@@ -72,6 +73,7 @@ class Doli_Products extends Singleton_Util {
 				$data_sha['price']       = $doli_product->price;
 				$data_sha['price_ttc']   = $doli_product->price_ttc;
 				$data_sha['tva_tx']      = $doli_product->tva_tx;
+				$data_sha['stock']       = $doli_product->stock_reel;
 				$data_sha['status']      = $wp_product->data['status'];
 
 				$wp_product->data['sync_sha_256'] = hash( 'sha256', implode( ',', $data_sha ) );

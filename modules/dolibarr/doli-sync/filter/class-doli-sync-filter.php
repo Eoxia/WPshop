@@ -96,6 +96,7 @@ class Doli_Sync_Filter extends Singleton_Util {
 		$data_sha['price']       = $response->price;
 		$data_sha['price_ttc']   = $response->price_ttc;
 		$data_sha['tva_tx']      = $response->tva_tx;
+		$data_sha['stock']       = $response->stock_reel;
 		$data_sha['status']      = $response->array_options->options__wps_status;
 
 		if ( $response->array_options->options__wps_status == 1  || $response->array_options->options__wps_status == 'publish' ) {
