@@ -2,11 +2,12 @@
 	"name": "Doli Proposals",
 	"slug": "doli-proposals",
 	"since": "2.0.0",
-    "version": "2.0.0",
+    "version": "2.3.3",
 	"description": "Le module gérant les propositions commerciales",
 	"path": "modules/dolibarr/doli-proposals/",
 	"dependencies": {
-     "class": {},
-     "action": {}
+      "filter": {},
+      "class": {},
+      "action": {}
 	}
 }

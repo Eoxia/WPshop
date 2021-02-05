@@ -6,7 +6,7 @@
  * @author    Eoxia <dev@eoxia.com>
  * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
- * @version   2.0.0
+ * @version   2.3.3
  */
 
 namespace wpshop;
@@ -35,7 +35,7 @@ class Doli_Statut extends Singleton_Util {
 	 * Le constructeur.
 	 *
 	 * @since   2.0.0
-	 * @version 2.0.0
+	 * @version 2.3.3
 	 */
 	protected function construct() {
 		$this->status = array(
@@ -45,20 +45,20 @@ class Doli_Statut extends Singleton_Util {
 					'class' => 'status-grey',
 				),
 				'publish'       => array(
-					'text'  => __( 'Waiting for a signature', 'wpshop' ),
+					'text'  => __( 'Validated', 'wpshop' ),
 					'class' => 'status-orange',
 				),
 				'wps-accepted'  => array(
 					'text'  => __( 'Signed', 'wpshop' ),
-					'class' => 'status-orange',
+					'class' => 'status-green',
 				),
 				'wps-refused'   => array(
 					'text'  => __( 'Not signed', 'wpshop' ),
-					'class' => 'status-red',
+					'class' => 'status-grey',
 				),
 				'wps-billed'    => array(
 					'text'  => __( 'Billed', 'wpshop' ),
-					'class' => 'status-green',
+					'class' => 'status-grey',
 				),
 				'wps-delivered' => array(
 					'text'  => __( 'Delivered', 'wpshop' ),
@@ -71,7 +71,7 @@ class Doli_Statut extends Singleton_Util {
 					'class' => 'status-grey',
 				),
 				'publish'       => array(
-					'text'  => __( 'Not paid', 'wpshop' ),
+					'text'  => __( 'Validated', 'wpshop' ),
 					'class' => 'status-orange',
 				),
 				'wps-canceled'  => array(
@@ -79,7 +79,11 @@ class Doli_Statut extends Singleton_Util {
 					'class' => 'status-red',
 				),
 				'wps-billed'    => array(
-					'text'  => __( 'Billed', 'wpshop' ),
+					'text'  => __( 'Processed', 'wpshop' ),
+					'class' => 'status-grey',
+				),
+				'wps-shipmentprocess'    => array(
+					'text'  => __( 'In progress', 'wpshop' ),
 					'class' => 'status-green',
 				),
 				'wps-delivered' => array(
@@ -93,12 +97,12 @@ class Doli_Statut extends Singleton_Util {
 					'class' => 'status-grey',
 				),
 				'publish'       => array(
-					'text'  => __( 'Not paid', 'wpshop' ),
+					'text'  => __( 'Unpaid', 'wpshop' ),
 					'class' => 'status-orange',
 				),
 				'wps-billed'    => array(
-					'text'  => __( 'Billed', 'wpshop' ),
-					'class' => 'status-green',
+					'text'  => __( 'Paid', 'wpshop' ),
+					'class' => 'status-grey',
 				),
 				'wps-abandoned' => array(
 					'text'  => __( 'Abandoned', 'wpshop' ),

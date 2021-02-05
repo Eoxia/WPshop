@@ -6,7 +6,7 @@
  * @author    Eoxia <dev@eoxia.com>
  * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
- * @version   2.0.0
+ * @version   2.3.3
  */
 
 namespace wpshop;
@@ -53,7 +53,7 @@ class Doli_Proposals extends Singleton_Util {
 	 * Synchronise Dolibarr vers WPshop.
 	 *
 	 * @since   2.0.0
-	 * @version 2.0.0
+	 * @version 2.3.3
 	 *
 	 * @param  stdClass $doli_proposal Les données d'une proposition commerciale Dolibarr.
 	 * @param  Proposals $wp_proposal  Les données d'une proposition commerciale WordPress.
@@ -116,7 +116,7 @@ class Doli_Proposals extends Singleton_Util {
 					$status = 'wps-refused';
 					break;
 				case 4:
-					$status                      = 'publish';
+					$status                      = 'wps-billed';
 					$wp_proposal->data['billed'] = 1;
 					break;
 				default:
