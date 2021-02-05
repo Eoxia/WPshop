@@ -3,9 +3,9 @@ Contributors: Eoxia
 Tags: boutique, catalog, catalogue, commerce, e-commerce, ecommerce, m-commerce, mcommerce, produits,  shop, shopping cart, wp shop, wordpress ecommerce, wordpress shop, WPShop, wp-shop, french payment gateway, 
 Donate link: https://www.wpshop.fr/
 Requires at least: 4.4
-Tested up to: 5.5.3
+Tested up to: 5.6.1
 Requires PHP: 7.0
-Stable tag: 2.3.2
+Stable tag: 2.3.3
 License: GPLv3 or later
 License URI: https://spdx.org/licenses/GPL-3.0-or-later.html
 
@@ -64,6 +64,17 @@ Il n'est pas possible de migrer les données vers la version WPShop 2.X.X.
 9. Check-Out
 
 == Changelog ==
+
+= Version 2.3.3 =
+
+* Add - Change on Statut for Proposals, orders and invoices.
+* Add - Change on payment method paypal/stripe -> credit card.
+* Add - Invoice link on single page order.
+* Add - Translate.
+* Add - Edit Dolibarr product configuration on single page.
+
+* Fix - First name doesn't appear on Dolibarr tiers.
+* Fix - Invoice module appear on WPshop without Dolibarr.
 
 = Version 2.3.2 =
 
