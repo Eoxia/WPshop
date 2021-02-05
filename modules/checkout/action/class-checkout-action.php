@@ -249,8 +249,6 @@ class Checkout_Action {
 
 			if ( ! is_user_logged_in() ) {
 				$third_party = Third_Party::g()->update( $posted_data['third_party'] );
-				// Call wpshop to update attached ERP.
-				do_action( 'wps_checkout_create_third_party', $third_party );
 
 				$posted_data['contact']['login']          = sanitize_user( current( explode( '@', $posted_data['contact']['email'] ) ), true );
 				$posted_data['contact']['password']       = wp_generate_password();
@@ -261,6 +259,9 @@ class Checkout_Action {
 
 				$third_party->data['contact_ids'][] = $contact->data['id'];
 				$third_party                        = Third_Party::g()->update( $third_party->data );
+
+				// Call wpshop to update attached ERP.
+				do_action( 'wps_checkout_create_third_party', $third_party );
 
 				// Call wpshop to update attached ERP.
 				do_action( 'wps_checkout_create_contact', $contact );
@@ -416,6 +417,7 @@ class Checkout_Action {
 	 * @param User        $contact     Les données du contact.
 	 */
 	public function callback_checkout_doli_proposal( $third_party, $contact ) {
+
  		$type_payment = ! empty( $_POST['type_payment'] ) ? sanitize_text_field( $_POST['type_payment'] ) : '';
 
 		$proposal_data = array(

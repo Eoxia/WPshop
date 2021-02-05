@@ -114,6 +114,8 @@ class Doli_Third_Parties extends Singleton_Util {
 		'errors'   => array(),
 		'messages' => array(),
 	) ) {
+		$contact = User::g()->get( array( 'id' => $wp_third_party->data['contact_ids'][0] ), true );
+
 		$data = array(
 			'name'          => $wp_third_party->data['title'],
 			'country'       => $wp_third_party->data['country'],
@@ -127,7 +129,8 @@ class Doli_Third_Parties extends Singleton_Util {
 			'client'        => 1,
 			'code_client'   => 'auto',
 			'array_options' => array(
-				'options__wps_id' => $wp_third_party->data['id'],
+				'options_firstname' => $contact->data['firstname'],
+				'options__wps_id'   => $wp_third_party->data['id'],
 			),
 		);
 
