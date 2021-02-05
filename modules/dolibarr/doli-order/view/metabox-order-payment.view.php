@@ -6,7 +6,7 @@
  * @author    Eoxia <dev@eoxia.com>
  * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
- * @version   2.0.0
+ * @version   2.3.3
  */
 
 namespace wpshop;
@@ -70,4 +70,14 @@ defined( 'ABSPATH' ) || exit;
 			</tr>
 		</tfoot>
 	</table>
+
+	<?php if ( ! empty( $invoices ) ) :
+		foreach ( $invoices as $invoice ) : ?>
+			<ul class="reference-title">
+				<?php if ( ! empty( $invoice->data['external_id'] ) ) : ?>
+					<li><a href="<?php echo esc_attr( $doli_url ); ?>/compta/facture/card.php?facid=<?php echo $invoice->data['external_id']; ?>" target="_blank"><?php echo esc_html( $invoice->data['title'] ); ?></a></li>
+				<?php endif; ?>
+			</ul>
+		<?php endforeach;
+	endif; ?>
 </div>

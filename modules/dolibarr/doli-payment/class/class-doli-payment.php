@@ -154,9 +154,7 @@ class Doli_Payment extends Post_Class {
 		$payment_methods_option = get_option( 'wps_payment_methods', Payment::g()->default_options );
 
 		if ( 'CB' === $payment_method ) {
-			return 'paypal';
-		} elseif ( 'STR' === $payment_method ) {
-			return 'stripe';
+			return 'carte_bancaire';
 		} elseif ( 'CHQ' === $payment_method ) {
 			return 'cheque';
 		} elseif ( 'LIQ' === $payment_method ) {

@@ -105,7 +105,9 @@ class Doli_Invoice_Action {
 	 * @version 2.0.0
 	 */
 	public function callback_admin_menu() {
-		add_submenu_page( 'wpshop', __( 'Invoices', 'wpshop' ), __( 'Invoices', 'wpshop' ), 'manage_options', 'wps-invoice', array( $this, 'callback_add_menu_page' ) );
+		if ( Settings::g()->dolibarr_is_active() ) {
+			add_submenu_page('wpshop', __('Invoices', 'wpshop'), __('Invoices', 'wpshop'), 'manage_options', 'wps-invoice', array($this, 'callback_add_menu_page'));
+		}
 	}
 
 	/**

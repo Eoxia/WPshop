@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: wpshop\n"
-"POT-Creation-Date: 2020-10-23 17:26+0200\n"
-"PO-Revision-Date: 2020-10-23 17:26+0200\n"
+"POT-Creation-Date: 2021-02-04 12:08+0100\n"
+"PO-Revision-Date: 2021-02-04 12:08+0100\n"
 "Last-Translator: \n"
 "Language-Team: Eoxia\n"
 "Language: fr_FR\n"
@@ -130,16 +130,16 @@ msgstr "Produit \"%1$s\" x%2$d ajouté au panier"
 msgid "View cart"
 msgstr "Voir le panier"
 
-#: modules/checkout/action/class-checkout-action.php:487
+#: modules/checkout/action/class-checkout-action.php:489
 msgid "I accept "
 msgstr "J'accepte "
 
-#: modules/checkout/action/class-checkout-action.php:491
+#: modules/checkout/action/class-checkout-action.php:493
 #, php-format
 msgid "the <a target=\"_blank\" href=\"%1$s\">%2$s</a> and "
 msgstr "les <a href=\"%1$s\">%2$s</a> et "
 
-#: modules/checkout/action/class-checkout-action.php:496
+#: modules/checkout/action/class-checkout-action.php:498
 #, php-format
 msgid "the <a target=\"_blank\" href=\"%1$s\">%2$s</a>"
 msgstr "la <a href=\"%1$s\">%2$s</a>"
@@ -277,7 +277,7 @@ msgstr "Adresse postale"
 msgid "Postcode / ZIP"
 msgstr "Code postal"
 
-#: modules/checkout/view/frontend/payment.php:27
+#: modules/checkout/view/frontend/payment.php:26
 #: modules/dashboard/view/metaboxes/metabox-payment.view.php:34
 #: modules/dolibarr/doli-invoice/view/metabox-invoice-details.view.php:29
 #: modules/dolibarr/doli-invoice/view/metabox-invoice-details.view.php:44
@@ -406,7 +406,7 @@ msgstr "Derniers clients"
 #: modules/dolibarr/doli-categories/view/item.view.php:42
 #: modules/dolibarr/doli-invoice/view/item.view.php:39
 #: modules/dolibarr/doli-invoice/view/item.view.php:61
-#: modules/dolibarr/doli-order/view/item.view.php:39
+#: modules/dolibarr/doli-order/view/item.view.php:40
 #: modules/dolibarr/doli-proposals/view/item.view.php:38
 #: modules/proposals/view/item.view.php:34
 msgid "See in Dolibarr"
@@ -456,7 +456,7 @@ msgstr "Prix TTC"
 #: modules/dashboard/view/metaboxes/metabox-invoice.view.php:45
 #: modules/dashboard/view/metaboxes/metabox-order.view.php:45
 #: modules/dashboard/view/metaboxes/metabox-proposal.view.php:45
-#: modules/dolibarr/doli-order/view/item.view.php:54
+#: modules/dolibarr/doli-order/view/item.view.php:55
 #: modules/dolibarr/doli-order/view/metabox-order-details.view.php:37
 #: modules/dolibarr/doli-order/view/metabox-order-details.view.php:38
 msgid "unknown"
@@ -548,19 +548,18 @@ msgid "Last update the %s"
 msgstr "Dernière mise à jour le %s"
 
 #: modules/dolibarr/doli-associate/view/compare-wps-product.view.php:36
-#: modules/products/view/metabox/main.view.php:25
 #: modules/settings/view/payment-method-single.view.php:50
 msgid "Description"
 msgstr "Description"
 
 #: modules/dolibarr/doli-associate/view/compare-wps-product.view.php:37
 #: modules/products/view/list.view.php:34
-#: modules/products/view/metabox/main.view.php:30
+#: modules/products/view/metabox/main.view.php:47
 msgid "Price HT(€)"
 msgstr "Prix HT(€)"
 
 #: modules/dolibarr/doli-associate/view/compare-wps-product.view.php:38
-#: modules/products/view/metabox/main.view.php:34
+#: modules/products/view/metabox/main.view.php:53
 msgid "VAT Rate"
 msgstr "Taux de TVA"
 
@@ -569,7 +568,7 @@ msgstr "Taux de TVA"
 #: modules/dolibarr/doli-order/view/list.view.php:33
 #: modules/dolibarr/doli-proposals/view/list.view.php:33
 #: modules/products/view/list.view.php:36
-#: modules/products/view/metabox/main.view.php:38
+#: modules/products/view/metabox/main.view.php:75
 #: modules/proposals/view/list.view.php:25
 msgid "Price TTC(€)"
 msgstr "Prix TTC(€)"
@@ -652,15 +651,18 @@ msgid "Compare elements"
 msgstr "Comparer les éléments"
 
 #: modules/dolibarr/doli-categories/action/class-doli-categories-action.php:58
-#: modules/dolibarr/doli-categories/action/class-doli-categories-action.php:161
 #: modules/dolibarr/doli-categories/view/main.view.php:25
+msgid "Categories WPshop"
+msgstr ""
+
+#: modules/dolibarr/doli-categories/action/class-doli-categories-action.php:161
 #: modules/dolibarr/doli-sync/class/class-doli-sync.php:84
 #: modules/products/view/list.view.php:33
 msgid "Categories"
 msgstr ""
 
-#: modules/dolibarr/doli-categories/class/class-doli-categories.php:218
-#: modules/dolibarr/doli-products/class/class-doli-products.php:85
+#: modules/dolibarr/doli-categories/class/class-doli-categories.php:224
+#: modules/dolibarr/doli-products/class/class-doli-products.php:87
 #: modules/dolibarr/doli-sync/class/class-doli-sync.php:188
 #, php-format
 msgid ""
@@ -678,7 +680,7 @@ msgstr "Modifier"
 #: modules/dolibarr/doli-categories/view/item.view.php:44
 #: modules/dolibarr/doli-invoice/view/item.view.php:37
 #: modules/dolibarr/doli-invoice/view/item.view.php:60
-#: modules/dolibarr/doli-order/view/item.view.php:37
+#: modules/dolibarr/doli-order/view/item.view.php:38
 #: modules/dolibarr/doli-proposals/view/item.view.php:36
 #: modules/proposals/view/item.view.php:32
 #: modules/third-parties/view/item.view.php:36
@@ -721,7 +723,7 @@ msgstr "Ajouter"
 msgid "Invoice details %s"
 msgstr "Facture détails %s"
 
-#: modules/dolibarr/doli-invoice/action/class-doli-invoice-action.php:108
+#: modules/dolibarr/doli-invoice/action/class-doli-invoice-action.php:109
 #: modules/dolibarr/doli-invoice/filter/class-doli-invoice-filter.php:70
 #: modules/dolibarr/doli-invoice/filter/class-doli-invoice-filter.php:72
 #: modules/dolibarr/doli-invoice/view/main.view.php:32
@@ -729,7 +731,7 @@ msgstr "Facture détails %s"
 msgid "Invoices"
 msgstr "Factures"
 
-#: modules/dolibarr/doli-invoice/action/class-doli-invoice-action.php:357
+#: modules/dolibarr/doli-invoice/action/class-doli-invoice-action.php:359
 msgid "Invoice not found"
 msgstr "Facture non trouvée"
 
@@ -886,13 +888,13 @@ msgstr "Editer sur Dolibarr"
 
 #: modules/dolibarr/doli-order/action/class-doli-order-action.php:87
 #: modules/dolibarr/doli-statut/class/class-doli-statut.php:64
-#: modules/dolibarr/doli-statut/class/class-doli-statut.php:86
+#: modules/dolibarr/doli-statut/class/class-doli-statut.php:90
 msgid "Delivered"
-msgstr "Délivrée"
+msgstr "Livrée"
 
 #: modules/dolibarr/doli-order/action/class-doli-order-action.php:97
 #: modules/dolibarr/doli-statut/class/class-doli-statut.php:78
-#: modules/dolibarr/doli-statut/class/class-doli-statut.php:108
+#: modules/dolibarr/doli-statut/class/class-doli-statut.php:112
 msgid "Canceled"
 msgstr "Anulée"
 
@@ -949,8 +951,10 @@ msgid "Traitment in progress"
 msgstr "Traitements en cours"
 
 #: modules/dolibarr/doli-order/filter/class-doli-order-filter.php:123
-msgid "(Delivery)"
-msgstr "Délivrée"
+#: modules/dolibarr/doli-order/view/metabox-order-payment.view.php:64
+#: modules/dolibarr/doli-statut/class/class-doli-statut.php:60
+msgid "Billed"
+msgstr "Facturée"
 
 #: modules/dolibarr/doli-order/view/list.view.php:30
 #: modules/dolibarr/doli-order/view/metabox-order-details.view.php:46
@@ -1016,13 +1020,6 @@ msgstr "Montant TTC"
 msgid "Already settled"
 msgstr "Déjà réglé"
 
-#: modules/dolibarr/doli-order/view/metabox-order-payment.view.php:64
-#: modules/dolibarr/doli-statut/class/class-doli-statut.php:60
-#: modules/dolibarr/doli-statut/class/class-doli-statut.php:82
-#: modules/dolibarr/doli-statut/class/class-doli-statut.php:100
-msgid "Billed"
-msgstr "Facturé"
-
 #: modules/dolibarr/doli-order/view/metabox-order-payment.view.php:68
 msgid "Remaining unpaid"
 msgstr "Reste à payer"
@@ -1062,6 +1059,18 @@ msgstr "Propositions commerciales"
 msgid "Proposals Dolibarr"
 msgstr "Propositions commerciales"
 
+#: modules/dolibarr/doli-proposals/filter/class-doli-proposals-filter.php:46
+msgid " (open proposal)"
+msgstr " (proposition ouverte)"
+
+#: modules/dolibarr/doli-proposals/filter/class-doli-proposals-filter.php:49
+msgid " (to be invoiced)"
+msgstr " (à facturée)"
+
+#: modules/dolibarr/doli-proposals/filter/class-doli-proposals-filter.php:52
+msgid " (closed)"
+msgstr " (fermée)"
+
 #: modules/dolibarr/doli-proposals/view/list.view.php:29
 #: modules/proposals/view/list.view.php:21
 msgid "Proposal reference"
@@ -1069,28 +1078,44 @@ msgstr "Référence du devis"
 
 #: modules/dolibarr/doli-statut/class/class-doli-statut.php:44
 #: modules/dolibarr/doli-statut/class/class-doli-statut.php:70
-#: modules/dolibarr/doli-statut/class/class-doli-statut.php:92
+#: modules/dolibarr/doli-statut/class/class-doli-statut.php:96
 msgid "Draft"
 msgstr "Brouillon"
 
 #: modules/dolibarr/doli-statut/class/class-doli-statut.php:48
-msgid "Waiting for a signature"
-msgstr "En attente de la signature"
+#: modules/dolibarr/doli-statut/class/class-doli-statut.php:74
+msgid "Validated"
+msgstr "Validée"
 
 #: modules/dolibarr/doli-statut/class/class-doli-statut.php:52
 msgid "Signed"
-msgstr "Signé"
+msgstr "Signée"
 
 #: modules/dolibarr/doli-statut/class/class-doli-statut.php:56
 msgid "Not signed"
-msgstr "Non signé"
+msgstr "Non signée"
 
-#: modules/dolibarr/doli-statut/class/class-doli-statut.php:74
-#: modules/dolibarr/doli-statut/class/class-doli-statut.php:96
-msgid "Not paid"
-msgstr "Non payée"
+#: modules/dolibarr/doli-statut/class/class-doli-statut.php:82
+msgid "Processed"
+msgstr "Traitée"
+
+#: modules/dolibarr/doli-statut/class/class-doli-statut.php:86
+msgid "In progress"
+msgstr "En cours"
+
+#: modules/dolibarr/doli-statut/class/class-doli-statut.php:100
+msgid "Unpaid"
+msgstr "Impayée"
 
 #: modules/dolibarr/doli-statut/class/class-doli-statut.php:104
+#: modules/payment/class/class-payment.php:94
+#: modules/payment/class/class-payment.php:98
+#: modules/payment/class/class-payment.php:102
+#: modules/payment/class/class-payment.php:106
+msgid "Paid"
+msgstr "Payée"
+
+#: modules/dolibarr/doli-statut/class/class-doli-statut.php:108
 msgid "Abandoned"
 msgstr "Abondonée"
 
@@ -1119,24 +1144,24 @@ msgstr ""
 "Effacer les données pour le tiers <strong>%s</strong> avec les données de "
 "<strong>dolibarr</strong>"
 
-#: modules/dolibarr/doli-sync/class/class-doli-sync.php:335
-#: modules/dolibarr/doli-sync/class/class-doli-sync.php:345
+#: modules/dolibarr/doli-sync/class/class-doli-sync.php:360
+#: modules/dolibarr/doli-sync/class/class-doli-sync.php:370
 msgid "WP Object is not equal Dolibarr Object"
 msgstr "L'objet WordPress n'est pas égal à l'objet Dolibarr"
 
-#: modules/dolibarr/doli-sync/class/class-doli-sync.php:359
+#: modules/dolibarr/doli-sync/class/class-doli-sync.php:384
 msgid "Sync OK"
 msgstr "Synchronisation OK"
 
-#: modules/dolibarr/doli-sync/class/class-doli-sync.php:382
+#: modules/dolibarr/doli-sync/class/class-doli-sync.php:407
 msgid "Looking for sync status"
 msgstr "Rechercher un statut de synchronisation"
 
-#: modules/dolibarr/doli-sync/class/class-doli-sync.php:393
+#: modules/dolibarr/doli-sync/class/class-doli-sync.php:418
 msgid "No associated to an ERP Entity"
 msgstr "Cette entitée n'est pas associé à votre ERP"
 
-#: modules/dolibarr/doli-sync/class/class-doli-sync.php:424
+#: modules/dolibarr/doli-sync/class/class-doli-sync.php:449
 msgid "Error not defined"
 msgstr "Erreur non définie"
 
@@ -1144,12 +1169,12 @@ msgstr "Erreur non définie"
 msgid "Synchro"
 msgstr "Synchroniser"
 
-#: modules/dolibarr/doli-sync/view/sync-item.view.php:37
+#: modules/dolibarr/doli-sync/view/sync-item.view.php:38
 #, php-format
 msgid "Associate and synchronize %s"
 msgstr "Associer et synchroniser %s"
 
-#: modules/dolibarr/doli-third-parties/class/class-doli-third-parties.php:138
+#: modules/dolibarr/doli-third-parties/class/class-doli-third-parties.php:141
 #, php-format
 msgid ""
 "Erase data for the third party <strong>%s</strong> with the "
@@ -1405,23 +1430,21 @@ msgid "Stripe"
 msgstr "Stripe"
 
 #: modules/payment/class/class-payment.php:76
+#: modules/payment/class/class-payment.php:85
 msgid "Use your credit card to place your order"
 msgstr "Utilisez votre carte de crédit pour passer votre commande"
 
-#: modules/payment/class/class-payment.php:87
+#: modules/payment/class/class-payment.php:84
+msgid "Carte Bancaire"
+msgstr ""
+
+#: modules/payment/class/class-payment.php:93
 msgid "Waiting for the check"
 msgstr "En attente du chèque"
 
-#: modules/payment/class/class-payment.php:88
-#: modules/payment/class/class-payment.php:92
-#: modules/payment/class/class-payment.php:96
-#: modules/payment/class/class-payment.php:100
-msgid "Paid"
-msgstr "Payée"
-
-#: modules/payment/class/class-payment.php:91
-#: modules/payment/class/class-payment.php:95
-#: modules/payment/class/class-payment.php:99
+#: modules/payment/class/class-payment.php:97
+#: modules/payment/class/class-payment.php:101
+#: modules/payment/class/class-payment.php:105
 msgid "Waiting for the payment"
 msgstr "En attente du paiement"
 
@@ -1456,16 +1479,12 @@ msgid "Product title"
 msgstr "Nom du produit"
 
 #: modules/products/class/class-product.php:202
-#, fuzzy
-#| msgid "Product configuration"
 msgid "Dolibarr Product configuration"
-msgstr "Configuration du produit"
+msgstr "Configuration du produit Dolibarr"
 
 #: modules/products/class/class-product.php:209
-#, fuzzy
-#| msgid "Product configuration"
 msgid "WordPress Product configuration"
-msgstr "Configuration du produit"
+msgstr "Configuration du produit WordPress"
 
 #: modules/products/class/class-product.php:216
 msgid "Product Gallery"
@@ -1566,10 +1585,8 @@ msgid "See the product"
 msgstr "Rechercher un produit"
 
 #: modules/products/view/frontend/wps-product-grid.php:50
-#, fuzzy
-#| msgid "Add New Product category"
 msgid "Add the product to cart"
-msgstr "Ajouter une nouvelle catégorie de produits"
+msgstr "Ajouter le produit au panier"
 
 #: modules/products/view/frontend/wps-product-list-edit.php:50
 #: modules/products/view/frontend/wps-product-list.php:37
@@ -1651,9 +1668,9 @@ msgstr "Modifier la galerie sur Dolibarr"
 msgid "Add an image to the gallery"
 msgstr "Ajouter une image à la galerie"
 
-#: modules/products/view/metabox/main.view.php:46
-msgid "Connect WPshop to your ERP to edit product datas"
-msgstr ""
+#: modules/products/view/metabox/main.view.php:86
+msgid "To modify the data of this product, go to Dolibarr"
+msgstr "Pour modifier les données de ce produit, aller sur Dolibarr"
 
 #: modules/proposals/action/class-proposals-action.php:78
 msgid "Quotation"
@@ -1734,25 +1751,25 @@ msgstr "Nouveau titre"
 msgid "Title:"
 msgstr "Titre:"
 
-#: modules/settings/action/class-settings-action.php:150
-#: modules/settings/action/class-settings-action.php:313
+#: modules/settings/action/class-settings-action.php:152
+#: modules/settings/action/class-settings-action.php:315
 msgid "WPshop cannot connect to dolibarr. Please check your settings"
 msgstr ""
 "WPshop n'est pas connecté à Dolibarr. Veuillez vérifier vos configurations"
 
-#: modules/settings/action/class-settings-action.php:157
-#: modules/settings/action/class-settings-action.php:194
-#: modules/settings/action/class-settings-action.php:227
-#: modules/settings/action/class-settings-action.php:256
-#: modules/settings/action/class-settings-action.php:320
+#: modules/settings/action/class-settings-action.php:159
+#: modules/settings/action/class-settings-action.php:196
+#: modules/settings/action/class-settings-action.php:229
+#: modules/settings/action/class-settings-action.php:258
+#: modules/settings/action/class-settings-action.php:322
 msgid "Your settings have been saved."
 msgstr "Vos réglages ont été enregistrés."
 
-#: modules/settings/class/class-settings.php:141
+#: modules/settings/class/class-settings.php:145
 msgid "No page"
 msgstr "Pas de page"
 
-#: modules/settings/class/class-settings.php:229
+#: modules/settings/class/class-settings.php:233
 msgid "No product"
 msgstr "Aucun produit"
 
@@ -1851,7 +1868,7 @@ msgid "Dolibarr Payments Lists"
 msgstr "Listes des Paiements Dolibarr"
 
 #: modules/settings/view/erp.view.php:187
-#: modules/settings/view/general.view.php:68
+#: modules/settings/view/general.view.php:75
 #: modules/settings/view/pages.view.php:66
 #: modules/settings/view/payment-method-single.view.php:58
 #: modules/settings/view/shipping-cost.view.php:57
@@ -1877,6 +1894,10 @@ msgstr "Activer la liste d'envies"
 #: modules/settings/view/general.view.php:63
 msgid "Split product"
 msgstr "Séparer les lignes des produits dans le panier"
+
+#: modules/settings/view/general.view.php:70
+msgid "Debug mode"
+msgstr ""
 
 #: modules/settings/view/main.view.php:40 modules/tools/view/main.view.php:29
 msgid "General"
@@ -2065,6 +2086,15 @@ msgstr "Importer des produits depuis un CSV"
 #: modules/tools/view/main.view.php:25
 msgid "Tools"
 msgstr "Outils"
+
+#~ msgid "Waiting for a signature"
+#~ msgstr "En attente de la signature"
+
+#~ msgid "(Delivery)"
+#~ msgstr "Délivrée"
+
+#~ msgid "Not paid"
+#~ msgstr "Non payée"
 
 #~ msgid "Products Category"
 #~ msgstr "Catégories de produits"
@@ -2279,9 +2309,6 @@ msgstr "Outils"
 
 #~ msgid "Filter"
 #~ msgstr "Filtrer"
-
-#~ msgid "Valid page"
-#~ msgstr "Validation"
 
 #~ msgid "Proposal details %s"
 #~ msgstr "Details de la proposition commerciale %s"

@@ -257,11 +257,13 @@ class Doli_Order_Action {
 	 * La metabox des paiements d'une commande
 	 *
 	 * @since   2.0.0
-	 * @version 2.0.0
+	 * @version 2.3.3
 	 *
 	 * @param Doli_Order $order Les données d'une commande.
 	 */
 	public function metabox_order_payment( $order ) {
+		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
+
 		$doli_invoices = array();
 		$wp_invoices   = array();
 
@@ -269,7 +271,7 @@ class Doli_Order_Action {
 		if ( ! empty( $order->data['linked_objects_ids']['facture'] ) ) {
 			$route = 'invoices?sortfield=t.rowid&sortorder=ASC&limit=100&sqlfilters=';
 			foreach ( $order->data['linked_objects_ids']['facture'] as $doli_invoice_id ) {
-				$route .= '(t.rowid:=:' . $doli_invoice_id . ') or';
+				$route .= 't.rowid=' . $doli_invoice_id . ' or ';
 			}
 
 			$route = substr( $route, 0, strlen( $route ) - 3 );
@@ -300,6 +302,7 @@ class Doli_Order_Action {
 			'already_paid'       => $already_paid,
 			'total_ttc_invoices' => $total_ttc_invoices,
 			'remaining_unpaid'   => $remaining_unpaid,
+			'doli_url'           => $dolibarr_option['dolibarr_url'],
 		) );
 	}
 
@@ -414,7 +417,6 @@ class Doli_Order_Action {
 
 		$wp_order = Doli_Order::g()->get( array( 'schema' => true ), true );
 		$wp_order = Doli_Order::g()->doli_to_wp( $doli_order, $wp_order, true );
-
 		return $wp_order;
 	}
 

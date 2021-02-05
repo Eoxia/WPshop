@@ -6,7 +6,7 @@
  * @author    Eoxia <dev@eoxia.com>
  * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
- * @version   2.0.0
+ * @version   2.3.3
  */
 
 namespace wpshop;
@@ -106,7 +106,7 @@ class Doli_Order_Filter {
 	 * Change le statut d'une commande.
 	 *
 	 * @since   2.0.0
-	 * @version 2.0.0
+	 * @version 2.3.3
 	 *
 	 * @param  string       $status Le statut d'une facture.
 	 * @param  Doli_Invoice $object Les données d'une facture.
@@ -119,8 +119,8 @@ class Doli_Order_Filter {
 				return __( 'Traitment in progress', 'wpshop' );
 			}
 
-			if ( $object->data['delivered'] ) {
-				return $status . ' ' . __( '(Delivery)', 'wpshop' );
+			if ( $object->data['billed'] ) {
+				return $status . ' - ' . __( 'Billed', 'wpshop' );
 			}
 		}
 

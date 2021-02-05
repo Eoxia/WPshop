@@ -6,7 +6,7 @@
  * @author    Eoxia <dev@eoxia.com>
  * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
- * @version   2.0.0
+ * @version   2.3.3
  */
 
 namespace wpshop;
@@ -44,7 +44,7 @@ class Payment extends Singleton_Util {
 	 * Le constructeur.
 	 *
 	 * @since   2.0.0
-	 * @version 2.0.0
+	 * @version 2.3.3
 	 */
 	protected function construct() {
 		$this->default_options = array(
@@ -77,6 +77,12 @@ class Payment extends Singleton_Util {
 				'publish_key'        => '',
 				'secret_key'         => '',
 				'use_stripe_sandbox' => false,
+			),
+			'carte_bancaire'  => array(
+				'active'             => true,
+				'logo'               => '<i class="fas fa-credit-card"></i>',
+				'title'              => __( 'Carte Bancaire', 'wpshop' ),
+				'description'        => __( 'Use your credit card to place your order', 'wpshop' ),
 			),
 		);
 
