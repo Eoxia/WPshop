@@ -279,12 +279,12 @@ class Doli_Sync extends Singleton_Util {
 
 		if ( Settings::g()->debug_mode() ) {
 			//Start
-			echo '<pre>';
-			print_r('L266' );
-			print_r($response);
-			print_r('check dolibarr sync');
-			print_r('4');
-			echo '</pre>';
+//			echo '<pre>';
+//			print_r('L266' );
+//			print_r($response);
+//			print_r('check dolibarr sync');
+//			print_r('4');
+//			echo '</pre>';
 			//exit;
 			//End
 		}
