@@ -221,7 +221,7 @@ class Doli_Invoice extends Post_Class {
 
 		$wp_invoice->data['title']          = $doli_invoice->ref;
 		$wp_invoice->data['datec']          = ! empty( $doli_invoice->date_creation ) ? date( 'Y-m-d H:i:s', $doli_invoice->date_creation ) : false;
-		$wp_invoice->data['date_invoice']   = ! empty( $doli_invoice->datem ) ? date( 'Y-m-d H:i:s', $doli_invoice->datem ) : false;
+		$wp_invoice->data['date_invoice']   = ! empty( $doli_invoice->date ) ? date( 'Y/m/d', $doli_invoice->date ) : false;
 		$wp_invoice->data['total_ttc']      = $doli_invoice->total_ttc;
 		$wp_invoice->data['total_ht']       = $doli_invoice->total_ht;
 		$wp_invoice->data['resteapayer']    = $doli_invoice->remaintopay;
