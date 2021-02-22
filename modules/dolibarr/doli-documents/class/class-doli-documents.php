@@ -108,14 +108,15 @@ class Doli_Documents extends Attachment_Class {
 	 */
 	public function doli_to_wp( $doli_document, $wp_document, $only_convert = false ) {
 		if ( is_object( $wp_document ) ) {
-			//$wp_document->data['external_id'] = (int) $doli_document->id;
-			$wp_document->data['name']        = $doli_document->name;
-			$wp_document->data['path']        = $doli_document->path;
-			$wp_document->data['fullpath']        = $doli_document->fullname;
+			//$wp_document->data['external_id']   = (int) $doli_document->id;
+			$wp_document->data['name']          = $doli_document->name;
+			$wp_document->data['level1name']    = $doli_document->level1name;
+			$wp_document->data['path']          = $doli_document->path;
+			$wp_document->data['fullpath']      = $doli_document->fullname;
 			$time = get_date_from_gmt ( date( 'Y-m-d H:i:s', $doli_document->date ) );
-			$wp_document->data['date']        = $time;
-			$wp_document->data['size']        = (int) $doli_document->size;
-			$wp_document->data['dolibarr_type']        = $doli_document->type;
+			$wp_document->data['date']          = $time;
+			$wp_document->data['size']          = (int) $doli_document->size;
+			$wp_document->data['dolibarr_type'] = $doli_document->type;
 			//$wp_document->data['parent_id']   = Doli_Products::g()->get_wp_id_by_doli_id( $doli_document->socid );
 
 			$wp_document->data['linked_objects_ids'] = array();
@@ -161,7 +162,11 @@ class Doli_Documents extends Attachment_Class {
 			if ( strstr( $filetype['type'], $mine_type ) ) {
 				$uploadfile = $wp_upload_dir['path'] . '/' . $wp_document->data['name'];
 
-				$contents = file_get_contents( $wp_document->data['fullpath'] );
+				//$contents = file_get_contents( $wp_document->data['fullpath'] );
+
+				$path = $wp_document->data['level1name'] . '/' . $wp_document->data['name'];
+				$attachment_data = Request_Util::get( 'documents/download?modulepart=product&original_file=' . $path );
+				$contents = base64_decode( $attachment_data->content );
 				$savefile = fopen( $uploadfile, 'w' );
 				fwrite( $savefile, $contents );
 				fclose( $savefile );
