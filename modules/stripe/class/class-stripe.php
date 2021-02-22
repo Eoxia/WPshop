@@ -50,7 +50,7 @@ class Stripe extends Singleton_Util {
 			'currency' => 'eur',
 		);
 
-		$session = Stripe\Checkout\Session::create( array(
+		$session = \Stripe\Checkout\Session::create( array(
 			'success_url'          => Pages::g()->get_checkout_link() . '/received/order/' . $order->data['external_id'],
 			'cancel_url'           => site_url(),
 			'payment_method_types' => array( 'card' ),
