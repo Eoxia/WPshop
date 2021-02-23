@@ -384,7 +384,12 @@ class Product extends Post_Class {
 
 		$data_sha = Doli_Documents::g()->build_sha_documents( $post->ID, $doli_documents );
 
-		if ( $sha256 != $data_sha ) {
+//		echo '<pre>';
+//		print_r($sha256 . "\n");
+//		print_r($data_sha);
+//		echo '</pre>';
+
+		if ( $sha256 == $data_sha ) {
 
 			$attachments = Doli_Documents::g()->get_attachments( $product, $mine_type );
 

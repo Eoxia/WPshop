@@ -198,17 +198,17 @@ class Doli_Sync extends Singleton_Util {
 					}
 				}
 
-				$mine_type = 'image';
-
-				$doli_documents = Request_Util::get( 'documents?modulepart=product&id=' . $wp_product->data['external_id'] );
-				if ( empty( $doli_documents ) ) {
-					$doli_documents = array();
-				}
-				$wp_documents = Doli_Documents::g()->convert_to_wp_documents_format( $doli_documents );
-
-				Doli_Documents::g()->create_attachments( $wp_documents, $wp_product , $mine_type );
-				$mine_type = 'application';
-				Doli_Documents::g()->create_attachments( $wp_documents, $wp_product , $mine_type );
+//				$mine_type = 'image';
+//
+//				$doli_documents = Request_Util::get( 'documents?modulepart=product&id=' . $wp_product->data['external_id'] );
+//				if ( empty( $doli_documents ) ) {
+//					$doli_documents = array();
+//				}
+//				$wp_documents = Doli_Documents::g()->convert_to_wp_documents_format( $doli_documents );
+//
+//				Doli_Documents::g()->create_attachments( $wp_documents, $wp_product , $mine_type );
+//				$mine_type = 'application';
+//				Doli_Documents::g()->create_attachments( $wp_documents, $wp_product , $mine_type );
 
 				$wp_object = $wp_product;
 				break;
