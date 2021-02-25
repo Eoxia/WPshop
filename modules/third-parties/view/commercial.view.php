@@ -6,7 +6,7 @@
  * @author    Eoxia <dev@eoxia.com>
  * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
- * @version   2.0.0
+ * @version   2.4.0
  */
 
 namespace wpshop;
@@ -55,7 +55,7 @@ defined( 'ABSPATH' ) || exit;
 	<?php if ( ! empty( $invoice->data ) && $doli_active ) : ?>
 		<li class="commercial type-invoice">
 			<i class="fas fa-file-invoice-dollar"></i>
-			<span class="commercial-date"><?php echo $invoice->data['date']['rendered']['date']; ?></span>
+			<span class="commercial-date"><?php echo Date_Util::readable_date( $invoice->data['datec'], 'date' ); ?></span>
 			<span class="commercial-title"><a href="<?php echo esc_attr( $doli_url . '/compta/facture/card.php?id=' . $invoice->data['external_id'] ); ?>"><?php echo $invoice->data['title']; ?></a></span>
 			<span class="commercial-price"><?php echo ! empty( $invoice->data['total_ttc'] ) ? number_format( $invoice->data['total_ttc'], 2, ',', '' ) . '€ TTC' : ''; ?></span>
 			<span class="commercial-status"><?php echo Doli_Statut::g()->display_status( $invoice ); ?></span>
