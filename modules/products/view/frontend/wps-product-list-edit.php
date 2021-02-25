@@ -50,12 +50,14 @@ defined( 'ABSPATH' ) || exit;
 			<li class="wps-product-attributes-item"><?php echo esc_html_e( 'Unit price:', 'wpshop' ) . ' ' . esc_html( number_format( $product['price_ttc'], 2, '.', '' ) ); ?>€</li>
 		</ul>
 		<div class="wps-product-footer">
-			<div class="wps-product-quantity" style="font-size: 1.4em;">
-				<input type="hidden" name="products[<?php echo esc_attr( $key ); ?>][qty]" value="<?php echo esc_attr( $product['qty'] ); ?>" />
-				<span class="wps-quantity-minus fas fa-minus-circle"></span>
-				<span class="qty"><?php echo esc_html( $product['qty'] ); ?></span>
-				<span class="wps-quantity-plus fas fa-plus-circle"></span>
-			</div>
+			<?php if ( ! Settings::g()->split_product() ) : ?>
+				<div class="wps-product-quantity" style="font-size: 1.4em;">
+					<input type="hidden" name="products[<?php echo esc_attr( $key ); ?>][qty]" value="<?php echo esc_attr( $product['qty'] ); ?>" />
+					<span class="wps-quantity-minus fas fa-minus-circle"></span>
+					<span class="qty"><?php echo esc_html( $product['qty'] ); ?></span>
+					<span class="wps-quantity-plus fas fa-plus-circle"></span>
+				</div>
+			<?php endif; ?>
 			<?php if ( ! empty( $product['price_ttc'] ) ) : ?>
 				<div itemprop="offers" itemscope itemtype="https://schema.org/Offer" class="wps-product-price">
 					<span itemprop="price" content="<?php echo esc_html( number_format( $product['price_ttc'] * $product['qty'], 2, '.', '' ) ); ?>"><?php echo esc_html( number_format( $product['price_ttc'] * $product['qty'], 2, '.', '' ) ); ?></span>
