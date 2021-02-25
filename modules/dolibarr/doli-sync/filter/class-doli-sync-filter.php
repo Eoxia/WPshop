@@ -89,15 +89,17 @@ class Doli_Sync_Filter extends Singleton_Util {
 	public function build_sha_product( $response, $wp_id ) {
 		$data_sha = array();
 
-		$data_sha['doli_id']     = $response->id;
-		$data_sha['wp_id']       = $wp_id;
-		$data_sha['label']       = $response->label;
-		$data_sha['description'] = $response->description;
-		$data_sha['price']       = $response->price;
-		$data_sha['price_ttc']   = $response->price_ttc;
-		$data_sha['tva_tx']      = $response->tva_tx;
-		$data_sha['stock']       = $response->stock_reel;
-		$data_sha['status']      = $response->array_options->options__wps_status;
+		//@todo doli_id en id_dolibarr
+		//@todo wp_id en id_wordpress
+		$data_sha['doli_id']              = $response->id;
+		$data_sha['wp_id']                = $wp_id;
+		$data_sha['label']                = $response->label;
+		$data_sha['description']          = $response->description;
+		$data_sha['price']                = $response->price;
+		$data_sha['price_ttc']            = $response->price_ttc;
+		$data_sha['tva_tx']               = $response->tva_tx;
+		$data_sha['stock']                = $response->stock_reel;
+		$data_sha['status']               = $response->array_options->options__wps_status;
 
 		if ( $response->array_options->options__wps_status == 1  || $response->array_options->options__wps_status == 'publish' ) {
 			$data_sha['status'] = 'publish';
@@ -105,18 +107,6 @@ class Doli_Sync_Filter extends Singleton_Util {
 			$data_sha['status'] = 'draft';
 		}
 
-		$doli_documents = Request_Util::get( 'documents?modulepart=product&id=' . $response->id );
-		$doli_documents_array = json_decode( json_encode( $doli_documents ), true );
-		$data_sha_array = array();
-		if ( ! empty( $doli_documents_array ) ) {
-			foreach ($doli_documents_array as $doli_documents_array_single) {
-				$data_sha_array[] = implode(',', $doli_documents_array_single);
-			}
-			$response->sha_documents = hash('sha256', implode(',', $data_sha_array));
-		} else {
-			$response->sha_documents = hash('sha256', implode(',', array()));
-		}
-		update_post_meta( $wp_id, 'sha256_documents', $response->sha_documents );
 		$response->sha = hash( 'sha256', implode( ',', $data_sha ) );
 
 		return $response;
