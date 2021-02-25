@@ -6,12 +6,13 @@
  * @author    Eoxia <dev@eoxia.com>
  * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
- * @version   2.1.0
+ * @version   2.4.0
  */
 
 namespace wpshop;
 
 use eoxia\View_Util;
+use \eoxia\Custom_Menu_Handler as CMH;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -47,10 +48,13 @@ class Settings_Action {
 	 * Initialise la page "Réglages".
 	 *
 	 * @since   2.0.0
-	 * @version 2.0.0
+	 * @version 2.4.0
 	 */
 	public function callback_admin_menu() {
-		add_submenu_page( 'wpshop', __( 'Settings', 'wpshop' ), __( 'Settings', 'wpshop' ), 'manage_options', 'wps-settings', array( $this, 'callback_add_menu_page' ) );
+		//add_submenu_page( 'wpshop', __( 'Settings', 'wpshop' ), __( 'Settings', 'wpshop' ), 'manage_options', 'wps-settings', array( $this, 'callback_add_menu_page' ) );
+		if ( user_can( get_current_user_id(), 'manage_options' ) ) {
+			CMH::register_menu( 'wpshop', __( 'Settings', 'wpshop' ), __( 'Settings', 'wpshop' ), 'manage_options', 'wps-settings', array( $this, 'callback_add_menu_page' ), 'fas fa-cog', 9 );
+		}
 	}
 
 	/**

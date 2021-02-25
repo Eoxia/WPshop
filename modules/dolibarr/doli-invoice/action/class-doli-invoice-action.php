@@ -13,6 +13,7 @@ namespace wpshop;
 
 use eoxia\LOG_Util;
 use eoxia\View_Util;
+use \eoxia\Custom_Menu_Handler as CMH;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -102,11 +103,15 @@ class Doli_Invoice_Action {
 	 * Initialise la page "Facture".
 	 *
 	 * @since   2.0.0
-	 * @version 2.0.0
+	 * @version 2.4.0
 	 */
 	public function callback_admin_menu() {
 		if ( Settings::g()->dolibarr_is_active() ) {
-			add_submenu_page('wpshop', __('Invoices', 'wpshop'), __('Invoices', 'wpshop'), 'manage_options', 'wps-invoice', array($this, 'callback_add_menu_page'));
+//			add_submenu_page('wpshop', __('Invoices', 'wpshop'), __('Invoices', 'wpshop'), 'manage_options', 'wps-invoice', array($this, 'callback_add_menu_page'));
+
+			if ( user_can( get_current_user_id(), 'manage_options' ) ) {
+				CMH::register_menu( 'wpshop', __( 'Invoices', 'wpshop' ), __( 'Invoices', 'wpshop' ), 'manage_options', 'wps-invoice', array( $this, 'callback_add_menu_page' ), 'fas fa-file-invoice-dollar', 8 );
+			}
 		}
 	}
 

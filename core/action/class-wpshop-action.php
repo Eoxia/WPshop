@@ -15,6 +15,7 @@
 namespace wpshop;
 
 defined( 'ABSPATH' ) || exit;
+use \eoxia\Custom_Menu_Handler as CMH;
 
 /**
  * WPshop Action.
@@ -180,8 +181,12 @@ class WPshop_Action {
 	 * @version 2.0.0
 	 */
 	public function callback_admin_menu() {
-		add_menu_page( __( 'WPshop', 'wpshop' ), __( 'WPshop', 'wpshop' ), 'manage_options', 'wpshop', '', 'dashicons-store' );
-		add_submenu_page( 'wpshop', __( 'Dashboard', 'wpshop' ), __( 'Dashboard', 'wpshop' ), 'manage_options', 'wpshop', array( Dashboard::g(), 'callback_add_menu_page' ) );
+		CMH::register_container( 'WPshop', 'WPshop', 'manage_options', 'wpshop', '', PLUGIN_WPSHOP_URL . 'core/asset/image/wpshop-16x16.png', null );
+		CMH::add_logo( 'wpshop', PLUGIN_WPSHOP_URL . 'core/asset/image/wpshop.png', admin_url( 'admin.php?page=wpshop' ) );
+		CMH::register_menu( 'wpshop', __( 'Dashboard', 'wpshop' ), __( 'Dashboard', 'wpshop' ), 'manage_options', 'wpshop', array( Dashboard::g(), 'callback_add_menu_page' ), 'fa fa-home', 'bottom' );
+
+//		add_menu_page( __( 'WPshop', 'wpshop' ), __( 'WPshop', 'wpshop' ), 'manage_options', 'wpshop', '', 'dashicons-store' );
+//		add_submenu_page( 'wpshop', __( 'Dashboard', 'wpshop' ), __( 'Dashboard', 'wpshop' ), 'manage_options', 'wpshop', array( Dashboard::g(), 'callback_add_menu_page' ) );
 	}
 
 	/**

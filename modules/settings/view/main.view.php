@@ -6,7 +6,7 @@
  * @author    Eoxia <dev@eoxia.com>
  * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
- * @version   2.0.0
+ * @version   2.4.0
  */
 
 namespace wpshop;
@@ -23,8 +23,6 @@ defined( 'ABSPATH' ) || exit;
 ?>
 
 <div class="wrap wpeo-wrap">
-	<h2><?php esc_html_e( 'Settings', 'wpshop' ); ?></h2>
-
 	<?php
 	if ( ! empty( $transient ) ) :
 		?>
