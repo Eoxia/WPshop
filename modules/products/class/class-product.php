@@ -315,7 +315,7 @@ class Product extends Post_Class {
 	 * La vue de la metabox pour configurer le produit.
 	 *
 	 * @since   2.0.0
-	 * @version 2.0.0
+	 * @version 2.4.0
 	 *
 	 * @param WP_Post $post Le produit.
 	 */
@@ -356,54 +356,22 @@ class Product extends Post_Class {
 	 *
 	 * @param WP_Post $post Le produit.
 	 */
-	public function callback_add_meta_box_gallery( $post ) {
-		$product = $this->get( array( 'id' => $post->ID ), true );
+	public function callback_add_meta_box_gallery( $post )
+	{
+		$product = $this->get(array('id' => $post->ID), true);
 
-		if ( empty( $product ) ) {
-			$product = $this->get( array( 'schema' => true ), true );
+		if (empty($product)) {
+			$product = $this->get(array('schema' => true), true);
 		}
 
-		if ( ! empty( $product->data['fk_product_parent'] ) ) {
-			$parent_post = get_post( Doli_Products::g()->get_wp_id_by_doli_id( $product->data['fk_product_parent'] ) );
+		if (!empty($product->data['fk_product_parent'])) {
+			$parent_post = get_post(Doli_Products::g()->get_wp_id_by_doli_id($product->data['fk_product_parent']));
 
 			$product->data['parent_post'] = $parent_post;
 		}
 
 		// Get Dolibarr documents.
-		$doli_documents = Request_Util::get( 'documents?modulepart=product&id=' . $product->data['external_id'] );
-		if ( empty( $doli_documents ) ) {
-			$doli_documents = array();
-		}
-		$wp_documents = Doli_Documents::g()->convert_to_wp_documents_format( $doli_documents );
-
-		$mine_type = 'image';
-		$wp_upload_dir = wp_upload_dir();
-
-		// create the sha256 for documents.
-		$sha256   = get_post_meta( $post->ID, 'sha256_documents', true );
-
-		$data_sha = Doli_Documents::g()->build_sha_documents( $post->ID, $doli_documents );
-
-//		echo '<pre>';
-//		print_r($sha256 . "\n");
-//		print_r($data_sha);
-//		echo '</pre>';
-
-		if ( $sha256 == $data_sha ) {
-
-			$attachments = Doli_Documents::g()->get_attachments( $product, $mine_type );
-
-			if ( ! empty( $attachments ) ) {
-				foreach ( $attachments as $attachment ) {
-					wp_delete_attachment( $attachment['ID'] );
-				}
-			}
-
-			Doli_Documents::g()->create_attachments( $wp_documents, $product , $mine_type );
-		}
-
-		$attachments = Doli_Documents::g()->get_attachments( $product, $mine_type );
-		$attachments = Doli_Documents::g()->add_metadata_attachements( $attachments );
+		$attachments = Request_Util::get( 'documents?modulepart=product&id=' . $product->data['external_id'] );
 
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
 
@@ -417,8 +385,6 @@ class Product extends Post_Class {
 			'products',
 			'metabox/gallery',
 			array(
-				'id'                        => ! empty( $product->data['id'] ) ? $product->data['id'] : $post->ID,
-				'wp_upload_dir'             => $wp_upload_dir,
 				'upload_link'               => $upload_link,
 				'attachments'               => ! empty( $attachments ) ? $attachments : '',
 				'product'                   => $product,
@@ -432,7 +398,7 @@ class Product extends Post_Class {
 	 * La vue de la metabox pour configurer les documents du produit.
 	 *
 	 * @since   2.1.0
-	 * @version 2.1.0
+	 * @version 2.4.0
 	 *
 	 * @param WP_Post $post Le produit.
 	 */
@@ -450,31 +416,7 @@ class Product extends Post_Class {
 		}
 
 		// Get Dolibarr documents.
-		$doli_documents = Request_Util::get( 'documents?modulepart=product&id=' . $product->data['external_id'] );
-		$wp_documents   = Doli_Documents::g()->convert_to_wp_documents_format( $doli_documents );
-
-		$mine_type     = 'application';
-		$wp_upload_dir = wp_upload_dir();
-
-		// create the sha256 for documents.
-		$sha256   = get_post_meta( $post->ID, 'sha256_documents', true );
-		$data_sha = Doli_Documents::g()->build_sha_documents( $post->ID, $doli_documents );
-
-		if ( $sha256 != $data_sha ) {
-
-			$attachments = Doli_Documents::g()->get_attachments( $product, $mine_type );
-
-			if ( ! empty( $attachments ) ) {
-				foreach ( $attachments as $attachment ) {
-					wp_delete_attachment( $attachment['ID'] );
-				}
-			}
-
-			Doli_Documents::g()->create_attachments( $wp_documents, $product , $mine_type );
-		}
-
-		$attachments = Doli_Documents::g()->get_attachments( $product, $mine_type );
-		$attachments = Doli_Documents::g()->add_metadata_attachements( $attachments );
+		$attachments = Request_Util::get( 'documents?modulepart=product&id=' . $product->data['external_id'] );
 
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
 
@@ -482,12 +424,13 @@ class Product extends Post_Class {
 		$dolibarr_product_document = $dolibarr_option['dolibarr_product_document'];
 		$upload_link               = esc_url( get_upload_iframe_src( 'image', $product->data['id'] ) );
 
+		$wp_upload_dir = wp_upload_dir();
+
 		View_Util::exec(
 			'wpshop',
 			'products',
 			'metabox/document',
 			array(
-				'id'                        => ! empty( $product->data['id'] ) ? $product->data['id'] : $post->ID,
 				'wp_upload_dir'             => $wp_upload_dir,
 				'upload_link'               => $upload_link,
 				'attachments'               => ! empty( $attachments ) ? $attachments : '',
