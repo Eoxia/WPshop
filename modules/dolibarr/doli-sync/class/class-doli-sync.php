@@ -198,18 +198,6 @@ class Doli_Sync extends Singleton_Util {
 					}
 				}
 
-				$mine_type = 'image';
-
-				$doli_documents = Request_Util::get( 'documents?modulepart=product&id=' . $wp_product->data['external_id'] );
-				if ( empty( $doli_documents ) ) {
-					$doli_documents = array();
-				}
-				$wp_documents = Doli_Documents::g()->convert_to_wp_documents_format( $doli_documents );
-
-				Doli_Documents::g()->create_attachments( $wp_documents, $wp_product , $mine_type );
-				$mine_type = 'application';
-				Doli_Documents::g()->create_attachments( $wp_documents, $wp_product , $mine_type );
-
 				$wp_object = $wp_product;
 				break;
 			case 'wps-proposal':
@@ -255,19 +243,14 @@ class Doli_Sync extends Singleton_Util {
 		global $wpdb;
 
 		if ( $type == 'wps-user' ) {
-			$external_id = get_user_meta( $id, '_external_id', true );
-			$sha_256     = get_user_meta( $id, '_sync_sha_256', true );
+			$external_id = get_user_meta($id, '_external_id', true);
+			$sha_256 = get_user_meta($id, '_sync_sha_256', true);
 		} elseif  ( $type == 'wps-product-cat' ) {
 			$external_id = get_term_meta( $id, '_external_id', true );
 			$sha_256     = get_term_meta( $id, '_sync_sha_256', true );
 		} elseif ( $type == 'wps-product' ) {
 			$external_id = get_post_meta( $id, '_external_id', true );
 			$sha_256     = get_post_meta( $id, '_sync_sha_256', true );
-			if ( ! empty(get_post_meta( $id, 'sha256_documents', true ))) {
-				$sha_documents = get_post_meta( $id, 'sha256_documents', true );
-			} else {
-				$sha_documents = hash('sha256', implode(',', array()));
-			}
 		} else {
 			$external_id = get_post_meta( $id, '_external_id' , true );
 			$sha_256 = get_post_meta( $id, '_sync_sha_256', true );
@@ -276,18 +259,6 @@ class Doli_Sync extends Singleton_Util {
 		$sync_info = $this->sync_infos[ $type ];
 
 		$response = Request_Util::get( $sync_info['endpoint'] . '/' . $external_id );
-
-		if ( Settings::g()->debug_mode() ) {
-			//Start
-//			echo '<pre>';
-//			print_r('L266' );
-//			print_r($response);
-//			print_r('check dolibarr sync');
-//			print_r('4');
-//			echo '</pre>';
-			//exit;
-			//End
-		}
 
 		// Dolibarr return false when object is not found.
 		if ( ! $response ) {
@@ -363,15 +334,13 @@ class Doli_Sync extends Singleton_Util {
 				);
 			}
 		} else {
-			if ( $response->sha !== $sha_256 || $response->sha_documents != $sha_documents || $wp_category_labels != $doli_category_labels ) {
+			if ( $response->sha !== $sha_256 || $wp_category_labels != $doli_category_labels ) {
 				return array(
 					'status' => true,
 					'status_code' => '0x3',
 					'status_message' => __('WP Object is not equal Dolibarr Object', 'wpshop'),
 					'response->sha' => $response->sha,
 					'sha_256' => $sha_256,
-					'response->sha_documents' => $response->sha_documents,
-					'sha_documents' => $sha_documents,
 					'wp_category_labels' => $wp_category_labels,
 					'doli_category_labels' => $doli_category_labels,
 				);
@@ -432,13 +401,13 @@ class Doli_Sync extends Singleton_Util {
 					$data_view['status_color'] = 'green';
 					$data_view['can_sync'] = true;
 					break;
-				case '0x1':
-					$data_view['status_color'] = 'none';
-					break;
-				case '0x2':
-					$data_view['status_color'] = 'none';
-					$object->data['external_id'] =  '';
-					break;
+//				case '0x1':
+//					$data_view['status_color'] = 'none';
+//					break;
+//				case '0x2':
+//					$data_view['status_color'] = 'none';
+//					$object->data['external_id'] =  '';
+//					break;
 				case '0x3':
 					$data_view['status_color'] = 'red';
 					$data_view['can_sync'] = true;

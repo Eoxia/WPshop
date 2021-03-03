@@ -51,6 +51,7 @@ class Cart_Action {
 	 */
 	public function callback_calculate_totals() {
 		$shipping_cost_option = get_option( 'wps_shipping_cost', Settings::g()->shipping_cost_default_settings );
+		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
 
 		$price             = 0;
 		$price_no_shipping = 0;
@@ -59,12 +60,22 @@ class Cart_Action {
 
 		if ( ! empty( Cart_Session::g()->cart_contents ) ) {
 			foreach ( Cart_Session::g()->cart_contents as $key => $line ) {
-				$price     += $line['price'] * $line['qty'];
-				$price_ttc += $line['price_ttc'] * $line['qty'];
+				if ( $dolibarr_option['price_min'] > ( $line['price_ttc'] * $line['qty'] ) ) {
+					$price     += $dolibarr_option['price_min'] - ( $dolibarr_option['price_min'] * $line['tva_tx'] / 100 );
+					$price_ttc += $dolibarr_option['price_min'];
+				} else {
+					$price     += $line['price'] * $line['qty'];
+					$price_ttc += $line['price_ttc'] * $line['qty'];
+				}
 
 				if ( $shipping_cost_option['shipping_product_id'] !== $line['id'] ) {
-					$tva_amount        += $line['tva_amount'] * $line['qty'];
-					$price_no_shipping += $line['price'] * $line['qty'];
+					if ( $dolibarr_option['price_min'] > ( $line['price_ttc'] * $line['qty'] ) ) {
+						$tva_amount += $dolibarr_option['price_min'] * $line['tva_tx'] / 100;
+						$price_no_shipping += $dolibarr_option['price_min'] - $tva_amount;
+					} else {
+						$tva_amount  += $line['tva_amount'] * $line['qty'];
+						$price_no_shipping += $line['price'] * $line['qty'];
+					}
 				}
 			}
 		}
@@ -84,9 +95,9 @@ class Cart_Action {
 	public function callback_add_to_cart() {
 		check_ajax_referer( 'add_to_cart' );
 
-		$id   = ! empty( $_POST['id'] ) ? (int) $_POST['id'] : 0;
-		$qty  = ! empty( $_POST['qty'] ) ? (float) $_POST['qty'] : 1;
-		$desc = ! empty( $_POST['desc'] ) ? sanitize_text_field( $_POST['desc'] ) : '';
+		$id        = ! empty( $_POST['id'] ) ? (int) $_POST['id'] : 0;
+		$qty       = ! empty( $_POST['qty'] ) ? (float) $_POST['qty'] : 1;
+		$desc      = ! empty( $_POST['desc'] ) ? sanitize_text_field( $_POST['desc'] ) : '';
 
 		if ( empty( $id ) ) {
 			wp_send_json_error();

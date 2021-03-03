@@ -62,6 +62,7 @@ class Settings extends Singleton_Util {
 			),
 			'use_quotation' => true,
 			'split_product' => true,
+			'price_min' => 0,
 			'notice' => array(
 				'error_erp'    => true,
 				'activate_erp' => true,

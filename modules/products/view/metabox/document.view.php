@@ -29,10 +29,26 @@ defined( 'ABSPATH' ) || exit;
 <div class="wps-product-document-container" data-id="<?php echo esc_attr( $product->data['id'] ) ?>">
 	<ul class="wps-product-document-attachments">
 		<?php if ( ! empty ( $attachments ) ) :
-			foreach ( $attachments as $attachment ) : ?>
-				<a class="wps-product-document-attachment" data-attachment-id="<?php echo esc_attr( $attachment['ID'] ) ?>" href="<?php echo esc_attr( $wp_upload_dir['baseurl'] . '/' . $attachment['attached_file'] ) ?>" target="_blank">
-					<?php echo esc_attr( $attachment['post_name'] ); ?>
-				</a>
+			foreach ( $attachments as $attachment ) :
+				$pathinfo = pathinfo( $attachment->relativename );
+				if ( $pathinfo['extension'] == 'pdf' ) :
+ 					$path = $attachment->level1name . '/' . $attachment->name;
+					$attachment_data = Request_Util::get( 'documents/download?modulepart=product&original_file=' . $path );
+					$bin = base64_decode($attachment_data->content, true);
+					$dirname = $wp_upload_dir['basedir'] . '/wpshop/documents/produit/';
+					if ( ! is_dir( $dirname ) ) {
+						mkdir( $dirname, 0777, true);
+					}
+					$filename = $dirname . $attachment->name;
+					if ( ! file_exists( $filename ) ) :
+						file_put_contents( $filename, $bin );
+					endif; ?>
+					<li>
+						<a class="wps-product-document-attachment" href="<?php echo esc_attr( $wp_upload_dir['baseurl'] . '/wpshop/documents/produit/' . $attachment->name ) ?>" target="_blank">
+							<?php echo esc_attr( $attachment->name ); ?>
+						</a>
+					</li>
+				<?php endif; ?>
 			<?php endforeach ?>
 		<?php endif; ?>
 	</ul>

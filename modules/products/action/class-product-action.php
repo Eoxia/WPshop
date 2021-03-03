@@ -12,6 +12,7 @@
 namespace wpshop;
 
 use eoxia\View_Util;
+use \eoxia\Custom_Menu_Handler as CMH;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -44,9 +45,16 @@ class Product_Action {
 	 * @version 2.0.0
 	 */
 	public function callback_admin_menu() {
-		$hook = add_submenu_page( 'wpshop', __( 'Products', 'wpshop' ), __( 'Products', 'wpshop' ), 'manage_options', 'wps-product', array( $this, 'callback_add_menu_page' ) );
+//		$hook = add_submenu_page( 'wpshop', __( 'Products', 'wpshop' ), __( 'Products', 'wpshop' ), 'manage_options', 'wps-product', array( $this, 'callback_add_menu_page' ) );
+//		if ( ! Settings::g()->dolibarr_is_active() ) {
+//			add_submenu_page( 'wpshop', __( 'Add', 'wpshop' ), __( 'Add', 'wpshop' ), 'manage_options', 'post-new.php?post_type=wps-product' );
+//		}
+		if ( user_can( get_current_user_id(), 'manage_options' ) ) {
+			CMH::register_menu( 'wpshop', __( 'Products', 'wpshop' ), __( 'Products', 'wpshop' ), 'manage_options', 'wps-product', array( $this, 'callback_add_menu_page' ), 'fas fa-cube', 3 );
+		}
 		if ( ! Settings::g()->dolibarr_is_active() ) {
-			add_submenu_page( 'wpshop', __( 'Add', 'wpshop' ), __( 'Add', 'wpshop' ), 'manage_options', 'post-new.php?post_type=wps-product' );
+//			add_submenu_page( 'wpshop', __( 'Add', 'wpshop' ), __( 'Add', 'wpshop' ), 'manage_options', 'post-new.php?post_type=wps-product' );
+			CMH::register_menu( 'wpshop', __( 'Add', 'wpshop' ), __( 'Add', 'wpshop' ), 'manage_options', 'post-new.php?post_type=wps-product' );
 		}
 	}
 
@@ -87,7 +95,7 @@ class Product_Action {
 			$prev_url  .= '&s=' . $s;
 			$next_url  .= '&s=' . $s;
 		}
-		
+
 		View_Util::exec( 'wpshop', 'products', 'main', array(
 			'number_page'  => $number_page,
 			'current_page' => $current_page,

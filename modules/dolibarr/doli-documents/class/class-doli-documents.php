@@ -108,14 +108,15 @@ class Doli_Documents extends Attachment_Class {
 	 */
 	public function doli_to_wp( $doli_document, $wp_document, $only_convert = false ) {
 		if ( is_object( $wp_document ) ) {
-			//$wp_document->data['external_id'] = (int) $doli_document->id;
-			$wp_document->data['name']        = $doli_document->name;
-			$wp_document->data['path']        = $doli_document->path;
-			$wp_document->data['fullpath']        = $doli_document->fullname;
+			//$wp_document->data['external_id']   = (int) $doli_document->id;
+			$wp_document->data['name']          = $doli_document->name;
+			$wp_document->data['level1name']    = $doli_document->level1name;
+			$wp_document->data['path']          = $doli_document->path;
+			$wp_document->data['fullpath']      = $doli_document->fullname;
 			$time = get_date_from_gmt ( date( 'Y-m-d H:i:s', $doli_document->date ) );
-			$wp_document->data['date']        = $time;
-			$wp_document->data['size']        = (int) $doli_document->size;
-			$wp_document->data['dolibarr_type']        = $doli_document->type;
+			$wp_document->data['date']          = $time;
+			$wp_document->data['size']          = (int) $doli_document->size;
+			$wp_document->data['dolibarr_type'] = $doli_document->type;
 			//$wp_document->data['parent_id']   = Doli_Products::g()->get_wp_id_by_doli_id( $doli_document->socid );
 
 			$wp_document->data['linked_objects_ids'] = array();
@@ -161,7 +162,11 @@ class Doli_Documents extends Attachment_Class {
 			if ( strstr( $filetype['type'], $mine_type ) ) {
 				$uploadfile = $wp_upload_dir['path'] . '/' . $wp_document->data['name'];
 
-				$contents = file_get_contents( $wp_document->data['fullpath'] );
+				//$contents = file_get_contents( $wp_document->data['fullpath'] );
+
+				$path = $wp_document->data['level1name'] . '/' . $wp_document->data['name'];
+				$attachment_data = Request_Util::get( 'documents/download?modulepart=product&original_file=' . $path );
+				$contents = base64_decode( $attachment_data->content );
 				$savefile = fopen( $uploadfile, 'w' );
 				fwrite( $savefile, $contents );
 				fclose( $savefile );
@@ -187,18 +192,51 @@ class Doli_Documents extends Attachment_Class {
 		}
 	}
 
-	public function build_sha_documents( $id, $doli_documents ) {
-		$doli_documents_array = json_decode( json_encode( $doli_documents ), true );
-		$data_sha_array = array();
-		if ( ! empty( $doli_documents_array ) ) {
-			foreach ( $doli_documents_array as  $doli_documents_array_single ) {
-				$data_sha_array[] = implode ( ',', $doli_documents_array_single );
-			}
-		}
-		$data_sha = hash( 'sha256', implode ( ',', $data_sha_array ) );
-		update_post_meta( $id, 'sha256_documents', $data_sha );
+	public function build_sha( $id, $reponse ) {
+		$data_sha = array();
 
-		return $data_sha;
+		//@todo doli_id en id_dolibarr
+		//@todo wp_id en id_wordpress
+		$data_sha['doli_id']              = $response->id;
+		$data_sha['wp_id']                = $wp_id;
+		$data_sha['label']                = $response->label;
+		$data_sha['description']          = $response->description;
+		$data_sha['price']                = $response->price;
+		$data_sha['price_ttc']            = $response->price_ttc;
+		$data_sha['tva_tx']               = $response->tva_tx;
+		$data_sha['stock']                = $response->stock_reel;
+		$data_sha['status']               = $response->array_options->options__wps_status;
+		$data_sha['categories']           = '';
+		$data_sha['documents_dolibarr']   = '';
+
+		if ( $response->array_options->options__wps_status == 1  || $response->array_options->options__wps_status == 'publish' ) {
+			$data_sha['status'] = 'publish';
+		} else {
+			$data_sha['status'] = 'draft';
+		}
+
+		// Get Dolibarr documents.
+		$doli_documents = Request_Util::get( 'documents?modulepart=product&id=' . $response->id );
+		// Transform Dolibarr documents in array.
+		$doli_documents_array = json_decode( json_encode( $doli_documents ), true );
+		// Fill data_sha['documents_dolibarr'] with Dolibarr documents array.
+		$data_sha['documents_dolibarr'] = $doli_documents_array;
+
+		$response->sha = hash( 'sha256', implode( ',', $data_sha ) );
+
+		return $response;
+
+//		$doli_documents_array = json_decode( json_encode( $doli_documents ), true );
+////		$data_sha_array = array();
+////		if ( ! empty( $doli_documents_array ) ) {
+////		foreach ( $doli_documents_array as  $doli_documents_array_single ) {
+////		$data_sha_array[] = implode ( ',', $doli_documents_array_single );
+////		}
+////		}
+////		$data_sha = hash( 'sha256', implode ( ',', $data_sha_array ) );
+////		update_post_meta( $id, 'sha256_documents', $data_sha );
+////
+////		return $data_sha;
 	}
 
 	public function add_metadata_attachements( $attachments ) {

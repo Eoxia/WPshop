@@ -14,6 +14,7 @@ namespace wpshop;
 use eoxia\LOG_Util;
 use eoxia\View_Util;
 use stdClass;
+use \eoxia\Custom_Menu_Handler as CMH;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -130,10 +131,14 @@ class Doli_Order_Action {
 	 */
 	public function callback_admin_menu() {
 		if ( Settings::g()->dolibarr_is_active() ) {
-			$hook = add_submenu_page( 'wpshop', __( 'Orders', 'wpshop' ), __( 'Orders', 'wpshop' ), 'manage_options', 'wps-order', array( $this, 'callback_add_menu_page' ) );
+//			$hook = add_submenu_page( 'wpshop', __( 'Orders', 'wpshop' ), __( 'Orders', 'wpshop' ), 'manage_options', 'wps-order', array( $this, 'callback_add_menu_page' ) );
+//
+//			if ( ! isset( $_GET['id'] ) ) {
+//				add_action( 'load-' . $hook, array( $this, 'callback_add_screen_option' ) );
+//			}
 
-			if ( ! isset( $_GET['id'] ) ) {
-				add_action( 'load-' . $hook, array( $this, 'callback_add_screen_option' ) );
+			if ( user_can( get_current_user_id(), 'manage_options' ) ) {
+				CMH::register_menu( 'wpshop', __( 'Orders', 'wpshop' ), __( 'Orders', 'wpshop' ), 'manage_options', 'wps-order', array( $this, 'callback_add_menu_page' ), 'fas fa-file-invoice', 6 );
 			}
 		}
 	}

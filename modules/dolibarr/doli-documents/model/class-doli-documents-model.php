@@ -5,8 +5,8 @@
  * @package   WPshop
  * @author    Eoxia <dev@eoxia.com>
  * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
- * @since     2.1.0
- * @version   2.1.0
+ * @since     2.4.0
+ * @version   2.4.0
  */
 
 namespace wpshop;
@@ -47,6 +47,15 @@ class Doli_Documents_Model extends Attachment_Model {
 			'since'       => '2.1.0',
 			'version'     => '2.1.0',
 			'description' => 'Le nom du document.',
+		);
+
+		$this->schema['level1name'] = array(
+			'type'        => 'string',
+			'meta_type'   => 'single',
+			'field'       => 'level1name',
+			'since'       => '2.4.0',
+			'version'     => '2.4.0',
+			'description' => 'Le répertoire du document.',
 		);
 
 		$this->schema['path'] = array(

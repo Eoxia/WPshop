@@ -6,12 +6,13 @@
  * @author    Eoxia <dev@eoxia.com>
  * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
- * @version   2.1.0
+ * @version   2.4.0
  */
 
 namespace wpshop;
 
 use eoxia\View_Util;
+use \eoxia\Custom_Menu_Handler as CMH;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -47,10 +48,13 @@ class Settings_Action {
 	 * Initialise la page "Réglages".
 	 *
 	 * @since   2.0.0
-	 * @version 2.0.0
+	 * @version 2.4.0
 	 */
 	public function callback_admin_menu() {
-		add_submenu_page( 'wpshop', __( 'Settings', 'wpshop' ), __( 'Settings', 'wpshop' ), 'manage_options', 'wps-settings', array( $this, 'callback_add_menu_page' ) );
+		//add_submenu_page( 'wpshop', __( 'Settings', 'wpshop' ), __( 'Settings', 'wpshop' ), 'manage_options', 'wps-settings', array( $this, 'callback_add_menu_page' ) );
+		if ( user_can( get_current_user_id(), 'manage_options' ) ) {
+			CMH::register_menu( 'wpshop', __( 'Settings', 'wpshop' ), __( 'Settings', 'wpshop' ), 'manage_options', 'wps-settings', array( $this, 'callback_add_menu_page' ), 'fas fa-cog', 9 );
+		}
 	}
 
 	/**
@@ -135,6 +139,7 @@ class Settings_Action {
 		$use_quotation            = isset( $_POST['use_quotation'] ) && 'on' == $_POST['use_quotation'] ? true : false;
 		$split_product            = isset( $_POST['split_product'] ) && 'on' == $_POST['split_product'] ? true : false;
 		$debug_mode               = isset( $_POST['debug_mode'] ) && 'on' == $_POST['debug_mode'] ? true : false;
+		$price_min                = ! empty( $_POST['price_min'] ) ? (int) $_POST['price_min'] : 0;
 
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
 
@@ -143,6 +148,7 @@ class Settings_Action {
 		$dolibarr_option['thumbnail_size']['height'] = $thumbnail_size['height'];
 		$dolibarr_option['use_quotation']            = $use_quotation;
 		$dolibarr_option['split_product']            = $split_product;
+		$dolibarr_option['price_min']                = $price_min;
 
 		update_option( 'wps_dolibarr', $dolibarr_option );
 		update_option( 'debug_mode', $debug_mode );

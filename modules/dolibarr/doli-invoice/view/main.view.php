@@ -6,7 +6,7 @@
  * @author    Eoxia <dev@eoxia.com>
  * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
- * @version   2.0.0
+ * @version   2.4.0
  */
 
 namespace wpshop;
@@ -29,8 +29,6 @@ defined( 'ABSPATH' ) || exit;
 ?>
 
 <div class="wrap wpeo-wrap">
-	<h2><?php esc_html_e( 'Invoices', 'wpshop' ); ?></h2>
-
 	<div class="wpeo-gridlayout wpeo-form form-light grid-4 alignleft" style="margin-bottom: 20px; margin-top: 15px;">
 		<form method="GET" action="<?php echo admin_url( 'admin.php' ); ?>" class="wps-filter-bar wpeo-form form-light" style="display: flex;">
 			<div class="form-element">
