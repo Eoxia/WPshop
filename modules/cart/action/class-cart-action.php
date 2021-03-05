@@ -71,10 +71,10 @@ class Cart_Action {
 				if ( $shipping_cost_option['shipping_product_id'] !== $line['id'] ) {
 					if ( $dolibarr_option['price_min'] > ( $line['price_ttc'] * $line['qty'] ) ) {
 						$tva_amount += $dolibarr_option['price_min'] * $line['tva_tx'] / 100;
-						$price_no_shipping += $dolibarr_option['price_min'] - $tva_amount;
+						$price_no_shipping = $price;
 					} else {
 						$tva_amount  += $line['tva_amount'] * $line['qty'];
-						$price_no_shipping += $line['price'] * $line['qty'];
+						$price_no_shipping = $price;
 					}
 				}
 			}
