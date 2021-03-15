@@ -381,7 +381,7 @@ class Doli_Order_Action {
 	}
 
 	/**
-	 * Création d'une commande lors du tunnel de vente.
+	 * Création d'une proposition commerciale lors du tunnel de vente.
 	 *
 	 * @since   2.0.0
 	 * @version 2.1.0
@@ -390,7 +390,7 @@ class Doli_Order_Action {
 	 *
 	 * @param  stdClass $proposal Les données d'une proposition commerciale.
 	 *
-	 * @return Doli_Order         Les données d'une commande.
+	 * @return Doli_Order Les données d'une commande.
 	 */
 	public function create_order( $proposal ) {
 		LOG_Util::log( sprintf( 'Dolibarr call POST /orders/createfromproposal/ with data %s', $proposal->id ), 'wpshop2' );
