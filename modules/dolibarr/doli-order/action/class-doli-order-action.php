@@ -381,7 +381,7 @@ class Doli_Order_Action {
 	}
 
 	/**
-	 * Création d'une proposition commerciale lors du tunnel de vente.
+	 * Création d'une commande sur la base d'une proposition commerciale lors du tunnel de vente.
 	 *
 	 * @since   2.0.0
 	 * @version 2.1.0
