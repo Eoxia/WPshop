@@ -72,8 +72,12 @@ class Emails extends Singleton_Util {
 			'content' => __( 'Hello <br> You can access your invoices by logging in to your account.', 'wpshop' ),
 		);
 
+		foreach ( $this->emails as $key => $email ) {
+			// Définit le contenu des emails en fonction des pages.
+			$this->emails[$key] = $this->set_email_content( $key, $email );
+		}
 
-		$wp_upload_dir              = wp_upload_dir();
+		$wp_upload_dir = wp_upload_dir();
 
 		//@todo Permettre le réglages des dossiers et du nom de fichier pour les logs
 		//@todo afficher la taille du fichier
@@ -150,6 +154,34 @@ class Emails extends Singleton_Util {
 		$data = $current_time . '|' . 'Email' . '|' .$data_email['user_id']. '|' . $data_email['user_email'] . '|' . $data_email['title'] . '|' . "\n";
 		fwrite( $log_email_file, $data );
 		fclose( $log_email_file );
+	}
+
+	/**
+	 * Définit le contenu des emails en fonction des pages pévues à cet effet
+	 *
+	 * @since 2.4.0
+	 * @version 2.4.0
+	 *
+	 * @param array $email Titre et contenu de l'email.
+	 *
+	 * @return array $email Titre et contenu de l'email.
+	 */
+	private function set_email_content( $key, $email ) {
+		if ( empty( $email ) ) {
+			return;
+		}
+
+		$page_ids_options = get_option( 'wps_page_ids', Pages::g()->default_options );
+
+		if ( ! empty( $page_ids_options[$key] ) ) {
+			$email_page = get_post( $page_ids_options[$key] );
+			if ( ! empty( $email_page ) ) {
+				$email['title'] = $email_page->post_title;
+				$email['content'] = $email_page->post_content;
+			}
+
+			return $email;
+		}
 	}
 }
 
