@@ -412,13 +412,13 @@ class Doli_Order_Action {
 
 		$current_user = wp_get_current_user();
 
-		Emails::g()->send_mail( $third_party[0]->data['email'], 'customer_current_order', array(
+		Emails::g()->send_mail( $third_party->data['email'], 'customer_current_order', array(
 			'order'       => $doli_order,
-			'third_party' => $third_party[0]->data,
+			'third_party' => $third_party->data,
 		) );
 
 		// translators: Create order 00001 for the third party Eoxia.
-		LOG_Util::log( sprintf( 'Create order %s for the third party %s', $doli_order->ref, $third_party[0]->data['title'] ), 'wpshop2' );
+		LOG_Util::log( sprintf( 'Create order %s for the third party %s', $doli_order->ref, $third_party->data['title'] ), 'wpshop2' );
 
 		$wp_order = Doli_Order::g()->get( array( 'schema' => true ), true );
 		$wp_order = Doli_Order::g()->doli_to_wp( $doli_order, $wp_order, true );
