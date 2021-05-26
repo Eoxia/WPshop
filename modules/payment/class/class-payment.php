@@ -6,7 +6,7 @@
  * @author    Eoxia <dev@eoxia.com>
  * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
- * @version   2.3.3
+ * @version   2.5.0
  */
 
 namespace wpshop;
@@ -44,7 +44,7 @@ class Payment extends Singleton_Util {
 	 * Le constructeur.
 	 *
 	 * @since   2.0.0
-	 * @version 2.3.3
+	 * @version 2.5.0
 	 */
 	protected function construct() {
 		$this->default_options = array(
@@ -61,28 +61,11 @@ class Payment extends Singleton_Util {
 				'title'       => __( 'Payment in shop', 'wpshop' ),
 				'description' => __( 'Pay and pick up directly your products at the shop.', 'wpshop' ),
 			),
-			'paypal'          => array(
-				'active'             => true,
-				'logo'               => '<i class="fab fa-paypal"></i>',
-				'title'              => __( 'PayPal', 'wpshop' ),
-				'description'        => __( 'Accept payments via PayPal using account balance or credit card.', 'wpshop' ),
-				'paypal_email'       => '',
-				'use_paypal_sandbox' => false,
-			),
-			'stripe'          => array(
-				'active'             => true,
-				'logo'               => '<i class="fab fa-stripe"></i>',
-				'title'              => __( 'Stripe', 'wpshop' ),
-				'description'        => __( 'Use your credit card to place your order', 'wpshop' ),
-				'publish_key'        => '',
-				'secret_key'         => '',
-				'use_stripe_sandbox' => false,
-			),
-			'carte_bancaire'  => array(
-				'active'             => true,
-				'logo'               => '<i class="fas fa-credit-card"></i>',
-				'title'              => __( 'Carte Bancaire', 'wpshop' ),
-				'description'        => __( 'Use your credit card to place your order', 'wpshop' ),
+			'online_payment' => array(
+				'active'      => true,
+				'logo'        => '<i class="fas fa-credit-card"></i>',
+				'title'       => __( 'Online payment', 'wpshop' ),
+				'description' => __( 'Pay your product online.', 'wpshop' ),
 			),
 		);
 
@@ -94,14 +77,6 @@ class Payment extends Singleton_Util {
 				'billed'  => __( 'Paid', 'wpshop' ),
 			),
 			'payment_in_shop' => array(
-				'publish' => __( 'Waiting for the payment', 'wpshop' ),
-				'billed'  => __( 'Paid', 'wpshop' ),
-			),
-			'paypal'          => array(
-				'publish' => __( 'Waiting for the payment', 'wpshop' ),
-				'billed'  => __( 'Paid', 'wpshop' ),
-			),
-			'stripe'          => array(
 				'publish' => __( 'Waiting for the payment', 'wpshop' ),
 				'billed'  => __( 'Paid', 'wpshop' ),
 			),
