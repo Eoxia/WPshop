@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: wpshop\n"
-"POT-Creation-Date: 2021-05-26 10:18+0200\n"
-"PO-Revision-Date: 2021-05-26 10:19+0200\n"
+"POT-Creation-Date: 2021-07-01 10:55+0200\n"
+"PO-Revision-Date: 2021-07-01 10:59+0200\n"
 "Last-Translator: \n"
 "Language-Team: Eoxia\n"
 "Language: fr_FR\n"
@@ -124,16 +124,16 @@ msgstr "Produit \"%1$s\" x%2$d ajouté au panier"
 msgid "View cart"
 msgstr "Voir le panier"
 
-#: modules/checkout/action/class-checkout-action.php:489
+#: modules/checkout/action/class-checkout-action.php:510
 msgid "I accept "
 msgstr "J'accepte "
 
-#: modules/checkout/action/class-checkout-action.php:493
+#: modules/checkout/action/class-checkout-action.php:514
 #, php-format
 msgid "the <a target=\"_blank\" href=\"%1$s\">%2$s</a> and "
 msgstr "les <a href=\"%1$s\">%2$s</a> et "
 
-#: modules/checkout/action/class-checkout-action.php:498
+#: modules/checkout/action/class-checkout-action.php:519
 #, php-format
 msgid "the <a target=\"_blank\" href=\"%1$s\">%2$s</a>"
 msgstr "la <a href=\"%1$s\">%2$s</a>"
@@ -683,11 +683,11 @@ msgstr "Voir"
 
 #: modules/dolibarr/doli-categories/view/list.view.php:31
 msgid "Category ID"
-msgstr ""
+msgstr "ID Catégorie"
 
 #: modules/dolibarr/doli-categories/view/list.view.php:33
 msgid "Slug"
-msgstr ""
+msgstr "Slug"
 
 #: modules/dolibarr/doli-categories/view/list.view.php:34
 #, fuzzy
@@ -724,7 +724,7 @@ msgstr "Facture détails %s"
 msgid "Invoices"
 msgstr "Factures"
 
-#: modules/dolibarr/doli-invoice/action/class-doli-invoice-action.php:368
+#: modules/dolibarr/doli-invoice/action/class-doli-invoice-action.php:364
 msgid "Invoice not found"
 msgstr "Facture non trouvée"
 
@@ -1189,6 +1189,8 @@ msgid ""
 "Welcome <br> This email confirms that your account has been created. <br> "
 "Thank you for your trust and see you soon on our shop."
 msgstr ""
+"Bienvenue <br>Cet email confirme que votre compte a été créé. <br>Merci de "
+"votre confiance et à bientôt sur notre boutique."
 
 #: modules/emails/class/class-emails.php:53
 msgid "Pending order"
@@ -1200,6 +1202,9 @@ msgid ""
 "Hello <br> We have just recorded your order, thank you to send us your "
 "payment. <br> We thank you for your confidence and see you soon on our shop."
 msgstr ""
+"Bonjour <br>Nous venons d'enregistrer votre commande, merci de nous envoyer "
+"votre règlement. <br>Nous vous remercions de votre confiance et à bientôt "
+"sur notre boutique."
 
 #: modules/emails/class/class-emails.php:58
 msgid "New order"
@@ -1211,6 +1216,8 @@ msgid ""
 "Hello <br> This email confirms that your payment for your recent order has "
 "just been validated. <br> See you soon on our shop."
 msgstr ""
+"Bonjour <br>Cet email vous confirme que le paiement de votre récente "
+"commande vient d'être validé. <br>À bientôt sur notre boutique."
 
 #: modules/emails/class/class-emails.php:71
 msgid "Send invoice"
@@ -1220,6 +1227,8 @@ msgstr "Votre facture"
 #: modules/pages/class/class-pages.php:127
 msgid "Hello <br> You can access your invoices by logging in to your account."
 msgstr ""
+"Bonjour <br>Vous pouvez accéder à vos factures en vous connectant à votre "
+"compte."
 
 #: modules/emails/view/frontend/order-details.php:32
 #, php-format
@@ -1261,7 +1270,7 @@ msgstr "Téléchargements"
 msgid "Logout"
 msgstr "Deconnexion"
 
-#: modules/my-account/class/class-my-account.php:170
+#: modules/my-account/class/class-my-account.php:174
 msgid "Switch back"
 msgstr "Retour"
 
@@ -1407,16 +1416,12 @@ msgid "Pay and pick up directly your products at the shop."
 msgstr "Payez et retirer vos produits à la boutique."
 
 #: modules/payment/class/class-payment.php:67
-#, fuzzy
-#| msgid "Latest payments"
 msgid "Online payment"
-msgstr "Derniers paiements"
+msgstr "Paiement en ligne"
 
 #: modules/payment/class/class-payment.php:68
-#, fuzzy
-#| msgid "No products found."
 msgid "Pay your product online."
-msgstr "Aucun produits trouvés."
+msgstr "Payer votre produit en ligne."
 
 #: modules/payment/class/class-payment.php:76
 msgid "Waiting for the check"
@@ -1538,10 +1543,8 @@ msgid "Sold out"
 msgstr "Rupture de stock"
 
 #: modules/products/view/frontend/wps-product-grid.php:40
-#, fuzzy
-#| msgid "Search a product"
 msgid "See the product"
-msgstr "Rechercher un produit"
+msgstr "Voir le produit"
 
 #: modules/products/view/frontend/wps-product-grid.php:50
 msgid "Add the product to cart"
@@ -1856,11 +1859,11 @@ msgstr "Séparer les lignes des produits dans le panier"
 
 #: modules/settings/view/general.view.php:68
 msgid "Mininum price per product"
-msgstr ""
+msgstr "Prix minimun par produit"
 
 #: modules/settings/view/general.view.php:77
 msgid "Debug mode"
-msgstr ""
+msgstr "Mode debug"
 
 #: modules/settings/view/main.view.php:38 modules/tools/view/main.view.php:29
 msgid "General"
@@ -2004,7 +2007,7 @@ msgstr "€ TTC"
 
 #: modules/third-parties/view/metaboxes/metabox-tier.view.php:29
 msgid "Tiers"
-msgstr ""
+msgstr "Tiers"
 
 #: modules/third-parties/view/single-title-edit.view.php:30
 msgid "New third party"
