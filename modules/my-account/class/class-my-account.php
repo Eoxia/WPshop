@@ -158,6 +158,10 @@ class My_Account extends Singleton_Util {
 			),
 		);
 
+		if (Settings::g()->dolibarr_is_active()){
+			unset($menu_def['quotations']);
+		}
+
 		if ( class_exists( '\user_switching' ) ) {
 			$old_user = \user_switching::get_old_user();
 
