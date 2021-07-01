@@ -395,6 +395,18 @@ class Doli_Order_Action {
 	public function create_order( $proposal ) {
 		LOG_Util::log( sprintf( 'Dolibarr call POST /orders/createfromproposal/ with data %s', $proposal->id ), 'wpshop2' );
 		$doli_order = Request_Util::post( 'orders/createfromproposal/' . $proposal->id );
+
+		$order_data = array(
+			'multicurrency_total_ht'  => $proposal->multicurrency_total_ht,
+			'multicurrency_total_tva' => $proposal->multicurrency_total_tva,
+			'multicurrency_total_ttc' => $proposal->multicurrency_total_ttc,
+			'total_ht'                => $proposal->total_ht,
+			'total_tva'               => $proposal->total_tva,
+			'total_ttc'               => $proposal->total_ttc,
+		);
+
+		$doli_order = Request_Util::put( 'orders/' . (int) $doli_order->id, $order_data);
+
 		LOG_Util::log( sprintf( 'Dolibarr call POST /orders/createfromproposal/ response %s', json_encode( $doli_order ) ), 'wpshop2' );
 
 
