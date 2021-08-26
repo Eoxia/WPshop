@@ -80,7 +80,7 @@ class Doli_Category extends Term_Class {
 	 *
 	 * @var integer
 	 */
-	public $limit = 10;
+	public $limit = 1000;
 
 	/**
 	 * Le nom de l'option pour la limite par page.
@@ -119,6 +119,7 @@ class Doli_Category extends Term_Class {
 		}
 
 		$doli_categories = Request_Util::get( $route );
+
 
 		foreach ( $doli_categories as $key => $doli_category ) {
 			if ( $doli_category->array_options->options__wps_id == 0 ) {

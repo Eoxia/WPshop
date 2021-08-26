@@ -246,6 +246,14 @@ class Product_Model extends Post_Model {
 			'description' => 'L\'id d\'un produit téléchargeable.',
 		);
 
+		$this->schema['multilangs'] = array(
+			'type'        => 'array',
+			'meta_type'   => 'multiple',
+			'since'       => '2.5.0',
+			'version'     => '2.5.0',
+			'description' => 'Les traductions pour la description et le titre',
+		);
+
 		parent::__construct( $object, $req_method );
 	}
 }

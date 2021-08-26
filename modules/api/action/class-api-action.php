@@ -132,6 +132,30 @@ class API_Action {
 				return Rest_Class::g()->check_cap( 'get', $request );
 			},
 		) );
+
+		register_rest_route( 'wpshop/v2', '/wpml', array(
+			'methods' => array( 'POST' ),
+			'callback' => array( $this, 'callback_wpml_object_id' ),
+			'permission_callback' => function( $request ) {
+				return Rest_Class::g()->check_cap( 'get', $request );
+			},
+		) );
+
+		register_rest_route( 'wpshop/v2', '/wpml_insert_data', array(
+			'methods' => array( 'POST' ),
+			'callback' => array( $this, 'callback_wpml_insert_data' ),
+			'permission_callback' => function( $request ) {
+				return Rest_Class::g()->check_cap( 'get', $request );
+			},
+		) );
+
+		register_rest_route( 'wpshop/v2', '/wpml_delete_data', array(
+			'methods' => array( 'POST' ),
+			'callback' => array( $this, 'callback_wpml_delete_data' ),
+			'permission_callback' => function( $request ) {
+				return Rest_Class::g()->check_cap( 'get', $request );
+			},
+		) );
 	}
 
 	/**
@@ -257,6 +281,75 @@ class API_Action {
 
 		$response = new \WP_REST_Response( $sync_status );
 		return $response;
+	}
+
+	/**
+	 * Gestion de la route pour synchroniser un objet depuis dolibarr.
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 *
+	 * @todo: Validate data request
+	 *
+	 * @param  WP_REST_Request $request L'objet contenant les informations de la requête.
+	 *
+	 * @return WP_REST_Response         Le statut de synchronisation.
+	 */
+	public function callback_wpml_object_id( $request ) {
+		$param = $request->get_params();
+		$wpml_id = 10;
+		//$wpml_id = apply_filters( 'wpml_object_id', $id, 'post', false, "fr");
+		return $wpml_id;
+	}
+
+	/**
+	 * Gestion de la route pour synchroniser un objet depuis dolibarr.
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 *
+	 * @todo: Validate data request
+	 *
+	 * @param  WP_REST_Request $request L'objet contenant les informations de la requête.
+	 *
+	 * @return WP_REST_Response         Le statut de synchronisation.
+	 */
+	public function callback_wpml_insert_data( $request ) {
+		$param = $request->get_params();
+
+		// Create post object
+		$my_post = array(
+			'post_title'    => $param['label'],
+			'post_content'  => $param['description'],
+			'post_type'     => 'wps-product',
+			'post_status'   => 'publish',
+			'post_author'   => 1,
+			'post_category' => array(2)
+		);
+
+		$output = wp_insert_post($my_post);
+
+		return $output;
+	}
+
+	/**
+	 * Gestion de la route pour synchroniser un objet depuis dolibarr.
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 *
+	 * @todo: Validate data request
+	 *
+	 * @param  WP_REST_Request $request L'objet contenant les informations de la requête.
+	 *
+	 * @return WP_REST_Response         Le statut de synchronisation.
+	 */
+	public function callback_wpml_delete_data( $request ) {
+		$param = $request->get_params();
+
+		$output = wp_delete_post($param['id']);
+
+		return $output;
 	}
 
 	/**
