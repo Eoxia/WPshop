@@ -321,6 +321,7 @@ class API_Action {
 		$my_post = array(
 			'post_title'    => $param['label'],
 			'post_content'  => $param['description'],
+			'post_type'     => 'wps-product',
 			'post_status'   => 'publish',
 			'post_author'   => 1,
 			'post_category' => array(2)
@@ -330,22 +331,23 @@ class API_Action {
 
 		if ( $output ) {
 			// https://wpml.org/wpml-hook/wpml_element_type/
-			$wpml_element_type = apply_filters( 'wpml_element_type', 'post' );
+			$wpml_element_type = apply_filters( 'wpml_element_type', 'wps-product' );
 
 			// get the language info of the original post
 			// https://wpml.org/wpml-hook/wpml_element_language_details/
-			$get_language_args = array('element_id' => $param['fk_product'], 'element_type' => 'post' );
+			$get_language_args = array('element_id' => $param['wpshop_id'], 'element_type' => 'wps-product' );
 			$original_post_language_info = apply_filters( 'wpml_element_language_details', null, $get_language_args );
 
 			$set_language_args = array(
 				'element_id'           => $output,
-				'element_type'         => $wpml_element_type,
-				'trid'                 => $param['wpshop_id'],
+				'element_type'         => 'post_wps-product',
+				'trid'                 => $original_post_language_info->trid,
 				'language_code'        => $param['lang'],
 				'source_language_code' => $original_post_language_info->language_code
 			);
 
 			do_action( 'wpml_set_element_language_details', $set_language_args );
+			//do_action( 'wpml_make_post_duplicates', $output );
 		}
 
 		return $output;
