@@ -321,13 +321,32 @@ class API_Action {
 		$my_post = array(
 			'post_title'    => $param['label'],
 			'post_content'  => $param['description'],
-			'post_type'     => 'wps-product',
 			'post_status'   => 'publish',
 			'post_author'   => 1,
 			'post_category' => array(2)
 		);
 
 		$output = wp_insert_post($my_post);
+
+		if ( $output ) {
+			// https://wpml.org/wpml-hook/wpml_element_type/
+			$wpml_element_type = apply_filters( 'wpml_element_type', 'post' );
+
+			// get the language info of the original post
+			// https://wpml.org/wpml-hook/wpml_element_language_details/
+			$get_language_args = array('element_id' => $param['fk_product'], 'element_type' => 'post' );
+			$original_post_language_info = apply_filters( 'wpml_element_language_details', null, $get_language_args );
+
+			$set_language_args = array(
+				'element_id'           => $output,
+				'element_type'         => $wpml_element_type,
+				'trid'                 => $param['wpshop_id'],
+				'language_code'        => $param['lang'],
+				'source_language_code' => $original_post_language_info->language_code
+			);
+
+			do_action( 'wpml_set_element_language_details', $set_language_args );
+		}
 
 		return $output;
 	}
