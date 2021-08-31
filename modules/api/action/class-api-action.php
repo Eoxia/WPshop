@@ -342,7 +342,7 @@ class API_Action {
 				'element_id'           => $output,
 				'element_type'         => 'post_wps-product',
 				'trid'                 => $original_post_language_info->trid,
-				'language_code'        => $param['lang'],
+				'language_code'        => $param['language_code'],
 				'source_language_code' => $original_post_language_info->language_code
 			);
 
