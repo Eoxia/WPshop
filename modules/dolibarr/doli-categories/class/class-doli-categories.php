@@ -6,7 +6,7 @@
  * @author    Eoxia <dev@eoxia.com>
  * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.1.0
- * @version   2.1.0
+ * @version   2.5.0
  */
 
 namespace wpshop;

@@ -6,7 +6,7 @@
  * @author    Eoxia <dev@eoxia.com>
  * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
- * @version   2.0.0
+ * @version   2.5.0
  */
 
 namespace wpshop;
@@ -47,7 +47,7 @@ class Cart_Action {
 	 * @Todo bouger dans class-cart.php
 	 *
 	 * @since   2.0.0
-	 * @version 2.0.0
+	 * @version 2.5.0
 	 */
 	public function callback_calculate_totals() {
 		$shipping_cost_option = get_option( 'wps_shipping_cost', Settings::g()->shipping_cost_default_settings );

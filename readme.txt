@@ -70,6 +70,8 @@ Il n'est pas possible de migrer les données vers la version WPShop 2.X.X.
 * Add - Content email editable.
 * Add - Rework payment functionnality and online payment feature.
 * Add - Automatic workflow on order/invoice.
+* Add - Increased WPshop category limit displayed.
+* Add - Translate product title/description with WPML.
 
 * Fix - Disable display wishlist in my account if option is unchecked.
 
