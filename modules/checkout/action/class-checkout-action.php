@@ -454,25 +454,25 @@ class Checkout_Action {
 		}
 
 		$doli_proposal = Request_Util::get( 'proposals/' . (int) $doli_proposal_id );
-		$doli_proposal->total                   = number_format((float)Cart_Session::g()->total_price_ttc,8,'.',',');
-		$doli_proposal->multicurrency_total_ht  = number_format((float)Cart_Session::g()->total_price,8,'.',',');
-		$doli_proposal->multicurrency_total_tva = number_format((float)Cart_Session::g()->tva_amount,8,'.',',');
-		$doli_proposal->multicurrency_total_ttc = number_format((float)Cart_Session::g()->total_price_ttc,8,'.',',');
-		$doli_proposal->total_ht                = number_format((float)Cart_Session::g()->total_price,8,'.',',');
-		$doli_proposal->total_tva               = number_format((float)Cart_Session::g()->tva_amount,8,'.',',');
-		$doli_proposal->total_ttc               = number_format((float)Cart_Session::g()->total_price_ttc,8,'.',',');
-
-		$proposal_data = array(
-			'total'                   => $doli_proposal->total,
-			'multicurrency_total_ht'  => $doli_proposal->multicurrency_total_ht,
-			'multicurrency_total_tva' => $doli_proposal->multicurrency_total_tva,
-			'multicurrency_total_ttc' => $doli_proposal->multicurrency_total_ttc,
-			'total_ht'                => $doli_proposal->total_ht,
-			'total_tva'               => $doli_proposal->total_tva,
-			'total_ttc'               => $doli_proposal->total_ttc,
-		);
-
-		$doli_proposal = Request_Util::put( 'proposals/' . (int) $doli_proposal_id, $proposal_data);
+//		$doli_proposal->total                   = number_format((float)Cart_Session::g()->total_price_ttc,8,'.',',');
+//		$doli_proposal->multicurrency_total_ht  = number_format((float)Cart_Session::g()->total_price,8,'.',',');
+//		$doli_proposal->multicurrency_total_tva = number_format((float)Cart_Session::g()->tva_amount,8,'.',',');
+//		$doli_proposal->multicurrency_total_ttc = number_format((float)Cart_Session::g()->total_price_ttc,8,'.',',');
+//		$doli_proposal->total_ht                = number_format((float)Cart_Session::g()->total_price,8,'.',',');
+//		$doli_proposal->total_tva               = number_format((float)Cart_Session::g()->tva_amount,8,'.',',');
+//		$doli_proposal->total_ttc               = number_format((float)Cart_Session::g()->total_price_ttc,8,'.',',');
+//
+//		$proposal_data = array(
+//			'total'                   => $doli_proposal->total,
+//			'multicurrency_total_ht'  => $doli_proposal->multicurrency_total_ht,
+//			'multicurrency_total_tva' => $doli_proposal->multicurrency_total_tva,
+//			'multicurrency_total_ttc' => $doli_proposal->multicurrency_total_ttc,
+//			'total_ht'                => $doli_proposal->total_ht,
+//			'total_tva'               => $doli_proposal->total_tva,
+//			'total_ttc'               => $doli_proposal->total_ttc,
+//		);
+//
+//		$doli_proposal = Request_Util::put( 'proposals/' . (int) $doli_proposal_id, $proposal_data);
 
 		$doli_proposal = Request_Util::post( 'proposals/' . (int) $doli_proposal_id . '/validate', array(
 			'notrigger' => 1,
