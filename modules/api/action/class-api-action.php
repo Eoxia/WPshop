@@ -133,14 +133,6 @@ class API_Action {
 			},
 		) );
 
-		register_rest_route( 'wpshop/v2', '/wpml', array(
-			'methods' => array( 'POST' ),
-			'callback' => array( $this, 'callback_wpml_object_id' ),
-			'permission_callback' => function( $request ) {
-				return Rest_Class::g()->check_cap( 'get', $request );
-			},
-		) );
-
 		register_rest_route( 'wpshop/v2', '/wpml_insert_data', array(
 			'methods' => array( 'POST' ),
 			'callback' => array( $this, 'callback_wpml_insert_data' ),
@@ -281,96 +273,6 @@ class API_Action {
 
 		$response = new \WP_REST_Response( $sync_status );
 		return $response;
-	}
-
-	/**
-	 * Gestion de la route pour synchroniser un objet depuis dolibarr.
-	 *
-	 * @since   2.0.0
-	 * @version 2.0.0
-	 *
-	 * @todo: Validate data request
-	 *
-	 * @param  WP_REST_Request $request L'objet contenant les informations de la requête.
-	 *
-	 * @return WP_REST_Response         Le statut de synchronisation.
-	 */
-	public function callback_wpml_object_id( $request ) {
-		$param = $request->get_params();
-		$wpml_id = 10;
-		//$wpml_id = apply_filters( 'wpml_object_id', $id, 'post', false, "fr");
-		return $wpml_id;
-	}
-
-	/**
-	 * Gestion de la route pour synchroniser un objet depuis dolibarr.
-	 *
-	 * @since   2.0.0
-	 * @version 2.0.0
-	 *
-	 * @todo: Validate data request
-	 *
-	 * @param  WP_REST_Request $request L'objet contenant les informations de la requête.
-	 *
-	 * @return WP_REST_Response         Le statut de synchronisation.
-	 */
-	public function callback_wpml_insert_data( $request ) {
-		$param = $request->get_params();
-
-		// Create post object
-		$my_post = array(
-			'post_title'    => $param['label'],
-			'post_content'  => $param['description'],
-			'post_type'     => 'wps-product',
-			'post_status'   => 'publish',
-			'post_author'   => 1,
-			'post_category' => array(2)
-		);
-
-		$output = wp_insert_post($my_post);
-
-		if ( $output ) {
-			// https://wpml.org/wpml-hook/wpml_element_type/
-			$wpml_element_type = apply_filters( 'wpml_element_type', 'wps-product' );
-
-			// get the language info of the original post
-			// https://wpml.org/wpml-hook/wpml_element_language_details/
-			$get_language_args = array('element_id' => $param['wpshop_id'], 'element_type' => 'wps-product' );
-			$original_post_language_info = apply_filters( 'wpml_element_language_details', null, $get_language_args );
-
-			$set_language_args = array(
-				'element_id'           => $output,
-				'element_type'         => 'post_wps-product',
-				'trid'                 => $original_post_language_info->trid,
-				'language_code'        => $param['language_code'],
-				'source_language_code' => $original_post_language_info->language_code
-			);
-
-			do_action( 'wpml_set_element_language_details', $set_language_args );
-			//do_action( 'wpml_make_post_duplicates', $output );
-		}
-
-		return $output;
-	}
-
-	/**
-	 * Gestion de la route pour synchroniser un objet depuis dolibarr.
-	 *
-	 * @since   2.0.0
-	 * @version 2.0.0
-	 *
-	 * @todo: Validate data request
-	 *
-	 * @param  WP_REST_Request $request L'objet contenant les informations de la requête.
-	 *
-	 * @return WP_REST_Response         Le statut de synchronisation.
-	 */
-	public function callback_wpml_delete_data( $request ) {
-		$param = $request->get_params();
-
-		$output = wp_delete_post($param['id']);
-
-		return $output;
 	}
 
 	/**
@@ -534,6 +436,72 @@ class API_Action {
 		$propal = Doli_Payment::g()->create( $data );
 
 		return $propal;
+	}
+
+	/**
+	 * Gestion de la route pour insérer un post traduit par WPML.
+	 *
+	 * @since   2.5.0
+	 * @version 2.5.0
+	 *
+	 * @param  WP_REST_Request $request L'objet contenant les informations de la requête.
+	 *
+	 * @return integer         l'ID du post crée.
+	 */
+	public function callback_wpml_insert_data( $request ) {
+		$param = $request->get_params();
+
+		// Create post object
+		$my_post = array(
+			'post_title'    => $param['label'],
+			'post_content'  => $param['description'],
+			'post_type'     => 'wps-product',
+			'post_status'   => 'publish',
+			'post_author'   => 1,
+			'post_category' => array(2)
+		);
+
+		$output = wp_insert_post($my_post);
+
+		if ( $output ) {
+			// https://wpml.org/wpml-hook/wpml_element_type/
+			$wpml_element_type = apply_filters( 'wpml_element_type', 'wps-product' );
+
+			// get the language info of the original post
+			// https://wpml.org/wpml-hook/wpml_element_language_details/
+			$get_language_args = array('element_id' => $param['wpshop_id'], 'element_type' => 'wps-product' );
+			$original_post_language_info = apply_filters( 'wpml_element_language_details', null, $get_language_args );
+
+			$set_language_args = array(
+				'element_id'           => $output,
+				'element_type'         => 'post_wps-product',
+				'trid'                 => $original_post_language_info->trid,
+				'language_code'        => $param['language_code'],
+				'source_language_code' => $original_post_language_info->language_code
+			);
+
+			do_action( 'wpml_set_element_language_details', $set_language_args );
+		}
+
+		return $output;
+	}
+
+	/**
+	 * Gestion de la route pour supprimer un post WPML.
+	 *
+	 * @since   2.5.0
+	 * @version 2.5.0
+	 *
+	 * @param  WP_REST_Request $request L'objet contenant les informations de la requête.
+	 *
+	 * @return integer         L'id du post supprimé.
+	 */
+	public function callback_wpml_delete_data( $request ) {
+		$param = $request->get_params();
+
+		$output = wp_delete_post($param['id']);
+
+		return $output;
 	}
 }
 
