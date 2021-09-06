@@ -39,10 +39,11 @@ class Doli_Payment_Filter {
 	 * @return array                  Le nouveau tableau avec l'entrée doli_type en plus.
 	 */
 	public function add_payment_details( $payment_methods ) {
-		$payment_methods['paypal']['doli_type']          = 'CB';
-		$payment_methods['stripe']['doli_type']          = 'CB';
+		//$payment_methods['paypal']['doli_type']          = 'CB';
+		//$payment_methods['stripe']['doli_type']          = 'CB';
 		$payment_methods['cheque']['doli_type']          = 'CHQ';
 		$payment_methods['payment_in_shop']['doli_type'] = '';
+		$payment_methods['online_payment']['doli_type'] = '';
 
 		return $payment_methods;
 	}

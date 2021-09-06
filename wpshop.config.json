@@ -2,7 +2,7 @@
 	"name": "WPshop",
 	"slug": "wpshop",
     "since": "2.0.0",
-	"version": "2.4.0",
+	"version": "2.5.0",
     "description": "L'application WPshop 2",
     "externals": [],
 	"modules": [
@@ -24,8 +24,6 @@
         "modules/checkout/checkout.config.json",
     
         "modules/payment/payment.config.json",
-        "modules/paypal/paypal.config.json",
-        "modules/stripe/stripe.config.json",
     
         "modules/my-account/my-account.config.json",
         "modules/pages/pages.config.json",

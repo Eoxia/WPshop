@@ -384,7 +384,7 @@ class Doli_Order_Action {
 	 * Création d'une commande sur la base d'une proposition commerciale lors du tunnel de vente.
 	 *
 	 * @since   2.0.0
-	 * @version 2.1.0
+	 * @version 2.5.0
 	 *
 	 * @todo mettre la langue de l'user API pour la génération du doc
 	 *
@@ -395,6 +395,18 @@ class Doli_Order_Action {
 	public function create_order( $proposal ) {
 		LOG_Util::log( sprintf( 'Dolibarr call POST /orders/createfromproposal/ with data %s', $proposal->id ), 'wpshop2' );
 		$doli_order = Request_Util::post( 'orders/createfromproposal/' . $proposal->id );
+
+//		$order_data = array(
+//			'multicurrency_total_ht'  => $proposal->multicurrency_total_ht,
+//			'multicurrency_total_tva' => $proposal->multicurrency_total_tva,
+//			'multicurrency_total_ttc' => $proposal->multicurrency_total_ttc,
+//			'total_ht'                => $proposal->total_ht,
+//			'total_tva'               => $proposal->total_tva,
+//			'total_ttc'               => $proposal->total_ttc,
+//		);
+//
+//		$doli_order = Request_Util::put( 'orders/' . (int) $doli_order->id, $order_data);
+
 		LOG_Util::log( sprintf( 'Dolibarr call POST /orders/createfromproposal/ response %s', json_encode( $doli_order ) ), 'wpshop2' );
 
 
@@ -412,13 +424,13 @@ class Doli_Order_Action {
 
 		$current_user = wp_get_current_user();
 
-		Emails::g()->send_mail( $third_party[0]->data['email'], 'customer_current_order', array(
+		Emails::g()->send_mail( $third_party->data['email'], 'customer_current_order', array(
 			'order'       => $doli_order,
-			'third_party' => $third_party[0]->data,
+			'third_party' => $third_party->data,
 		) );
 
 		// translators: Create order 00001 for the third party Eoxia.
-		LOG_Util::log( sprintf( 'Create order %s for the third party %s', $doli_order->ref, $third_party[0]->data['title'] ), 'wpshop2' );
+		LOG_Util::log( sprintf( 'Create order %s for the third party %s', $doli_order->ref, $third_party->data['title'] ), 'wpshop2' );
 
 		$wp_order = Doli_Order::g()->get( array( 'schema' => true ), true );
 		$wp_order = Doli_Order::g()->doli_to_wp( $doli_order, $wp_order, true );

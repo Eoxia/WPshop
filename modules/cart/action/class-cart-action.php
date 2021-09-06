@@ -6,7 +6,7 @@
  * @author    Eoxia <dev@eoxia.com>
  * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
- * @version   2.0.0
+ * @version   2.5.0
  */
 
 namespace wpshop;
@@ -47,7 +47,7 @@ class Cart_Action {
 	 * @Todo bouger dans class-cart.php
 	 *
 	 * @since   2.0.0
-	 * @version 2.0.0
+	 * @version 2.5.0
 	 */
 	public function callback_calculate_totals() {
 		$shipping_cost_option = get_option( 'wps_shipping_cost', Settings::g()->shipping_cost_default_settings );
@@ -71,10 +71,10 @@ class Cart_Action {
 				if ( $shipping_cost_option['shipping_product_id'] !== $line['id'] ) {
 					if ( $dolibarr_option['price_min'] > ( $line['price_ttc'] * $line['qty'] ) ) {
 						$tva_amount += $dolibarr_option['price_min'] * $line['tva_tx'] / 100;
-						$price_no_shipping += $dolibarr_option['price_min'] - $tva_amount;
+						$price_no_shipping = $price;
 					} else {
 						$tva_amount  += $line['tva_amount'] * $line['qty'];
-						$price_no_shipping += $line['price'] * $line['qty'];
+						$price_no_shipping = $price;
 					}
 				}
 			}

@@ -255,7 +255,7 @@ class Doli_Invoice_Action {
 	 *
 	 * @todo mettre la langue de l'user API pour la génération du doc
 	 *
-	 * @param array $data Data from PayPal.
+	 * @param array $data Data order.
 	 */
 	public function create_invoice( $data ) {
 		$doli_order   = Request_Util::get( 'orders/' . (int) $data['custom'] );

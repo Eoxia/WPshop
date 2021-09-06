@@ -6,7 +6,7 @@
  * @author    Eoxia <dev@eoxia.com>
  * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
- * @version   2.0.0
+ * @version   2.5.0
  */
 
 namespace wpshop;
@@ -181,7 +181,7 @@ class Checkout extends Singleton_Util {
 	 * Procède au paiement.
 	 *
 	 * @since   2.0.0
-	 * @version 2.0.0
+	 * @version 2.5.0
 	 *
 	 * @param Order $order Les données de la commande.
 	 */
@@ -200,33 +200,20 @@ class Checkout extends Singleton_Util {
 					'url'              => Pages::g()->get_checkout_link() . '/received/order/' . $order->data['external_id'] . '/',
 				) );
 				break;
-			case 'paypal':
-				$result = Paypal::g()->process_payment( $order );
+			case 'online_payment':
+				$result = Request_Util::g()->get( 'doliwpshop/getOnlinePaymentUrl?doli_id=' . $order->data['external_id'] );
+
 				Cart_Session::g()->destroy();
-				if ( ! empty( $result['url'] ) ) {
+				if ( ! empty( $result ) ) {
 					wp_send_json_success( array(
 						'namespace'        => 'wpshopFrontend',
 						'module'           => 'checkout',
 						'callback_success' => 'redirectToPayment',
-						'url'              => $result['url'],
-					) );
-				}
-				break;
-			case 'stripe':
-				$result = Stripe::g()->process_payment( $order );
-				Cart_Session::g()->destroy();
-
-				if ( ! empty( $result['id'] ) ) {
-					wp_send_json_success( array(
-						'namespace'        => 'wpshopFrontend',
-						'module'           => 'stripe',
-						'callback_success' => 'redirectToPayment',
-						'id'               => $result['id'],
+						'url'              => $result,
 					) );
 				}
 				break;
 		}
-
 	}
 
 	/**

@@ -6,7 +6,7 @@
  * @author    Eoxia <dev@eoxia.com>
  * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
- * @version   2.0.0
+ * @version   2.5.0
  */
 
 namespace wpshop;
@@ -115,7 +115,7 @@ class My_Account extends Singleton_Util {
 	 * Affiche le menu de navigation.
 	 *
 	 * @since   2.0.0
-	 * @version 2.0.0
+	 * @version 2.5.0
 	 *
 	 * @param  string $tab Le slug de l'onglet actuel.
 	 */
@@ -157,6 +157,10 @@ class My_Account extends Singleton_Util {
 				'title' => __( 'Logout', 'wpshop' ),
 			),
 		);
+
+		if (Settings::g()->dolibarr_is_active()){
+			unset($menu_def['quotations']);
+		}
 
 		if ( class_exists( '\user_switching' ) ) {
 			$old_user = \user_switching::get_old_user();

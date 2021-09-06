@@ -6,7 +6,7 @@
  * @author    Eoxia <dev@eoxia.com>
  * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
  * @since     2.0.0
- * @version   2.0.0
+ * @version   2.5.0
  */
 
 namespace wpshop;
@@ -74,7 +74,7 @@ class API_Action {
 	 * Initialise les routes de l'API.
 	 *
 	 * @since   2.0.0
-	 * @version 2.0.0
+	 * @version 2.5.0
 	 */
 	public function callback_rest_api_init() {
 		register_rest_route( 'wpshop/v2', '/statut', array(
@@ -85,19 +85,12 @@ class API_Action {
 			},
 		) );
 
-		register_rest_route( 'wpshop/v2', '/wps_gateway_paypal', array(
-			'methods'  => array( 'GET', 'POST' ),
-			'callback' => array( $this, 'callback_wps_gateway_paypal' ),
-		) );
-
-		register_rest_route( 'wpshop/v2', '/wps_gateway_stripe', array(
-			'methods'  => array( 'GET', 'POST' ),
-			'callback' => array( $this, 'callback_wps_gateway_stripe' ),
-		) );
-
 		register_rest_route( 'wpshop/v2', '/product/search', array(
 			'methods'  => array( 'GET' ),
 			'callback' => array( $this, 'callback_search' ),
+			'permission_callback' => function( $request ) {
+				return Rest_Class::g()->check_cap( 'get', $request );
+			},
 		) );
 
 		register_rest_route( 'wpshop/v2', '/create/order', array(
@@ -135,6 +128,22 @@ class API_Action {
 		register_rest_route( 'wpshop/v2', '/sync', array(
 			'methods' => array( 'POST' ),
 			'callback' => array( $this, 'callback_wps_sync_from_dolibarr' ),
+			'permission_callback' => function( $request ) {
+				return Rest_Class::g()->check_cap( 'get', $request );
+			},
+		) );
+
+		register_rest_route( 'wpshop/v2', '/wpml_insert_data', array(
+			'methods' => array( 'POST' ),
+			'callback' => array( $this, 'callback_wpml_insert_data' ),
+			'permission_callback' => function( $request ) {
+				return Rest_Class::g()->check_cap( 'get', $request );
+			},
+		) );
+
+		register_rest_route( 'wpshop/v2', '/wpml_delete_data', array(
+			'methods' => array( 'POST' ),
+			'callback' => array( $this, 'callback_wpml_delete_data' ),
 			'permission_callback' => function( $request ) {
 				return Rest_Class::g()->check_cap( 'get', $request );
 			},
@@ -206,55 +215,6 @@ class API_Action {
 		}
 
 		return new \WP_REST_Response( true );
-	}
-
-	/**
-	 * Gestion de la route Paypal.
-	 * Data is validated in wps_gateway_paypal
-	 *
-	 * @since   2.0.0
-	 * @version 2.0.0
-	 *
-	 * @param  WP_Request $request L'objet contenant les informations de la requête.
-	 */
-	public function callback_wps_gateway_paypal( $request ) {
-		$data = $request->get_body_params();
-
-		// translators: Paypal Gateway data: {json_data}.
-		LOG_Util::log( sprintf( 'Paypal Gateway data: %s', json_encode( $data ) ), 'wpshop2' );
-
-		$txn_id = get_post_meta( $data['custom'], 'payment_txn_id', true );
-
-		if ( $txn_id !== $data['txn_id'] ) {
-			// @todo: Pensé différement, envoyé vers dolibarr ?
-			update_post_meta( $data['custom'], 'payment_data', $data );
-			update_post_meta( $data['custom'], 'payment_txn_id', $data['txn_id'] );
-			update_post_meta( $data['custom'], 'payment_method', 'paypal' );
-
-			do_action( 'wps_gateway_paypal', $data );
-		}
-	}
-
-	/**
-	 * Gestion de la route Stripe.
-	 *
-	 * @since   2.0.0
-	 * @version 2.0.0
-	 *
-	 * @todo: Validate data request
-	 *
-	 * @param  WP_Request $request L'objet contenant les informations de la requête.
-	 */
-	public function callback_wps_gateway_stripe( $request ) {
-		$param = json_decode( $request->get_body(), true );
-
-		// translators: Stripe Gateway data: {json_data}.
-		LOG_Util::log( sprintf( 'Stripe Gateway data: %s', json_encode( $param ) ), 'wpshop2' );
-		LOG_Util::log( sprintf( 'Stripe Gateway found dolibarr order id: %s', $param['data']['object']['metadata']['order_id'] ), 'wpshop2' );
-
-		$param['custom'] = $param['data']['object']['metadata']['order_id'];
-
-		do_action( 'wps_gateway_stripe', $param );
 	}
 
 	/**
@@ -476,6 +436,72 @@ class API_Action {
 		$propal = Doli_Payment::g()->create( $data );
 
 		return $propal;
+	}
+
+	/**
+	 * Gestion de la route pour insérer un post traduit par WPML.
+	 *
+	 * @since   2.5.0
+	 * @version 2.5.0
+	 *
+	 * @param  WP_REST_Request $request L'objet contenant les informations de la requête.
+	 *
+	 * @return integer         l'ID du post crée.
+	 */
+	public function callback_wpml_insert_data( $request ) {
+		$param = $request->get_params();
+
+		// Create post object
+		$my_post = array(
+			'post_title'    => $param['label'],
+			'post_content'  => $param['description'],
+			'post_type'     => 'wps-product',
+			'post_status'   => 'publish',
+			'post_author'   => 1,
+			'post_category' => array(2)
+		);
+
+		$output = wp_insert_post($my_post);
+
+		if ( $output ) {
+			// https://wpml.org/wpml-hook/wpml_element_type/
+			$wpml_element_type = apply_filters( 'wpml_element_type', 'wps-product' );
+
+			// get the language info of the original post
+			// https://wpml.org/wpml-hook/wpml_element_language_details/
+			$get_language_args = array('element_id' => $param['wpshop_id'], 'element_type' => 'wps-product' );
+			$original_post_language_info = apply_filters( 'wpml_element_language_details', null, $get_language_args );
+
+			$set_language_args = array(
+				'element_id'           => $output,
+				'element_type'         => 'post_wps-product',
+				'trid'                 => $original_post_language_info->trid,
+				'language_code'        => $param['language_code'],
+				'source_language_code' => $original_post_language_info->language_code
+			);
+
+			do_action( 'wpml_set_element_language_details', $set_language_args );
+		}
+
+		return $output;
+	}
+
+	/**
+	 * Gestion de la route pour supprimer un post WPML.
+	 *
+	 * @since   2.5.0
+	 * @version 2.5.0
+	 *
+	 * @param  WP_REST_Request $request L'objet contenant les informations de la requête.
+	 *
+	 * @return integer         L'id du post supprimé.
+	 */
+	public function callback_wpml_delete_data( $request ) {
+		$param = $request->get_params();
+
+		$output = wp_delete_post($param['id']);
+
+		return $output;
 	}
 }
 

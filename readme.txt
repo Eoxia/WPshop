@@ -3,9 +3,9 @@ Contributors: Eoxia
 Tags: boutique, catalog, catalogue, commerce, e-commerce, ecommerce, m-commerce, mcommerce, produits,  shop, shopping cart, wp shop, wordpress ecommerce, wordpress shop, WPShop, wp-shop, french payment gateway, 
 Donate link: https://www.wpshop.fr/
 Requires at least: 4.4
-Tested up to: 5.6.2
+Tested up to: 5.7.2
 Requires PHP: 7.0
-Stable tag: 2.4.0
+Stable tag: 2.5.0
 License: GPLv3 or later
 License URI: https://spdx.org/licenses/GPL-3.0-or-later.html
 
@@ -64,6 +64,16 @@ Il n'est pas possible de migrer les données vers la version WPShop 2.X.X.
 9. Check-Out
 
 == Changelog ==
+
+= Version 2.5.0 =
+
+* Add - Content email editable.
+* Add - Rework payment functionnality and online payment feature.
+* Add - Automatic workflow on order/invoice.
+* Add - Increased WPshop category limit displayed.
+* Add - Translate product title/description with WPML.
+
+* Fix - Disable display wishlist in my account if option is unchecked.
 
 = Version 2.4.0 =
 
