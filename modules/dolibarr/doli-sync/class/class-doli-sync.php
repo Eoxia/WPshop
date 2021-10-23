@@ -23,7 +23,7 @@ defined( 'ABSPATH' ) || exit;
 class Doli_Sync extends Singleton_Util {
 
 	/**
-	 * Le tableau contenant toutes les donnés des synchronisations à effectuer.
+	 * Le tableau contenant toutes les données des synchronisations à effectuer.
 	 *
 	 * @since   2.0.0
 	 * @version 2.0.0
@@ -200,6 +200,7 @@ class Doli_Sync extends Singleton_Util {
 
 				$wp_object = $wp_product;
 				break;
+//@todo à supprimer **********************************************************
 			case 'wps-proposal':
 				$doli_proposal = Request_Util::get( 'proposals/' . $entry_id );
 				$wp_proposal   = Proposals::g()->get( array( 'id' => $wp_id ), true );
@@ -208,6 +209,7 @@ class Doli_Sync extends Singleton_Util {
 
 				$wp_object = $wp_proposal;
 				break;
+//@todo à supprimer **********************************************************
 			case 'wps-product-cat':
 				$doli_category = Request_Util::get( 'categories/' . $entry_id );
 				$wp_category   = Doli_Category::g()->get( array( 'id' => $wp_id ), true );

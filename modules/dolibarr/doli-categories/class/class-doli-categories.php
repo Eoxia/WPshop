@@ -200,10 +200,9 @@ class Doli_Category extends Term_Class {
 		$category = null;
 
 		$doli_category = Request_Util::get( 'categories/' . $doli_category->id ); // Charges par la route single des factures pour avoir accès à linkedObjectsIds->commande.
-
 		$wp_category->data['external_id'] = (int) $doli_category->id;
-
 		$wp_category->data['name'] = $doli_category->label;
+
 		if ( ! empty($doli_category->array_options->options__wps_slug) ) {
 			$wp_category->data['slug'] = $doli_category->array_options->options__wps_slug;
 		}
