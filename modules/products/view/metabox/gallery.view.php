@@ -4,7 +4,7 @@
  *
  * @package   WPshop
  * @author    Eoxia <technique@eoxia.com>
- * @copyright (c) 2011-2020 Eoxia <technique@eoxia.com>.
+ * @copyright (c) 2011-2022 Eoxia <technique@eoxia.com>.
  * @since     2.4.0
  * @version   2.4.0
  */
