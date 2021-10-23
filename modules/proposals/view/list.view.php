@@ -2,8 +2,8 @@
 /**
  * Affichage du listing des devis dans le backend.
  *
- * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2019 Eoxia <dev@eoxia.com>.
+ * @author    Eoxia <technique@eoxia.com>
+ * @copyright (c) 2011-2019 Eoxia <technique@eoxia.com>.
  *
  * @license   AGPLv3 <https://spdx.org/licenses/AGPL-3.0-or-later.html>
  *

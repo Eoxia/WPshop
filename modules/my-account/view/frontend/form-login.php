@@ -3,8 +3,8 @@
  * La vue affichant le formulaire de login.
  *
  * @package   WPshop
- * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
+ * @author    Eoxia <technique@eoxia.com>
+ * @copyright (c) 2011-2020 Eoxia <technique@eoxia.com>.
  * @since     2.0.0
  * @version   2.0.0
  */

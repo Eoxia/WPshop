@@ -3,7 +3,7 @@
 /**
  * @namespace EO_Framework_Init
  *
- * @author Eoxia <dev@eoxia.com>
+ * @author Eoxia <technique@eoxia.com>
  * @copyright 2015-2018 Eoxia
  */
 
@@ -139,7 +139,7 @@ if ( ! window.eoxiaJS.scriptsLoaded ) {
 /**
  * @namespace EO_Framework_Actions
  *
- * @author Eoxia <dev@eoxia.com>
+ * @author Eoxia <technique@eoxia.com>
  * @copyright 2015-2018 Eoxia
  *
  * @since 0.1.0
@@ -405,7 +405,7 @@ if ( ! window.eoxiaJS.action ) {
 /**
  * @namespace EO_Framework_Array_Form
  *
- * @author Eoxia <dev@eoxia.com>
+ * @author Eoxia <technique@eoxia.com>
  * @copyright 2015-2018 Eoxia
  */
 
@@ -484,7 +484,7 @@ if ( ! window.eoxiaJS.arrayForm ) {
 /**
  * @namespace EO_Framework_Attribute
  *
- * @author Eoxia <dev@eoxia.com>
+ * @author Eoxia <technique@eoxia.com>
  * @copyright 2015-2018 Eoxia
  */
 /*
@@ -528,7 +528,7 @@ if ( ! jQuery.fn.get_data ) {
 /**
  * @namespace EO_Framework_Auto_Complete
  *
- * @author Eoxia <dev@eoxia.com>
+ * @author Eoxia <technique@eoxia.com>
  * @copyright 2015-2018 Eoxia
  */
 
@@ -822,7 +822,7 @@ if ( ! jQuery.fn.get_data ) {
 /**
  * @namespace EO_Framework_Date
  *
- * @author Eoxia <dev@eoxia.com>
+ * @author Eoxia <technique@eoxia.com>
  * @copyright 2015-2018 Eoxia
  */
 
@@ -886,7 +886,7 @@ if ( ! window.eoxiaJS.date ) {
 /**
  * @namespace EO_Framework_Dropdown
  *
- * @author Eoxia <dev@eoxia.com>
+ * @author Eoxia <technique@eoxia.com>
  * @copyright 2015-2018 Eoxia
  */
 
@@ -1056,7 +1056,7 @@ if ( ! window.eoxiaJS.date ) {
 /**
  * @namespace EO_Framework_Form
  *
- * @author Eoxia <dev@eoxia.com>
+ * @author Eoxia <technique@eoxia.com>
  * @copyright 2015-2018 Eoxia
  */
 /*
@@ -1169,7 +1169,7 @@ if ( ! window.eoxiaJS.form ) {
 /**
  * @namespace EO_Framework_Global
  *
- * @author Eoxia <dev@eoxia.com>
+ * @author Eoxia <technique@eoxia.com>
  * @copyright 2015-2018 Eoxia
  */
 
@@ -1247,7 +1247,7 @@ if ( ! window.eoxiaJS.global ) {
 /**
  * @namespace EO_Framework_Loader
  *
- * @author Eoxia <dev@eoxia.com>
+ * @author Eoxia <technique@eoxia.com>
  * @copyright 2015-2018 Eoxia
  */
 
@@ -1329,7 +1329,7 @@ if ( ! window.eoxiaJS.loader ) {
 /**
  * @namespace EO_Framework_Modal
  *
- * @author Eoxia <dev@eoxia.com>
+ * @author Eoxia <technique@eoxia.com>
  * @copyright 2015-2018 Eoxia
  */
 
@@ -1590,7 +1590,7 @@ if ( ! window.eoxiaJS.modal  ) {
 /**
  * @namespace EO_Framework_Popover
  *
- * @author Eoxia <dev@eoxia.com>
+ * @author Eoxia <technique@eoxia.com>
  * @copyright 2015-2018 Eoxia
  */
 
@@ -1720,7 +1720,7 @@ if ( ! window.eoxiaJS.popover ) {
 /**
  * @namespace EO_Framework_Regex
  *
- * @author Eoxia <dev@eoxia.com>
+ * @author Eoxia <technique@eoxia.com>
  * @copyright 2015-2018 Eoxia
  */
 
@@ -1759,7 +1759,7 @@ var regex = {
 /**
  * @namespace EO_Framework_Render
  *
- * @author Eoxia <dev@eoxia.com>
+ * @author Eoxia <technique@eoxia.com>
  * @copyright 2015-2018 Eoxia
  */
 /*
@@ -1823,7 +1823,7 @@ if ( ! window.eoxiaJS.render ) {
 /**
  * @namespace EO_Framework_Request
  *
- * @author Eoxia <dev@eoxia.com>
+ * @author Eoxia <technique@eoxia.com>
  * @copyright 2015-2018 Eoxia
  */
 
@@ -1958,7 +1958,7 @@ if ( ! window.eoxiaJS.request ) {
 /**
  * @namespace EO_Framework_Tab
  *
- * @author Eoxia <dev@eoxia.com>
+ * @author Eoxia <technique@eoxia.com>
  * @copyright 2015-2018 Eoxia
  */
 
@@ -2085,7 +2085,7 @@ if ( ! window.eoxiaJS.tab ) {
 /**
  * @namespace EO_Framework_Tooltip
  *
- * @author Eoxia <dev@eoxia.com>
+ * @author Eoxia <technique@eoxia.com>
  * @copyright 2015-2018 Eoxia
  */
 

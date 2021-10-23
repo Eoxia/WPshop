@@ -1,7 +1,7 @@
 /**
  * @namespace EO_Framework_Dropdown
  *
- * @author Eoxia <dev@eoxia.com>
+ * @author Eoxia <technique@eoxia.com>
  * @copyright 2015-2018 Eoxia
  */
 

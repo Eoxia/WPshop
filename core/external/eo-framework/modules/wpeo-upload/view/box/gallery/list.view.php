@@ -2,7 +2,7 @@
 /**
  * The list for the gallery
  *
- * @author Eoxia <dev@eoxia.com>
+ * @author Eoxia <technique@eoxia.com>
  * @since 1.0.0
  * @version 1.0.0
  * @copyright 2017-2018 Eoxia

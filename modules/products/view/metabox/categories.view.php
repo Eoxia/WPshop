@@ -3,8 +3,8 @@
  * La vue principale de la page des produits.
  *
  * @package   WPshop
- * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
+ * @author    Eoxia <technique@eoxia.com>
+ * @copyright (c) 2011-2020 Eoxia <technique@eoxia.com>.
  * @since     2.0.0
  * @version   2.0.0
  */
@@ -34,14 +34,14 @@ defined( 'ABSPATH' ) || exit;
 					<?php $popular_ids = wp_popular_terms_checklist( $tax_name ); ?>
 				</ul>
 			</div>
-			
+
 			<div id="<?php echo $tax_name; ?>-all" class="tabs-panel">
 				<ul id="<?php echo $tax_name; ?>checklist" data-wp-lists="list:<?php echo $tax_name; ?>" class="categorychecklist form-no-clear">
 					<div class="form-element ">
 						<label class="form-field-container">
 							<div class="form-field-inline">
 								<?php if ( ! empty($categories)) :
-										foreach( $categories as $wp_category) : 
+										foreach( $categories as $wp_category) :
 											if ($wp_category->data['external_id'] != 0 ) :
 												if (has_term($wp_category->data['name'],$tax_name,$post->ID)) :?>
 													<input type="checkbox" id="checkbox10" class="form-field" name="type" checked value="checkbox10">
@@ -51,9 +51,9 @@ defined( 'ABSPATH' ) || exit;
 													<input type="checkbox" id="checkbox10" class="form-field" name="type" value="checkbox10">
 													<label for="checkbox10"><?php echo $wp_category->data['name'] ?></label>
 													<br/>
-										<?php endif; 
-											endif; 
-										endforeach; 
+										<?php endif;
+											endif;
+										endforeach;
 									endif;?>
 						</label>
 					</div>

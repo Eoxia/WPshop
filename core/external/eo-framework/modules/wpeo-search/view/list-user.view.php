@@ -2,8 +2,8 @@
 /**
  * Affichage du résultat des utilisateurs.
  *
- * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2015-2018 Eoxia <dev@eoxia.com>.
+ * @author    Eoxia <technique@eoxia.com>
+ * @copyright (c) 2015-2018 Eoxia <technique@eoxia.com>.
  *
  * @license   GPLv3 <https://spdx.org/licenses/GPL-3.0-or-later.html>
  *

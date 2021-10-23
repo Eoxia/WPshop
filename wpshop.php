@@ -4,7 +4,7 @@
  * Plugin URI:  https://wpshop.fr/
  * Description: Simple, fast, efficient it will transform your WordPress into an internet sales site
  * Version:     2.5.0
- * Author:      Eoxia <dev@eoxia.com>
+ * Author:      Eoxia <technique@eoxia.com>
  * Author URI:  http://www.eoxia.com/
  * License:     GPLv3
  * License URI: https://spdx.org/licenses/GPL-3.0-or-later.html

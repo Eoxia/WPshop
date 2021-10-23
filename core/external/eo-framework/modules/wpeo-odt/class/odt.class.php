@@ -2,7 +2,7 @@
 /**
  * Gestion des ODT (POST, PUT, GET, DELETE)
  *
- * @author Eoxia <dev@eoxia.com>
+ * @author Eoxia <technique@eoxia.com>
  * @since 1.0.0
  * @copyright 2015-2018
  * @package EO_Framework\EO_Model\Class

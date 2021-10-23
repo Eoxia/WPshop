@@ -3,8 +3,8 @@
  * La vue affichant la metabox de la gallery d'images d'un produit.
  *
  * @package   WPshop
- * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
+ * @author    Eoxia <technique@eoxia.com>
+ * @copyright (c) 2011-2020 Eoxia <technique@eoxia.com>.
  * @since     2.4.0
  * @version   2.4.0
  */

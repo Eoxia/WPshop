@@ -2,7 +2,7 @@
 /**
  * La vue affichant à l'utilisateur de mêttre à jour DigiRisk.
  *
- * @author Eoxia <dev@eoxia.com>
+ * @author Eoxia <technique@eoxia.com>
  * @since 1.0.0
  * @version 1.0.0
  * @copyright 2015-2018 Eoxia

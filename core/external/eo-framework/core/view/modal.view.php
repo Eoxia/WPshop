@@ -4,7 +4,7 @@
  *
  * La "div.wpeo-modal.modal-active" englobant le contenant de la modal est généré par le fichier modal.lib.js.
  *
- * @author Eoxia <dev@eoxia.com>
+ * @author Eoxia <technique@eoxia.com>
  * @since 1.0.0
  * @version 1.0.0
  * @copyright 2015-2018 Eoxia

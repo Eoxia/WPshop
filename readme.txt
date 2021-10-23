@@ -148,4 +148,4 @@ Back up your data, check your backups and update
 
 == Contactez l'auteur ==
 
-dev@eoxia.com
+technique@eoxia.com

@@ -2,7 +2,7 @@
 /**
  * La vue principale pour les mises à jour.
  *
- * @author Eoxia <dev@eoxia.com>
+ * @author Eoxia <technique@eoxia.com>
  * @since 1.0.0
  * @version 1.0.0
  * @copyright 2015-2018 Eoxia

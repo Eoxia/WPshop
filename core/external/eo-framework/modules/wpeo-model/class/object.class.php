@@ -2,7 +2,7 @@
 /**
  * Gestion des objets ( posts / terms / comments / users )
  *
- * @author Eoxia <dev@eoxia.com>
+ * @author Eoxia <technique@eoxia.com>
  * @since 1.0.0
  * @version 1.0.0
  * @copyright 2015-2018

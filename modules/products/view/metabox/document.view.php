@@ -3,8 +3,8 @@
  * La vue affichant la metabox des documents d'un produit.
  *
  * @package   WPshop
- * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
+ * @author    Eoxia <technique@eoxia.com>
+ * @copyright (c) 2011-2020 Eoxia <technique@eoxia.com>.
  * @since     2.1.0
  * @version   2.1.0
  */

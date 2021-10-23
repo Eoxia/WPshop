@@ -2,7 +2,7 @@
 /**
  * Arrow for navigate in the gallery.
  *
- * @author Eoxia <dev@eoxia.com>
+ * @author Eoxia <technique@eoxia.com>
  * @since 0.1.0-alpha
  * @version 1.0.0
  * @copyright 2017-2018 Eoxia

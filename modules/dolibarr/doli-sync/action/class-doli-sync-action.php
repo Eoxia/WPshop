@@ -5,8 +5,8 @@
  * @todo: Translate to English.
  *
  * @package   WPshop
- * @author    Eoxia <dev@eoxia.com>
- * @copyright (c) 2011-2020 Eoxia <dev@eoxia.com>.
+ * @author    Eoxia <technique@eoxia.com>
+ * @copyright (c) 2011-2020 Eoxia <technique@eoxia.com>.
  * @since     2.0.0
  * @version   2.0.0
  */
@@ -44,7 +44,6 @@ class Doli_Sync_Action {
 	/**
 	 * Charge la modal de synchronisation.
 	 *
-	 * @todo: Clear
 	 *
 	 * @since   2.0.0
 	 * @version 2.0.0
@@ -92,7 +91,6 @@ class Doli_Sync_Action {
 	/**
 	 * Fait la synchronisation.
 	 *
-	 * @todo: Use Doli_Sync::g()->get_sync_infos
 	 * @todo: Refactoring
 	 *
 	 * @since   2.0.0
@@ -111,7 +109,7 @@ class Doli_Sync_Action {
 		$last         = ( ! empty( $_POST['last'] ) && '1' == $_POST['last'] ) ? true : false;
 
 		$sync_info = Doli_Sync::g()->get_sync_infos( $type );
-		
+
 		// @todo: Do Array http_build_query.
 		$doli_entries = Request_Util::get( $sync_info['endpoint'] . '?sortfield=t.rowid&sortorder=ASC&limit=' . Doli_Sync::g()->limit_entries_by_request . '&page=' . $done_number / Doli_Sync::g()->limit_entries_by_request );
 
@@ -170,24 +168,24 @@ class Doli_Sync_Action {
 	 */
 	public function sync_entry() {
 		check_ajax_referer( 'sync_entry' );
-    
+
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
-		
+
 		$wp_id   		 = ! empty( $_POST['wp_id'] ) ? (int) $_POST['wp_id'] : 0;
 		$entry_id		 = ! empty( $_POST['entry_id'] ) ? (int) $_POST['entry_id'] : 0;
 		$type    		 = ! empty( $_POST['type'] ) ? sanitize_text_field( $_POST['type'] ) : '';
 
-		$sync_status = Doli_Sync::g()->sync( $wp_id, $entry_id, $type );	
+		$sync_status = Doli_Sync::g()->sync( $wp_id, $entry_id, $type );
 		$sync_info   = Doli_Sync::g()->get_sync_infos( $type );
-		
+
 		ob_start();
 		// @todo: Add display_item for contact.
 		if ( $type !== 'wps-user' || $type !== 'wps-product-cat' ) {
 			$sync_info['wp_class']::g()->display_item( $sync_status['wp_object'], true, $dolibarr_option['dolibarr_url'] );
 		}
-		
+
 		$item_view = ob_get_clean();
-		
+
 		wp_send_json_success( array(
 			'id'               => $wp_id,
 			'namespace'        => 'wpshop',
@@ -243,11 +241,11 @@ class Doli_Sync_Action {
 		if ( empty( $wp_id ) && ! in_array( $type, array( 'wps-product', 'wps-third-party', 'wps-proposals', 'wps-user', 'wps-product-cat' ) ) ) {
 			wp_send_json_error();
 		}
-		
+
 		$sync_info = Doli_Sync::g()->get_sync_infos( $type );
-		
+
 		$object = $sync_info['wp_class']::g()->get( array( 'id' => $wp_id ), true );
-		
+
 		ob_start();
 		$status = Doli_Sync::g()->display_sync_status( $object, $type );
 		$view = ob_get_clean();
