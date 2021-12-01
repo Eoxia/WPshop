@@ -131,8 +131,8 @@ class Doli_Sync_Filter extends Singleton_Util {
 		$data_sha['title']    = $response->name;
 		$data_sha['town']     = $response->town;
 		$data_sha['zip']      = $response->zip;
-		$data_sha['state']    = $response->state;
-		$data_sha['country']  = $response->country;
+		$data_sha['state']    = $response->state_id;
+		$data_sha['country']  = $response->country_id;
 		$data_sha['address']  = $response->address;
 		$data_sha['phone']    = $response->phone;
 		$data_sha['email']    = $response->email;
