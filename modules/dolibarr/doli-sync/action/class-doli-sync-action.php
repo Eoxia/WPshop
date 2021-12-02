@@ -186,12 +186,17 @@ class Doli_Sync_Action {
 
 		$item_view = ob_get_clean();
 
+		ob_start();
+		Doli_Sync::g()->display_sync_status( $sync_status['wp_object'], $type, true );
+		$sync_view = ob_get_clean();
+
 		wp_send_json_success( array(
 			'id'               => $wp_id,
 			'namespace'        => 'wpshop',
 			'module'           => 'doliSync',
 			'callback_success' => 'syncEntrySuccess',
 			'item_view'        => $item_view,
+			'sync_view'        => $sync_view,
 		) );
 	}
 
