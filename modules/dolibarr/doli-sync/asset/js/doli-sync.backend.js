@@ -121,8 +121,10 @@ window.eoxiaJS.wpshop.doliSync.syncEntrySuccess = function( triggeredElement, re
 		modal.addClass( 'modal-force-display' );
 		modal.find( '.modal-content' ).html( response.data.modal_view );
 		modal.find( '.modal-footer' ).html( response.data.modal_footer );
-	} else if ( jQuery( triggeredElement ).closest( '.wps-sync-container' ).length > 0 ) {
+	} else if ( jQuery( triggeredElement ).closest( '.table-row' ).length > 0 ) {
 		// If it is sync action per entry.
+		jQuery( triggeredElement ).closest( '.table-row' ).replaceWith( response.data.item_view );
+	} else	{
 		jQuery( triggeredElement ).closest( '.wps-sync-container' ).replaceWith( response.data.sync_view );
 	}
 };
