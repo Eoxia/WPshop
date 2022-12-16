@@ -417,7 +417,6 @@ class Checkout_Action {
 	 * @param User        $contact     Les données du contact.
 	 */
 	public function callback_checkout_doli_proposal( $third_party, $contact ) {
-
  		$type_payment = ! empty( $_POST['type_payment'] ) ? sanitize_text_field( $_POST['type_payment'] ) : '';
 
 		$proposal_data = array(
@@ -431,7 +430,7 @@ class Checkout_Action {
 
 		if ( ! empty( Cart_Session::g()->cart_contents ) ) {
 			foreach (Cart_Session::g()->cart_contents as $content) {
-				Request_Util::post( 'proposals/' . $doli_proposal_id . '/lines', array(
+				Request_Util::post( 'proposals/' . $doli_proposal_id . '/line', array(
 					'desc'                    => $content['content'],
 					'fk_product'              => $content['external_id'],
 					'product_type'            => 1,
@@ -454,6 +453,7 @@ class Checkout_Action {
 		}
 
 		$doli_proposal = Request_Util::get( 'proposals/' . (int) $doli_proposal_id );
+
 //		$doli_proposal->total                   = number_format((float)Cart_Session::g()->total_price_ttc,8,'.',',');
 //		$doli_proposal->multicurrency_total_ht  = number_format((float)Cart_Session::g()->total_price,8,'.',',');
 //		$doli_proposal->multicurrency_total_tva = number_format((float)Cart_Session::g()->tva_amount,8,'.',',');
