@@ -100,15 +100,6 @@ defined( 'ABSPATH' ) || exit;
 		</label>
 	</div>
 
-	<div class="form-element">
-		<span class="form-label"><?php esc_html_e( 'Dolibarr Product Document', 'wpshop' ); ?>
-			<a class="wpeo-button button-square-40 button-rounded wpeo-tooltip-event" aria-label="<?php esc_attr_e( 'Test the link', 'wpshop' ); ?>" href="<?php echo esc_attr( $dolibarr_option['dolibarr_url'] . $dolibarr_option['dolibarr_products_lists'] ); ?>" target="_blank"><i class="fas fa-external-link-alt"></i></a>
-		</span>
-		<label class="form-field-container">
-			<input type="text" class="form-field" name="dolibarr_product_document" value="<?php echo esc_attr( $dolibarr_option['dolibarr_product_document'] ); ?>" />
-		</label>
-	</div>
-
 	<!-- -Liens Service -->
 	<!-- -Liens Service @todo -->
 

@@ -212,27 +212,11 @@ class Product extends Post_Class {
 		);
 
 		add_meta_box(
-			'wps_product_gallery',
-			__( 'Product Gallery', 'wpshop'),
-			array( $this, 'callback_add_meta_box_gallery' ),
-			'wps-product',
-			'side'
-		);
-
-		add_meta_box(
 			'wps-product-catdiv',
 			__( 'Product category', 'wpshop'),
 			array( $this, 'callback_add_meta_box_category' ),
       	'wps-product',
 		'side'
-		);
-
-		add_meta_box(
-			'wps_product_document',
-			__( 'Product Document', 'wpshop'),
-			array( $this, 'callback_add_meta_box_document' ),
-			'wps-product',
-			'side'
 		);
 	}
 	public function callback_add_meta_box_category( $post ) {
@@ -346,99 +330,6 @@ class Product extends Post_Class {
 			'similar_products' => $similar_products,
 			'sync_status'      => false,
 		) );
-	}
-
-	/**
-	 * La vue de la metabox pour configurer la galerie d'image du produit.
-	 *
-	 * @since   2.1.0
-	 * @version 2.3.1
-	 *
-	 * @param WP_Post $post Le produit.
-	 */
-	public function callback_add_meta_box_gallery( $post )
-	{
-		$product = $this->get(array('id' => $post->ID), true);
-
-		if (empty($product)) {
-			$product = $this->get(array('schema' => true), true);
-		}
-
-		if (!empty($product->data['fk_product_parent'])) {
-			$parent_post = get_post(Doli_Products::g()->get_wp_id_by_doli_id($product->data['fk_product_parent']));
-
-			$product->data['parent_post'] = $parent_post;
-		}
-
-		// Get Dolibarr documents.
-		$attachments = Request_Util::get( 'documents?modulepart=product&id=' . $product->data['external_id'] );
-
-		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
-
-		$dolibarr_product_document = $dolibarr_option['dolibarr_product_document'];
-		$dolibarr_url              = $dolibarr_option['dolibarr_url'];
-
-		$upload_link = esc_url( get_upload_iframe_src( 'image', $product->data['id'] ) );
-
-		View_Util::exec(
-			'wpshop',
-			'products',
-			'metabox/gallery',
-			array(
-				'upload_link'               => $upload_link,
-				'attachments'               => ! empty( $attachments ) ? $attachments : '',
-				'product'                   => $product,
-				'dolibarr_url'              => $dolibarr_url,
-				'dolibarr_product_document' => $dolibarr_product_document,
-			)
-		);
-	}
-
-	/**
-	 * La vue de la metabox pour configurer les documents du produit.
-	 *
-	 * @since   2.1.0
-	 * @version 2.4.0
-	 *
-	 * @param WP_Post $post Le produit.
-	 */
-	public function callback_add_meta_box_document( $post ) {
-		$product = $this->get( array( 'id' => $post->ID ), true );
-
-		if ( empty( $product ) ) {
-			$product = $this->get( array( 'schema' => true ), true );
-		}
-
-		if ( ! empty( $product->data['fk_product_parent'] ) ) {
-			$parent_post = get_post( Doli_Products::g()->get_wp_id_by_doli_id( $product->data['fk_product_parent'] ) );
-
-			$product->data['parent_post'] = $parent_post;
-		}
-
-		// Get Dolibarr documents.
-		$attachments = Request_Util::get( 'documents?modulepart=product&id=' . $product->data['external_id'] );
-
-		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
-
-		$dolibarr_url              = $dolibarr_option['dolibarr_url'];
-		$dolibarr_product_document = $dolibarr_option['dolibarr_product_document'];
-		$upload_link               = esc_url( get_upload_iframe_src( 'image', $product->data['id'] ) );
-
-		$wp_upload_dir = wp_upload_dir();
-
-		View_Util::exec(
-			'wpshop',
-			'products',
-			'metabox/document',
-			array(
-				'wp_upload_dir'             => $wp_upload_dir,
-				'upload_link'               => $upload_link,
-				'attachments'               => ! empty( $attachments ) ? $attachments : '',
-				'product'                   => $product,
-				'dolibarr_url'              => $dolibarr_url,
-				'dolibarr_product_document' => $dolibarr_product_document,
-			)
-		);
 	}
 
 	/**
