@@ -21,7 +21,6 @@ defined( 'ABSPATH' ) || exit;
  */
 ?>
 
-?>
 <div class="wps-list-invoice wps-list-box">
 	<?php
 	if ( ! empty( $products_downloadable ) ) :
