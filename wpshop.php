@@ -29,9 +29,6 @@ if ( ! PLUGIN_WPSHOP_DEV_MODE ) {
 	require_once 'core/external/eo-framework/eo-framework.php';
 }
 
-// Include composer component.
-require_once 'vendor/autoload.php';
-
 // Boot your plugin.
 Init_Util::g()->exec( PLUGIN_WPSHOP_PATH, basename( __FILE__, '.php' ) );
 
