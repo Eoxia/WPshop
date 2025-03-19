@@ -5,9 +5,6 @@
   "description": "Le module gérant les devis",
   "path": "modules/proposals/",
   "dependencies": {
-    "filter": {},
-    "class": {},
-    "action": {},
     "model": {}
   }
 }

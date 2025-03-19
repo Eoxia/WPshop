@@ -134,7 +134,6 @@ class Settings_Action {
 		$thumbnail_size           = ! empty( $_POST['thumbnail_size'] ) ? (array) $_POST['thumbnail_size'] : array();
 		$thumbnail_size['width']  = ! empty( $thumbnail_size['width'] ) ? (int) $thumbnail_size['width'] : 0;
 		$thumbnail_size['height'] = ! empty( $thumbnail_size['height'] ) ? (int) $thumbnail_size['height'] : 0;
-		$use_quotation            = isset( $_POST['use_quotation'] ) && 'on' == $_POST['use_quotation'] ? true : false;
 		$split_product            = isset( $_POST['split_product'] ) && 'on' == $_POST['split_product'] ? true : false;
 		$price_min                = ! empty( $_POST['price_min'] ) ? (int) $_POST['price_min'] : 0;
 
@@ -143,7 +142,6 @@ class Settings_Action {
 		$dolibarr_option['shop_email']               = $shop_email;
 		$dolibarr_option['thumbnail_size']['width']  = $thumbnail_size['width'];
 		$dolibarr_option['thumbnail_size']['height'] = $thumbnail_size['height'];
-		$dolibarr_option['use_quotation']            = $use_quotation;
 		$dolibarr_option['split_product']            = $split_product;
 		$dolibarr_option['price_min']                = $price_min;
 

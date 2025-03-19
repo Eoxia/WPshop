@@ -59,10 +59,6 @@ class My_Account_Shortcode extends Singleton_Util {
 
 				$tab = Settings::g()->dolibarr_is_active() ? 'orders' : 'details';
 
-				if ( $tab == 'quotations' ) {
-					$tab = Settings::g()->use_quotation() ? 'quotations' : 'details';
-				}
-
 				if ( array_key_exists( 'orders', $wp->query_vars ) ) {
 					$tab = 'orders';
 				}

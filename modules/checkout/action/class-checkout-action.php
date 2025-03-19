@@ -48,7 +48,6 @@ class Checkout_Action {
 
 		add_action( 'wps_review_order_after_submit', array( $this, 'add_terms' ), 10 );
 		add_action( 'wps_review_order_after_submit', array( $this, 'add_place_order_button' ), 20 );
-		add_action( 'wps_review_order_after_submit', array( $this, 'add_devis_button' ), 30 );
 
 		add_action( 'wp_ajax_wps_place_order', array( $this, 'callback_place_order' ) );
 		add_action( 'wp_ajax_nopriv_wps_place_order', array( $this, 'callback_place_order' ) );
@@ -521,16 +520,6 @@ class Checkout_Action {
 
 			include( Template_Util::get_template_part( 'checkout', 'terms' ) );
 		}
-	}
-
-	/**
-	 * Ajoute le bouton "Demande de devis".
-	 *
-	 * @since   2.0.0
-	 * @version 2.0.0
-	 */
-	public function add_devis_button() {
-		include( Template_Util::get_template_part( 'checkout', 'devis-button' ) );
 	}
 
 	/**

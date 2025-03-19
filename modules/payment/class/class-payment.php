@@ -48,19 +48,6 @@ class Payment extends Singleton_Util {
 	 */
 	protected function construct() {
 		$this->default_options = array(
-			'cheque'          => array(
-				'active'      => true,
-				'logo'        => '<i class="fas fa-money-check"></i>',
-				'title'       => __( 'Cheque', 'wpshop' ),
-				'description' => __( 'Please send a check to Store Name, Store Street, Store Town, Store State / County, Store Postcode.', 'wpshop' ),
-
-			),
-			'payment_in_shop' => array(
-				'active'      => true,
-				'logo'        => '<i class="fas fa-money-bill-alt"></i>',
-				'title'       => __( 'Payment in shop', 'wpshop' ),
-				'description' => __( 'Pay and pick up directly your products at the shop.', 'wpshop' ),
-			),
 			'online_payment' => array(
 				'active'      => true,
 				'logo'        => '<i class="fas fa-credit-card"></i>',
@@ -70,17 +57,6 @@ class Payment extends Singleton_Util {
 		);
 
 		$this->default_options = apply_filters( 'wps_payment_methods', $this->default_options );
-
-		$this->status = array(
-			'cheque'          => array(
-				'publish' => __( 'Waiting for the check', 'wpshop' ),
-				'billed'  => __( 'Paid', 'wpshop' ),
-			),
-			'payment_in_shop' => array(
-				'publish' => __( 'Waiting for the payment', 'wpshop' ),
-				'billed'  => __( 'Paid', 'wpshop' ),
-			),
-		);
 	}
 
 	/**
@@ -122,35 +98,6 @@ class Payment extends Singleton_Util {
 		}
 
 		return ! empty( $payment_method['title'] ) ? $payment_method['title'] : '-';
-	}
-
-	/**
-	 * Affiche un statut lisible selon la méthode de paiement et le statut du paiement.
-	 *
-	 * @since   2.0.0
-	 * @version 2.0.0
-	 *
-	 * @param  mixed $object Les données de l'objet.
-	 *
-	 * @return string        Le status lisible.
-	 */
-	public function make_readable_statut( $object ) {
-		if ( empty( $object ) || empty( $object->data['payment_method'] ) ) {
-			return '-';
-		}
-
-		if ( empty( $this->status[ $object->data['payment_method'] ] ) ) {
-			return '-';
-		}
-
-		if ( ( isset( $object->data['billed'] ) && 1 === $object->data['billed'] ) ||
-			( isset( $object->data['paye'] ) && 1 === $object->data['paye'] ) ) {
-			return $this->status[ $object->data['payment_method'] ]['billed'];
-		} else {
-			return $this->status[ $object->data['payment_method'] ]['publish'];
-		}
-
-		return '-';
 	}
 }
 

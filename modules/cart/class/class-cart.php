@@ -37,7 +37,7 @@ class Cart extends Singleton_Util {
 	 * @return boolean True si tout s'est bien passé.
 	 */
 	public function can_add_product() {
-		if ( ! Settings::g()->use_quotation() && ! Settings::g()->dolibarr_is_active() ) {
+		if ( ! Settings::g()->dolibarr_is_active() ) {
 			return false;
 		}
 
