@@ -27,9 +27,7 @@
         "modules/emails/emails.config.json",
     
         "modules/dashboard/dashboard.config.json",
-    
-        "modules/search/search.config.json",
-    
+
         "modules/dolibarr/doli-statut/doli-statut.config.json",
         "modules/dolibarr/doli-proposals/doli-proposals.config.json",
         "modules/dolibarr/doli-order/doli-order.config.json",
