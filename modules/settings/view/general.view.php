@@ -52,13 +52,6 @@ defined( 'ABSPATH' ) || exit;
 
 	<div class="form-element">
 		<label class="form-field-container">
-			<input type="checkbox" id="use_quotation" class="form-field" name="use_quotation" <?php echo $dolibarr_option['use_quotation'] ? 'checked="checked"' : ''; ?> />
-			<label for="use_quotation"><?php esc_html_e( 'Enable wish list', 'wpshop' ); ?></label>
-		</label>
-	</div>
-
-	<div class="form-element">
-		<label class="form-field-container">
 			<input type="checkbox" id="split_product" class="form-field" name="split_product" <?php echo $dolibarr_option['split_product'] ? 'checked="checked"' : ''; ?> />
 			<label for="split_product"><?php esc_html_e( 'Split product', 'wpshop' ); ?></label>
 		</label>
@@ -68,13 +61,6 @@ defined( 'ABSPATH' ) || exit;
 		<span class="form-label"><?php esc_html_e( 'Mininum price per product', 'wpshop' ); ?></span>
 		<label class="form-field-container">
 			<input type="text" class="form-field" name="price_min" value="<?php echo ! empty( $dolibarr_option['price_min'] ) ? esc_attr( $dolibarr_option['price_min'] ) : 0; ?>" />
-		</label>
-	</div>
-
-	<div class="form-element">
-		<label class="form-field-container">
-			<input type="checkbox" id="debug_mode" class="form-field" name="debug_mode" <?php echo $debug_mode ? 'checked="checked"' : ''; ?> />
-			<label for="debug_mode"><?php esc_html_e( 'Debug mode', 'wpshop' ); ?></label>
 		</label>
 	</div>
 

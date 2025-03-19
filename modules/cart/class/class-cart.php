@@ -83,7 +83,7 @@ class Cart extends Singleton_Util {
 		$can_add = apply_filters( 'wps_add_to_cart_product', true, $product );
 
 		if ( $can_add ) {
-			if ( -1 === $index ) {
+			if ( $index === -1 ) {
 				$data['content'] = $desc;
 				Cart_Session::g()->add_product( $data );
 			} else {

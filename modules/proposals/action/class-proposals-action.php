@@ -58,18 +58,18 @@ class Proposals_Action {
 	 * @version 2.4.0
 	 */
 	public function callback_admin_menu() {
-		if ( Settings::g()->use_quotation() ) {
+// 		if ( Settings::g()->use_quotation() ) {
 
-//			$hook = add_submenu_page( 'wpshop', __( 'Wish List', 'wpshop' ), __( 'Wish List', 'wpshop' ), 'manage_options', 'wps-proposal', array( $this, 'callback_add_menu_page' ) );
-//
-//			if ( ! isset( $_GET['id'] ) ) {
-//				add_action( 'load-' . $hook, array( $this, 'callback_add_screen_option' ) );
-//			}
+// //			$hook = add_submenu_page( 'wpshop', __( 'Wish List', 'wpshop' ), __( 'Wish List', 'wpshop' ), 'manage_options', 'wps-proposal', array( $this, 'callback_add_menu_page' ) );
+// //
+// //			if ( ! isset( $_GET['id'] ) ) {
+// //				add_action( 'load-' . $hook, array( $this, 'callback_add_screen_option' ) );
+// //			}
 
-			if ( user_can( get_current_user_id(), 'manage_options' ) ) {
-				CMH::register_menu( 'wpshop', __( 'Wish List', 'wpshop' ), __( 'Wish List', 'wpshop' ), 'manage_options', 'wps-proposal', array( $this, 'callback_add_menu_page' ), 'fas fa-list', 4 );
-			}
-		}
+// 			if ( user_can( get_current_user_id(), 'manage_options' ) ) {
+// 				CMH::register_menu( 'wpshop', __( 'Wish List', 'wpshop' ), __( 'Wish List', 'wpshop' ), 'manage_options', 'wps-proposal', array( $this, 'callback_add_menu_page' ), 'fas fa-list', 4 );
+// 			}
+// 		}
 	}
 
 	/**

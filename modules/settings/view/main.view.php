@@ -39,7 +39,6 @@ defined( 'ABSPATH' ) || exit;
 			<a href="<?php echo esc_url( admin_url( 'admin-post.php?action=wps_load_settings_tab&_wpnonce=' . wp_create_nonce( 'callback_load_tab' ) . '&tab=pages' ) ); ?>" class="tab-element <?php echo ( 'pages' === $tab ) ? 'tab-active' : ''; ?>"><?php esc_html_e( 'Pages', 'wpshop' ); ?></a>
 			<a href="<?php echo esc_url( admin_url( 'admin-post.php?action=wps_load_settings_tab&_wpnonce=' . wp_create_nonce( 'callback_load_tab' ) . '&tab=emails' ) ); ?>" class="tab-element <?php echo ( 'emails' === $tab ) ? 'tab-active' : ''; ?>"><?php esc_html_e( 'Emails', 'wpshop' ); ?></a>
 			<a href="<?php echo esc_url( admin_url( 'admin-post.php?action=wps_load_settings_tab&_wpnonce=' . wp_create_nonce( 'callback_load_tab' ) . '&tab=erp' ) ); ?>" class="tab-element <?php echo ( 'erp' === $tab ) ? 'tab-active' : ''; ?>"><?php esc_html_e( 'ERP', 'wpshop' ); ?></a>
-<!--			<a href="--><?php //echo esc_url( admin_url( 'admin-post.php?action=wps_load_settings_tab&_wpnonce=' . wp_create_nonce( 'callback_load_tab' ) . '&tab=shipping_cost' ) ); ?><!--" class="tab-element --><?php //echo ( 'shipping_cost' === $tab ) ? 'tab-active' : ''; ?><!--">--><?php //esc_html_e( 'Shipping cost', 'wpshop' ); ?><!--</a>-->
 		</ul>
 
 		<div class="tab-container">
