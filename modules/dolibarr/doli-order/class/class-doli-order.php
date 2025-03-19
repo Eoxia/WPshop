@@ -210,7 +210,6 @@ class Doli_Order extends Post_Class {
 			$wp_order->data['datec']          = $time;
 			$wp_order->data['author_id']      = Doli_User::g()->get_wp_id_by_doli_id( $doli_order->user_author_id );
 			$wp_order->data['parent_id']      = Doli_Third_Parties::g()->get_wp_id_by_doli_id( $doli_order->socid );
-			$wp_order->data['payment_method'] = Doli_Payment::g()->convert_to_wp( $doli_order->mode_reglement_code );
 
 			$wp_order->data['lines'] = null;
 

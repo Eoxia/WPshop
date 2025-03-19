@@ -36,7 +36,6 @@ class Checkout_Action {
 
 		add_action( 'wps_checkout_shipping', array( $this, 'callback_checkout_shipping' ), 10, 2 );
 		add_action( 'wps_checkout_order_review', array( $this, 'callback_checkout_order_review' ), 10, 4 );
-		add_action( 'wps_checkout_payment', array( $this, 'callback_checkout_payment' ) );
 
 		add_action( 'checkout_create_third_party', array( $this, 'callback_checkout_create_third' ) );
 
@@ -133,18 +132,6 @@ class Checkout_Action {
 	}
 
 	/**
-	 * Affiche les méthodes de paiement.
-	 *
-	 * @since   2.0.0
-	 * @version 2.0.0
-	 */
-	public function callback_checkout_payment() {
-		$payment_methods = get_option( 'wps_payment_methods', Payment::g()->default_options );
-
-		include( Template_Util::get_template_part( 'checkout', 'payment' ) );
-	}
-
-	/**
 	 * Créer la commande et passe au paiement.
 	 *
 	 * @since   2.0.0
@@ -155,7 +142,6 @@ class Checkout_Action {
 
 		// @todo: Explain fast_pay.
 		//$fast_pay     = isset( $_POST['fast_pay'] ) && 'true' == $_POST['fast_pay'] ? true : false;
-		$type_payment = ! empty( $_POST['type_payment'] ) ? sanitize_text_field( $_POST['type_payment'] ) : '';
 		$type         = ! empty( $_POST['type'] ) ? sanitize_text_field( $_POST['type'] ) : '';
 
 		if ( ! in_array( $type, array( 'order', 'proposal' ) ) ) {
@@ -219,7 +205,6 @@ class Checkout_Action {
 			) );
 		}
 	}
-
 
 	/**
 	 * Créer le tier lors du tunnel de vente.
@@ -421,7 +406,6 @@ class Checkout_Action {
 		$proposal_data = array(
 			'socid'             => $third_party->data['external_id'],
 			'date'              => current_time( 'timestamp' ),
-			'mode_reglement_id' => Doli_Payment::g()->convert_to_doli_id( $type_payment ),
 		);
 
 		LOG_Util::log( sprintf( 'Dolibarr call POST proposals with data %s', json_encode( $proposal_data ) ), 'wpshop2' );
