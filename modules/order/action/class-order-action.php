@@ -38,7 +38,6 @@ class Order_Action {
 	 */
 	public function callback_admin_init() {
 		add_meta_box( 'wps-invoice-products', __( 'Products', 'wpshop' ), array( $this, 'callback_products' ), 'wps-invoice', 'normal', 'default' );
-		add_meta_box( 'wps-order-products', __( 'Products', 'wpshop' ), array( $this, 'callback_products' ), 'wps-order', 'normal', 'default' );
 	}
 
 	/**
