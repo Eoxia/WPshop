@@ -39,9 +39,7 @@ class Checkout_Action {
 
 		add_action( 'checkout_create_third_party', array( $this, 'callback_checkout_create_third' ) );
 
-		if ( ! Settings::g()->dolibarr_is_active() ) {
-			add_action('checkout_create_proposal', array($this, 'callback_checkout_proposal'), 10, 2);
-		} else {
+		if ( Settings::g()->dolibarr_is_active() ) {
 			add_action('checkout_create_proposal', array($this, 'callback_checkout_doli_proposal'), 10, 2);
 		}
 
@@ -401,7 +399,8 @@ class Checkout_Action {
 	 * @param User        $contact     Les données du contact.
 	 */
 	public function callback_checkout_doli_proposal( $third_party, $contact ) {
- 		$type_payment = ! empty( $_POST['type_payment'] ) ? sanitize_text_field( $_POST['type_payment'] ) : '';
+        
+
 
 		$proposal_data = array(
 			'socid'             => $third_party->data['external_id'],
