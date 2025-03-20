@@ -26,8 +26,6 @@ defined( 'ABSPATH' ) || exit;
 <div class="table-row">
 	<input type="hidden" name="action" value="quick_save" />
 	<input type="hidden" name="id" value="<?php echo $product->data['id']; ?>" />
-	<input type="hidden" name="product_data[product_downloadable]" value="<?php echo (int) 1 === (int) $product->data['product_downloadable'] ? 'true' : 'false'; ?>" />
-
 
 	<div class="table-cell table-50"><input type="checkbox" /></div>
 	<div class="table-cell table-100 table-padding-0"><?php echo do_shortcode( '[wpeo_upload id="' . $product->data['id'] . '" single="true" model_name="/wpshop/Product"]' ); ?></div>

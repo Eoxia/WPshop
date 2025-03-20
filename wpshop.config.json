@@ -14,7 +14,6 @@
     
         "modules/order/order.config.json",
         "modules/products/products.config.json",
-        "modules/products-downloadable/products-downloadable.config.json",
         "modules/third-parties/third-parties.config.json",
         "modules/user/user.config.json",
         "modules/proposals/proposals.config.json",

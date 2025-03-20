@@ -276,12 +276,6 @@ class Doli_Order extends Post_Class {
 					break;
 			}
 
-			if ( $wp_order->data['billed'] && $status = 'wps-billed' ) {
-				if ( ! $only_convert ) {
-					Product_Downloadable::g()->create_from_order( $wp_order );
-				}
-			}
-
 			$wp_order->data['status'] = $status;
 
 			if ( ! $only_convert ) {

@@ -160,7 +160,6 @@ class Product_Action {
 		$product_data['tva_tx']               = ! empty( $product_data['tva_tx'] ) ? (float) round( str_replace( ',', '.', $product_data['tva_tx'] ), 2 ) : $product->data['tva_tx'];
 		$product_data['manage_stock']         = ( ! empty( $product_data['manage_stock'] ) && 'true' == $product_data['manage_stock'] ) ? true : false;
 		$product_data['stock']                = ! empty( $product_data['stock'] ) ? (int) $product_data['stock'] : $product->data['stock'];
-		$product_data['product_downloadable'] = ( ! empty( $product_data['product_downloadable'] ) && 'true' === $product_data['product_downloadable'] ) ? true : false;
 		$product_data['price_ttc']            = price2num( $product_data['price'] * ( 1 + ( $product_data['tva_tx'] / 100 ) ) );
 		$product_data['similar_products_id']  = ! empty( $_POST['similar_products_id'] ) ? (array) $_POST['similar_products_id'] : array();
 		$product_data['similar_products_id']  = array_map( 'intval', $product_data['similar_products_id'] );
@@ -171,7 +170,6 @@ class Product_Action {
 		update_post_meta( $post_id, '_tva_amount', ( $product_data['price_ttc'] - $product_data['price'] ) );
 		update_post_meta( $post_id, '_manage_stock', $product_data['manage_stock'] );
 		update_post_meta( $post_id, '_stock', $product_data['stock'] );
-		update_post_meta( $post_id, '_product_downloadable', $product_data['product_downloadable'] );
 
 		if ( 'quick_save' !== $action ) {
 			update_post_meta( $post_id, '_similar_products_id', ! empty( $product_data['similar_products_id'] ) ? json_encode( $product_data['similar_products_id'] ) : null );
