@@ -192,7 +192,7 @@ class Pages extends Singleton_Util {
 	 * @return string Le slug de la page "Boutique".
 	 */
 	public function get_slug_shop_page() {
-		$page = get_page( $this->page_ids['shop_id'] );
+		$page = get_post( $this->page_ids['shop_id'] );
 
 		if ( ! $page ) {
 			return false;
@@ -210,7 +210,7 @@ class Pages extends Singleton_Util {
 	 * @return string Le slug de la page "Mon compte".
 	 */
 	public function get_slug_my_account_page() {
-		$page = get_page( $this->page_ids['my_account_id'] );
+		$page = get_post( $this->page_ids['my_account_id'] );
 
 		if ( ! $page ) {
 			return false;
@@ -228,7 +228,7 @@ class Pages extends Singleton_Util {
 	 * @return string Le slug de la page "Tunnel de vente".
 	 */
 	public function get_slug_checkout_page() {
-		$page = get_page( $this->page_ids['checkout_id'] );
+		$page = get_post( $this->page_ids['checkout_id'] );
 
 		if ( ! $page ) {
 			return false;
