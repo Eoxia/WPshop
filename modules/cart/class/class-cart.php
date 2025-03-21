@@ -151,7 +151,7 @@ class Cart extends Singleton_Util {
 	 * @param integer $total_price_ttc         Prix total TTC.
 	 * @param integer $shipping_cost           Frais de livraison.
 	 */
-	public function display_cart_resume( $total_price_no_shipping, $tva_amount, $total_price_ttc, $shipping_cost ) {
+	public function display_cart_resume( $total_price_no_shipping, $tva_amount, $total_price_ttc ) {
 		include( Template_Util::get_template_part( 'cart', 'cart-resume' ) );
 	}
 

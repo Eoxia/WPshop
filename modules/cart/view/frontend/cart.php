@@ -47,7 +47,7 @@ defined( 'ABSPATH' ) || exit;
 
 
 		<div>
-			<?php Cart::g()->display_cart_resume( $total_price_no_shipping, $tva_amount, $total_price_ttc, $shipping_cost ); ?>
+			<?php Cart::g()->display_cart_resume( $total_price_no_shipping, $tva_amount, $total_price_ttc ); ?>
 
 			<?php do_action( 'wps_after_cart_resume' ); ?>
 		</div>
