@@ -62,9 +62,15 @@ class Cart_Action {
 				if ( $dolibarr_option['price_min'] > ( $line['price_ttc'] * $line['qty'] ) ) {
 					$price     += $dolibarr_option['price_min'] - ( $dolibarr_option['price_min'] * $line['tva_tx'] / 100 );
 					$price_ttc += $dolibarr_option['price_min'];
+
+					$tva_amount += $dolibarr_option['price_min'] * $line['tva_tx'] / 100;
+					$price_no_shipping = $price;
 				} else {
 					$price     += $line['price'] * $line['qty'];
 					$price_ttc += $line['price_ttc'] * $line['qty'];
+
+					$tva_amount += $line['tva_amount'] * $line['qty'];
+					$price_no_shipping = $price;
 				}
 			}
 		}
