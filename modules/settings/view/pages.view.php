@@ -36,7 +36,7 @@ defined( 'ABSPATH' ) || exit;
 		foreach ( Pages::g()->page_state_titles as $key => $page_option ) :
 			?>
 			<div class="form-element">
-				<span class="form-label"><?php echo esc_html( $page_option ); ?></span>
+				<span class="form-label"><?php echo esc_html__( $page_option ); ?></span>
 				<label class="form-field-container">
 					<select id="" class="form-field" name="wps_page_<?php echo esc_attr( $key ); ?>">
 						<?php

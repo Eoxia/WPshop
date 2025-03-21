@@ -208,6 +208,7 @@ class Doli_Invoice extends Post_Class {
 		$order = null;
 
 		$doli_invoice                    = Request_Util::get( 'invoices/' . $doli_invoice->id ); // Charges par la route single des factures pour avoir accès à linkedObjectsIds->commande.
+		
 		$wp_invoice->data['external_id'] = (int) $doli_invoice->id;
 
 		// @todo: Vérifier les conséquences
@@ -225,7 +226,7 @@ class Doli_Invoice extends Post_Class {
 		$wp_invoice->data['total_ttc']      = $doli_invoice->total_ttc;
 		$wp_invoice->data['total_ht']       = $doli_invoice->total_ht;
 		$wp_invoice->data['resteapayer']    = $doli_invoice->remaintopay;
-		$wp_invoice->data['totalpaye']      = $doli_invoice->totalpaid;
+		$wp_invoice->data['totalpaye']      = $doli_invoice->sumpayed;
 		$wp_invoice->data['paye']           = (int) $doli_invoice->paye;
 		$wp_invoice->data['third_party_id'] = Doli_Third_Parties::g()->get_wp_id_by_doli_id( $doli_invoice->socid );
 		$wp_invoice->data['payments']       = array();

@@ -44,6 +44,27 @@ class Emails extends Singleton_Util {
 	 * @version 2.0.0
 	 */
 	protected function construct() {
+
+		$wp_upload_dir = wp_upload_dir();
+
+		//@todo Permettre le réglages des dossiers et du nom de fichier pour les logs
+		//@todo afficher la taille du fichier
+		$this->log_emails_directory = $wp_upload_dir['basedir'] . '/wpshop/logs/';
+        //@todo est ce que j'ai les droits ?, création de base lors de l'installation et check ?
+		wp_mkdir_p( $this->log_emails_directory );
+		//@todo erreur création répertoire ?
+
+		add_action('wp_loaded', array( $this, 'load_emails' ) );
+	}
+
+	/**
+	 * Définit les titres des emails.
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 */
+	public function load_emails() {
+
 		$this->emails['customer_new_account'] = array(
 			'title'             => __( 'New account', 'wpshop' ),
 			'content' => __( 'Welcome <br> This email confirms that your account has been created. <br> Thank you for your trust and see you soon on our shop.', 'wpshop' ),
@@ -77,14 +98,6 @@ class Emails extends Singleton_Util {
 			$this->emails[$key] = $this->set_email_content( $key, $email );
 		}
 
-		$wp_upload_dir = wp_upload_dir();
-
-		//@todo Permettre le réglages des dossiers et du nom de fichier pour les logs
-		//@todo afficher la taille du fichier
-		$this->log_emails_directory = $wp_upload_dir['basedir'] . '/wpshop/logs/';
-        //@todo est ce que j'ai les droits ?, création de base lors de l'installation et check ?
-		wp_mkdir_p( $this->log_emails_directory );
-		//@todo erreur création répertoire ?
 	}
 
 	/**
