@@ -54,30 +54,20 @@ class Emails extends Singleton_Util {
 		wp_mkdir_p( $this->log_emails_directory );
 		//@todo erreur création répertoire ?
 
-		add_action('wp_loaded', array( $this, 'load_emails' ) );
-	}
-
-	/**
-	 * Définit les titres des emails.
-	 *
-	 * @since   2.0.0
-	 * @version 2.0.0
-	 */
-	public function load_emails() {
-
+		
 		$this->emails['customer_new_account'] = array(
-			'title'             => __( 'New account', 'wpshop' ),
-			'content' => __( 'Welcome <br> This email confirms that your account has been created. <br> Thank you for your trust and see you soon on our shop.', 'wpshop' ),
+			'title'   => 'New account',
+			'content' => 'Welcome <br> This email confirms that your account has been created. <br> Thank you for your trust and see you soon on our shop.',
 		);
 
 		$this->emails['customer_current_order'] = array(
-			'title'             => __( 'Pending order', 'wpshop' ),
-			'content' => __( 'Hello <br> We have just recorded your order, thank you to send us your payment. <br> We thank you for your confidence and see you soon on our shop.', 'wpshop' ),
+			'title'   => 'Pending order',
+			'content' => 'Hello <br> We have just recorded your order, thank you to send us your payment. <br> We thank you for your confidence and see you soon on our shop.',
 		);
 
 		$this->emails['customer_paid_order'] = array(
-			'title'             => __( 'New order', 'wpshop' ),
-			'content' => __( 'Hello <br> This email confirms that your payment for your recent order has just been validated. <br> See you soon on our shop.', 'wpshop' ),
+			'title'   => 'New order',
+			'content' => 'Hello <br> This email confirms that your payment for your recent order has just been validated. <br> See you soon on our shop.',
 		);
 /*
 		$this->emails['customer_completed_order'] = array(
@@ -89,15 +79,15 @@ class Emails extends Singleton_Util {
 		);
 */
 		$this->emails['customer_invoice'] = array(
-			'title'             => __( 'Send invoice', 'wpshop' ),
-			'content' => __( 'Hello <br> You can access your invoices by logging in to your account.', 'wpshop' ),
+			'title'   => 'Send invoice',
+			'content' => 'Hello <br> You can access your invoices by logging in to your account.',
 		);
 
 		foreach ( $this->emails as $key => $email ) {
 			// Définit le contenu des emails en fonction des pages.
 			$this->emails[$key] = $this->set_email_content( $key, $email );
 		}
-
+		
 	}
 
 	/**
@@ -189,7 +179,7 @@ class Emails extends Singleton_Util {
 		if ( ! empty( $page_ids_options[$key] ) ) {
 			$email_page = get_post( $page_ids_options[$key] );
 			if ( ! empty( $email_page ) ) {
-				$email['title'] = $email_page->post_title;
+				$email['title']   = $email_page->post_title;
 				$email['content'] = $email_page->post_content;
 			}
 
