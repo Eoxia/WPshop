@@ -95,8 +95,6 @@ class Checkout_Action {
 	 */
 	public function callback_before_resume() {
 		if ( Pages::g()->is_checkout_page() ) {
-			$shipping_cost_option = get_option( 'wps_shipping_cost', Settings::g()->shipping_cost_default_settings );
-
 			include( Template_Util::get_template_part( 'checkout', 'resume-list-product' ) );
 		}
 	}

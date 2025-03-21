@@ -152,10 +152,6 @@ class Cart extends Singleton_Util {
 	 * @param integer $shipping_cost           Frais de livraison.
 	 */
 	public function display_cart_resume( $total_price_no_shipping, $tva_amount, $total_price_ttc, $shipping_cost ) {
-		$shipping_cost_option = get_option( 'wps_shipping_cost', Settings::g()->shipping_cost_default_settings );
-
-		$shipping_cost_product = Product::g()->get( array( 'id' => $shipping_cost_option['shipping_product_id'] ), true );
-
 		include( Template_Util::get_template_part( 'cart', 'cart-resume' ) );
 	}
 
