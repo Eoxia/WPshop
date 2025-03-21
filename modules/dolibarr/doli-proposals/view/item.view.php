@@ -46,7 +46,6 @@ defined( 'ABSPATH' ) || exit;
 		<div><?php echo ! empty( $proposal->data['tier']->data['phone'] ) ? esc_html( $proposal->data['tier']->data['phone'] ) : ''; ?></div>
 	</div>
 	<div class="table-cell table-150"><?php echo Doli_Statut::g()->display_status( $proposal ); ?></div>
-	<div class="table-cell table-100"><?php echo esc_html( Payment::g()->get_payment_title( $proposal->data['payment_method'] ) ); ?></div>
 	<div class="table-cell table-100"><strong><?php echo esc_html( number_format( $proposal->data['total_ttc'], 2, ',', '' ) ); ?>€</strong></div>
 	<?php apply_filters( 'wps_proposal_table_tr', $proposal ); ?>
 
