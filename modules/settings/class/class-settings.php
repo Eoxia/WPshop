@@ -38,6 +38,7 @@ class Settings extends Singleton_Util {
 	 * @version 2.3.1
 	 */
 	protected function construct() {
+
 		$this->default_settings = array(
 			'dolibarr_url'        => 'http://www.votredolibarr.ext',
 			'dolibarr_secret'     => '',
@@ -53,6 +54,14 @@ class Settings extends Singleton_Util {
 				'error_erp'    => true,
 				'activate_erp' => true,
 			),
+
+
+			'dolibarr_tiers_lists'     => '/societe/list.php',
+			'dolibarr_products_lists'  => '/product/list.php',
+			'dolibarr_proposals_lists' => '/comm/propal/list.php',
+			'dolibarr_orders_lists'    => '/commande/list.php',
+			'dolibarr_invoices_lists'  => '/compta/facture/list.php',
+			'dolibarr_payments_lists'  => '/compta/bank/various_payment/list.php',
 		);
 	}
 
