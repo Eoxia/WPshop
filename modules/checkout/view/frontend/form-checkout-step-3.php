@@ -30,7 +30,7 @@ defined( 'ABSPATH' ) || exit;
 	<?php do_action( 'wps_checkout_before_order_review' ); ?>
 
 	<div id="order_review" class="wps-checkout-review-order">
-		<?php do_action( 'wps_checkout_order_review', $total_price_no_shipping, $tva_amount, $total_price_ttc, $shipping_cost ); ?>
+		<?php do_action( 'wps_checkout_order_review', $total_price_no_shipping, $tva_amount, $total_price_ttc ); ?>
 	</div>
 
 	<?php do_action( 'wps_checkout_after_order_review' ); ?>

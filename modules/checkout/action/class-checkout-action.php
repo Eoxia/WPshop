@@ -123,8 +123,8 @@ class Checkout_Action {
 	 * @param integer $total_ttc               Le total TTC.
 	 * @param integer $shipping_cost           Le frais de livraison.
 	 */
-	public function callback_checkout_order_review( $total_price_no_shipping, $tva_amount, $total_ttc, $shipping_cost ) {
-		Cart::g()->display_cart_resume( $total_price_no_shipping, $tva_amount, $total_ttc, $shipping_cost );
+	public function callback_checkout_order_review( $total_price_no_shipping, $tva_amount, $total_ttc ) {
+		Cart::g()->display_cart_resume( $total_price_no_shipping, $tva_amount, $total_ttc );
 	}
 
 	/**
