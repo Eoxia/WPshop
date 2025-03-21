@@ -62,6 +62,11 @@ class Settings extends Singleton_Util {
 			'dolibarr_orders_lists'    => '/commande/list.php',
 			'dolibarr_invoices_lists'  => '/compta/facture/list.php',
 			'dolibarr_payments_lists'  => '/compta/bank/various_payment/list.php',
+		
+			'dolibarr_create_tier'     => '/societe/card.php?action=create',
+			'dolibarr_create_product'  => '/product/card.php?action=create',
+			'dolibarr_create_proposal' => '/comm/propal/card.php?action=create',
+			'dolibarr_create_order'    => '/commande/card.php?action=create',
 		);
 	}
 
