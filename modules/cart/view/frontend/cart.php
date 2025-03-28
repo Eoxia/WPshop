@@ -36,9 +36,7 @@ defined( 'ABSPATH' ) || exit;
 		<div class="wps-list-product gridw-2">
 			<?php if ( ! empty( $cart_contents ) ) :
 				foreach ( $cart_contents as $key => $product ) :
-					if ( $shipping_cost_option['shipping_product_id'] !== $product['id'] ) :
-						include( Template_Util::get_template_part( 'products', 'wps-product-list-edit' ) );
-					endif;
+					include( Template_Util::get_template_part( 'products', 'wps-product-list-edit' ) );
 				endforeach;
 			endif; ?>
 			<div data-parent="wps-cart" data-action="wps_update_cart"
@@ -49,7 +47,7 @@ defined( 'ABSPATH' ) || exit;
 
 
 		<div>
-			<?php Cart::g()->display_cart_resume( $total_price_no_shipping, $tva_amount, $total_price_ttc, $shipping_cost ); ?>
+			<?php Cart::g()->display_cart_resume( $total_price_no_shipping, $tva_amount, $total_price_ttc ); ?>
 
 			<?php do_action( 'wps_after_cart_resume' ); ?>
 		</div>

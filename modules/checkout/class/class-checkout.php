@@ -186,21 +186,7 @@ class Checkout extends Singleton_Util {
 	 * @param Order $order Les données de la commande.
 	 */
 	public function process_order_payment( $order ) {
-		$type = ! empty( $_POST['type_payment'] ) ? sanitize_text_field( $_POST['type_payment'] ) : '';
 
-		switch ( $type ) {
-			case 'cheque':
-			case 'payment_in_shop':
-				Cart_Session::g()->destroy();
-
-				wp_send_json_success( array(
-					'namespace'        => 'wpshopFrontend',
-					'module'           => 'checkout',
-					'callback_success' => 'redirect',
-					'url'              => Pages::g()->get_checkout_link() . '/received/order/' . $order->data['external_id'] . '/',
-				) );
-				break;
-			case 'online_payment':
 				$result = Request_Util::g()->get( 'doliwpshop/getOnlinePaymentUrl?doli_id=' . $order->data['external_id'] );
 
 				Cart_Session::g()->destroy();
@@ -212,8 +198,6 @@ class Checkout extends Singleton_Util {
 						'url'              => $result,
 					) );
 				}
-				break;
-		}
 	}
 
 	/**

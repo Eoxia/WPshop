@@ -1450,20 +1450,12 @@ msgstr "Configuration du produit Dolibarr"
 msgid "WordPress Product configuration"
 msgstr "Configuration du produit WordPress"
 
-#: modules/products/class/class-product.php:216
-msgid "Product Gallery"
-msgstr "Galerie d'image du produit"
-
 #: modules/products/class/class-product.php:224
 #: modules/products/filter/class-product-filter.php:127
 #: modules/products/filter/class-product-filter.php:128
 #: modules/products/filter/class-product-filter.php:137
 msgid "Product category"
 msgstr "Catégorie de produit"
-
-#: modules/products/class/class-product.php:232
-msgid "Product Document"
-msgstr "Documents du produit"
 
 #: modules/products/filter/class-product-filter.php:64
 #: modules/products/filter/class-product-filter.php:66
@@ -1800,10 +1792,6 @@ msgstr "Créer un Produit Dolibarr"
 #: modules/settings/view/erp.view.php:95
 msgid "Dolibarr Products Lists"
 msgstr "Listes des Produits Dolibarr"
-
-#: modules/settings/view/erp.view.php:104
-msgid "Dolibarr Product Document"
-msgstr "Les documents  des produits Dolibarr"
 
 #: modules/settings/view/erp.view.php:125
 msgid "Dolibarr Create Proposal"

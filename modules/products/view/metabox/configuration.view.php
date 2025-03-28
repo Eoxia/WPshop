@@ -30,29 +30,6 @@ defined( 'ABSPATH' ) || exit;
 <div class="wpeo-wrap">
 	<div class="wpeo-form">
 		<?php wp_nonce_field( basename( __FILE__ ), 'wpshop_data_fields' ); ?>
-
-		<div class="form-element stock-field">
-			<span class="form-label"><?php esc_html_e( 'Manage Stock', 'wpshop' ); ?></span>
-			<input type="hidden" name="product_data[manage_stock]" class="manage_stock" value="<?php echo (int) 1 === (int) $product->data['manage_stock'] ? 'true' : 'false'; ?>" />
-			<i style="font-size: 2em;" class="toggle fas fa-toggle-<?php echo $product->data['manage_stock'] ? 'on' : 'off'; ?>" data-bloc="label-upload" data-input="manage_stock"></i>
-		</div>
-
-		<div class="form-element stock-block" style="<?php echo $product->data['manage_stock'] ? '' : 'display: none;'; ?>">
-			<span class="form-label"><?php esc_html_e( 'Stock', 'wpshop' ); ?></span>
-			<label class="form-field-container">
-				<input type="text" class="form-field" name="product_data[stock]" value="<?php echo esc_attr( $product->data['stock'] ); ?>" readonly/>
-			</label>
-		</div>
-
-<!--		<div class="form-element">-->
-<!--			<span class="form-label">--><?php //esc_html_e( 'Product Downloadable', 'wpshop' ); ?><!--</span>-->
-<!--			<input type="hidden" name="product_data[product_downloadable]" class="product_downloadable" value="--><?php //echo (int) 1 === (int) $product->data['product_downloadable'] ? 'true' : 'false'; ?><!--" />-->
-<!--			<i style="font-size: 2em;" class="toggle fas fa-toggle---><?php //echo $product->data['product_downloadable'] ? 'on' : 'off'; ?><!--" data-bloc="label-upload" data-input="product_downloadable"></i>-->
-<!--			<label class="label-upload form-field-container" style="--><?php //echo $product->data['product_downloadable'] ? '' : 'display: none;'; ?><!--">-->
-<!--				--><?php //echo do_shortcode( '[wpeo_upload id="' . $id . '" upload_dir="wpshop_uploads" field_name="downloadable_product_id" single="false" model_name="/wpshop/Product" mime_type="" display_type="list"]' ); ?>
-<!--			</label>-->
-<!--		</div>-->
-
 		<div class="form-element">
 			<span class="form-label"><?php esc_html_e( 'Similar products', 'wpshop' ); ?></span>
 			<label class="form-field-container">

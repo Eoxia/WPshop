@@ -45,9 +45,6 @@ class Dashboard extends Singleton_Util {
 			'wps-dashboard-product'   => array(
 				'callback' => array( $this, 'metabox_product' ),
 			),
-			'wps-dashboard-wishlist' => array(
-				'callback' => array( $this, 'metabox_wishlist' ),
-			),
 			'wps-dashboard-proposal'   => array(
 				'callback' => array( $this, 'metabox_proposal' ),
 			),
@@ -78,7 +75,6 @@ class Dashboard extends Singleton_Util {
 			} else {
 				add_action( 'wps_dashboard', array( $this, 'metabox_customer' ), 10, 0 );
 				add_action( 'wps_dashboard', array( $this, 'metabox_product'), 10, 0 );
-				add_action( 'wps_dashboard', array( $this, 'metabox_wishlist'), 10, 0 );
 			}
 		}
 
@@ -124,26 +120,6 @@ class Dashboard extends Singleton_Util {
 			'products'                => $products,
 			'dolibarr_url'            => $dolibarr_url,
 			'dolibarr_products_lists' => $dolibarr_products_lists,
-		) );
-	}
-
-	/**
-	 * La metabox des 3 dernières envies.
-	 *
-	 * @since   2.0.0
-	 * @version 2.0.0
-	 */
-	public function metabox_wishlist() {
-		$wishlists = Proposals::g()->get( array( 'posts_per_page' => 3 ) );
-
-		if ( ! empty( $wishlists ) ) {
-			foreach ( $wishlists as &$wishlist ) {
-				$wishlist->data['third_party'] = Third_Party::g()->get( array( 'id' => $wishlist->data['parent_id'] ), true );
-			}
-		}
-
-		View_Util::exec( 'wpshop', 'dashboard', 'metaboxes/metabox-wishlist', array(
-			'wishlists'    => $wishlists,
 		) );
 	}
 

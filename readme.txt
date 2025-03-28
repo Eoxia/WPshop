@@ -3,9 +3,9 @@ Contributors: Eoxia
 Tags: boutique, catalog, catalogue, commerce, e-commerce, ecommerce, m-commerce, mcommerce, produits,  shop, shopping cart, wp shop, wordpress ecommerce, wordpress shop, WPShop, wp-shop, french payment gateway, 
 Donate link: https://www.wpshop.fr/
 Requires at least: 4.4
-Tested up to: 5.7.2
-Requires PHP: 7.0
-Stable tag: 2.5.0
+Tested up to: 6.8
+Requires PHP: 7.4.33
+Stable tag: 2.6.0
 License: GPLv3 or later
 License URI: https://spdx.org/licenses/GPL-3.0-or-later.html
 
@@ -64,6 +64,10 @@ Il n'est pas possible de migrer les données vers la version WPShop 2.X.X.
 9. Check-Out
 
 == Changelog ==
+
+= Version 2.6.0 =
+
+* Fix - remove unused features for prepare Dolibarr feature.
 
 = Version 2.5.0 =
 

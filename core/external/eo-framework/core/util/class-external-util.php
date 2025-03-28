@@ -49,7 +49,7 @@ if ( ! class_exists( '\eoxia\External_Util' ) ) {
 		 */
 		public function exec( $path, $plugin_slug ) {
 			if ( empty( \eoxia\Config_Util::$init[ $plugin_slug ]->externals ) ) {
-				return new \WP_Error( 'broke', __( 'Aucun module a charger', $plugin_slug ) );
+				return new \WP_Error( 'broke', 'Aucun module a charger' );
 			}
 
 			if ( ! empty( \eoxia\Config_Util::$init[ $plugin_slug ]->externals ) ) {

@@ -75,7 +75,6 @@ defined( 'ABSPATH' ) || exit;
 		<?php endif; ?>
 	</div>
 	<div class="table-cell table-150"><?php echo Doli_Statut::g()->display_status( $invoice ); ?></div>
-	<div class="table-cell table-100"><?php echo esc_html( Payment::g()->get_payment_title( $invoice->data['payment_method'] ) ); ?></div>
 	<div class="table-cell table-100"><strong><?php echo esc_html( number_format( $invoice->data['total_ttc'], 2, ',', '' ) ); ?>€</strong></div>
 	<?php apply_filters( 'wps_order_table_tr', $invoice ); ?>
 </div>

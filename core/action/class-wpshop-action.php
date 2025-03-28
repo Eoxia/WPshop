@@ -91,15 +91,6 @@ class WPshop_Action {
 	 * @version 2.0.0
 	 */
 	public function callback_init_block() {
-		$asset_file = include( PLUGIN_WPSHOP_PATH . 'build/block.asset.php');
-
-		wp_register_script(
-			'wpshop-products',
-			PLUGIN_WPSHOP_URL . '/build/block.js',
-			$asset_file['dependencies'],
-			$asset_file['version']
-		);
-
 		wp_localize_script( 'wpshop-products', 'wpshop', array(
 				'homeUrl'        => home_url(),
 				'addToCartNonce' => wp_create_nonce( 'add_to_cart' ),

@@ -80,6 +80,26 @@ defined( 'ABSPATH' ) || exit;
 			</div>
 		</div>
 	<?php else : ?>
+	<?php $doliProduct = Request_Util::get( 		'Products/' . $product->data['external_id'] );
+
+	if(is_object($doliProduct) && !empty($doliProduct)) :
+		$productType = $doliProduct->type == 0 ? 'Product' : 'Service'; ?>
+		<div class="form-element stock-block">
+			<span class="form-label"><?php esc_html_e( 'Type', 'wpshop' ); ?></span>
+			<label class="form-field-container">
+				<input type="text" class="form-field" name="product_data[stock]" value="<?php echo esc_html_e( $productType, 'wpshop' ); ?>" readonly/>
+			</label>
+		</div>
+		<?php
+		if ($doliProduct->type == 0) : ?>
+			<div class="form-element stock-block">
+				<span class="form-label"><?php esc_html_e( 'Stock', 'wpshop' ); ?></span>
+				<label class="form-field-container">
+					<input type="text" class="form-field" name="product_data[stock]" value="<?php echo esc_attr( $product->data['stock'] ); ?>" readonly/>
+				</label>
+			</div>
+		<?php endif; ?>
+	<?php endif; ?>
 		<div class="wpeo-notice notice-info">
 			<div class="notice-content">
 				<div class="notice-subtitle">

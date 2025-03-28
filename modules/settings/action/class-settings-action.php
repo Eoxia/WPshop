@@ -35,8 +35,6 @@ class Settings_Action {
 
 		add_action( 'admin_post_wps_update_general_settings', array( $this, 'callback_update_general_settings' ) );
 		add_action( 'admin_post_wps_update_pages_settings', array( $this, 'callback_update_pages_settings' ) );
-		add_action( 'admin_post_wps_update_method_payment', array( $this, 'callback_update_method_payment' ) );
-		add_action( 'admin_post_wps_update_shipping_cost', array( $this, 'callback_update_shipping_cost' ) );
 		add_action( 'admin_post_wps_update_erp_settings', array( $this, 'callback_update_erp_settings' ) );
 
 		add_action( 'wp_ajax_wps_hide_notice_erp', array( $this, 'dismiss_notice_erp' ) );
@@ -136,9 +134,7 @@ class Settings_Action {
 		$thumbnail_size           = ! empty( $_POST['thumbnail_size'] ) ? (array) $_POST['thumbnail_size'] : array();
 		$thumbnail_size['width']  = ! empty( $thumbnail_size['width'] ) ? (int) $thumbnail_size['width'] : 0;
 		$thumbnail_size['height'] = ! empty( $thumbnail_size['height'] ) ? (int) $thumbnail_size['height'] : 0;
-		$use_quotation            = isset( $_POST['use_quotation'] ) && 'on' == $_POST['use_quotation'] ? true : false;
 		$split_product            = isset( $_POST['split_product'] ) && 'on' == $_POST['split_product'] ? true : false;
-		$debug_mode               = isset( $_POST['debug_mode'] ) && 'on' == $_POST['debug_mode'] ? true : false;
 		$price_min                = ! empty( $_POST['price_min'] ) ? (int) $_POST['price_min'] : 0;
 
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
@@ -146,12 +142,10 @@ class Settings_Action {
 		$dolibarr_option['shop_email']               = $shop_email;
 		$dolibarr_option['thumbnail_size']['width']  = $thumbnail_size['width'];
 		$dolibarr_option['thumbnail_size']['height'] = $thumbnail_size['height'];
-		$dolibarr_option['use_quotation']            = $use_quotation;
 		$dolibarr_option['split_product']            = $split_product;
 		$dolibarr_option['price_min']                = $price_min;
 
 		update_option( 'wps_dolibarr', $dolibarr_option );
-		update_option( 'debug_mode', $debug_mode );
 
 		$response = Request_Util::get( 'status' );
 		if ( false === $response ) {
@@ -205,68 +199,6 @@ class Settings_Action {
 	}
 
 	/**
-	 * Met à jour les données pour la méthode de paiement "Payer en boutique".
-	 *
-	 * @since   2.0.0
-	 * @version 2.0.0
-	 */
-	public function callback_update_method_payment() {
-		check_admin_referer( 'wps_update_method_payment' );
-
-		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die();
-		}
-
-		$title       = ! empty( $_POST['title'] ) ? sanitize_text_field( $_POST['title'] ) : '';
-		$type        = ! empty( $_POST['type'] ) ? sanitize_text_field( $_POST['type'] ) : '';
-		$active      = ( ! empty( $_POST['activate'] ) && 'true' == $_POST['activate'] ) ? true : false;
-		$description = ! empty( $_POST['description'] ) ? stripslashes( $_POST['description'] ) : '';
-
-		$payment_methods_option = get_option( 'wps_payment_methods', Payment::g()->default_options );
-
-		$payment_methods_option[ $type ]['title']       = $title;
-		$payment_methods_option[ $type ]['description'] = $description;
-		$payment_methods_option[ $type ]['active']      = $active;
-
-		$payment_methods_option = apply_filters( 'wps_update_payment_method_data', $payment_methods_option, $type );
-
-		update_option( 'wps_payment_methods', $payment_methods_option );
-
-		set_transient( 'updated_wpshop_option_' . get_current_user_id(), __( 'Your settings have been saved.', 'wpshop' ), 30 );
-
-		wp_redirect( admin_url( 'admin.php?page=wps-settings&tab=payment_method&section=' . $type ) );
-	}
-
-	/**
-	 * Met à jour les options "frais de port".
-	 *
-	 * @since   2.0.0
-	 * @version 2.0.0
-	 */
-	public function callback_update_shipping_cost() {
-		check_admin_referer( 'callback_update_shipping_cost' );
-
-		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die();
-		}
-
-		$tab                 = ! empty( $_POST['tab'] ) ? sanitize_text_field( $_POST['tab'] ) : 'general';
-		$from_price_ht       = ! empty( $_POST['from_price_ht'] ) ? sanitize_text_field( $_POST['from_price_ht'] ) : '';
-		$shipping_product_id = ! empty( $_POST['shipping_product_id'] ) ? (int) $_POST['shipping_product_id'] : 0;
-
-		$shipping_cost_option = get_option( 'wps_shipping_cost', Settings::g()->shipping_cost_default_settings );
-
-		$shipping_cost_option['from_price_ht']       = str_replace( ',', '.', $from_price_ht );
-		$shipping_cost_option['shipping_product_id'] = $shipping_product_id;
-
-		update_option( 'wps_shipping_cost', $shipping_cost_option );
-
-		set_transient( 'updated_wpshop_option_' . get_current_user_id(), __( 'Your settings have been saved.', 'wpshop' ), 30 );
-
-		wp_redirect( admin_url( 'admin.php?page=wps-settings&tab= ' . $tab ) );
-	}
-
-	/**
 	 * Met à jour les options erp.
 	 *
 	 * @since   2.0.0
@@ -282,37 +214,11 @@ class Settings_Action {
 		$tab                 = ! empty( $_POST['tab'] ) ? sanitize_text_field( $_POST['tab'] ) : 'general';
 		$dolibarr_url        = ! empty( $_POST['dolibarr_url'] ) ? sanitize_text_field( $_POST['dolibarr_url'] ) : '';
 		$dolibarr_secret     = ! empty( $_POST['dolibarr_secret'] ) ? sanitize_text_field( $_POST['dolibarr_secret'] ) : '';
-		$dolibarr_public_key = ! empty( $_POST['dolibarr_public_key'] ) ? sanitize_text_field( $_POST['dolibarr_public_key'] ) : '';
-
-		$dolibarr_products_lists  = ! empty( $_POST['dolibarr_products_lists'] ) ? sanitize_text_field( $_POST['dolibarr_products_lists'] ) : '';
-		$dolibarr_tiers_lists     = ! empty( $_POST['dolibarr_tiers_lists'] ) ? sanitize_text_field( $_POST['dolibarr_tiers_lists'] ) : '';
-		$dolibarr_orders_lists    = ! empty( $_POST['dolibarr_orders_lists'] ) ? sanitize_text_field( $_POST['dolibarr_orders_lists'] ) : '';
-		$dolibarr_proposals_lists = ! empty( $_POST['dolibarr_proposals_lists'] ) ? sanitize_text_field( $_POST['dolibarr_proposals_lists'] ) : '';
-		$dolibarr_payments_lists  = ! empty( $_POST['dolibarr_payments_lists'] ) ? sanitize_text_field( $_POST['dolibarr_payments_lists'] ) : '';
-		$dolibarr_invoices_lists  = ! empty( $_POST['dolibarr_invoices_lists'] ) ? sanitize_text_field( $_POST['dolibarr_invoices_lists'] ) : '';
-
-		$dolibarr_create_product  = ! empty( $_POST['dolibarr_create_product'] ) ? sanitize_text_field( $_POST['dolibarr_create_product'] ) : '';
-		$dolibarr_create_tier     = ! empty( $_POST['dolibarr_create_tier'] ) ? sanitize_text_field( $_POST['dolibarr_create_tier'] ) : '';
-		$dolibarr_create_order    = ! empty( $_POST['dolibarr_create_order'] ) ? sanitize_text_field( $_POST['dolibarr_create_order'] ) : '';
-		$dolibarr_create_proposal = ! empty( $_POST['dolibarr_create_proposal'] ) ? sanitize_text_field( $_POST['dolibarr_create_proposal'] ) : '';
 
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
 
 		$dolibarr_option['dolibarr_url']        = $dolibarr_url;
 		$dolibarr_option['dolibarr_secret']     = $dolibarr_secret;
-		$dolibarr_option['dolibarr_public_key'] = $dolibarr_public_key;
-
-		$dolibarr_option['dolibarr_products_lists']  = $dolibarr_products_lists;
-		$dolibarr_option['dolibarr_tiers_lists']     = $dolibarr_tiers_lists;
-		$dolibarr_option['dolibarr_orders_lists']    = $dolibarr_orders_lists;
-		$dolibarr_option['dolibarr_proposals_lists'] = $dolibarr_proposals_lists;
-		$dolibarr_option['dolibarr_payments_lists']  = $dolibarr_payments_lists;
-		$dolibarr_option['dolibarr_invoices_lists']  = $dolibarr_invoices_lists;
-
-		$dolibarr_option['dolibarr_create_product']  = $dolibarr_create_product;
-		$dolibarr_option['dolibarr_create_tier']     = $dolibarr_create_tier;
-		$dolibarr_option['dolibarr_create_order']    = $dolibarr_create_order;
-		$dolibarr_option['dolibarr_create_proposal'] = $dolibarr_create_proposal;
 
 		update_option( 'wps_dolibarr', $dolibarr_option );
 

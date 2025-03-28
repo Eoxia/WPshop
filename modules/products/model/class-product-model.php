@@ -128,16 +128,6 @@ class Product_Model extends Post_Model {
 			'default'     => 0,
 		);
 
-		$this->schema['product_downloadable'] = array(
-			'type'        => 'boolean',
-			'meta_type'   => 'single',
-			'field'       => '_product_downloadable',
-			'since'       => '2.0.0',
-			'version'     => '2.0.0',
-			'description' => 'Le type du produit (int(11)). Peut être NULL. Valeur par défaut 0. Valeur attendu: 0 (Produit) ou 1 (Service).',
-			'default'     => false,
-		);
-
 		$this->schema['volume'] = array(
 			'type'        => 'float',
 			'meta_type'   => 'single',
@@ -235,15 +225,6 @@ class Product_Model extends Post_Model {
 			'version'     => '2.0.0',
 			'description' => 'Les id des documents associés.',
 			'child'       => array(),
-		);
-
-		$this->schema['associated_document_id']['child']['downloadable_product_id'] = array(
-			'type'        => 'array',
-			'meta_type'   => 'multiple',
-			'array_type'  => 'integer',
-			'since'       => '2.0.0',
-			'version'     => '2.0.0',
-			'description' => 'L\'id d\'un produit téléchargeable.',
 		);
 
 		parent::__construct( $object, $req_method );

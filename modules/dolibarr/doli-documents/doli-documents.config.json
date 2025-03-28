@@ -7,7 +7,6 @@
   "path": "modules/dolibarr/doli-documents/",
   "dependencies": {
     "class": {},
-    "action": {},
     "model": {}
   }
 }

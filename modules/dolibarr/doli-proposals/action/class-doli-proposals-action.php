@@ -90,7 +90,7 @@ class Doli_Proposals_Action {
 		add_screen_option(
 			'per_page',
 			array(
-				'label'   => _x( 'Proposals Dolibarr', 'Proposal Dolibarr per page', 'wpshop' ),
+				'label'   => _x( 'Dolibarr Proposals', 'Dolibarr Proposals per page', 'wpshop' ),
 				'default' => Doli_Proposals::g()->limit,
 				'option'  => Doli_Proposals::g()->option_per_page,
 			)
@@ -195,7 +195,7 @@ class Doli_Proposals_Action {
 			}
 		}
 
-		View_Util::exec( 'wpshop', 'proposals', 'metabox-proposal-details', array(
+		View_Util::exec( 'wpshop', 'doli-proposals', 'metabox-proposal-details', array(
 			'proposal'     => $proposal,
 			'third_party'  => $third_party,
 			'invoice'      => $invoice,
@@ -226,7 +226,7 @@ class Doli_Proposals_Action {
 			}
 		}
 
-		View_Util::exec( 'wpshop', 'proposals', 'metabox-proposal-address', array(
+		View_Util::exec( 'wpshop', 'doli-proposals', 'metabox-proposal-address', array(
 			'proposal'     => $proposal,
 			'third_party'  => $third_party,
 			'invoice'      => $invoice,
@@ -272,7 +272,7 @@ class Doli_Proposals_Action {
 				'tva_lines' => $tva_lines,
 			) );
 		} else {
-			View_Util::exec( 'wpshop', 'proposals', 'metabox-proposal-products', array(
+			View_Util::exec( 'wpshop', 'doli-proposals', 'metabox-proposal-products', array(
 				'proposal'  => $proposal,
 				'tva_lines' => $tva_lines,
 			) );
@@ -280,7 +280,7 @@ class Doli_Proposals_Action {
 	}
 
 	/**
-	 * Télécharges le une proposition commerciale.
+	 * Télécharger la proposition commerciale.
 	 *
 	 * @since   2.0.0
 	 * @version 2.0.0

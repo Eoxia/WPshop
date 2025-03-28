@@ -43,15 +43,7 @@ class Doli_Invoice_Filter {
 	 * @return Doli_Invoice         Les nouvelles données d'une facture.
 	 */
 	public function add_details( $object, $args ) {
-		$object->data['payments'] = Doli_Payment::g()->get( array( 'post_parent' => $object->data['id'] ) );
 		$object->data['totalpaye'] = 0;
-
-		if ( ! empty( $object->data['payments'] ) ) {
-			foreach ( $object->data['payments'] as $payment ) {
-				$object->data['totalpaye'] += $payment->data['amount'];
-			}
-		}
-
 		$object->data['resteapayer'] = $object->data['total_ttc'] - $object->data['totalpaye'];
 
 		return $object;

@@ -74,7 +74,6 @@ class Doli_Proposals extends Singleton_Util {
 			$time = get_date_from_gmt ( date( 'Y-m-d H:i:s', $doli_proposal->datec ) );
 			$wp_proposal->data['datec']          = $time;
 			$wp_proposal->data['parent_id']      = Doli_Third_Parties::g()->get_wp_id_by_doli_id( $doli_proposal->socid );
-			$wp_proposal->data['payment_method'] = ( null === $doli_proposal->mode_reglement_code ) ? $wp_proposal->data['payment_method'] : Doli_Payment::g()->convert_to_wp( $doli_proposal->mode_reglement_code );
 
 			$wp_proposal->data['lines'] = null;
 

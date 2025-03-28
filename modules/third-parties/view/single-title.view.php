@@ -1,6 +1,6 @@
 <?php
 /**
- * La vue affichant le titre d'un tier.
+ * La vue affichant le titre d'un tiers.
  *
  * @package   WPshop
  * @author    Eoxia <technique@eoxia.com>
@@ -16,10 +16,10 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Documentation des variables utilisées dans la vue.
  *
- * @var Third_Party $third_party Les données d'un tier.
+ * @var Third_Party $third_party Les données d'un tiers.
  */
 ?>
 
 <div>
-	<?php printf( __( 'Tier <span style="font-weight: 700;">%s</span>', 'wpshop' ), esc_html( $third_party->data['title'] ) ); ?>
+	<?php printf( __( 'Third party <span style="font-weight: 700;">%s</span>', 'wpshop' ), esc_html( $third_party->data['title'] ) ); ?>
 </div>

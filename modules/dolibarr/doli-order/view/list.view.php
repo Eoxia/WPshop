@@ -29,7 +29,6 @@ defined( 'ABSPATH' ) || exit;
 		<div class="table-cell table-full"><?php esc_html_e( 'Order reference', 'wpshop' ); ?></div>
 		<div class="table-cell table-200"><?php esc_html_e( 'Billing contact', 'wpshop' ); ?></div>
 		<div class="table-cell table-150"><?php esc_html_e( 'Status', 'wpshop' ); ?></div>
-		<div class="table-cell table-100"><?php esc_html_e( 'Method of payment', 'wpshop' ); ?></div>
 		<div class="table-cell table-100"><?php esc_html_e( 'Price TTC(€)', 'wpshop' ); ?></div>
 		<?php do_action( 'wps_listing_table_header_end', 'order' ); ?>
 	</div>

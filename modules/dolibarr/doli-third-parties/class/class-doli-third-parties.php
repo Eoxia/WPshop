@@ -51,8 +51,8 @@ class Doli_Third_Parties extends Singleton_Util {
 		$wp_third_party->data['address']     = $doli_third_party->address;
 		$wp_third_party->data['town']        = $doli_third_party->town;
 		$wp_third_party->data['zip']         = $doli_third_party->zip;
-		$wp_third_party->data['state']       = $doli_third_party->state;
-		$wp_third_party->data['country']     = $doli_third_party->country;
+		$wp_third_party->data['state']       = $doli_third_party->state_id;
+		$wp_third_party->data['country']     = $doli_third_party->country_id;
 		$wp_third_party->data['phone']       = $doli_third_party->phone;
 		$wp_third_party->data['email']       = $doli_third_party->email;
 		$wp_third_party->data['status']      = 'publish';
@@ -122,7 +122,7 @@ class Doli_Third_Parties extends Singleton_Util {
 			'country_id'    => $wp_third_party->data['country_id'],
 			'address'       => $wp_third_party->data['address'],
 			'zip'           => $wp_third_party->data['zip'],
-			'state'         => $wp_third_party->data['state'],
+			'state_id'      => $wp_third_party->data['state'],
 			'phone'         => $wp_third_party->data['phone'],
 			'town'          => $wp_third_party->data['town'],
 			'email'         => $wp_third_party->data['email'],

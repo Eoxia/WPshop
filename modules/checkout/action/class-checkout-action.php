@@ -36,19 +36,15 @@ class Checkout_Action {
 
 		add_action( 'wps_checkout_shipping', array( $this, 'callback_checkout_shipping' ), 10, 2 );
 		add_action( 'wps_checkout_order_review', array( $this, 'callback_checkout_order_review' ), 10, 4 );
-		add_action( 'wps_checkout_payment', array( $this, 'callback_checkout_payment' ) );
 
 		add_action( 'checkout_create_third_party', array( $this, 'callback_checkout_create_third' ) );
 
-		if ( ! Settings::g()->dolibarr_is_active() ) {
-			add_action('checkout_create_proposal', array($this, 'callback_checkout_proposal'), 10, 2);
-		} else {
+		if ( Settings::g()->dolibarr_is_active() ) {
 			add_action('checkout_create_proposal', array($this, 'callback_checkout_doli_proposal'), 10, 2);
 		}
 
 		add_action( 'wps_review_order_after_submit', array( $this, 'add_terms' ), 10 );
 		add_action( 'wps_review_order_after_submit', array( $this, 'add_place_order_button' ), 20 );
-		add_action( 'wps_review_order_after_submit', array( $this, 'add_devis_button' ), 30 );
 
 		add_action( 'wp_ajax_wps_place_order', array( $this, 'callback_place_order' ) );
 		add_action( 'wp_ajax_nopriv_wps_place_order', array( $this, 'callback_place_order' ) );
@@ -99,8 +95,6 @@ class Checkout_Action {
 	 */
 	public function callback_before_resume() {
 		if ( Pages::g()->is_checkout_page() ) {
-			$shipping_cost_option = get_option( 'wps_shipping_cost', Settings::g()->shipping_cost_default_settings );
-
 			include( Template_Util::get_template_part( 'checkout', 'resume-list-product' ) );
 		}
 	}
@@ -129,20 +123,8 @@ class Checkout_Action {
 	 * @param integer $total_ttc               Le total TTC.
 	 * @param integer $shipping_cost           Le frais de livraison.
 	 */
-	public function callback_checkout_order_review( $total_price_no_shipping, $tva_amount, $total_ttc, $shipping_cost ) {
-		Cart::g()->display_cart_resume( $total_price_no_shipping, $tva_amount, $total_ttc, $shipping_cost );
-	}
-
-	/**
-	 * Affiche les méthodes de paiement.
-	 *
-	 * @since   2.0.0
-	 * @version 2.0.0
-	 */
-	public function callback_checkout_payment() {
-		$payment_methods = get_option( 'wps_payment_methods', Payment::g()->default_options );
-
-		include( Template_Util::get_template_part( 'checkout', 'payment' ) );
+	public function callback_checkout_order_review( $total_price_no_shipping, $tva_amount, $total_ttc ) {
+		Cart::g()->display_cart_resume( $total_price_no_shipping, $tva_amount, $total_ttc );
 	}
 
 	/**
@@ -156,7 +138,6 @@ class Checkout_Action {
 
 		// @todo: Explain fast_pay.
 		//$fast_pay     = isset( $_POST['fast_pay'] ) && 'true' == $_POST['fast_pay'] ? true : false;
-		$type_payment = ! empty( $_POST['type_payment'] ) ? sanitize_text_field( $_POST['type_payment'] ) : '';
 		$type         = ! empty( $_POST['type'] ) ? sanitize_text_field( $_POST['type'] ) : '';
 
 		if ( ! in_array( $type, array( 'order', 'proposal' ) ) ) {
@@ -220,7 +201,6 @@ class Checkout_Action {
 			) );
 		}
 	}
-
 
 	/**
 	 * Créer le tier lors du tunnel de vente.
@@ -417,13 +397,12 @@ class Checkout_Action {
 	 * @param User        $contact     Les données du contact.
 	 */
 	public function callback_checkout_doli_proposal( $third_party, $contact ) {
+        
 
- 		$type_payment = ! empty( $_POST['type_payment'] ) ? sanitize_text_field( $_POST['type_payment'] ) : '';
 
 		$proposal_data = array(
 			'socid'             => $third_party->data['external_id'],
 			'date'              => current_time( 'timestamp' ),
-			'mode_reglement_id' => Doli_Payment::g()->convert_to_doli_id( $type_payment ),
 		);
 
 		LOG_Util::log( sprintf( 'Dolibarr call POST proposals with data %s', json_encode( $proposal_data ) ), 'wpshop2' );
@@ -431,7 +410,7 @@ class Checkout_Action {
 
 		if ( ! empty( Cart_Session::g()->cart_contents ) ) {
 			foreach (Cart_Session::g()->cart_contents as $content) {
-				Request_Util::post( 'proposals/' . $doli_proposal_id . '/lines', array(
+				Request_Util::post( 'proposals/' . $doli_proposal_id . '/line', array(
 					'desc'                    => $content['content'],
 					'fk_product'              => $content['external_id'],
 					'product_type'            => 1,
@@ -454,6 +433,7 @@ class Checkout_Action {
 		}
 
 		$doli_proposal = Request_Util::get( 'proposals/' . (int) $doli_proposal_id );
+
 //		$doli_proposal->total                   = number_format((float)Cart_Session::g()->total_price_ttc,8,'.',',');
 //		$doli_proposal->multicurrency_total_ht  = number_format((float)Cart_Session::g()->total_price,8,'.',',');
 //		$doli_proposal->multicurrency_total_tva = number_format((float)Cart_Session::g()->tva_amount,8,'.',',');
@@ -521,16 +501,6 @@ class Checkout_Action {
 
 			include( Template_Util::get_template_part( 'checkout', 'terms' ) );
 		}
-	}
-
-	/**
-	 * Ajoute le bouton "Demande de devis".
-	 *
-	 * @since   2.0.0
-	 * @version 2.0.0
-	 */
-	public function add_devis_button() {
-		include( Template_Util::get_template_part( 'checkout', 'devis-button' ) );
 	}
 
 	/**

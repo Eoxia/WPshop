@@ -37,7 +37,7 @@ class Cart extends Singleton_Util {
 	 * @return boolean True si tout s'est bien passé.
 	 */
 	public function can_add_product() {
-		if ( ! Settings::g()->use_quotation() && ! Settings::g()->dolibarr_is_active() ) {
+		if ( ! Settings::g()->dolibarr_is_active() ) {
 			return false;
 		}
 
@@ -83,7 +83,7 @@ class Cart extends Singleton_Util {
 		$can_add = apply_filters( 'wps_add_to_cart_product', true, $product );
 
 		if ( $can_add ) {
-			if ( -1 === $index ) {
+			if ( $index === -1 ) {
 				$data['content'] = $desc;
 				Cart_Session::g()->add_product( $data );
 			} else {
@@ -151,11 +151,7 @@ class Cart extends Singleton_Util {
 	 * @param integer $total_price_ttc         Prix total TTC.
 	 * @param integer $shipping_cost           Frais de livraison.
 	 */
-	public function display_cart_resume( $total_price_no_shipping, $tva_amount, $total_price_ttc, $shipping_cost ) {
-		$shipping_cost_option = get_option( 'wps_shipping_cost', Settings::g()->shipping_cost_default_settings );
-
-		$shipping_cost_product = Product::g()->get( array( 'id' => $shipping_cost_option['shipping_product_id'] ), true );
-
+	public function display_cart_resume( $total_price_no_shipping, $tva_amount, $total_price_ttc ) {
 		include( Template_Util::get_template_part( 'cart', 'cart-resume' ) );
 	}
 

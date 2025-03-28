@@ -41,75 +41,75 @@ class Doli_Statut extends Singleton_Util {
 		$this->status = array(
 			'wps-proposal'     => array(
 				'draft'         => array(
-					'text'  => __( 'Draft', 'wpshop' ),
+					'text'  => 'Draft',
 					'class' => 'status-grey',
 				),
 				'publish'       => array(
-					'text'  => __( 'Validated', 'wpshop' ),
+					'text'  => 'Validated',
 					'class' => 'status-orange',
 				),
 				'wps-accepted'  => array(
-					'text'  => __( 'Signed', 'wpshop' ),
+					'text'  => 'Signed',
 					'class' => 'status-green',
 				),
 				'wps-refused'   => array(
-					'text'  => __( 'Not signed', 'wpshop' ),
+					'text'  => 'Not signed',
 					'class' => 'status-grey',
 				),
 				'wps-billed'    => array(
-					'text'  => __( 'Billed', 'wpshop' ),
+					'text'  => 'Billed',
 					'class' => 'status-grey',
 				),
 				'wps-delivered' => array(
-					'text'  => __( 'Delivered', 'wpshop' ),
+					'text'  => 'Delivered',
 					'class' => 'status-green',
 				),
 			),
 			'wps-order'        => array(
 				'draft'         => array(
-					'text'  => __( 'Draft', 'wpshop' ),
+					'text'  => 'Draft',
 					'class' => 'status-grey',
 				),
 				'publish'       => array(
-					'text'  => __( 'Validated', 'wpshop' ),
+					'text'  => 'Validated',
 					'class' => 'status-orange',
 				),
 				'wps-canceled'  => array(
-					'text'  => __( 'Canceled', 'wpshop' ),
+					'text'  => 'Canceled',
 					'class' => 'status-red',
 				),
 				'wps-billed'    => array(
-					'text'  => __( 'Processed', 'wpshop' ),
+					'text'  => 'Processed',
 					'class' => 'status-grey',
 				),
 				'wps-shipmentprocess'    => array(
-					'text'  => __( 'In progress', 'wpshop' ),
+					'text'  => 'In progress',
 					'class' => 'status-green',
 				),
 				'wps-delivered' => array(
-					'text'  => __( 'Delivered', 'wpshop' ),
+					'text'  => 'Delivered',
 					'class' => 'status-green',
 				),
 			),
 			'wps-doli-invoice' => array(
 				'draft'         => array(
-					'text'  => __( 'Draft', 'wpshop' ),
+					'text'  => 'Draft',
 					'class' => 'status-grey',
 				),
 				'publish'       => array(
-					'text'  => __( 'Unpaid', 'wpshop' ),
+					'text'  => 'Unpaid',
 					'class' => 'status-orange',
 				),
 				'wps-billed'    => array(
-					'text'  => __( 'Paid', 'wpshop' ),
+					'text'  => 'Paid',
 					'class' => 'status-grey',
 				),
 				'wps-abandoned' => array(
-					'text'  => __( 'Abandoned', 'wpshop' ),
+					'text'  => 'Abandoned',
 					'class' => 'status-red',
 				),
 				'wps-canceled' => array(
-					'text'  => __( 'Canceled', 'wpshop' ),
+					'text'  => 'Canceled',
 					'class' => 'status-red',
 				)
 			),
@@ -134,7 +134,7 @@ class Doli_Statut extends Singleton_Util {
 		if ( $status ) {
 			View_Util::exec( 'wpshop', 'doli-statut', 'item', array(
 				'object' => $object,
-				'text'   => $status['text'],
+				'text'   => __( $status['text'] ),
 				'class'  => $status['class'],
 			) );
 		}
