@@ -3,7 +3,7 @@
  * Plugin Name: WPshop 2
  * Plugin URI:  https://wpshop.fr/
  * Description: Simple, fast, efficient it will transform your WordPress into an internet sales site
- * Version:     2.5.0
+ * Version:     2.6.0
  * Author:      Eoxia <technique@eoxia.com>
  * Author URI:  http://www.eoxia.com/
  * License:     GPLv3
