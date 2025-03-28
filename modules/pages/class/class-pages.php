@@ -61,6 +61,16 @@ class Pages extends Singleton_Util {
 	public $page_state_titles_private;
 
 	/**
+	 * Le tableau contenant toutes les pages personnalisables par défaut.
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 *
+	 * @var array
+	 */
+	public $page_content_default;
+
+	/**
 	 * Le tableau contenant toutes les id des pages.
 	 *
 	 * @since   2.0.0
@@ -85,12 +95,20 @@ class Pages extends Singleton_Util {
 			'general_conditions_of_sale' => 0,
 		);
 
-		$this->page_state_titles = array(
-			'shop_id'                    => __( 'Shop', 'wpshop' ),
-			'cart_id'                    => __( 'Cart', 'wpshop' ),
-			'checkout_id'                => __( 'Checkout', 'wpshop' ),
-			'my_account_id'              => __( 'My account', 'wpshop' ),
-			'general_conditions_of_sale' => __( 'General conditions of sale', 'wpshop' ),
+		$this->page_state_titles_private = array(
+			// Mail envoyé au client lors de création du compte client.
+			'customer_new_account'     => 'New account',
+			// Création de la commande.
+			'customer_current_order'   => 'Current order',
+			// Départ vers la solution de paiement
+			'customer_completed_order' => 'Completed order',
+			// Retour validé du paiement.
+			'customer_paid_order'      => 'Paid order',
+			// Réalisation de la facture.
+			'customer_invoice'         => 'Invoice',
+			// Commande livrée.
+			'customer_delivered_order' => 'Delivered order',
+
 		);
 
 		$this->mail_page = array(
@@ -100,35 +118,27 @@ class Pages extends Singleton_Util {
 			'customer_paid_order'      => 0,
 			'customer_invoice'         => 0,
 			'customer_delivered_order' => 0,
-
 		);
 
-		$this->page_state_titles_private = array(
-			// Mail envoyé au client lors de création du compte client.
-			'customer_new_account'     => __( 'New account', 'wpshop' ),
-			// Création de la commande.
-			'customer_current_order'   => __( 'Current order', 'wpshop' ),
-			// Départ vers la solution de paiement
-			'customer_completed_order' => __( 'Completed order', 'wpshop' ),
-			// Retour validé du paiement.
-			'customer_paid_order'      => __( 'Paid order', 'wpshop' ),
-			// Réalisation de la facture.
-			'customer_invoice'         => __( 'Invoice', 'wpshop' ),
-			// Commande livrée.
-			'customer_delivered_order' => __( 'Delivered order', 'wpshop' ),
-
+		$this->page_state_titles = array(
+			'shop_id'                    => 'Shop',
+			'cart_id'                    => 'Cart',
+			'checkout_id'                => 'Checkout',
+			'my_account_id'              => 'My account',
+			'general_conditions_of_sale' => 'General conditions of sale',
 		);
 
 		$this->page_content_default = array(
-			'customer_new_account'     => __( 'Welcome <br> This email confirms that your account has been created. <br> Thank you for your trust and see you soon on our shop.', 'wpshop' ),
-			'customer_current_order'   => __( 'Hello <br> We have just recorded your order, thank you to send us your payment. <br> We thank you for your confidence and see you soon on our shop.', 'wpshop' ),
-			'customer_completed_order' => __( 'Hello <br> This email confirms that your payment for your recent order has just been validated. <br> See you soon on our shop.', 'wpshop' ),
-			'customer_paid_order'      => __( 'Paid order', 'wpshop' ),
-			'customer_invoice'         => __( 'Hello <br> You can access your invoices by logging in to your account.', 'wpshop' ),
-			'customer_delivered_order' => __( 'Delivered order', 'wpshop' ),
+			'customer_new_account'     => 'Welcome <br> This email confirms that your account has been created. <br> Thank you for your trust and see you soon on our shop.',
+			'customer_current_order'   => 'Hello <br> We have just recorded your order, thank you to send us your payment. <br> We thank you for your confidence and see you soon on our shop.',
+			'customer_completed_order' => 'Hello <br> This email confirms that your payment for your recent order has just been validated. <br> See you soon on our shop.',
+			'customer_paid_order'      => 'Paid order',
+			'customer_invoice'         => 'Hello <br> You can access your invoices by logging in to your account.',
+			'customer_delivered_order' => 'Delivered order',
 		);
 
-			$this->page_ids = get_option( 'wps_page_ids', $this->default_options );
+		$this->page_ids = get_option( 'wps_page_ids', $this->default_options );
+		
 	}
 
 	/**
@@ -143,7 +153,7 @@ class Pages extends Singleton_Util {
 		if ( ! empty( $this->page_state_titles ) ) {
 			foreach ( $this->page_state_titles as $key => $page_title ) {
 				$page_id = wp_insert_post( array(
-					'post_title'  => $page_title,
+					'post_title'  => __( $page_title ),
 					'post_type'   => 'page',
 					'post_status' => 'publish',
 				) );
@@ -163,11 +173,11 @@ class Pages extends Singleton_Util {
 		if ( ! empty( $this->page_state_titles_private ) ) {
 			foreach ( $this->page_state_titles_private as $key => $page_title ) {
 				$page_id = wp_insert_post( array(
-					'post_title'  => $page_title,
+					'post_title'  => __( $page_title ),
 					'post_type'   => 'page',
 					'post_name'   => $key,
 					'post_status' => 'private',
-					'post_content' => $this->page_content_default[$key],
+					'post_content' => __( $this->page_content_default[$key] ),
 				) );
 
 				if ( ! empty( $page_id ) ) {
@@ -192,7 +202,7 @@ class Pages extends Singleton_Util {
 	 * @return string Le slug de la page "Boutique".
 	 */
 	public function get_slug_shop_page() {
-		$page = get_page( $this->page_ids['shop_id'] );
+		$page = get_post( $this->page_ids['shop_id'] );
 
 		if ( ! $page ) {
 			return false;
@@ -210,7 +220,7 @@ class Pages extends Singleton_Util {
 	 * @return string Le slug de la page "Mon compte".
 	 */
 	public function get_slug_my_account_page() {
-		$page = get_page( $this->page_ids['my_account_id'] );
+		$page = get_post( $this->page_ids['my_account_id'] );
 
 		if ( ! $page ) {
 			return false;
@@ -228,7 +238,7 @@ class Pages extends Singleton_Util {
 	 * @return string Le slug de la page "Tunnel de vente".
 	 */
 	public function get_slug_checkout_page() {
-		$page = get_page( $this->page_ids['checkout_id'] );
+		$page = get_post( $this->page_ids['checkout_id'] );
 
 		if ( ! $page ) {
 			return false;

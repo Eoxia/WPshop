@@ -30,7 +30,7 @@ defined( 'ABSPATH' ) || exit;
 			foreach ( $payment_methods as $key => $payment_method ) :
 				if ( $payment_method['active'] ) :
 					$checked = '';
-					if ( 'cheque' === $key ) :
+					if ( 'online_payment' === $key ) :
 						$checked = 'checked';
 					endif; ?>
 					<li class="wps-payment <?php echo esc_attr( $checked ); ?>">

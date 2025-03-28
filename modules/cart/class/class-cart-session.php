@@ -108,16 +108,6 @@ class Cart_Session extends Singleton_Util {
 	public $qty;
 
 	/**
-	 * Prix du frais de livaison;
-	 *
-	 * @since   2.0.0
-	 * @version 2.0.0
-	 *
-	 * @var integer
-	 */
-	public $shipping_cost;
-
-	/**
 	 * Le constructeur.
 	 *
 	 * @since   2.0.0
@@ -132,7 +122,6 @@ class Cart_Session extends Singleton_Util {
 		$this->proposal_id             = isset( $_SESSION['wps_proposal_id'] ) ? $_SESSION['wps_proposal_id'] : null;
 		$this->order_id                = isset( $_SESSION['wps_order_id'] ) ? $_SESSION['wps_order_id'] : null;
 		$this->qty                     = isset( $_SESSION['wps_qty'] ) ? $_SESSION['wps_qty'] : null;
-		$this->shipping_cost           = isset( $_SESSION['wps_shipping_cost'] ) ? $_SESSION['wps_shipping_cost'] : null;
 		$this->external_data           = isset( $_SESSION['wps_external_data'] ) ? $_SESSION['wps_external_data'] : array();
 	}
 
@@ -157,18 +146,13 @@ class Cart_Session extends Singleton_Util {
 	 * @version 2.0.0
 	 */
 	public function update_session() {
-		$shipping_cost_option = get_option( 'wps_shipping_cost', Settings::g()->shipping_cost_default_settings );
-
 		$this->qty = 0;
 
 		if ( ! empty( $this->cart_contents ) ) {
 			foreach ( $this->cart_contents as $key => $product ) {
 				if ( isset ( $product['qty'] ) ) {
-					if ( empty( $shipping_cost_option['shipping_product_id'] ) ||
-						( ! empty( $shipping_cost_option['shipping_product_id'] ) && $shipping_cost_option['shipping_product_id'] !== $product['id'] ) ) {
-						$product['qty'] = (int) $product['qty'];
-						$this->qty     += $product['qty'];
-					}
+					$product['qty'] = (int) $product['qty'];
+					$this->qty     += $product['qty'];
 				}
 			}
 		}

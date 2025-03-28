@@ -65,7 +65,7 @@ class Doli_Associate_Action {
 				'entries' => $entries,
 				'wp_id'   => $id,
 				'type'    => $type,
-				'label'   => $sync_info['title'],
+				'label'   => __($sync_info['title'], 'wpshop' ),
 			) );
 			$view = ob_get_clean();
 

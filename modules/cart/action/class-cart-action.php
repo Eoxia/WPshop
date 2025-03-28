@@ -50,7 +50,6 @@ class Cart_Action {
 	 * @version 2.5.0
 	 */
 	public function callback_calculate_totals() {
-		$shipping_cost_option = get_option( 'wps_shipping_cost', Settings::g()->shipping_cost_default_settings );
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
 
 		$price             = 0;
@@ -63,19 +62,15 @@ class Cart_Action {
 				if ( $dolibarr_option['price_min'] > ( $line['price_ttc'] * $line['qty'] ) ) {
 					$price     += $dolibarr_option['price_min'] - ( $dolibarr_option['price_min'] * $line['tva_tx'] / 100 );
 					$price_ttc += $dolibarr_option['price_min'];
+
+					$tva_amount += $dolibarr_option['price_min'] * $line['tva_tx'] / 100;
+					$price_no_shipping = $price;
 				} else {
 					$price     += $line['price'] * $line['qty'];
 					$price_ttc += $line['price_ttc'] * $line['qty'];
-				}
 
-				if ( $shipping_cost_option['shipping_product_id'] !== $line['id'] ) {
-					if ( $dolibarr_option['price_min'] > ( $line['price_ttc'] * $line['qty'] ) ) {
-						$tva_amount += $dolibarr_option['price_min'] * $line['tva_tx'] / 100;
-						$price_no_shipping = $price;
-					} else {
-						$tva_amount  += $line['tva_amount'] * $line['qty'];
-						$price_no_shipping = $price;
-					}
+					$tva_amount += $line['tva_amount'] * $line['qty'];
+					$price_no_shipping = $price;
 				}
 			}
 		}

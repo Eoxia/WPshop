@@ -208,6 +208,7 @@ class Doli_Invoice extends Post_Class {
 		$order = null;
 
 		$doli_invoice                    = Request_Util::get( 'invoices/' . $doli_invoice->id ); // Charges par la route single des factures pour avoir accès à linkedObjectsIds->commande.
+		
 		$wp_invoice->data['external_id'] = (int) $doli_invoice->id;
 
 		// @todo: Vérifier les conséquences
@@ -225,9 +226,7 @@ class Doli_Invoice extends Post_Class {
 		$wp_invoice->data['total_ttc']      = $doli_invoice->total_ttc;
 		$wp_invoice->data['total_ht']       = $doli_invoice->total_ht;
 		$wp_invoice->data['resteapayer']    = $doli_invoice->remaintopay;
-		$wp_invoice->data['totalpaye']      = $doli_invoice->totalpaid;
-		// @todo: Faut-il réelement convertir le méthode de paiement ?
-		$wp_invoice->data['payment_method'] = Doli_Payment::g()->convert_to_wp( $doli_invoice->mode_reglement_code );
+		$wp_invoice->data['totalpaye']      = $doli_invoice->sumpayed;
 		$wp_invoice->data['paye']           = (int) $doli_invoice->paye;
 		$wp_invoice->data['third_party_id'] = Doli_Third_Parties::g()->get_wp_id_by_doli_id( $doli_invoice->socid );
 		$wp_invoice->data['payments']       = array();
@@ -283,15 +282,6 @@ class Doli_Invoice extends Post_Class {
 
 		if ( ! $only_convert ) {
 			$wp_invoice = Doli_Invoice::g()->update( $wp_invoice->data );
-		}
-
-		$doli_payments = Request_Util::get( 'invoices/' . $wp_invoice->data['external_id'] . '/payments' );
-
-		if ( ! empty( $doli_payments ) ) {
-			foreach ( $doli_payments as $doli_payment ) {
-				$wp_payment                     = Doli_Payment::g()->get( array( 'schema' => true ), true );
-				$wp_invoice->data['payments'][] = Doli_Payment::g()->doli_to_wp( $wp_invoice->data['id'], $doli_payment, $wp_payment, $only_convert );
-			}
 		}
 
 		if ( ! empty( $doli_invoice->linkedObjectsIds ) ) {

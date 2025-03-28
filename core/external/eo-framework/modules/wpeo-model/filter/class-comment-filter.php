@@ -44,7 +44,7 @@ class Comment_Filter {
 	function exclude_custom_comments_in_dashboard( $clauses, $query ) {
 		global $pagenow;
 		if ( ( 'index.php' == $pagenow && is_admin() ) || is_home() ) {
-			$clauses['where'] .= ' AND comment_type IN("' . implode( \eoxia\Config_Util::$init['eo-framework']->not__in_display_comment, '","' ) . '")';
+			$clauses['where'] .= ' AND comment_type IN("' . implode( '","', \eoxia\Config_Util::$init['eo-framework']->not__in_display_comment ) . '")';
 		}
 
 		return $clauses;

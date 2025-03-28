@@ -76,6 +76,4 @@ defined( 'ABSPATH' ) || exit;
 	</tfoot>
 </table>
 
-<strong><a href="<?php echo esc_attr( Pages::g()->get_account_link() ); ?>"><?php esc_html_e( 'See my orders or my downloadable products', 'wpshop' ); ?></a></strong>
-
 <?php do_action( 'wps_email_after_order_table', $order ); ?>

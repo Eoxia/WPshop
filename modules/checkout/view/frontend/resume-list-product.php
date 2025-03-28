@@ -28,9 +28,7 @@ defined( 'ABSPATH' ) || exit;
 <?php if ( ! empty( Cart_Session::g()->cart_contents ) ) : ?>
 	<div class="wps-list-product">
 		<?php foreach ( Cart_Session::g()->cart_contents as $key => $product ) :
-			if ( $shipping_cost_option['shipping_product_id'] !== $product['id'] ) :
-				include( Template_Util::get_template_part( 'products', 'wps-product-list' ) );
-			endif;
+			include( Template_Util::get_template_part( 'products', 'wps-product-list' ) );
 		endforeach; ?>
 	</div>
 <?php endif; ?>

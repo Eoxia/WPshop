@@ -168,7 +168,6 @@ class Product_Filter {
 			global $post;
 			global $wp_query;
 
-			$shipping_cost_option = get_option( 'wps_shipping_cost', Settings::g()->shipping_cost_default_settings );
 			$page_ids_options     = get_option( 'wps_page_ids', Pages::g()->default_options );
 
 			if ( is_object( $post ) && $post->ID === $page_ids_options['shop_id'] ) {
@@ -183,10 +182,6 @@ class Product_Filter {
 					$args['meta_key']     = '_external_id';
 					$args['meta_compare'] = '!=';
 					$args['meta_value']   = 0;
-				}
-
-				if ( ! empty( $shipping_cost_option['shipping_product_id'] ) ) {
-					$args['post__not_in'] = array( $shipping_cost_option['shipping_product_id'] );
 				}
 
 				$wps_query = new \WP_Query( $args );

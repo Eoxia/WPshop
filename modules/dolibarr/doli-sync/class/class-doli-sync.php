@@ -51,7 +51,7 @@ class Doli_Sync extends Singleton_Util {
 	protected function construct() {
 		$this->sync_infos = array(
 			'wps-third-party' => array(
-				'title'              => __( 'Third parties', 'wpshop' ),
+				'title'              => 'Third parties',
 				'action'             => 'sync_third_parties',
 				'nonce'              => 'sync_third_parties',
 				'endpoint'           => 'thirdparties',
@@ -61,7 +61,7 @@ class Doli_Sync extends Singleton_Util {
 				'doli_type'          => 'third_party',
 			),
 			'wps-product'      => array(
-				'title'              => __( 'Products', 'wpshop' ),
+				'title'              => 'Products',
 				'action'             => 'sync_products',
 				'nonce'              => 'sync_products',
 				'endpoint'           => 'Products',
@@ -71,7 +71,7 @@ class Doli_Sync extends Singleton_Util {
 				'doli_type'          => 'product',
 			),
 			'wps-proposal'     => array(
-				'title'              => __( 'Proposals', 'wpshop' ),
+				'title'              => 'Proposals',
 				'action'             => 'sync_proposals',
 				'nonce'              => 'sync_proposals',
 				'endpoint'           => 'proposals',
@@ -81,7 +81,7 @@ class Doli_Sync extends Singleton_Util {
 				'doli_type'          => 'propal',
 			),
 			'wps-product-cat'     => array(
-				'title'              => __( 'Categories', 'wpshop' ),
+				'title'              => 'Categories',
 				'action'             => 'sync_categories',
 				'nonce'              => 'sync_categories',
 				'endpoint'           => 'categories',

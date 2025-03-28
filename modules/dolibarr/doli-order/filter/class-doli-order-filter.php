@@ -139,10 +139,6 @@ class Doli_Order_Filter {
 	 * @return Doli_Order         Les nouvelles données d'une commande.
 	 */
 	public function update_after_billed( $object, $args ) {
-		if ( $object->data['billed'] ) {
-			Product_Downloadable::g()->create_from_order( $object );
-		}
-
 		return $object;
 	}
 }

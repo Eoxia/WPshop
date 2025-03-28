@@ -195,7 +195,7 @@ class Doli_Proposals_Action {
 			}
 		}
 
-		View_Util::exec( 'wpshop', 'proposals', 'metabox-proposal-details', array(
+		View_Util::exec( 'wpshop', 'doli-proposals', 'metabox-proposal-details', array(
 			'proposal'     => $proposal,
 			'third_party'  => $third_party,
 			'invoice'      => $invoice,
@@ -226,7 +226,7 @@ class Doli_Proposals_Action {
 			}
 		}
 
-		View_Util::exec( 'wpshop', 'proposals', 'metabox-proposal-address', array(
+		View_Util::exec( 'wpshop', 'doli-proposals', 'metabox-proposal-address', array(
 			'proposal'     => $proposal,
 			'third_party'  => $third_party,
 			'invoice'      => $invoice,
@@ -272,7 +272,7 @@ class Doli_Proposals_Action {
 				'tva_lines' => $tva_lines,
 			) );
 		} else {
-			View_Util::exec( 'wpshop', 'proposals', 'metabox-proposal-products', array(
+			View_Util::exec( 'wpshop', 'doli-proposals', 'metabox-proposal-products', array(
 				'proposal'  => $proposal,
 				'tva_lines' => $tva_lines,
 			) );
