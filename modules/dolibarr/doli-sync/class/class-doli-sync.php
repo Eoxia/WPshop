@@ -313,7 +313,10 @@ class Doli_Sync extends Singleton_Util {
 
 		if ( ! empty ($doli_categories) ) {
 			foreach ($doli_categories as $doli_category) {
-				$doli_category_labels[] = get_term_by('name', $doli_category->label, 'wps-product-cat' )->term_id;
+				$term = get_term_by('name', $doli_category->label, 'wps-product-cat' );
+				if ( ! empty($term) ) {
+					$doli_category_labels[] = get_term_by('name', $doli_category->label, 'wps-product-cat' )->term_id;
+				}
 			}
 		}
 
