@@ -7,7 +7,7 @@
     "install": "git submodule init && git submodule update --remote --recursive --force",
     "update": "npm install",
     "start": "node node_modules/gulp/bin/gulp.js",
-    "wpstart:custom": "wp-scripts start core/asset/js/blocks/block.js --output-path=build"
+    "blockstart": "wp-scripts start --webpack-src-dir=blocks/src/ --output-path=blocks/build/"
   },
   "author": "Eoxia team",
   "license": "AGPLv3",
@@ -18,10 +18,10 @@
     "gulp-rename": "latest",
     "gulp-sass": "latest",
     "gulp-uglify": "latest",
-    "gulp-watch": "latest",
-    "@wordpress/scripts": "^6.1.1"
+    "gulp-watch": "latest"
   },
   "dependencies": {
+    "@wordpress/scripts": "^30.14.1",
     "natives": "latest"
   }
 }

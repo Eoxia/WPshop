@@ -32,7 +32,13 @@ class WPshop_Action {
 		add_action( 'init', array( $this, 'callback_register_session' ), 1 );
 		add_action( 'init', array( $this, 'callback_language' ) );
 		add_action( 'init', array( $this, 'callback_install_default' ) );
+
 		add_action( 'init', array( $this, 'callback_init_block' ) );
+		if ( version_compare( get_bloginfo( 'version' ), '5.8', '>=' ) ) {
+			add_filter( 'block_categories_all', [$this, 'call_back_block_categories'] );
+		} else {
+			add_filter( 'block_categories', [$this, 'call_back_block_categories'] );
+		}
 
 		add_action( 'wp_head', array( $this, 'define_ajax_url' ) );
 
@@ -91,15 +97,39 @@ class WPshop_Action {
 	 * @version 2.0.0
 	 */
 	public function callback_init_block() {
-		wp_localize_script( 'wpshop-products', 'wpshop', array(
-				'homeUrl'        => home_url(),
-				'addToCartNonce' => wp_create_nonce( 'add_to_cart' ),
-			)
-		);
+		$block_build_dir = PLUGIN_WPSHOP_PATH . '/blocks/build/';
+		
+		// Vérifier si le répertoire existe
+		if (!file_exists($block_build_dir) || !is_dir($block_build_dir)) {
+			// Log pour débogage
+			error_log('WPShop: Le répertoire des blocs n\'existe pas: ' . $block_build_dir);
+			return;
+		}
+		
+		$block_dir_urls = scandir($block_build_dir);
+		
+		foreach ($block_dir_urls as $url) {
+			$block_dir = $block_build_dir . $url;
+			$block_json_path = $block_dir . '/block.json';
+			register_block_type($block_dir);
+			
+			if (file_exists($block_json_path)) {
+				register_block_type($block_dir);
+			} else {
+				error_log('WPShop: Fichier block.json non trouvé dans: ' . $block_dir);
+			}
+		}
+	}
 
-		register_block_type( 'wpshop/products', array(
-			'editor_script' => 'wpshop-products',
-		) );
+	public function call_back_block_categories( $block_categories  ) {
+
+		return array_merge(
+			$block_categories,
+			[[
+				'slug'  => 'wpshop',
+				'title' => __( 'WPshop', 'wpshop' ),
+			]]
+		);
 	}
 
 	/**

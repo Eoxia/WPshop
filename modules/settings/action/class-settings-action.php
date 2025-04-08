@@ -147,7 +147,7 @@ class Settings_Action {
 
 		update_option( 'wps_dolibarr', $dolibarr_option );
 
-		$response = Request_Util::get( 'status' );
+		$response = Request_Util::get( 'doliwpshop/checkPermissions' );
 		if ( false === $response ) {
 			$dolibarr_option['error'] = __( 'WPshop cannot connect to dolibarr. Please check your settings', 'wpshop' );
 		} else {
@@ -222,7 +222,7 @@ class Settings_Action {
 
 		update_option( 'wps_dolibarr', $dolibarr_option );
 
-		$response = Request_Util::get( 'status' );
+		$response = Request_Util::get( 'doliwpshop/checkPermissions' );
 		if ( false === $response ) {
 			$dolibarr_option['error'] = __( 'WPshop cannot connect to dolibarr. Please check your settings', 'wpshop' );
 		} else {

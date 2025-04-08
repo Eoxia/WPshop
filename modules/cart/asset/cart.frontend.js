@@ -33,16 +33,11 @@ window.eoxiaJS.wpshopFrontend.cart.updateQuantity = function( event ) {
 	var qty = parseInt( jQuery( this ).closest( '.wps-product-quantity' ).find( 'input[type="hidden"]' ).val() );
 
 	if ( jQuery( this ).hasClass( 'wps-quantity-minus' ) ) {
-		if ( qty > 1 ) {
-			qty--;
-		}
-	}
-
-	if ( jQuery( this ).hasClass( 'wps-quantity-plus' ) ) {
+		qty--;
+	} else {
 		qty++;
 	}
 
-	jQuery( this ).closest( '.wps-product-quantity' ).find( '.qty' ).text( qty );
 	jQuery( this ).closest( '.wps-product-quantity' ).find( 'input[type="hidden"]' ).val( qty );
 	jQuery( '.wps-cart .update-cart' ).click();
 
