@@ -26,7 +26,11 @@ class Checkout extends Singleton_Util {
 	 * @since   2.0.0
 	 * @version 2.0.0
 	 */
-	protected function construct() {}
+	protected function construct() {
+
+		add_action('rest_api_init', array( $this, 'register_rest_api' ) );
+
+	}
 
 	/**
 	 * Récupère les données postées.
@@ -37,6 +41,11 @@ class Checkout extends Singleton_Util {
 	 * @return array Les données postées filtrés et sécurisés.
 	 */
 	public function get_posted_data() {
+
+		if (!empty(file_get_contents( 'php://input' ))) {
+			$_POST = json_decode( file_get_contents( 'php://input' ), true );
+		}
+
 		$data = array(
 			'contact'     => ! empty( $_POST['contact'] ) ? (array) $_POST['contact'] : array(),
 			'third_party' => ! empty( $_POST['third_party'] ) ? (array) $_POST['third_party'] : array(),
@@ -187,17 +196,17 @@ class Checkout extends Singleton_Util {
 	 */
 	public function process_order_payment( $order ) {
 
-				$result = Request_Util::g()->get( 'doliwpshop/getOnlinePaymentUrl?doli_id=' . $order->data['external_id'] );
+		$result = Request_Util::g()->get( 'doliwpshop/getOnlinePaymentUrl?doli_id=' . $order->data['external_id'] );
 
-				Cart_Session::g()->destroy();
-				if ( ! empty( $result ) ) {
-					wp_send_json_success( array(
-						'namespace'        => 'wpshopFrontend',
-						'module'           => 'checkout',
-						'callback_success' => 'redirectToPayment',
-						'url'              => $result,
-					) );
-				}
+		Cart_Session::g()->destroy();
+		if ( ! empty( $result ) ) {
+			wp_send_json_success( array(
+				'namespace'        => 'wpshopFrontend',
+				'module'           => 'checkout',
+				'callback_success' => 'redirectToPayment',
+				'url'              => $result,
+			) );
+		}
 	}
 
 	/**
@@ -276,6 +285,53 @@ class Checkout extends Singleton_Util {
 		Cart_Session::g()->add_external_data( 'order_id', $order->data['id'] );
 		Cart_Session::g()->update_session();
 	}
+
+
+	public function register_rest_api() {
+		if ( ! Settings::g()->dolibarr_is_active() ) {
+			return;
+		}
+
+		register_rest_route(
+			'wp-shop/v1',
+			'/checkout',
+			[
+				'methods'  => 'GET',
+				'callback' => [$this, 'get_users_informations'],
+			]
+			);
+	}
+
+	public function get_users_informations( $request ) {
+		$current_user = wp_get_current_user();
+
+		$contact = User::g()->get( array(
+			'search' => $current_user->user_email,
+			'number' => 1,
+		), true );
+
+		$third_party = Third_Party::g()->get( array( 'id' => $contact->data['third_party_id'] ), true );
+
+		$countries = get_countries();
+
+		$fields = $this->get_checkout_fields();
+	
+		return rest_ensure_response( [
+			'values' => [
+				'country_id' => $third_party->data['country_id'],
+				'contact'    => $third_party->data['address'],
+				'zip'        => $third_party->data['zip'],
+				'town'       => $third_party->data['town'],
+				'firstname'  => $contact->data['firstname'],
+				'lastname'   => $contact->data['lastname'],
+				'phone'      => $contact->data['phone'],
+				'email'      => $contact->data['email'],
+			],
+			'fields'      => array_merge( $fields['contact'], $fields['third_party'] ),
+			'countries'   => $countries,
+		] );
+	}
+
 }
 
 Checkout::g();

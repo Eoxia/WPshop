@@ -107,17 +107,34 @@ class WPshop_Action {
 		}
 		
 		$block_dir_urls = scandir($block_build_dir);
-		
+
 		foreach ($block_dir_urls as $url) {
 			$block_dir = $block_build_dir . $url;
 			$block_json_path = $block_dir . '/block.json';
-			register_block_type($block_dir);
-			
+
 			if (file_exists($block_json_path)) {
 				register_block_type($block_dir);
 			} else {
 				error_log('WPShop: Fichier block.json non trouvé dans: ' . $block_dir);
 			}
+
+			// test if inner-blocks directory exists
+			if (file_exists($block_dir . '/inner-blocks')) {
+				$inner_block_dir = $block_dir . '/inner-blocks/';
+				$inner_block_dir_urls = scandir($inner_block_dir);
+
+				foreach ($inner_block_dir_urls as $inner_url) {
+					$inner_block_path = $inner_block_dir . $inner_url;
+					$inner_block_json_path = $inner_block_path . '/block.json';
+
+					if (file_exists($inner_block_json_path)) {
+						register_block_type($inner_block_path);
+					} else {
+						error_log('WPShop: Fichier block.json non trouvé dans: ' . $inner_block_path);
+					}
+				}
+			}
+
 		}
 	}
 
@@ -181,6 +198,11 @@ class WPshop_Action {
 		wp_dequeue_style( 'wpeo-assets-datepicker' );
 		wp_enqueue_style( 'wpshop-style', PLUGIN_WPSHOP_URL . 'core/asset/css/style.css', array(), \eoxia\Config_Util::$init['wpshop']->version );
 		wp_enqueue_style( 'wpshop-style-frontend', PLUGIN_WPSHOP_URL . 'core/asset/css/style.frontend.min.css', array(), \eoxia\Config_Util::$init['wpshop']->version );
+		
+		add_editor_style( PLUGIN_WPSHOP_URL . 'core/asset/css/style.min.css' );
+		add_editor_style( PLUGIN_WPSHOP_URL . 'core/asset/css/style.frontend.min.css' );
+		add_editor_style( PLUGIN_WPSHOP_URL . 'core/external/eo-framework/core/assets/css/style.min.css' );
+		
 		wp_enqueue_script( 'wpshop-frontend-script', PLUGIN_WPSHOP_URL . 'core/asset/js/frontend.min.js', array(), \eoxia\Config_Util::$init['wpshop']->version );
 
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );

@@ -48,6 +48,8 @@ class Checkout_Action {
 
 		add_action( 'wp_ajax_wps_place_order', array( $this, 'callback_place_order' ) );
 		add_action( 'wp_ajax_nopriv_wps_place_order', array( $this, 'callback_place_order' ) );
+
+		add_action( 'rest_api_init', array( $this, 'init_rest_api' ) );
 	}
 
 	/**
@@ -127,6 +129,28 @@ class Checkout_Action {
 		Cart::g()->display_cart_resume( $total_price_no_shipping, $tva_amount, $total_ttc );
 	}
 
+
+	public function init_rest_api() {
+
+		register_rest_route(
+			'wp-shop/v1',
+			'/checkout/',
+			[
+				'methods'  => 'POST',
+				'callback' => [$this, 'callback_place_order' ],
+			]
+		);
+
+		register_rest_route(
+			'wp-shop/v1',
+			'/checkout/terms/',
+			[
+				'methods'  => 'GET',
+				'callback' => [$this, 'add_terms'],
+			]
+		);
+	}
+
 	/**
 	 * Créer la commande et passe au paiement.
 	 *
@@ -134,11 +158,13 @@ class Checkout_Action {
 	 * @version 2.0.0
 	 */
 	public function callback_place_order() {
-		check_ajax_referer( 'callback_place_order' );
+		// check_ajax_referer( 'callback_place_order' );
 
 		// @todo: Explain fast_pay.
 		//$fast_pay     = isset( $_POST['fast_pay'] ) && 'true' == $_POST['fast_pay'] ? true : false;
-		$type         = ! empty( $_POST['type'] ) ? sanitize_text_field( $_POST['type'] ) : '';
+		// $type         = ! empty( $_POST['type'] ) ? sanitize_text_field( $_POST['type'] ) : '';
+
+		$type = 'order';
 
 		if ( ! in_array( $type, array( 'order', 'proposal' ) ) ) {
 			wp_send_json_error();
@@ -149,11 +175,6 @@ class Checkout_Action {
 			do_action( 'checkout_create_third_party' );
 		//}
 
-		// Nothing attached in wpshop.
-		do_action( 'wps_before_checkout_process' );
-
-		// Nothing attached in wpshop.
-		do_action( 'wps_checkout_process' );
 
 		if ( 'order' === $type ) {
 			$proposal = Request_Util::g()->get( 'proposals/' . Cart_Session::g()->external_data['doli_proposal_id'] );
@@ -499,8 +520,15 @@ class Checkout_Action {
 				$terms_message .= sprintf( __( 'the <a target="_blank" href="%1$s">%2$s</a>', 'wpshop' ), get_permalink( $privacy_policy->ID ), $privacy_policy->post_title );
 			}
 
-			include( Template_Util::get_template_part( 'checkout', 'terms' ) );
+
+			return rest_ensure_response( [
+				'message' => $terms_message,
+			] );
 		}
+
+		return rest_ensure_response( [
+			'error' => __( 'No terms and conditions found', 'wpshop' ),
+		] );
 	}
 
 	/**

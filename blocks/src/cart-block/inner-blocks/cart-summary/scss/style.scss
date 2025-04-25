@@ -1,0 +1,26 @@
+.wps-cart-resume {
+	display: block;
+	margin: 0;
+	padding: 1em;
+	background: rgba(0,0,0,0.075);
+
+	.wps-resume-line {
+		margin: 0;
+		list-style-type: none;
+		font-size: 16px;
+		font-weight: 400;
+		display: flex;
+
+		.wps-line-value {
+			margin-left: auto;
+			text-align: right;
+			font-weight: 700;
+		}
+	}
+	.wps-resume-line.featured {
+		margin-top: 30px;
+		font-size: 22px;
+		font-weight: 600;
+		color: rgba(0,0,0,0.8);
+	}
+}

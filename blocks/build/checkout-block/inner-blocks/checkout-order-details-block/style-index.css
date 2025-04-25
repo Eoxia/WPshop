@@ -1,0 +1,57 @@
+/*!************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./blocks/src/checkout-block/inner-blocks/checkout-order-details-block/scss/style.scss ***!
+  \************************************************************************************************************************************************************************************************************************************************************************************************************/
+.wps-checkout-review-order .wps-list-product {
+  margin-bottom: 30px;
+}
+
+.wps-checkout-review-order .wps-list-product .wps-product {
+  padding: 0;
+  background: transparent;
+}
+.wps-checkout-review-order .wps-list-product .wps-product:last-child {
+  margin-bottom: 1em;
+}
+.wps-checkout-review-order .wps-list-product .wps-product .wps-product-content .wps-product-title {
+  font-size: 16px;
+}
+.wps-checkout-review-order .wps-list-product .wps-product .wps-product-content .wps-product-attributes {
+  display: none;
+}
+.wps-checkout-review-order .wps-list-product .wps-product .wps-product-content .wps-product-footer {
+  margin-top: 0;
+}
+.wps-checkout-review-order .wps-list-product .wps-product .wps-product-content .wps-product-footer .wps-product-quantity {
+  color: rgba(0, 0, 0, 0.4);
+  font-weight: 400;
+}
+.wps-checkout-review-order .wps-list-product .wps-product .wps-product-content .wps-product-footer .wps-product-price {
+  color: inherit;
+}
+
+.wps-cart-resume {
+  display: block;
+  margin: 0;
+  padding: 1em;
+  background: rgba(0, 0, 0, 0.075);
+}
+.wps-cart-resume .wps-resume-line {
+  margin: 0;
+  list-style-type: none;
+  font-size: 16px;
+  font-weight: 400;
+  display: flex;
+}
+.wps-cart-resume .wps-resume-line .wps-line-value {
+  margin-left: auto;
+  text-align: right;
+  font-weight: 700;
+}
+.wps-cart-resume .wps-resume-line.featured {
+  margin-top: 30px;
+  font-size: 22px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.8);
+}
+
+/*# sourceMappingURL=style-index.css.map*/

@@ -7,7 +7,9 @@
     "install": "git submodule init && git submodule update --remote --recursive --force",
     "update": "npm install",
     "start": "node node_modules/gulp/bin/gulp.js",
-    "blockstart": "wp-scripts start --webpack-src-dir=blocks/src/ --output-path=blocks/build/"
+    "block-develop": "wp-scripts start --source-path=blocks/src/ --output-path=blocks/build/",
+    "block-build": "wp-scripts build --webpack-src-dir=blocks/src/ --output-path=blocks/build/",
+    "create-block": "npx @wordpress/create-block %npm_config_name% --target-dir=blocks/src/%npm_config_directory% --no-plugin --namespace wpshop --category wpshop"
   },
   "author": "Eoxia team",
   "license": "AGPLv3",
@@ -18,7 +20,8 @@
     "gulp-rename": "latest",
     "gulp-sass": "latest",
     "gulp-uglify": "latest",
-    "gulp-watch": "latest"
+    "gulp-watch": "latest",
+    "sass": "^1.87.0"
   },
   "dependencies": {
     "@wordpress/scripts": "^30.14.1",

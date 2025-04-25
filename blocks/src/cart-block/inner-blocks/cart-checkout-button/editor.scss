@@ -1,0 +1,11 @@
+.wps-cart, .wps-checkout {
+	.wps-process-checkout-button {
+		display: block;
+		float: none;
+		width: 100%;
+		text-align: center;
+		border-radius: 6px;
+		margin: 1em 0;
+		text-decoration: none !important;
+	}
+}

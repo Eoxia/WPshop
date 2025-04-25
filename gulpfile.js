@@ -22,7 +22,7 @@ var watch        = require('gulp-watch');
 var rename       = require("gulp-rename");
 var concat       = require('gulp-concat');
 var uglify       = require('gulp-uglify');
-var sass         = require('gulp-sass');
+var sass         = require('gulp-sass')( require('sass') );
 var autoprefixer = require('gulp-autoprefixer');
 
 var paths = {

@@ -269,8 +269,8 @@ class Cart_Session extends Singleton_Util {
 	public function remove_product( $id ) {
 		if ( ! empty( $this->cart_contents ) ) {
 			foreach ( $this->cart_contents as $key => $cart_content ) {
-				if ( $cart_content['id'] === $id ) {
-					array_splice( $this->cart_contents, $key, 1 );
+				if ( $cart_content['id'] == $id ) {
+					unset( $this->cart_contents[ $key ] );
 					break;
 				}
 			}
@@ -292,6 +292,37 @@ class Cart_Session extends Singleton_Util {
 
 		$this->update_session();
 	}
+
+	public function increment_product( $id ) {
+		if ( ! empty( $this->cart_contents ) ) {
+			foreach ( $this->cart_contents as $key => $cart_content ) {
+				if ( $cart_content['id'] == $id ) {
+					$this->cart_contents[ $key ]['qty'] += 1;
+					break;
+				}
+			}
+		}
+
+		$this->update_session();
+	}
+
+
+	public function decrement_product( $id ) {
+		if ( ! empty( $this->cart_contents ) ) {
+			foreach ( $this->cart_contents as $key => $cart_content ) {
+				if ( $cart_content['id'] == $id ) {
+					$this->cart_contents[ $key ]['qty'] -= 1;
+					if ( $this->cart_contents[ $key ]['qty'] <= 0 ) {
+						unset( $this->cart_contents[ $key ] );
+					}
+					break;
+				}
+			}
+		}
+
+		$this->update_session();
+	}
+
 }
 
 Cart_Session::g();

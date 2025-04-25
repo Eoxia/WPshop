@@ -13,4 +13,4 @@ namespace wpshop;
 
 defined( 'ABSPATH' ) || exit; ?>
 
-<p><?php esc_html_e( 'Your cart is empty.', 'wpshop' ); ?></p>
+<!-- <p><?php esc_html_e( 'Your cart is empty.', 'wpshop' ); ?></p> -->
