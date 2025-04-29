@@ -109,44 +109,77 @@ class WPshop_Action {
 		$block_dir_urls = scandir($block_build_dir);
 
 		foreach ($block_dir_urls as $url) {
+			// Skip directory navigation entries
+			if ($url === '.' || $url === '..') {
+				continue;
+			}
+			
 			$block_dir = $block_build_dir . $url;
 			$block_json_path = $block_dir . '/block.json';
-
+		
 			if (file_exists($block_json_path)) {
-				register_block_type($block_dir);
+				// Read block.json to get the block name
+				$block_json = json_decode(file_get_contents($block_json_path), true);
+				
+				if (!empty($block_json['name'])) {
+					// Check if block is already registered
+					if (!\WP_Block_Type_Registry::get_instance()->is_registered($block_json['name'])) {
+						register_block_type($block_dir);
+					} else {
+						error_log('WPShop: Block already registered: ' . $block_json['name']);
+					}
+				} else {
+					register_block_type($block_dir);
+				}
 			} else {
 				error_log('WPShop: Fichier block.json non trouvé dans: ' . $block_dir);
 			}
-
-			// test if inner-blocks directory exists
+		
 			if (file_exists($block_dir . '/inner-blocks')) {
 				$inner_block_dir = $block_dir . '/inner-blocks/';
 				$inner_block_dir_urls = scandir($inner_block_dir);
-
+		
 				foreach ($inner_block_dir_urls as $inner_url) {
+					// Skip directory navigation entries
+					if ($inner_url === '.' || $inner_url === '..') {
+						continue;
+					}
+					
 					$inner_block_path = $inner_block_dir . $inner_url;
 					$inner_block_json_path = $inner_block_path . '/block.json';
-
+		
 					if (file_exists($inner_block_json_path)) {
-						register_block_type($inner_block_path);
+						// Read block.json to get the block name
+						$inner_block_json = json_decode(file_get_contents($inner_block_json_path), true);
+						
+						if (!empty($inner_block_json['name'])) {
+							// Check if block is already registered
+							if (!\WP_Block_Type_Registry::get_instance()->is_registered($inner_block_json['name'])) {
+								register_block_type($inner_block_path);
+							} else {
+								error_log('WPShop: Inner block already registered: ' . $inner_block_json['name']);
+							}
+						} else {
+							register_block_type($inner_block_path);
+						}
 					} else {
 						error_log('WPShop: Fichier block.json non trouvé dans: ' . $inner_block_path);
 					}
 				}
 			}
-
 		}
 	}
 
 	public function call_back_block_categories( $block_categories  ) {
 
-		return array_merge(
+		array_unshift(
 			$block_categories,
-			[[
+			[
 				'slug'  => 'wpshop',
-				'title' => __( 'WPshop', 'wpshop' ),
-			]]
+				'title' => __( 'WPshop', 'wpshop' )
+			]
 		);
+		return $block_categories;
 	}
 
 	/**
