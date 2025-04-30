@@ -298,6 +298,7 @@ class Checkout extends Singleton_Util {
 			[
 				'methods'  => 'GET',
 				'callback' => [$this, 'get_users_informations'],
+				'permission_callback' => '__return_true',
 			]
 			);
 	}

@@ -138,6 +138,7 @@ class Checkout_Action {
 			[
 				'methods'  => 'POST',
 				'callback' => [$this, 'callback_place_order' ],
+				'permission_callback' => '__return_true',
 			]
 		);
 
@@ -147,6 +148,7 @@ class Checkout_Action {
 			[
 				'methods'  => 'GET',
 				'callback' => [$this, 'add_terms'],
+				'permission_callback' => '__return_true',
 			]
 		);
 	}

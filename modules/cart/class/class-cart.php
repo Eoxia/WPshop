@@ -49,6 +49,7 @@ class Cart extends Singleton_Util {
 			[
 				'methods'  => 'GET',
 				'callback' => [$this, 'get_cart' ],
+				'permission_callback' => '__return_true',
 			]
 		);
 
@@ -58,6 +59,7 @@ class Cart extends Singleton_Util {
 			[
 				'methods'  => 'GET',
 				'callback' => [$this, 'get_chekout_link' ],
+				'permission_callback' => '__return_true',
 			]
 		);
 
@@ -67,6 +69,7 @@ class Cart extends Singleton_Util {
 			[
 				'methods'  => 'DELETE',
 				'callback' => [$this, 'delete_cart_item' ],
+				'permission_callback' => '__return_true',
 			]
 		);
 
@@ -76,6 +79,7 @@ class Cart extends Singleton_Util {
 			[
 				'methods'  => 'POST',
 				'callback' => [$this, 'increment_cart_item' ],
+				'permission_callback' => '__return_true',
 			]
 		);
 		register_rest_route(
@@ -84,6 +88,7 @@ class Cart extends Singleton_Util {
 			[
 				'methods'  => 'POST',
 				'callback' => [$this, 'decrement_cart_item' ],
+				'permission_callback' => '__return_true',
 			]
 		);
 	}
