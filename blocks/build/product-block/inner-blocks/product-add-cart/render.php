@@ -11,7 +11,9 @@ if ($cart) {
     });
 
     if (!empty($cartProduct)) {
-        $qty = current($cartProduct)['qty'];
+        foreach ($cartProduct as $cartProduct) {
+            $qty += $cartProduct['qty'];
+        }
     } 
 }
 

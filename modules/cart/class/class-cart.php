@@ -102,8 +102,9 @@ class Cart extends Singleton_Util {
 	 * @return array Le contenu du panier.
 	 */
 	public function get_cart() {
-		$cart     = [];
-		$products = Cart_Session::g()->cart_contents;
+		$cart            = [];
+		$products        = Cart_Session::g()->cart_contents;
+		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
 
 		if ( empty( $products ) ) {
 			return [];
@@ -130,6 +131,8 @@ class Cart extends Singleton_Util {
 		$cart['total']     = $total;
 		$cart['taxes']     = $total_ttc - $total;
 		$cart['total_ttc'] = $total_ttc;
+
+		$cart['split_product'] = $dolibarr_option['split_product'];
 		
 		return rest_ensure_response( $cart );
 	}

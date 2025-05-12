@@ -293,9 +293,13 @@ const ProductAddCart = props => {
         if (!response?.products?.length) {
           setValue(0);
         } else {
-          const product = response.products.find(product => product.id === parseInt(productId));
+          const product = response.products.filter(product => product.id === parseInt(productId));
           if (product) {
-            setValue(product.qty);
+            let qty = 0;
+            product.forEach(item => {
+              qty += item.qty;
+            });
+            setValue(qty);
           } else {
             setValue(0);
           }

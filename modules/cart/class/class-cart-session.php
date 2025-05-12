@@ -294,7 +294,10 @@ class Cart_Session extends Singleton_Util {
 	}
 
 	public function increment_product( $id ) {
-		if ( $this->has_product( $id ) ) {
+
+		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
+
+		if ( $this->has_product( $id ) && !$dolibarr_option['split_product'] ) {
 			foreach ( $this->cart_contents as $key => $cart_content ) {
 				if ( $cart_content['id'] == $id ) {
 					$this->cart_contents[ $key ]['qty'] += 1;
