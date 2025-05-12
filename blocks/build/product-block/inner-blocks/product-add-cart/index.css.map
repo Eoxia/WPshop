@@ -1,0 +1,1 @@
+{"version":3,"file":"product-block/inner-blocks/product-add-cart/index.css","mappings":";;;AAAA;EACI;EACA;EACA;AACJ,C","sources":["webpack://WPshop/./blocks/src/product-block/inner-blocks/product-add-cart/scss/editor.scss"],"sourcesContent":[".wps-button-add-to-cart {\r\n    border-radius: 6px;\r\n    display: flex; \r\n    gap: 5px;\r\n}"],"names":[],"sourceRoot":""}
