@@ -33,10 +33,6 @@ const selectors = {
   getProducts(state) {
     return state.products;
   },
-  getSplitProducts(state) {
-    return state.split_product;
-  },
-
 };
 
 // Définir le nom du store

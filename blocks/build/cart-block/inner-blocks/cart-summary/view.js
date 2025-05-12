@@ -48,9 +48,6 @@ const reducer = (state = initialState, action) => {
 const selectors = {
   getProducts(state) {
     return state.products;
-  },
-  getSplitProducts(state) {
-    return state.split_product;
   }
 };
 

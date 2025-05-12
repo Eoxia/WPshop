@@ -19,16 +19,6 @@ const CartProductsList = () => {
         }
     }, []);
 
-    const split_product = useSelect((select) => {
-        try {
-            const store = select(storeName);
-            return store ? store.getSplitProducts() : 0;
-        } catch (e) {
-            console.error('Erreur lors de l\'accès au store:', e);
-            return 0;
-        }
-    }, []);
-
     const { setValue } = useDispatch(storeName);
 
     useEffect(() => {
@@ -113,13 +103,11 @@ const CartProductsList = () => {
                             <li class="wps-product-attributes-item">{ __( 'Unit price:', 'wpshop' ) } {product.price_ttc} €</li>
                         </ul>
                         <div class="wps-product-footer">
-                            {split_product &&
-                                <div class="wps-product-quantity" style={{ fontSize: '1.4em' }}>
-                                    <span class="wps-quantity-minus fas fa-minus-circle" onClick={() => decrementProduct(product.id)}></span>
-                                    <span class="qty">{product.qty}</span>
-                                    <span class="wps-quantity-plus fas fa-plus-circle" onClick={() => incrementProduct(product.id)}></span>
-                                </div>
-                            }
+                            <div class="wps-product-quantity" style={{ fontSize: '1.4em' }}>
+                                <span class="wps-quantity-minus fas fa-minus-circle" onClick={() => decrementProduct(product.id)}></span>
+                                <span class="qty">{product.qty}</span>
+                                <span class="wps-quantity-plus fas fa-plus-circle" onClick={() => incrementProduct(product.id)}></span>
+                            </div>
 
                             {product.price_ttc && (
                                 <div itemprop="offers" itemscope itemtype="https://schema.org/Offer" class="wps-product-price">

@@ -132,8 +132,6 @@ class Cart extends Singleton_Util {
 		$cart['taxes']     = $total_ttc - $total;
 		$cart['total_ttc'] = $total_ttc;
 
-		$cart['split_product'] = $dolibarr_option['split_product'];
-		
 		return rest_ensure_response( $cart );
 	}
 
@@ -229,7 +227,7 @@ class Cart extends Singleton_Util {
 		if ( ! empty( Cart_Session::g()->cart_contents ) ) {
 			foreach ( Cart_Session::g()->cart_contents as $key => $line ) {
 				$data['content'] = $desc;
-				if ( $line['id'] === $product->data['id'] && Settings::g()->split_product() == false ) {
+				if ( $line['id'] === $product->data['id'] ) {
 					$data['qty'] = $line['qty'] + $qty;
 					$index       = $key;
 					break;

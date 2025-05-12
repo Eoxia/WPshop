@@ -48,9 +48,6 @@ const reducer = (state = initialState, action) => {
 const selectors = {
   getProducts(state) {
     return state.products;
-  },
-  getSplitProducts(state) {
-    return state.split_product;
   }
 };
 
@@ -269,15 +266,6 @@ const CartProductsList = () => {
       return 0;
     }
   }, []);
-  const split_product = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useSelect)(select => {
-    try {
-      const store = select(_store_cart_products_store__WEBPACK_IMPORTED_MODULE_4__.storeName);
-      return store ? store.getSplitProducts() : 0;
-    } catch (e) {
-      console.error('Erreur lors de l\'accès au store:', e);
-      return 0;
-    }
-  }, []);
   const {
     setValue
   } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useDispatch)(_store_cart_products_store__WEBPACK_IMPORTED_MODULE_4__.storeName);
@@ -375,7 +363,7 @@ const CartProductsList = () => {
           })
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
           class: "wps-product-footer",
-          children: [split_product && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
             class: "wps-product-quantity",
             style: {
               fontSize: '1.4em'
