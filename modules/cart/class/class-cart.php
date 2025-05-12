@@ -138,21 +138,21 @@ class Cart extends Singleton_Util {
 		$id = $data['id'];
 		Cart_Session::g()->remove_product( $id );
 
-		return $this->get_cart();
+		return rest_ensure_response( $this->get_cart() );
 	}
 
 	public function increment_cart_item( $data ) {
-		$id = $data['id'];
+		$id = (int) $data['id'];
 		Cart_Session::g()->increment_product( $id );
 
-		return $this->get_cart();
+		return rest_ensure_response( $this->get_cart() );
 	}
 
 	public function decrement_cart_item( $data ) {
-		$id = $data['id'];
+		$id = (int) $data['id'];
 		Cart_Session::g()->decrement_product( $id );
 
-		return $this->get_cart();
+		return rest_ensure_response( $this->get_cart() );
 	}
 
 	public function get_chekout_link() {
@@ -215,8 +215,6 @@ class Cart extends Singleton_Util {
 		if ( ! $this->can_add_product() ) {
 			return;
 		}
-
-		do_action( 'wps_before_add_to_cart' );
 
 		$data = array_merge(
 			array( 'qty' => $qty ),
