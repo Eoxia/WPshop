@@ -344,7 +344,7 @@ class Doli_Invoice extends Post_Class {
 		if ( $count && ! empty( $doli_invoices ) ) {
 			return count( $doli_invoices );
 		} else {
-			return 0;
+			return $this->convert_to_wp_invoice_format( $doli_invoices );
 		}
 	}
 }

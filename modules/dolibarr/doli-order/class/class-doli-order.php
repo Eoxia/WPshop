@@ -310,9 +310,20 @@ class Doli_Order extends Post_Class {
 		if ( $count && ! empty( $doli_orders ) ) {
 			return count( $doli_orders );
 		} else {
-			return 0;
+			return $this->convert_to_wp_order_format( $doli_orders );
 		}
 	}
+
+	// public function get( $args = array(), $single = false ) {
+	// 	$route = 'orders?id=' . $args['id'] . '&sortfield=t.rowid&sortorder=DESC';
+	// 	$doli_orders = Request_Util::get( $route );
+
+	// 	if ( ! empty( $doli_orders ) ) {
+	// 		$doli_orders = $this->convert_to_wp_order_format( $doli_orders );
+	// 	}
+
+	// 	return $doli_orders;
+	// }
 
 	/**
 	 * Ajoute une ligne sur la commande.

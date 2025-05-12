@@ -45,17 +45,54 @@ class Product_Action {
 	 * @version 2.0.0
 	 */
 	public function callback_admin_menu() {
-//		$hook = add_submenu_page( 'wpshop', __( 'Products', 'wpshop' ), __( 'Products', 'wpshop' ), 'manage_options', 'wps-product', array( $this, 'callback_add_menu_page' ) );
-//		if ( ! Settings::g()->dolibarr_is_active() ) {
-//			add_submenu_page( 'wpshop', __( 'Add', 'wpshop' ), __( 'Add', 'wpshop' ), 'manage_options', 'post-new.php?post_type=wps-product' );
-//		}
 		if ( user_can( get_current_user_id(), 'manage_options' ) ) {
-			CMH::register_menu( 'wpshop', __( 'Products', 'wpshop' ), __( 'Products', 'wpshop' ), 'manage_options', 'wps-product', array( $this, 'callback_add_menu_page' ), 'fas fa-cube', 3 );
+			// Add Products as a submenu of the WPShop main menu
+			add_submenu_page(
+				'wpshop', // Parent menu slug
+				__( 'Products', 'wpshop' ),
+				__( 'Products', 'wpshop' ),
+				'manage_options',
+				'wps-product',
+				array( $this, 'display_product_list_page' )
+			);
+			
+			// if ( ! Settings::g()->dolibarr_is_active() ) {
+			// 	add_submenu_page(
+			// 		'wpshop', // Parent menu slug
+			// 		__( 'Add Product', 'wpshop' ),
+			// 		__( 'Add Product', 'wpshop' ),
+			// 		'manage_options',
+			// 		'post-new.php?post_type=wps-product',
+			// 		null
+			// 	);
+			// }
 		}
-		if ( ! Settings::g()->dolibarr_is_active() ) {
-//			add_submenu_page( 'wpshop', __( 'Add', 'wpshop' ), __( 'Add', 'wpshop' ), 'manage_options', 'post-new.php?post_type=wps-product' );
-			CMH::register_menu( 'wpshop', __( 'Add', 'wpshop' ), __( 'Add', 'wpshop' ), 'manage_options', 'post-new.php?post_type=wps-product' );
-		}
+	}
+	
+	/**
+	 * Display the product list using WP_List_Table
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 */
+	public function display_product_list_page() {
+		require_once(ABSPATH . 'wp-admin/includes/class-wp-list-table.php');
+		require_once(plugin_dir_path(__FILE__) . 'class-product-list-table.php');
+		
+		$product_list_table = new Product_List_Table();
+		$product_list_table->prepare_items();
+		
+		echo '<div class="wrap wpeo-wrap">';
+		echo '<h1>' . esc_html__('Products', 'wpshop') . ' <a href="' . esc_url(admin_url('post-new.php?post_type=wps-product')) . '" class="page-title-action">' . esc_html__('Add New', 'wpshop') . '</a></h1>';
+		
+		// Display search box
+		echo '<form method="post">';
+		$product_list_table->search_box(__('Search Products', 'wpshop'), 'product-search');
+		echo '</form>';
+		
+		// Display the table
+		$product_list_table->display();
+		echo '</div>';
 	}
 
 	/**

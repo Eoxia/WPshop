@@ -60,20 +60,17 @@ class Third_Party_Action {
 	 * @version 2.4.0
 	 */
 	public function callback_admin_menu() {
-//		$hook = add_submenu_page(
-//			'wpshop',
-//			__( 'Third Parties', 'wpshop' ),
-//			__( 'Third Parties', 'wpshop' ),
-//			'manage_options',
-//			'wps-third-party',
-//			array( $this, 'callback_add_menu_page' )
-//		);
-//
-//		if ( ! isset( $_GET['id'] ) ) {
-//			add_action( 'load-' . $hook, array( $this, 'callback_add_screen_option' ) );
-//		}
-		if ( user_can( get_current_user_id(), 'manage_options' ) ) {
-			CMH::register_menu( 'wpshop', __( 'Third Parties', 'wpshop' ), __( 'Third Parties', 'wpshop' ), 'manage_options', 'wps-third-party', array( $this, 'callback_add_menu_page' ), 'fas fa-building', 2 );
+		$hook = add_submenu_page(
+			'wpshop',
+			__( 'Third Parties', 'wpshop' ),
+			__( 'Third Parties', 'wpshop' ),
+			'manage_options',
+			'wps-third-party',
+			array( $this, 'callback_add_menu_page' )
+		);
+
+		if ( ! isset( $_GET['id'] ) ) {
+			add_action( 'load-' . $hook, array( $this, 'callback_add_screen_option' ) );
 		}
 	}
 
@@ -81,7 +78,7 @@ class Third_Party_Action {
 	 * Appel la vue "main" du module "Third Party".
 	 *
 	 * @since   2.0.0
-	 * @version 2.0.0
+	 * @version 2.4.0
 	 */
 	public function callback_add_menu_page() {
 		// If it is a single page.
@@ -103,51 +100,38 @@ class Third_Party_Action {
 
 			View_Util::exec( 'wpshop', 'third-parties', 'single', array( 'third_party' => $third_party, 'doli_url' => $dolibarr_url ) );
 		} else {
-			// Or it is the listing.
-			$per_page = get_user_meta( get_current_user_id(), Third_Party::g()->option_per_page, true );
+			 // Listing page - afficher directement sans utiliser la vue main.view.php
+			require_once( WP_PLUGIN_DIR . '/wpshop/modules/third-parties/class-third-party-list-table.php' );
+			
+			// Get dolibarr options
 			$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
+			
+			// Affichage direct du tableau
+			?>
+			<div class="wrap wpeo-wrap">
+				<h1 class="wp-heading-inline"><?php esc_html_e( 'Third Parties', 'wpshop' ); ?></h1>
 
-			$dolibarr_create_tier    = $dolibarr_option['dolibarr_create_tier'];
-			$dolibarr_url            = $dolibarr_option['dolibarr_url'];
+				<?php if ( ! empty( $dolibarr_option['dolibarr_create_tier'] ) && ! empty( $dolibarr_option['dolibarr_url'] ) ) : ?>
+					<a href="<?php echo esc_url( $dolibarr_option['dolibarr_url'] . '/societe/card.php?action=create&backtopage=' . urlencode( admin_url( 'admin.php?page=wps-third-party' ) ) ); ?>" class="page-title-action">
+						<?php esc_html_e( 'Add Third Party in Dolibarr', 'wpshop' ); ?>
+					</a>
+				<?php endif; ?>
 
-			if ( empty( $per_page ) || 1 > $per_page ) {
-				$per_page = Third_Party::g()->limit;
-			}
+				<hr class="wp-header-end">
 
-			$s     = ! empty( $_GET['s'] ) ? sanitize_text_field( $_GET['s'] ) : '';
-			$count = Third_Party::g()->search( $s, array(), true );
-
-			$number_page  = ceil( $count / $per_page );
-			$current_page = isset( $_GET['current_page'] ) ? (int) $_GET['current_page'] : 1;
-
-			$base_url = admin_url( 'admin.php?page=wps-third-party' );
-
-			$begin_url = $base_url . '&current_page=1';
-			$end_url   = $base_url . '&current_page=' . $number_page;
-
-			$prev_url = $base_url . '&current_page=' . ( $current_page - 1 );
-			$next_url = $base_url . '&current_page=' . ( $current_page + 1 );
-
-			if ( ! empty( $s ) ) {
-				$begin_url .= '&s=' . $s;
-				$end_url   .= '&s=' . $s;
-				$prev_url  .= '&s=' . $s;
-				$next_url  .= '&s=' . $s;
-			}
-
-			View_Util::exec( 'wpshop', 'third-parties', 'main', array(
-				'number_page'  => $number_page,
-				'current_page' => $current_page,
-				'count'        => $count,
-				'begin_url'    => $begin_url,
-				'end_url'      => $end_url,
-				'prev_url'     => $prev_url,
-				'next_url'     => $next_url,
-				's'            => $s,
-
-				'dolibarr_create_tier' => $dolibarr_create_tier,
-				'dolibarr_url'         => $dolibarr_url,
-			) );
+				<div id="poststuff">
+					<form id="wps-third-party-list" method="get">
+						<input type="hidden" name="page" value="wps-third-party" />
+						<?php
+							$list_table = new Third_Party_List_Table();
+							$list_table->prepare_items();
+							$list_table->search_box( __( 'Search', 'wpshop' ), 'third-party' );
+							$list_table->display();
+						?>
+					</form>
+				</div>
+			</div>
+			<?php
 		}
 	}
 
@@ -155,7 +139,7 @@ class Third_Party_Action {
 	 * Ajoute le menu "Options de l'écran" pour les tiers.
 	 *
 	 * @since   2.0.0
-	 * @version 2.0.0.
+	 * @version 2.4.0
 	 */
 	public function callback_add_screen_option() {
 		add_screen_option(

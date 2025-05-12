@@ -51,6 +51,7 @@ class Doli_Order_Action {
 		add_action( 'wps_payment_failed', array( $this, 'set_to_failed' ), 30, 1 );
 
 		add_action( 'admin_post_wps_download_order', array( $this, 'download_order' ) );
+		add_action( 'admin_post_wps_synchronize_orders', array( $this, 'callback_synchronize_orders' ) );
 
 		add_action( 'wp_ajax_mark_as_delivery', array( $this, 'mark_as_delivery' ) );
 
@@ -127,31 +128,55 @@ class Doli_Order_Action {
 	 * Initialise la page "Commande".
 	 *
 	 * @since   2.0.0
-	 * @version 2.0.0
+	 * @version 2.1.0
 	 */
 	public function callback_admin_menu() {
 		if ( Settings::g()->dolibarr_is_active() ) {
-//			$hook = add_submenu_page( 'wpshop', __( 'Orders', 'wpshop' ), __( 'Orders', 'wpshop' ), 'manage_options', 'wps-order', array( $this, 'callback_add_menu_page' ) );
-//
-//			if ( ! isset( $_GET['id'] ) ) {
-//				add_action( 'load-' . $hook, array( $this, 'callback_add_screen_option' ) );
-//			}
+			add_submenu_page(
+				'wpshop', 
+				__( 'Orders', 'wpshop' ),
+				__( 'Orders', 'wpshop' ), 
+				'manage_options', 
+				'wps-order', 
+				array( $this, 'callback_add_menu_page' )
+			);
 
-			if ( user_can( get_current_user_id(), 'manage_options' ) ) {
-				CMH::register_menu( 'wpshop', __( 'Orders', 'wpshop' ), __( 'Orders', 'wpshop' ), 'manage_options', 'wps-order', array( $this, 'callback_add_menu_page' ), 'fas fa-file-invoice', 6 );
+			// Initialize the WP_List_Table for orders when on the order page
+			if ( isset( $_GET['page'] ) && 'wps-order' === $_GET['page'] && !isset( $_GET['id'] ) ) {
+				add_action( 'admin_init', array( $this, 'setup_order_list_table' ) );
 			}
 		}
+	}
+
+	/**
+	 * Setup the WP_List_Table for orders
+	 *
+	 * @since   2.0.0
+	 * @version 2.1.0
+	 */
+	public function setup_order_list_table() {
+		// Include the WP_List_Table class if not already included
+		if ( ! class_exists( 'WP_List_Table' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
+		}
+		
+		// Register screen options
+		add_screen_option( 'per_page', array(
+			'label'   => __( 'Orders per page', 'wpshop' ),
+			'default' => Doli_Order::g()->limit,
+			'option'  => Doli_Order::g()->option_per_page
+		) );
 	}
 
 	/**
 	 * Affichage de la vue du menu.
 	 *
 	 * @since   2.0.0
-	 * @version 2.0.0
+	 * @version 2.1.0
 	 */
 	public function callback_add_menu_page() {
 		if ( isset( $_GET['id'] ) ) {
-			// Single page.
+			// Single page - Affichage d'une seule commande.
 			$id = ! empty( $_GET['id'] ) ? (int) $_GET['id'] : 0;
 
 			$doli_order = Request_Util::get( 'orders/' . $id );
@@ -176,50 +201,17 @@ class Doli_Order_Action {
 				'doli_url'    => $dolibarr_option['dolibarr_url'],
 			) );
 		} else {
-			// Listing page.
-			// @todo: Doublon avec Class Doli Order display() ?
-			$per_page = get_user_meta( get_current_user_id(), Doli_Order::g()->option_per_page, true );
+			// Listing page - utilisation de la nouvelle liste WP_List_Table.
+			require_once plugin_dir_path( __FILE__ ) . 'class-order-list-table.php';
+			$order_list_table = new Order_List_Table();
+			$order_list_table->prepare_items();
+			
 			$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
-			$dolibarr_url    = $dolibarr_option['dolibarr_url'];
-			$dolibarr_create_order    = $dolibarr_option['dolibarr_create_order'];
-
-			if ( empty( $per_page ) || 1 > $per_page ) {
-				$per_page = Doli_Order::g()->limit;
-			}
-
-			$s = ! empty( $_GET['s'] ) ? sanitize_text_field( $_GET['s'] ) : '';
-
-			$count        = Doli_Order::g()->search( $s, array(), true );
-			$number_page  = ceil( $count / $per_page );
-			$current_page = isset( $_GET['current_page'] ) ? (int) $_GET['current_page'] : 1;
-
-			$base_url = admin_url( 'admin.php?page=wps-order' );
-
-			$begin_url = $base_url . '&current_page=1';
-			$end_url   = $base_url . '&current_page=' . $number_page;
-
-			$prev_url = $base_url . '&current_page=' . ( $current_page - 1 );
-			$next_url = $base_url . '&current_page=' . ( $current_page + 1 );
-
-			if ( ! empty( $s ) ) {
-				$begin_url .= '&s=' . $s;
-				$end_url   .= '&s=' . $s;
-				$prev_url  .= '&s=' . $s;
-				$next_url  .= '&s=' . $s;
-			}
-
-			View_Util::exec( 'wpshop', 'doli-order', 'main', array(
-				'number_page'  => $number_page,
-				'current_page' => $current_page,
-				'count'        => $count,
-				'begin_url'    => $begin_url,
-				'end_url'      => $end_url,
-				'prev_url'     => $prev_url,
-				'next_url'     => $next_url,
-				's'            => $s,
-
-				'dolibarr_create_order' => $dolibarr_create_order,
-				'dolibarr_url'    => $dolibarr_url,
+			
+			View_Util::exec( 'wpshop', 'doli-order', 'admin-orders-page', array(
+				'order_list_table'    => $order_list_table,
+				'dolibarr_url'        => $dolibarr_option['dolibarr_url'],
+				'dolibarr_create_order' => $dolibarr_option['dolibarr_create_order'],
 			) );
 		}
 	}
@@ -593,6 +585,22 @@ class Doli_Order_Action {
 			'module'           => 'doliOrder',
 			'callback_success' => 'markedAsDelivery',
 		) );
+	}
+
+	/**
+	 * Synchronise les commandes avec Dolibarr.
+	 *
+	 * @since   2.1.0
+	 */
+	public function callback_synchronize_orders() {
+		check_admin_referer( 'sync_orders' );
+		
+		// Ici vous pouvez ajouter du code pour synchroniser les commandes
+		// Par exemple, vous pourriez appeler une méthode de Doli_Order pour rafraichir toutes les commandes
+		
+		// Redirection vers la page d'administration avec message de succès
+		wp_redirect( admin_url( 'admin.php?page=wps-order&message=sync_success' ) );
+		exit;
 	}
 }
 

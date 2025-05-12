@@ -5,34 +5,51 @@
 		border: 1px solid rgba(0,0,0,0.1);
 		display: flex;
 		flex-direction: row;
-		flex-wrap: nowrap;
+		flex-wrap: wrap; /* Changed from nowrap to wrap */
+		align-items: center;
 		padding: 0.5em;
+		border-radius: 1.5em;
+		min-width: 0; /* Add this to prevent container from expanding beyond its parent */
+		overflow: hidden; /* Hide overflow content */
 
 		ul {
 			margin: 0;
+			max-width: 100%; /* Ensure lists don't exceed container width */
 		}
 	}
 
 	.sync-id {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap; /* Allow wrapping of elements */
+		gap: 0.5em;
+		align-items: center;
+		height: 100%;
+		min-width: 0; /* Allow the flex items to shrink below their minimum content size */
+		max-width: 100%; /* Ensure it doesn't exceed parent width */
+
 		li {
-			display: block;
-			margin-bottom: 0.4em;
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			gap: 0.4em;
+			margin-bottom: 0 !important;
+			max-width: 100%; /* Ensure list items don't exceed container width */
+			white-space: nowrap; /* Keep text on a single line */
+			overflow: hidden; /* Hide overflowing text */
+			text-overflow: ellipsis; /* Show ellipsis for overflow text */
 
 			&::after {
 				display: block;
 				content: '';
 				clear: both;
 			}
-			&:last-child {
-				margin-bottom: 0;
-			}
 		}
 		img {
-			width: 20px;
+			width: 15px;
 			height: auto;
 			border-radius: 50%;
-			float: left;
-			margin-right: 0.4em;
+			flex-shrink: 0; /* Prevent images from shrinking */
 		}
 	}
 
@@ -41,12 +58,12 @@
 
 		.button-synchro {
 			float: left;
-			width: 25px;
-			height: 25px;
+			width: 20px;
+			height: 20px;
 			background: rgba(0,0,0,0.1);
 			color: rgba(0,0,0,0.6);
 			text-align: center;
-			line-height: 25px;
+			// line-height: 25px;
 			border-radius: 50%;
 			@include transition();
 
@@ -66,10 +83,9 @@
 
 		.statut {
 			float: left;
-			width: 25px;
-			height: 25px;
+			width: 20px;
+			height: 20px;
 			border-radius: 50%;
-			margin-left: 0.6em;
 			background: rgba(0,0,0,0.1);
 
 			&.statut-grey {
