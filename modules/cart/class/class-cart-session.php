@@ -294,13 +294,19 @@ class Cart_Session extends Singleton_Util {
 	}
 
 	public function increment_product( $id ) {
-		if ( ! empty( $this->cart_contents ) ) {
+		if ( $this->has_product( $id ) ) {
 			foreach ( $this->cart_contents as $key => $cart_content ) {
 				if ( $cart_content['id'] == $id ) {
 					$this->cart_contents[ $key ]['qty'] += 1;
 					break;
 				}
 			}
+		} else {
+			$product = Product::g()->get( array( 'id' => $id ), true );
+			$this->cart_contents[] = array_merge(
+				$product->data,
+				[ 'qty' => 1 ]
+			);
 		}
 
 		$this->update_session();
