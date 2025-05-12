@@ -5,7 +5,7 @@
   "version": "0.1.0",
   "title": "Checkout Block",
   "category": "wpshop",
-  "icon": "smiley",
+  "icon": "cart",
   "description": "Example block scaffolded with Create Block tool.",
   "example": {},
   "supports": {
