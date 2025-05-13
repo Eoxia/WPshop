@@ -1,0 +1,81 @@
+/*!******************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./blocks/src/cart-block/inner-blocks/cart-products/scss/editor.scss ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************/
+.wps-list-product .wps-product {
+  display: flex;
+  background: #fff;
+  padding: 1em;
+  margin-bottom: 0.6em;
+  position: relative;
+}
+.wps-list-product .wps-product:last-child {
+  margin-bottom: 0;
+}
+.wps-list-product .wps-product .wps-product-thumbnail, .wps-list-product .wps-product .wps-product-content {
+  margin: auto 0;
+}
+.wps-list-product .wps-product .wps-product-thumbnail {
+  min-width: 20%;
+  width: 20%;
+  margin-left: 0.6em;
+}
+.wps-list-product .wps-product .wps-product-thumbnail .attachment-wps-product-thumbnail {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.wps-list-product .wps-product .wps-delete-product {
+  position: absolute;
+  top: 0.6em;
+  left: 0.6em;
+  color: rgba(0, 0, 0, 0.4);
+}
+.wps-list-product .wps-product .wps-delete-product:hover {
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0.9);
+}
+.wps-list-product .wps-product .wps-product-content {
+  width: 100%;
+  line-height: 1.2;
+}
+.wps-list-product .wps-product .wps-product-content .wps-product-title {
+  font-size: 20px;
+  color: rgba(0, 0, 0, 0.9);
+  line-height: 1.2;
+}
+.wps-list-product .wps-product .wps-product-content .wps-product-attributes {
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+.wps-list-product .wps-product .wps-product-content .wps-product-attributes .wps-product-attributes-item {
+  list-style-type: none;
+  margin: 0 0 0 0.2em;
+  color: rgba(0, 0, 0, 0.4);
+  font-size: 14px;
+}
+.wps-list-product .wps-product .wps-product-content .wps-product-attributes .wps-product-attributes-icon {
+  margin-left: 0.2em;
+}
+.wps-list-product .wps-product .wps-product-content .wps-product-footer {
+  display: flex;
+  margin-top: 0.8em;
+}
+.wps-list-product .wps-product .wps-product-content .wps-product-footer .wps-product-price, .wps-list-product .wps-product .wps-product-content .wps-product-footer .wps-product-quantity {
+  font-size: 16px;
+  font-weight: 700;
+  color: rgba(0, 0, 0, 0.8);
+}
+.wps-list-product .wps-product .wps-product-content .wps-product-footer .wps-product-price .wps-quantity-plus, .wps-list-product .wps-product .wps-product-content .wps-product-footer .wps-product-price .wps-quantity-minus, .wps-list-product .wps-product .wps-product-content .wps-product-footer .wps-product-quantity .wps-quantity-plus, .wps-list-product .wps-product .wps-product-content .wps-product-footer .wps-product-quantity .wps-quantity-minus {
+  position: relative;
+}
+.wps-list-product .wps-product .wps-product-content .wps-product-footer .wps-product-price .wps-quantity-plus:focus, .wps-list-product .wps-product .wps-product-content .wps-product-footer .wps-product-price .wps-quantity-plus:active, .wps-list-product .wps-product .wps-product-content .wps-product-footer .wps-product-price .wps-quantity-minus:focus, .wps-list-product .wps-product .wps-product-content .wps-product-footer .wps-product-price .wps-quantity-minus:active, .wps-list-product .wps-product .wps-product-content .wps-product-footer .wps-product-quantity .wps-quantity-plus:focus, .wps-list-product .wps-product .wps-product-content .wps-product-footer .wps-product-quantity .wps-quantity-plus:active, .wps-list-product .wps-product .wps-product-content .wps-product-footer .wps-product-quantity .wps-quantity-minus:focus, .wps-list-product .wps-product .wps-product-content .wps-product-footer .wps-product-quantity .wps-quantity-minus:active {
+  top: 2px;
+}
+.wps-list-product .wps-product .wps-product-content .wps-product-footer .wps-product-price .wps-quantity-plus:hover, .wps-list-product .wps-product .wps-product-content .wps-product-footer .wps-product-price .wps-quantity-minus:hover, .wps-list-product .wps-product .wps-product-content .wps-product-footer .wps-product-quantity .wps-quantity-plus:hover, .wps-list-product .wps-product .wps-product-content .wps-product-footer .wps-product-quantity .wps-quantity-minus:hover {
+  opacity: 0.6;
+  cursor: pointer;
+}
+.wps-list-product .wps-product .wps-product-content .wps-product-footer .wps-product-price {
+  margin-right: auto;
+}

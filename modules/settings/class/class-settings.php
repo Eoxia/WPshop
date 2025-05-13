@@ -179,22 +179,6 @@ class Settings extends Singleton_Util {
 
 		return false;
 	}
-
-	/**
-	 * Vérifie si la séparation des produits est activé.
-	 *
-	 * @todo a revoir
-	 *
-	 * @since   2.1.0
-	 * @version 2.1.0
-	 *
-	 * @return boolean true ou false.
-	 */
-	public function split_product() {
-		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
-
-		return $dolibarr_option['split_product'];
-	}
 }
 
 Settings::g();

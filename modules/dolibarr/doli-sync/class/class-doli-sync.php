@@ -121,14 +121,10 @@ class Doli_Sync extends Singleton_Util {
 	 */
 	public function count_entries( $sync_info ) {
 		if ( ! empty( $sync_info['endpoint'] ) ) {
-			$args = array(
+			$args = http_build_query( [
 				'limit' => $this->limit_entries_by_request,
 				'page'  => $sync_info['page'],
-			);
-
-			$args = implode( '&', array_map( function( $v, $k ) {
-				return $k . '=' . $v;
-			}, $args, array_keys( $args ) ) );
+			] );
 
 			$tmp = Request_Util::get( $sync_info['endpoint'] . '?' . $args );
 

@@ -57,6 +57,10 @@ class Doli_Proposals_Action {
 				'callback' => array( $this, 'metabox_proposal_review' ),
 			),
 		);
+
+		// Include the list table class file
+		require_once(ABSPATH . 'wp-admin/includes/class-wp-list-table.php');
+		require_once(plugin_dir_path(__FILE__) . 'class-proposals-list-table.php');
 	}
 
 	/**
@@ -67,15 +71,17 @@ class Doli_Proposals_Action {
 	 */
 	public function callback_admin_menu() {
 		if ( Settings::g()->dolibarr_is_active() ) {
+			$hook = add_submenu_page(
+				'wpshop', // Parent menu slug (WPshop main menu)
+				__( 'Proposals', 'wpshop' ),
+				__( 'Proposals', 'wpshop' ),
+				'manage_options',
+				'wps-proposal-doli',
+				array( $this, 'callback_add_menu_page' )
+			);
 
-//			$hook = add_submenu_page( 'wpshop', __( 'Dolibarr Proposals', 'wpshop' ), __( 'Dolibarr Proposals', 'wpshop' ), 'manage_options', 'wps-proposal-doli', array( $this, 'callback_add_menu_page' ) );
-//
-//			if ( ! isset( $_GET['id'] ) ) {
-//				add_action( 'load-' . $hook, array( $this, 'callback_add_screen_option' ) );
-//			}
-
-			if ( user_can( get_current_user_id(), 'manage_options' ) ) {
-				CMH::register_menu( 'wpshop', __( 'Dolibarr Proposals', 'wpshop' ), __( 'Dolibarr Proposals', 'wpshop' ), 'manage_options', 'wps-proposal-doli', array( $this, 'callback_add_menu_page' ), 'fas fa-file-signature', 5 );
+			if ( ! isset( $_GET['id'] ) ) {
+				add_action( 'load-' . $hook, array( $this, 'callback_add_screen_option' ) );
 			}
 		}
 	}
@@ -109,7 +115,6 @@ class Doli_Proposals_Action {
 			$doli_proposal   = Request_Util::get( 'proposals/' . $id );
 			$wp_proposal     = Proposals::g()->get( array( 'schema' => true ), true );
 			$wp_proposal     = Doli_Proposals::g()->doli_to_wp( $doli_proposal, $wp_proposal, true );
-			//$proposal      = Proposals::g()->get( array( 'id' => $id ), true );
 			$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
 
 			$third_party = Third_Party::g()->get( array( 'id' => $wp_proposal->data['parent_id'] ), true );
@@ -126,49 +131,21 @@ class Doli_Proposals_Action {
 				'doli_url'    => $dolibarr_option['dolibarr_url'],
 			) );
 		} else {
-			$per_page = get_user_meta( get_current_user_id(), Doli_Proposals::g()->option_per_page, true );
-			$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
-			$dolibarr_url = $dolibarr_option['dolibarr_url'];
-			$dolibarr_create_proposal    = $dolibarr_option['dolibarr_create_proposal'];
-
-			if ( empty( $per_page ) || 1 > $per_page ) {
-				$per_page = Third_Party::g()->limit;
-			}
-
-			$s = ! empty( $_GET['s'] ) ? sanitize_text_field( $_GET['s'] ) : '';
-
-			$count        = Doli_Proposals::g()->search( $s, array(), true );
-			$number_page  = ceil( $count / $per_page );
-			$current_page = isset( $_GET['current_page'] ) ? (int) $_GET['current_page'] : 1;
-
-			$base_url = admin_url( 'admin.php?page=wps-proposal-doli' );
-
-			$begin_url = $base_url . '&current_page=1';
-			$end_url   = $base_url . '&current_page=' . $number_page;
-
-			$prev_url = $base_url . '&current_page=' . ( $current_page - 1 );
-			$next_url = $base_url . '&current_page=' . ( $current_page + 1 );
-
-			if ( ! empty( $s ) ) {
-				$begin_url .= '&s=' . $s;
-				$end_url   .= '&s=' . $s;
-				$prev_url  .= '&s=' . $s;
-				$next_url  .= '&s=' . $s;
-			}
-
-			View_Util::exec( 'wpshop', 'doli-proposals', 'main', array(
-				'number_page'  => $number_page,
-				'current_page' => $current_page,
-				'count'        => $count,
-				'begin_url'    => $begin_url,
-				'end_url'      => $end_url,
-				'prev_url'     => $prev_url,
-				'next_url'     => $next_url,
-				's'            => $s,
-
-				'dolibarr_create_proposal' => $dolibarr_create_proposal,
-				'dolibarr_url' => $dolibarr_url,
-			) );
+			// Use WordPress list table
+			$proposals_list_table = new Proposals_List_Table();
+			$proposals_list_table->prepare_items();
+			
+			echo '<div class="wrap wpeo-wrap">';
+			echo '<h1 class="wp-heading-inline">' . __( 'Propositions Commerciales', 'wpshop' ) . '</h1>';
+			
+			// Add search form
+			echo '<form method="post">';
+			$proposals_list_table->search_box( __( 'Rechercher', 'wpshop' ), 'proposals-search' );
+			echo '</form>';
+			
+			// Display the list table
+			$proposals_list_table->display();
+			echo '</div>';
 		}
 	}
 

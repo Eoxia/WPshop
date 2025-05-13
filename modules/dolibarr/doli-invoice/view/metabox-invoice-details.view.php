@@ -26,7 +26,7 @@ defined( 'ABSPATH' ) || exit;
 	<h3 class="metabox-title"><?php esc_html_e( 'Payment', 'wpshop' ); ?></h3>
 	<p><strong><?php esc_html_e( 'Order', 'wpshop' ); ?></strong> : <?php echo ! empty( $invoice->data['order'] ) ? '<a href="' . admin_url( 'admin.php?page=wps-order&id=' . $invoice->data['order']->data['external_id'] ) . '">' . $invoice->data['order']->data['title'] . '</a>' : '-'; ?>
 	<p><strong><?php esc_html_e( 'Statut', 'wpshop' ); ?></strong> : <?php echo Doli_Statut::g()->display_status( $invoice ); ?></p>
-	<p><strong><?php esc_html_e( 'Payment method', 'wpshop' ); ?></strong> : <?php echo esc_html( Payment::g()->get_payment_title( $invoice->data['payment_method'] ) ); ?></p>
+	<!-- <p><strong><?php esc_html_e( 'Payment method', 'wpshop' ); ?></strong> : <?php echo esc_html( Payment::g()->get_payment_title( $invoice->data['payment_method'] ) ); ?></p> -->
 </div>
 
 <div class="wps-metabox gridw-3 wps-customer-address">

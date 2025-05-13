@@ -39,6 +39,6 @@ add_filter('site_transient_update_plugins',
 				unset( $value->response[plugin_basename(__FILE__)] );
 			}
 		}
-			return $value;
+		return $value;
 	}
 );

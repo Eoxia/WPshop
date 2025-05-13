@@ -212,7 +212,7 @@ class Doli_Proposals extends Singleton_Util {
 		if ( $count && ! empty( $doli_proposals ) ) {
 			return count( $doli_proposals );
 		} else {
-			return 0;
+			return $this->convert_to_wp_proposal_format( $doli_proposals );
 		}
 	}
 

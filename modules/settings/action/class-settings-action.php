@@ -49,9 +49,9 @@ class Settings_Action {
 	 * @version 2.4.0
 	 */
 	public function callback_admin_menu() {
-		//add_submenu_page( 'wpshop', __( 'Settings', 'wpshop' ), __( 'Settings', 'wpshop' ), 'manage_options', 'wps-settings', array( $this, 'callback_add_menu_page' ) );
 		if ( user_can( get_current_user_id(), 'manage_options' ) ) {
-			CMH::register_menu( 'wpshop', __( 'Settings', 'wpshop' ), __( 'Settings', 'wpshop' ), 'manage_options', 'wps-settings', array( $this, 'callback_add_menu_page' ), 'fas fa-cog', 9 );
+			add_submenu_page( 'wpshop', __( 'Settings', 'wpshop' ), __( 'Settings', 'wpshop' ), 'manage_options', 'wps-settings', array( $this, 'callback_add_menu_page' ) );
+			// CMH::register_menu( 'wpshop', __( 'Settings', 'wpshop' ), __( 'Settings', 'wpshop' ), 'manage_options', 'wps-settings', array( $this, 'callback_add_menu_page' ), 'fas fa-cog', 9 );
 		}
 	}
 
@@ -147,7 +147,7 @@ class Settings_Action {
 
 		update_option( 'wps_dolibarr', $dolibarr_option );
 
-		$response = Request_Util::get( 'status' );
+		$response = Request_Util::get( 'doliwpshop/checkPermissions' );
 		if ( false === $response ) {
 			$dolibarr_option['error'] = __( 'WPshop cannot connect to dolibarr. Please check your settings', 'wpshop' );
 		} else {
@@ -222,7 +222,7 @@ class Settings_Action {
 
 		update_option( 'wps_dolibarr', $dolibarr_option );
 
-		$response = Request_Util::get( 'status' );
+		$response = Request_Util::get( 'doliwpshop/checkPermissions' );
 		if ( false === $response ) {
 			$dolibarr_option['error'] = __( 'WPshop cannot connect to dolibarr. Please check your settings', 'wpshop' );
 		} else {

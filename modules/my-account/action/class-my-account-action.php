@@ -25,7 +25,6 @@ class My_Account_Action {
 	 * @version 2.0.0
 	 */
 	public function __construct() {
-		add_action( 'init', array( My_Account_Shortcode::g(), 'init_shortcode' ) );
 		add_action( 'init', array( My_Account::g(), 'init_endpoint' ) );
 
 		add_action( 'wps_before_checkout_form', array( My_Account::g(), 'checkout_form_login' ) );

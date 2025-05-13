@@ -60,6 +60,8 @@ class My_Account extends Singleton_Util {
 			flush_rewrite_rules(false);
 			update_option('plugin_permalinks_flushed', 1);
 		}
+
+		add_action( 'rest_api_init', array( $this, 'init_rest_api' ) );
 	}
 
 	/**
@@ -171,6 +173,68 @@ class My_Account extends Singleton_Util {
 		delete_transient( 'wps_update_account_details_errors' );
 
 		include( Template_Util::get_template_part( 'my-account', 'my-account-details' ) );
+	}
+
+	public function init_rest_api() {
+		register_rest_route( 'wp-shop/v1', '/account', array(
+			'methods'  => 'GET',
+			'callback' => array( $this, 'get_account_details' ),
+			'permission_callback' => function () {
+				return is_user_logged_in();
+			},
+		) );
+
+		register_rest_route( 'wp-shop/v1', '/account/orders', array(
+			'methods'  => 'GET',
+			'callback' => array( $this, 'get_account_orders' ),
+			'permission_callback' => function () {
+				return is_user_logged_in();
+			},
+		) );
+	}
+
+	public function get_account_details() {
+		$contact     = User::g()->get( array( 'id' => get_current_user_id() ), true );
+		$third_party = Third_Party::g()->get( array( 'id' => $contact->data['third_party_id'] ), true );
+
+		return array(
+			'contact'     => $contact,
+			'third_party' => $third_party,
+		);
+	}
+
+	public function get_account_orders() {
+		$contact     = User::g()->get( array( 'id' => get_current_user_id() ), true );
+		$third_party = Third_Party::g()->get( array( 'id' => $contact->data['third_party_id'] ), true );
+		$orders      = array();
+
+		if ( ! empty( $third_party->data['id'] ) && ! empty( $third_party->data['external_id']) ) {
+			$data = array(
+				'sortfield'      => 't.rowid',
+				'sortorder'      => 'DESC',
+				'limit'          => 100,
+				'thirdparty_ids' => $third_party->data['external_id'],
+			);
+
+			$doli_orders = Request_Util::g()->get( 'orders?' . http_build_query( $data ) );
+			$orders      = Doli_Order::g()->convert_to_wp_order_format( $doli_orders );
+			foreach ( $orders as $key => $order ) {
+				$orders[ $key ]->data['download'] = admin_url( 'admin-post.php?action=wps_download_order&_wpnonce=' . wp_create_nonce( 'download_order' ) . '&order_id=' . $order->data['external_id'] );
+				$orders[ $key ]->data['status']   = Doli_Statut::g()->get_status( $order );
+				foreach ($order->data['lines'] as $idx => $line) {
+					if ($line['thumbnail_id']) {
+						$orders[ $key ]->data['lines'][ $idx ]['thumbnail'] = wp_get_attachment_image( $line['thumbnail_id'], 'thumbnail', '', array(
+							'class'    => 'attachment-wps-product-thumbnail',
+							'itemprop' => 'image',
+						) ); 
+					} else {
+						$orders[ $key ]->data['lines'][ $idx ]['thumbnail'] = '<img src="' . PLUGIN_WPSHOP_URL . '/core/asset/image/default-product-thumbnail-min.jpg" class="attachment-wps-product-thumbnail" itemprop="image" /> ';
+					}
+				}
+			}
+		}
+
+		return $orders;
 	}
 
 	/**

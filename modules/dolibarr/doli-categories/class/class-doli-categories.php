@@ -173,7 +173,7 @@ class Doli_Category extends Term_Class {
 
 		if ( ! empty( $doli_categories ) ) {
 			foreach ( $doli_categories as $doli_category ) {
-				$wp_category    = $this->get( array( 'schema' => true ), true );
+				$wp_category     = $this->get( array( 'schema' => true ), true );
 				$wp_categories[] = $this->doli_to_wp( $doli_category, $wp_category);
 			}
 		}
@@ -224,6 +224,16 @@ class Doli_Category extends Term_Class {
 			$notices['messages'][] = sprintf( __( 'Erase data for the product <strong>%s</strong> with the <strong>dolibarr</strong> data', 'wpshop' ), $wp_category->data['name'] );
 		}
 
+		if ($save) {
+			$data_sha = [];
+			$data_sha['doli_id']  = (int) $wp_category->data['external_id'];
+			$data_sha['wp_id']    = $wp_category->data['id'];
+			$data_sha['name']     = $wp_category->data['name'];
+			$data_sha['slug']  	  = $wp_category->data['slug'];
+
+			$wp_category->data['sync_sha_256'] = hash( 'sha256', implode( ',', $data_sha ) );
+		}
+
 		return $wp_category;
 	}
 
@@ -247,11 +257,16 @@ class Doli_Category extends Term_Class {
 		}
 
 		$doli_categories = Request_Util::get( $route );
+		foreach ( $doli_categories as $key => $doli_category ) {
+			if ( $doli_category->array_options->options__wps_id == 0 ) {
+				unset( $doli_categories[$key] );
+			}
+		}
 
 		if ( $count && ! empty( $doli_categories ) ) {
 			return count( $doli_categories );
 		} else {
-			return 0;
+			return $this->convert_to_wp_category_format( $doli_categories );
 		}
 	}
 

@@ -107,12 +107,40 @@ class Doli_Invoice_Action {
 	 */
 	public function callback_admin_menu() {
 		if ( Settings::g()->dolibarr_is_active() ) {
-//			add_submenu_page('wpshop', __('Invoices', 'wpshop'), __('Invoices', 'wpshop'), 'manage_options', 'wps-invoice', array($this, 'callback_add_menu_page'));
+			add_submenu_page(
+				'wpshop', 
+				__( 'Invoices', 'wpshop' ),
+				__( 'Invoices', 'wpshop' ), 
+				'manage_options', 
+				'wps-invoice', 
+				array( $this, 'callback_add_menu_page' )
+			);
 
-			if ( user_can( get_current_user_id(), 'manage_options' ) ) {
-				CMH::register_menu( 'wpshop', __( 'Invoices', 'wpshop' ), __( 'Invoices', 'wpshop' ), 'manage_options', 'wps-invoice', array( $this, 'callback_add_menu_page' ), 'fas fa-file-invoice-dollar', 8 );
+			// Initialize the WP_List_Table for invoices when on the invoice page
+			if ( isset( $_GET['page'] ) && 'wps-invoice' === $_GET['page'] && !isset( $_GET['id'] ) ) {
+				add_action( 'admin_init', array( $this, 'setup_invoice_list_table' ) );
 			}
 		}
+	}
+
+	/**
+	 * Setup the WP_List_Table for invoices
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 */
+	public function setup_invoice_list_table() {
+		// Include the WP_List_Table class if not already included
+		if ( ! class_exists( 'WP_List_Table' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
+		}
+		
+		// Register screen options
+		add_screen_option( 'per_page', array(
+			'label'   => __( 'Invoices per page', 'wpshop' ),
+			'default' => Doli_Invoice::g()->limit,
+			'option'  => Doli_Invoice::g()->option_per_page
+		) );
 	}
 
 	/**
@@ -148,45 +176,22 @@ class Doli_Invoice_Action {
 				'doli_url'    => $dolibarr_option['dolibarr_url'],
 			) );
 		} else {
-			// Listing page.
-			// @todo: Doublon avec Class Doli Order display() ?
-			$per_page = get_user_meta( get_current_user_id(), Doli_Invoice::g()->option_per_page, true );
-
-			if ( empty( $per_page ) || 1 > $per_page ) {
-				$per_page = Doli_Invoice::g()->limit;
-			}
-
-			$s = ! empty( $_GET['s'] ) ? sanitize_text_field( $_GET['s'] ) : '';
-
-			$count        = Doli_Invoice::g()->search( $s, array(), true );
-			$number_page  = ceil( $count / $per_page );
-			$current_page = isset( $_GET['current_page'] ) ? (int) $_GET['current_page'] : 1;
-
-			$base_url = admin_url( 'admin.php?page=wps-invoice' );
-
-			$begin_url = $base_url . '&current_page=1';
-			$end_url   = $base_url . '&current_page=' . $number_page;
-
-			$prev_url = $base_url . '&current_page=' . ( $current_page - 1 );
-			$next_url = $base_url . '&current_page=' . ( $current_page + 1 );
-
-			if ( ! empty( $s ) ) {
-				$begin_url .= '&s=' . $s;
-				$end_url   .= '&s=' . $s;
-				$prev_url  .= '&s=' . $s;
-				$next_url  .= '&s=' . $s;
-			}
-
-			View_Util::exec( 'wpshop', 'doli-invoice', 'main', array(
-				'number_page'  => $number_page,
-				'current_page' => $current_page,
-				'count'        => $count,
-				'begin_url'    => $begin_url,
-				'end_url'      => $end_url,
-				'prev_url'     => $prev_url,
-				'next_url'     => $next_url,
-				's'            => $s,
-			) );
+			 // Create and display WordPress native list table
+			require_once plugin_dir_path( __FILE__ ) . 'class-invoice-list-table.php';
+			$invoice_list_table = new Invoice_List_Table();
+			$invoice_list_table->prepare_items();
+			
+			echo '<div class="wrap wpeo-wrap">';
+			echo '<h1 class="wp-heading-inline">' . __( 'Invoices', 'wpshop' ) . '</h1>';
+			
+			// Add search form
+			echo '<form method="get">';
+			echo '<input type="hidden" name="page" value="wps-invoice" />';
+			$invoice_list_table->search_box( __( 'Search', 'wpshop' ), 'invoice-search' );
+			echo '</form>';
+			
+			$invoice_list_table->display();
+			echo '</div>';
 		}
 	}
 
@@ -203,8 +208,8 @@ class Doli_Invoice_Action {
 		$link_invoice = '';
 
 		if ( ! empty( $invoice ) ) {
-			$invoice->data['payments'] = array();
-			$invoice->data['payments'] = Doli_Payment::g()->get( array( 'post_parent' => $invoice->data['id'] ) );
+			// $invoice->data['payments'] = array();
+			// $invoice->data['payments'] = Doli_Payment::g()->get( array( 'post_parent' => $invoice->data['id'] ) );
 			$link_invoice              = admin_url( 'admin-post.php?action=wps_download_invoice_wpnonce=' . wp_create_nonce( 'download_invoice' ) . '&invoice_id=' . $invoice->data['id'] );
 			if ( isset( $invoice->data['linked_objects_ids']['commande'][0] ) ) {
 				$doli_order = Request_Util::get( 'orders/' . $invoice->data['linked_objects_ids']['commande'][0] );

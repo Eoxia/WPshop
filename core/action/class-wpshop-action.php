@@ -32,7 +32,13 @@ class WPshop_Action {
 		add_action( 'init', array( $this, 'callback_register_session' ), 1 );
 		add_action( 'init', array( $this, 'callback_language' ) );
 		add_action( 'init', array( $this, 'callback_install_default' ) );
+
 		add_action( 'init', array( $this, 'callback_init_block' ) );
+		if ( version_compare( get_bloginfo( 'version' ), '5.8', '>=' ) ) {
+			add_filter( 'block_categories_all', [$this, 'call_back_block_categories'] );
+		} else {
+			add_filter( 'block_categories', [$this, 'call_back_block_categories'] );
+		}
 
 		add_action( 'wp_head', array( $this, 'define_ajax_url' ) );
 
@@ -91,15 +97,89 @@ class WPshop_Action {
 	 * @version 2.0.0
 	 */
 	public function callback_init_block() {
-		wp_localize_script( 'wpshop-products', 'wpshop', array(
-				'homeUrl'        => home_url(),
-				'addToCartNonce' => wp_create_nonce( 'add_to_cart' ),
-			)
-		);
+		$block_build_dir = PLUGIN_WPSHOP_PATH . '/blocks/build/';
+		
+		// Vérifier si le répertoire existe
+		if (!file_exists($block_build_dir) || !is_dir($block_build_dir)) {
+			// Log pour débogage
+			error_log('WPShop: Le répertoire des blocs n\'existe pas: ' . $block_build_dir);
+			return;
+		}
+		
+		$block_dir_urls = scandir($block_build_dir);
 
-		register_block_type( 'wpshop/products', array(
-			'editor_script' => 'wpshop-products',
-		) );
+		foreach ($block_dir_urls as $url) {
+			// Skip directory navigation entries
+			if ($url === '.' || $url === '..') {
+				continue;
+			}
+			
+			$block_dir = $block_build_dir . $url;
+			$block_json_path = $block_dir . '/block.json';
+		
+			if (file_exists($block_json_path)) {
+				// Read block.json to get the block name
+				$block_json = json_decode(file_get_contents($block_json_path), true);
+				
+				if (!empty($block_json['name'])) {
+					// Check if block is already registered
+					if (!\WP_Block_Type_Registry::get_instance()->is_registered($block_json['name'])) {
+						register_block_type($block_dir);
+					} else {
+						error_log('WPShop: Block already registered: ' . $block_json['name']);
+					}
+				} else {
+					register_block_type($block_dir);
+				}
+			} else {
+				error_log('WPShop: Fichier block.json non trouvé dans: ' . $block_dir);
+			}
+		
+			if (file_exists($block_dir . '/inner-blocks')) {
+				$inner_block_dir = $block_dir . '/inner-blocks/';
+				$inner_block_dir_urls = scandir($inner_block_dir);
+		
+				foreach ($inner_block_dir_urls as $inner_url) {
+					// Skip directory navigation entries
+					if ($inner_url === '.' || $inner_url === '..') {
+						continue;
+					}
+					
+					$inner_block_path = $inner_block_dir . $inner_url;
+					$inner_block_json_path = $inner_block_path . '/block.json';
+		
+					if (file_exists($inner_block_json_path)) {
+						// Read block.json to get the block name
+						$inner_block_json = json_decode(file_get_contents($inner_block_json_path), true);
+						
+						if (!empty($inner_block_json['name'])) {
+							// Check if block is already registered
+							if (!\WP_Block_Type_Registry::get_instance()->is_registered($inner_block_json['name'])) {
+								register_block_type($inner_block_path);
+							} else {
+								error_log('WPShop: Inner block already registered: ' . $inner_block_json['name']);
+							}
+						} else {
+							register_block_type($inner_block_path);
+						}
+					} else {
+						error_log('WPShop: Fichier block.json non trouvé dans: ' . $inner_block_path);
+					}
+				}
+			}
+		}
+	}
+
+	public function call_back_block_categories( $block_categories  ) {
+
+		array_unshift(
+			$block_categories,
+			[
+				'slug'  => 'wpshop',
+				'title' => __( 'WPshop', 'wpshop' )
+			]
+		);
+		return $block_categories;
 	}
 
 	/**
@@ -151,6 +231,11 @@ class WPshop_Action {
 		wp_dequeue_style( 'wpeo-assets-datepicker' );
 		wp_enqueue_style( 'wpshop-style', PLUGIN_WPSHOP_URL . 'core/asset/css/style.css', array(), \eoxia\Config_Util::$init['wpshop']->version );
 		wp_enqueue_style( 'wpshop-style-frontend', PLUGIN_WPSHOP_URL . 'core/asset/css/style.frontend.min.css', array(), \eoxia\Config_Util::$init['wpshop']->version );
+		
+		add_editor_style( PLUGIN_WPSHOP_URL . 'core/asset/css/style.min.css' );
+		add_editor_style( PLUGIN_WPSHOP_URL . 'core/asset/css/style.frontend.min.css' );
+		add_editor_style( PLUGIN_WPSHOP_URL . 'core/external/eo-framework/core/assets/css/style.min.css' );
+		
 		wp_enqueue_script( 'wpshop-frontend-script', PLUGIN_WPSHOP_URL . 'core/asset/js/frontend.min.js', array(), \eoxia\Config_Util::$init['wpshop']->version );
 
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
@@ -172,12 +257,29 @@ class WPshop_Action {
 	 * @version 2.0.0
 	 */
 	public function callback_admin_menu() {
-		CMH::register_container( 'WPshop', 'WPshop', 'manage_options', 'wpshop', '', PLUGIN_WPSHOP_URL . 'core/asset/image/wpshop-16x16.png', null );
-		CMH::add_logo( 'wpshop', PLUGIN_WPSHOP_URL . 'core/asset/image/wpshop.png', admin_url( 'admin.php?page=wpshop' ) );
-		CMH::register_menu( 'wpshop', __( 'Dashboard', 'wpshop' ), __( 'Dashboard', 'wpshop' ), 'manage_options', 'wpshop', array( Dashboard::g(), 'callback_add_menu_page' ), 'fa fa-home', 'bottom' );
+		// CMH::register_container( 'WPshop', 'WPshop', 'manage_options', 'wpshop', '', PLUGIN_WPSHOP_URL . 'core/asset/image/wpshop-16x16.png', null );
+		// CMH::add_logo( 'wpshop', PLUGIN_WPSHOP_URL . 'core/asset/image/wpshop.png', admin_url( 'admin.php?page=wpshop' ) );
+		// CMH::register_menu( 'wpshop', __( 'Dashboard', 'wpshop' ), __( 'Dashboard', 'wpshop' ), 'manage_options', 'wpshop', array( Dashboard::g(), 'callback_add_menu_page' ), 'fa fa-home', 'bottom' );
 
 //		add_menu_page( __( 'WPshop', 'wpshop' ), __( 'WPshop', 'wpshop' ), 'manage_options', 'wpshop', '', 'dashicons-store' );
 //		add_submenu_page( 'wpshop', __( 'Dashboard', 'wpshop' ), __( 'Dashboard', 'wpshop' ), 'manage_options', 'wpshop', array( Dashboard::g(), 'callback_add_menu_page' ) );
+	
+
+
+		add_menu_page(
+			'WPshop', // Titre de la page
+			'WPshop', // Nom du menu
+			'manage_options', // Capacité requise
+			'wpshop', // Slug du menu
+			[$this, 'display_menu_page'], // Fonction qui affiche la page
+			PLUGIN_WPSHOP_URL . 'core/asset/image/wpshop-16x16.png',
+		);
+
+	}
+
+	public function display_menu_page() {
+		// Code pour afficher le contenu de la page de menu
+		echo '<h1>Bienvenue sur la page de menu WPshop</h1>';
 	}
 
 	/**

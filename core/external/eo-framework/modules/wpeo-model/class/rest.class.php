@@ -72,6 +72,7 @@ if ( ! class_exists( '\eoxia\Rest_Class' ) ) {
 				array(
 					'method'   => \WP_REST_Server::READABLE,
 					'callback' => array( $this, 'get_schema' ),
+					'permission_callback' => '__return_true',
 				),
 			) );
 

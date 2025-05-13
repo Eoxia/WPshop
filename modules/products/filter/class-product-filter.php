@@ -98,6 +98,8 @@ class Product_Filter {
 			'slug' => __( 'product', 'wpshop' ),
 		);
 
+		$args['show_in_rest'] = true;
+
 		if ( Settings::g()->dolibarr_is_active() ) {
 			$args['capabilities'] = array(
 				'create_posts' => 'do_not_allow',

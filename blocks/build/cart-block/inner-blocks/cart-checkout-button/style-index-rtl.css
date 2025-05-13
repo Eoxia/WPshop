@@ -1,0 +1,23 @@
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./blocks/src/cart-block/inner-blocks/cart-checkout-button/style.scss ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************/
+.wps-cart .wps-process-checkout-button, .wps-checkout .wps-process-checkout-button {
+  display: block;
+  float: none;
+  width: 100%;
+  text-align: center;
+  border-radius: 6px;
+  margin: 1em 0;
+  text-decoration: none !important;
+}
+.wps-cart .wps-checkout-quotation-button, .wps-checkout .wps-checkout-quotation-button {
+  display: block;
+  text-align: center;
+  font-weight: 700;
+  text-decoration: underline;
+  color: rgba(0, 0, 0, 0.8);
+}
+.wps-cart .wps-checkout-quotation-button:hover, .wps-checkout .wps-checkout-quotation-button:hover {
+  color: #1897e7;
+  cursor: pointer;
+}

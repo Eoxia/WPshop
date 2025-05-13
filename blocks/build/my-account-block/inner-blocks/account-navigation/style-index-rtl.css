@@ -1,0 +1,52 @@
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./blocks/src/my-account-block/inner-blocks/account-navigation/scss/style.scss ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************/
+.wps-account-navigation {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.wps-account-navigation .wps-account-navigation-item {
+  background: rgba(0, 0, 0, 0.075);
+  font-size: 16px;
+  margin-bottom: 1px;
+}
+.wps-account-navigation .wps-account-navigation-item a {
+  text-decoration: none;
+  color: rgba(0, 0, 0, 0.8);
+  display: block;
+  padding: 0.8em 1.4em 0.8em 0.8em;
+  position: relative;
+}
+.wps-account-navigation .wps-account-navigation-item a::after, .wps-account-navigation .wps-account-navigation-item a::before {
+  display: block;
+  content: "";
+  background: #0088FF;
+  width: 6px;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  opacity: 0;
+  z-index: -1;
+  opacity: 0;
+}
+.wps-account-navigation .wps-account-navigation-item a::after {
+  width: 0;
+  transition: all 0.2s ease-out;
+}
+.wps-account-navigation .wps-account-navigation-item a.active {
+  font-weight: 700;
+}
+.wps-account-navigation .wps-account-navigation-item a.active::before {
+  opacity: 1;
+}
+.wps-account-navigation .wps-account-navigation-item a:hover::after {
+  width: 6px;
+  opacity: 1;
+}
+.wps-account-navigation .wps-account-navigation-item .navigation-icon {
+  font-size: 14px;
+  margin-left: 0.4em;
+  color: #0088FF;
+}

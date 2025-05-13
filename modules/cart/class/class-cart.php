@@ -26,7 +26,164 @@ class Cart extends Singleton_Util {
 	 * @since   2.0.0
 	 * @version 2.0.0
 	 */
-	protected function construct() {}
+	protected function construct() {
+
+		add_action( 'rest_api_init', array( $this, 'register_rest_api' ) );
+
+	}
+
+	/**
+	 * Enregistre l'API REST.
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 */
+	public function register_rest_api() {
+		if ( ! Settings::g()->dolibarr_is_active() ) {
+			return;
+		}
+
+		register_rest_route(
+			'wp-shop/v1',
+			'/cart/',
+			[
+				'methods'  => 'GET',
+				'callback' => [$this, 'get_cart' ],
+				'permission_callback' => '__return_true',
+			]
+		);
+
+		register_rest_route(
+			'wp-shop/v1',
+			'/cart/checkout/link',
+			[
+				'methods'  => 'GET',
+				'callback' => [$this, 'get_chekout_link' ],
+				'permission_callback' => '__return_true',
+			]
+		);
+
+		register_rest_route(
+			'wp-shop/v1',
+			'/cart/(?P<id>\d+)',
+			[
+				'methods'  => 'DELETE',
+				'callback' => [$this, 'delete_cart_item' ],
+				'permission_callback' => '__return_true',
+			]
+		);
+
+		register_rest_route(
+			'wp-shop/v1',
+			'/cart/(?P<id>\d+)/increment',
+			[
+				'methods'  => 'POST',
+				'callback' => [$this, 'increment_cart_item' ],
+				'permission_callback' => '__return_true',
+			]
+		);
+		register_rest_route(
+			'wp-shop/v1',
+			'/cart/(?P<id>\d+)/decrement',
+			[
+				'methods'  => 'POST',
+				'callback' => [$this, 'decrement_cart_item' ],
+				'permission_callback' => '__return_true',
+			]
+		);
+	}
+
+	/**
+	 * Récupère le contenu du panier.
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 *
+	 * @return array Le contenu du panier.
+	 */
+	public function get_cart() {
+		$cart            = [];
+		$products        = Cart_Session::g()->cart_contents;
+		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
+
+		if ( empty( $products ) ) {
+			return [];
+		}
+		$cart['products'] = [];
+		foreach ( $products as $product ) {
+			$cart['products'][] = array(
+				'id'            => $product['id'],
+				'title'         => $product['title'],
+				'qty'           => $product['qty'],
+				'price'         => $product['price'],
+				'price_ttc'     => $product['price_ttc'],
+				'thumbnail_url' => $product['thumbnail_url'],
+			);
+		}
+
+		$total     = 0;
+		$total_ttc = 0;
+		foreach ( $products as $product ) {
+			$total     += $product['price'] * $product['qty'];
+			$total_ttc += $product['price_ttc'] * $product['qty'];	
+		}
+
+		$cart['total']     = $total;
+		$cart['taxes']     = $total_ttc - $total;
+		$cart['total_ttc'] = $total_ttc;
+
+		return rest_ensure_response( $cart );
+	}
+
+	public function delete_cart_item( $data ) {
+		$id = $data['id'];
+		Cart_Session::g()->remove_product( $id );
+
+		return rest_ensure_response( $this->get_cart() );
+	}
+
+	public function increment_cart_item( $data ) {
+		$id = (int) $data['id'];
+		Cart_Session::g()->increment_product( $id );
+
+		return rest_ensure_response( $this->get_cart() );
+	}
+
+	public function decrement_cart_item( $data ) {
+		$id = (int) $data['id'];
+		Cart_Session::g()->decrement_product( $id );
+
+		return rest_ensure_response( $this->get_cart() );
+	}
+
+	public function get_chekout_link() {
+		$checkout_url = Pages::g()->get_checkout_link();
+		if ( empty( $checkout_url ) ) {
+			return rest_ensure_response( [ 'link' => null ] );
+		}
+
+		return rest_ensure_response( ['link' => $checkout_url] );
+	}
+
+	/**
+	 * Récupère tous les produits.
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 *
+	 * @return array La liste des produits.
+	 */
+	public function get_all_products() {
+		// Fetch products from the database or from Dolibarr
+		$products = array();
+		
+		// If there's a Product class in the plugin
+		if ( class_exists( '\wpshop\Product' ) ) {
+			$products = Product::g()->get_all();
+		}
+		
+		return rest_ensure_response( $products );
+	}
 
 	/**
 	 * Vérifie si un produit peut être ajouté.
@@ -60,8 +217,6 @@ class Cart extends Singleton_Util {
 			return;
 		}
 
-		do_action( 'wps_before_add_to_cart' );
-
 		$data = array_merge(
 			array( 'qty' => $qty ),
 			$product->data
@@ -72,7 +227,7 @@ class Cart extends Singleton_Util {
 		if ( ! empty( Cart_Session::g()->cart_contents ) ) {
 			foreach ( Cart_Session::g()->cart_contents as $key => $line ) {
 				$data['content'] = $desc;
-				if ( $line['id'] === $product->data['id'] && Settings::g()->split_product() == false ) {
+				if ( $line['id'] === $product->data['id'] ) {
 					$data['qty'] = $line['qty'] + $qty;
 					$index       = $key;
 					break;

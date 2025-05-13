@@ -72,7 +72,7 @@ class Doli_Statut extends Singleton_Util {
 				),
 				'publish'       => array(
 					'text'  => 'Validated',
-					'class' => 'status-orange',
+					'class' => 'status-green',
 				),
 				'wps-canceled'  => array(
 					'text'  => 'Canceled',
@@ -102,7 +102,7 @@ class Doli_Statut extends Singleton_Util {
 				),
 				'wps-billed'    => array(
 					'text'  => 'Paid',
-					'class' => 'status-grey',
+					'class' => 'status-green',
 				),
 				'wps-abandoned' => array(
 					'text'  => 'Abandoned',
@@ -138,6 +138,30 @@ class Doli_Statut extends Singleton_Util {
 				'class'  => $status['class'],
 			) );
 		}
+	}
+
+	/*
+	 * Affiche un status lisible selon le status de l'objet
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 *
+	 * @param mixed $object Les données d'un objet.
+	 */
+	public function get_status($object) {
+		$status = null;
+
+		if ( $this->status[ $object->data['type'] ][ $object->data['status'] ] ) {
+			$status = $this->status[ $object->data['type'] ][ $object->data['status'] ];
+		}
+
+		if ( $status ) {
+			return [
+				'text'  => __( $status['text'] ),
+				'class' => $status
+			];
+		}
+		return '';
 	}
 
 	/**
