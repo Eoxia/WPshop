@@ -8,7 +8,7 @@
   \******************************************/
 /***/ ((module) => {
 
-module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"wpshop/cart-block","version":"0.1.0","title":"Cart Block","category":"wpshop","icon":"cart","description":"Cart Block","example":{},"supports":{"html":false},"textdomain":"wpshop","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css","render":"file:./render.php"}');
+module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"wpshop/cart-block","version":"0.1.0","title":"Cart","category":"wpshop","icon":"cart","description":"Cart Block","example":{},"supports":{"html":false},"textdomain":"wpshop","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css","render":"file:./render.php"}');
 
 /***/ }),
 

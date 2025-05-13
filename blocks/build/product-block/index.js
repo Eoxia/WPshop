@@ -8,7 +8,7 @@
   \*********************************************/
 /***/ ((module) => {
 
-module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"wpshop/product-block","version":"0.1.0","title":"Product Block","category":"wpshop","icon":"smiley","description":"Example block scaffolded with Create Block tool.","example":{},"supports":{"html":false},"textdomain":"product-block","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css"}');
+module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"wpshop/product-block","version":"0.1.0","title":"Single Product","category":"wpshop","icon":"archive","description":"Example block scaffolded with Create Block tool.","example":{},"supports":{"html":false},"textdomain":"product-block","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css"}');
 
 /***/ }),
 
@@ -66,7 +66,12 @@ function Edit() {
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
     ...(0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.useBlockProps)(),
     children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.InnerBlocks, {
-      template: [['core/columns', {}, [['wpshop/product-title', {}], ['wpshop/product-image', {}], ['wpshop/product-price', {}], ['wpshop/product-add-cart', {}]]]]
+      template: [['core/group', {
+        align: 'wide',
+        layout: {
+          type: 'constrained'
+        }
+      }, [['wpshop/product-title', {}], ['wpshop/product-image', {}], ['wpshop/product-price', {}], ['wpshop/product-add-cart', {}]]]]
     })
   });
 }

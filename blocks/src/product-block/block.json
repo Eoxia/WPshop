@@ -3,9 +3,9 @@
 	"apiVersion": 3,
 	"name": "wpshop/product-block",
 	"version": "0.1.0",
-	"title": "Product Block",
+	"title": "Single Product",
 	"category": "wpshop",
-	"icon": "smiley",
+	"icon": "archive",
 	"description": "Example block scaffolded with Create Block tool.",
 	"example": {},
 	"supports": {

@@ -3,7 +3,7 @@
   "apiVersion": 3,
   "name": "wpshop/cart-block",
   "version": "0.1.0",
-  "title": "Cart Block",
+  "title": "Cart",
   "category": "wpshop",
   "icon": "cart",
   "description": "Cart Block",

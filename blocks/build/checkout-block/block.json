@@ -3,7 +3,7 @@
   "apiVersion": 3,
   "name": "wpshop/checkout-block",
   "version": "0.1.0",
-  "title": "Checkout Block",
+  "title": "Checkout",
   "category": "wpshop",
   "icon": "cart",
   "description": "Example block scaffolded with Create Block tool.",

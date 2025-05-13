@@ -3,9 +3,9 @@
   "apiVersion": 3,
   "name": "wpshop/my-account-block",
   "version": "0.1.0",
-  "title": "My Account Block",
+  "title": "My Account",
   "category": "wpshop",
-  "icon": "smiley",
+  "icon": "id",
   "description": "Example block scaffolded with Create Block tool.",
   "example": {},
   "supports": {

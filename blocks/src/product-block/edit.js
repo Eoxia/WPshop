@@ -35,7 +35,7 @@ export default function Edit() {
 		<div { ...useBlockProps() }>
 			<InnerBlocks 
 				template={[
-					[ 'core/columns', {}, [
+					[ 'core/group', { align: 'wide', layout: {type: 'constrained'}}, [
 						[ 'wpshop/product-title', {} ],
 						[ 'wpshop/product-image', {} ],
 						[ 'wpshop/product-price', {} ],

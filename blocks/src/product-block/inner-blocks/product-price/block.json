@@ -9,7 +9,8 @@
 	"description": "Example block scaffolded with Create Block tool.",
 	"example": {},
 	"supports": {
-		"html": false
+		"html": false,
+		"inserter": false
 	},
 	"textdomain": "product-price",
 	"editorScript": "file:./index.js",
