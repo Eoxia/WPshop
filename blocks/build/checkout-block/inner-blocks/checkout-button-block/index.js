@@ -121,7 +121,7 @@ __webpack_require__.r(__webpack_exports__);
   /**
    * @see ./save.js
    */
-  save
+  save: () => null
 });
 
 /***/ }),
