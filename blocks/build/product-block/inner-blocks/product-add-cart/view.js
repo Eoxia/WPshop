@@ -280,50 +280,29 @@ __webpack_require__.r(__webpack_exports__);
 
 const ProductAddCart = props => {
   const {
-    qty,
     productId
   } = props;
-  const [value, setValue] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(parseInt(qty));
-  const incrementProduct = productId => {
+  const [qty, setQty] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(1);
+  const addToCart = productId => {
     _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_5___default()({
       path: `/wp-shop/v1/cart/${productId}/increment`,
-      method: 'POST'
+      method: 'POST',
+      data: {
+        qty: qty
+      }
     }).then(response => {
       if (response) {
-        if (!response?.products?.length) {
-          setValue(0);
-        } else {
-          const product = response.products.filter(product => product.id === parseInt(productId));
-          if (product) {
-            let qty = 0;
-            product.forEach(item => {
-              qty += item.qty;
-            });
-            setValue(qty);
-          } else {
-            setValue(0);
-          }
-        }
+        setQty(1);
       } else {
         console.error('Erreur lors de l\'incrémentation du produit:', response);
       }
     });
   };
-  const decrementProduct = productId => {
-    _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_5___default()({
-      path: `/wp-shop/v1/cart/${productId}/decrement`,
-      method: 'POST'
-    }).then(response => {
-      if (response) {
-        if (!response?.products?.length) {
-          setValue(0);
-        } else {
-          setValue(response);
-        }
-      } else {
-        console.error('Erreur lors de l\'incrémentation du produit:', response);
-      }
-    });
+  const incrementProduct = () => {
+    setQty(prevQty => prevQty + 1);
+  };
+  const decrementProduct = () => {
+    setQty(prevQty => Math.max(prevQty - 1, 1));
   };
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
     className: "wp-block-wpshop-product-add-cart",
@@ -334,14 +313,14 @@ const ProductAddCart = props => {
         onClick: () => decrementProduct(productId)
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
         class: "qty",
-        children: value
+        children: qty
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
         class: "wps-quantity-plus fas fa-plus-circle",
         onClick: () => incrementProduct(productId)
       })]
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("button", {
       class: "wpeo-button wps-button-add-to-cart",
-      onClick: () => incrementProduct(productId),
+      onClick: () => addToCart(productId),
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("i", {
         class: "wps-button icon fas fa-shopping-cart"
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
@@ -352,7 +331,6 @@ const ProductAddCart = props => {
   });
 };
 (0,_utils__WEBPACK_IMPORTED_MODULE_0__.render)(/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(ProductAddCart, {
-  qty: document.querySelector('.wp-block-wpshop-product-add-cart').getAttribute('data-qty'),
   productId: document.querySelector('.wp-block-wpshop-product-add-cart').getAttribute('data-product-id')
 }), '.wp-block-wpshop-product-add-cart');
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ProductAddCart);

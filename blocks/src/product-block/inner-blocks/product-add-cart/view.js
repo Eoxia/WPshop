@@ -33,61 +33,44 @@ import { select } from '@wordpress/data';
 
 const ProductAddCart = (props) => {
 
-    const { qty, productId } = props;
+    const { productId } = props;
 
-    const [ value, setValue ] = useState( parseInt(qty) );
+    const [ qty, setQty ] = useState( 1 );
 
-    const incrementProduct = (productId) => {
+
+
+    const addToCart = (productId) => {
         apiFetch({
             path: `/wp-shop/v1/cart/${productId}/increment`,
-            method: 'POST'
+            method: 'POST',
+            data: {
+                qty: qty,
+            },  
         }).then((response) => {
             if (response) {
-                if (!response?.products?.length) {
-                    setValue(0);
-                } else {
-                    const product = response.products.filter((product) => product.id === parseInt(productId));
-                    if (product) {
-                        let qty = 0;
-                        product.forEach((item) => {
-                            qty += item.qty;
-                        });
-                        setValue(qty);
-                    } else {
-                        setValue(0);
-                    }
-                }
+                setQty(1);
             } else {
                 console.error('Erreur lors de l\'incrémentation du produit:', response);
             }
         });
     }
 
-    const decrementProduct = (productId) => {
-        apiFetch({
-            path: `/wp-shop/v1/cart/${productId}/decrement`,
-            method: 'POST'
-        }).then((response) => {
-            if (response) {
-                if (!response?.products?.length) {
-                    setValue(0);
-                } else {
-                    setValue(response);
-                }
-            } else {
-                console.error('Erreur lors de l\'incrémentation du produit:', response);
-            }
-        });
+    const incrementProduct = () => {
+        setQty((prevQty) => prevQty + 1);
+    }
+
+    const decrementProduct = () => {
+        setQty((prevQty) => Math.max(prevQty - 1, 1));
     }
 
     return (
         <div className="wp-block-wpshop-product-add-cart">
             <div class="wps-product-quantity">
                 <span class="wps-quantity-minus fas fa-minus-circle" onClick={() => decrementProduct(productId)}></span>
-                <span class="qty">{value}</span>
+                <span class="qty">{qty}</span>
                 <span class="wps-quantity-plus fas fa-plus-circle" onClick={() => incrementProduct(productId)}></span>
             </div>
-            <button class="wpeo-button wps-button-add-to-cart" onClick={() => incrementProduct(productId)}>
+            <button class="wpeo-button wps-button-add-to-cart" onClick={() => addToCart(productId)}>
                 <i class="wps-button icon fas fa-shopping-cart"></i>
                 <span class="wps-button-text">{ __( 'Add to cart', 'wpshop' ) }</span>
             </button>
@@ -96,7 +79,6 @@ const ProductAddCart = (props) => {
 }
 
 render(<ProductAddCart 
-    qty={document.querySelector('.wp-block-wpshop-product-add-cart').getAttribute('data-qty')}
     productId={document.querySelector('.wp-block-wpshop-product-add-cart').getAttribute('data-product-id')}
 />, '.wp-block-wpshop-product-add-cart');
 export default ProductAddCart;
