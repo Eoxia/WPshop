@@ -93,12 +93,6 @@ const CheckoutForm = () => {
         <div className="wpeo-form">
         <div class="wps-checkout-subtitle wps-checkout-subtitle-step-1">{ __( 'Personnal and shipping informations', 'wpshop' ) } </div>
 
-        {error &&
-            <div class="wps-checkout-error">
-                {error}
-            </div>
-        }
-
         <div class="wpeo-gridlayout grid-6">
             <div class="form-element contact-firstname gridw-3">
                 <label class="form-field-container">
@@ -154,7 +148,13 @@ const CheckoutForm = () => {
                 </label>
             </div>
 
+
         </div>
+        {error &&
+            <div class="wps-checkout-error">
+                {error}
+            </div>
+        }
         </div>
     )
 
