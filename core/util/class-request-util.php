@@ -116,6 +116,9 @@ class Request_Util extends Singleton_Util {
 		if ( ! is_wp_error( $request ) ) {
 			if ( 200 === $request['response']['code'] ) {
 				return json_decode( $request['body'] );
+			} else {
+				$body = json_decode( $request['body'], true );
+				set_transient( 'wps_request_error', $body['error']['message'] ?? '', 60 );
 			}
 		}
 
