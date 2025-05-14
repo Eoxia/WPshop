@@ -38,7 +38,7 @@ class Doli_Proposals_Action {
 	 * @version 2.0.0
 	 */
 	public function __construct() {
-		add_action( 'admin_menu', array( $this, 'callback_admin_menu' ), 50 );
+		add_action( 'admin_menu', array( $this, 'callback_admin_menu' ), 40 );
 
 		add_action( 'admin_post_wps_download_proposal', array( $this, 'download_proposal' ) );
 
@@ -70,6 +70,9 @@ class Doli_Proposals_Action {
 	 * @version 2.0.0
 	 */
 	public function callback_admin_menu() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
 		if ( Settings::g()->dolibarr_is_active() ) {
 			$hook = add_submenu_page(
 				'wpshop', // Parent menu slug (WPshop main menu)
@@ -77,7 +80,8 @@ class Doli_Proposals_Action {
 				__( 'Proposals', 'wpshop' ),
 				'manage_options',
 				'wps-proposal-doli',
-				array( $this, 'callback_add_menu_page' )
+				array( $this, 'callback_add_menu_page' ),
+				4
 			);
 
 			if ( ! isset( $_GET['id'] ) ) {

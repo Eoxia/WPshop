@@ -45,7 +45,8 @@ class WPshop_Action {
 		add_action( 'admin_enqueue_scripts', array( $this, 'callback_admin_enqueue_scripts' ), 11 );
 		add_action( 'wp_enqueue_scripts', array( $this, 'callback_enqueue_scripts' ), 11 );
 
-		add_action( 'admin_menu', array( $this, 'callback_admin_menu' ) );
+		add_action( 'admin_menu', array( $this, 'callback_admin_menu' ), 1 );
+		add_action('admin_head', array( $this, 'callback_admin_head' ), 1 );
 
 		add_action( 'wp_ajax_check_erp_statut', array( $this, 'check_erp_statut' ) );
 
@@ -257,15 +258,6 @@ class WPshop_Action {
 	 * @version 2.0.0
 	 */
 	public function callback_admin_menu() {
-		// CMH::register_container( 'WPshop', 'WPshop', 'manage_options', 'wpshop', '', PLUGIN_WPSHOP_URL . 'core/asset/image/wpshop-16x16.png', null );
-		// CMH::add_logo( 'wpshop', PLUGIN_WPSHOP_URL . 'core/asset/image/wpshop.png', admin_url( 'admin.php?page=wpshop' ) );
-		// CMH::register_menu( 'wpshop', __( 'Dashboard', 'wpshop' ), __( 'Dashboard', 'wpshop' ), 'manage_options', 'wpshop', array( Dashboard::g(), 'callback_add_menu_page' ), 'fa fa-home', 'bottom' );
-
-//		add_menu_page( __( 'WPshop', 'wpshop' ), __( 'WPshop', 'wpshop' ), 'manage_options', 'wpshop', '', 'dashicons-store' );
-//		add_submenu_page( 'wpshop', __( 'Dashboard', 'wpshop' ), __( 'Dashboard', 'wpshop' ), 'manage_options', 'wpshop', array( Dashboard::g(), 'callback_add_menu_page' ) );
-	
-
-
 		add_menu_page(
 			'WPshop', // Titre de la page
 			'WPshop', // Nom du menu
@@ -275,6 +267,31 @@ class WPshop_Action {
 			PLUGIN_WPSHOP_URL . 'core/asset/image/wpshop-16x16.png',
 		);
 
+	}
+
+
+	/**
+	 * Affiche le contenu de la page de menu.
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 */
+	public function callback_admin_head() {
+		// Code pour ajouter des éléments dans l'en-tête de l'administration
+		?>
+		<style>
+			/* Cible un sous-menu et ajoute un séparateur au-dessus */
+			#toplevel_page_wpshop ul li:nth-child(3)::before,
+			#toplevel_page_wpshop ul li:nth-child(5)::before,
+			#toplevel_page_wpshop ul li:nth-child(9)::before {
+				content: "";
+				display: block;
+				height: 1px;
+				background: rgba(255, 255, 255, 0.6);
+				margin: 3px 12px;
+			}
+		</style>
+		<?php
 	}
 
 	public function display_menu_page() {
