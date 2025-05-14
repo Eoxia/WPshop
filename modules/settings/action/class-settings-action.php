@@ -214,6 +214,7 @@ class Settings_Action {
 		$tab                 = ! empty( $_POST['tab'] ) ? sanitize_text_field( $_POST['tab'] ) : 'general';
 		$dolibarr_url        = ! empty( $_POST['dolibarr_url'] ) ? sanitize_text_field( $_POST['dolibarr_url'] ) : '';
 		$dolibarr_secret     = ! empty( $_POST['dolibarr_secret'] ) ? sanitize_text_field( $_POST['dolibarr_secret'] ) : '';
+		$error               = '';
 
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
 
@@ -225,13 +226,24 @@ class Settings_Action {
 		$response = Request_Util::get( 'doliwpshop/checkPermissions' );
 		if ( false === $response ) {
 			$dolibarr_option['error'] = __( 'WPshop cannot connect to dolibarr. Please check your settings', 'wpshop' );
+
+			$errorMessage = get_transient( 'wps_request_error' );
+			delete_transient( 'wps_request_error' );
+			if ( ! empty( $errorMessage ) ) {
+				$error = __('Error') . ' : ' . $errorMessage;
+			}
+
 		} else {
 			$dolibarr_option['error'] = '';
 		}
 
 		update_option( 'wps_dolibarr', $dolibarr_option );
 
-		set_transient( 'updated_wpshop_option_' . get_current_user_id(), __( 'Your settings have been saved.', 'wpshop' ), 30 );
+		if ( empty( $error ) ) {
+			set_transient( 'updated_wpshop_option_' . get_current_user_id(), __( 'Your settings have been saved.', 'wpshop' ), 30 );
+		} else {
+			set_transient( 'updated_wpshop_option_' . get_current_user_id(), $error, 30 );
+		}
 
 		wp_redirect( admin_url( 'admin.php?page=wps-settings&tab= ' . $tab ) );
 	}

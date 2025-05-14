@@ -26,7 +26,7 @@ defined( 'ABSPATH' ) || exit;
 	<?php
 	if ( ! empty( $transient ) ) :
 		?>
-		<div class="notice notice-success is-dismissible">
+		<div class="notice <?php echo (stripos($transient, __( 'Error' )) !== false) ? 'notice-error' : 'notice-success'; ?> is-dismissible">
 			<p><?php echo $transient; ?></p>
 		</div>
 		<?php
