@@ -204,7 +204,7 @@ class Doli_Documents extends Attachment_Class {
 		$data_sha['price']                = $response->price;
 		$data_sha['price_ttc']            = $response->price_ttc;
 		$data_sha['tva_tx']               = $response->tva_tx;
-		$data_sha['stock']                = $response->stock_reel;
+		$data_sha['stock']                = $response->stock_reel ?? 0;
 		$data_sha['status']               = $response->array_options->options__wps_status;
 		$data_sha['categories']           = '';
 		$data_sha['documents_dolibarr']   = '';

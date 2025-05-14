@@ -171,6 +171,9 @@ class Proposals_List_Table extends \WP_List_Table {
 	 * @return string
 	 */
 	public function column_third_party( $item ) {
+		if (empty( $item->data['parent_id'] ) ) {
+			return '-';
+		}
 		$third_party = Third_Party::g()->get( array( 'id' => $item->data['parent_id'] ), true );
 		if ( ! empty( $third_party ) ) {
 			return sprintf(
