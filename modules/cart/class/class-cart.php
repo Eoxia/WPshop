@@ -144,7 +144,9 @@ class Cart extends Singleton_Util {
 
 	public function increment_cart_item( $data ) {
 		$id = (int) $data['id'];
-		Cart_Session::g()->increment_product( $id );
+		$qty = (int) $data['qty'];
+
+		Cart_Session::g()->increment_product( $id, $qty );
 
 		return rest_ensure_response( $this->get_cart() );
 	}
