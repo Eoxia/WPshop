@@ -44,7 +44,7 @@ class Doli_Order_Action {
 
 		add_action( 'admin_init', array( $this, 'callback_admin_init' ) );
 
-		add_action( 'admin_menu', array( $this, 'callback_admin_menu' ), 60 );
+		add_action( 'admin_menu', array( $this, 'callback_admin_menu' ), 30 );
 
 		add_action( 'wps_checkout_create_order', array( $this, 'create_order' ), 10, 1 );
 		add_action( 'wps_payment_complete', array( $this, 'set_to_billed' ), 30, 1 );
@@ -138,7 +138,8 @@ class Doli_Order_Action {
 				__( 'Orders', 'wpshop' ), 
 				'manage_options', 
 				'wps-order', 
-				array( $this, 'callback_add_menu_page' )
+				[ $this, 'callback_add_menu_page' ],
+				3
 			);
 
 			// Initialize the WP_List_Table for orders when on the order page

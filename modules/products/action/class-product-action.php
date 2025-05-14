@@ -28,7 +28,7 @@ class Product_Action {
 	 * @version 2.0.0
 	 */
 	public function __construct() {
-		add_action( 'admin_menu', array( $this, 'callback_admin_menu' ), 30 );
+		add_action( 'admin_menu', array( $this, 'callback_admin_menu' ), 10 );
 		add_action( 'save_post', array( $this, 'callback_save_post' ), 10, 2 );
 
 		add_action( 'template_redirect', array( $this, 'init_product_archive_page' ) );
@@ -46,26 +46,17 @@ class Product_Action {
 	 */
 	public function callback_admin_menu() {
 		if ( user_can( get_current_user_id(), 'manage_options' ) ) {
-			// Add Products as a submenu of the WPShop main menu
-			add_submenu_page(
-				'wpshop', // Parent menu slug
-				__( 'Products', 'wpshop' ),
-				__( 'Products', 'wpshop' ),
-				'manage_options',
-				'wps-product',
-				array( $this, 'display_product_list_page' )
-			);
-			
-			// if ( ! Settings::g()->dolibarr_is_active() ) {
-			// 	add_submenu_page(
-			// 		'wpshop', // Parent menu slug
-			// 		__( 'Add Product', 'wpshop' ),
-			// 		__( 'Add Product', 'wpshop' ),
-			// 		'manage_options',
-			// 		'post-new.php?post_type=wps-product',
-			// 		null
-			// 	);
-			// }
+			if ( Settings::g()->dolibarr_is_active() ) {
+				add_submenu_page(
+					'wpshop', // Parent menu slug
+					__( 'Products', 'wpshop' ),
+					__( 'Products', 'wpshop' ),
+					'manage_options',
+					'wps-product',
+					[ $this, 'display_product_list_page' ],
+					1
+				);
+			}
 		}
 	}
 	

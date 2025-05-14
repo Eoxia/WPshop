@@ -38,7 +38,7 @@ class Third_Party_Action {
 	 * @version 2.0.0
 	 */
 	public function __construct() {
-		add_action( 'admin_menu', array( $this, 'callback_admin_menu' ), 20 );
+		add_action( 'admin_menu', array( $this, 'callback_admin_menu' ), 60 );
 
 		$this->metaboxes = apply_filters( 'wps_third_party_metaboxes', array(
 			'wps-third-party-billing'  => array(
@@ -60,13 +60,17 @@ class Third_Party_Action {
 	 * @version 2.4.0
 	 */
 	public function callback_admin_menu() {
+		if ( ! Settings::g()->dolibarr_is_active() ) {
+			return;
+		}
 		$hook = add_submenu_page(
 			'wpshop',
 			__( 'Third Parties', 'wpshop' ),
 			__( 'Third Parties', 'wpshop' ),
 			'manage_options',
 			'wps-third-party',
-			array( $this, 'callback_add_menu_page' )
+			array( $this, 'callback_add_menu_page' ),
+			6
 		);
 
 		if ( ! isset( $_GET['id'] ) ) {

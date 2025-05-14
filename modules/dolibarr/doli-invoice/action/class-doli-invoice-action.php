@@ -41,7 +41,7 @@ class Doli_Invoice_Action {
 	public function __construct() {
 		add_action( 'init', array( $this, 'create_tmp_invoice_dir' ) );
 
-		add_action( 'admin_menu', array( $this, 'callback_admin_menu' ) , 70 );
+		add_action( 'admin_menu', array( $this, 'callback_admin_menu' ) , 50 );
 
 		add_action( 'wps_payment_complete', array( $this, 'create_invoice' ), 20, 1 );
 
@@ -113,7 +113,8 @@ class Doli_Invoice_Action {
 				__( 'Invoices', 'wpshop' ), 
 				'manage_options', 
 				'wps-invoice', 
-				array( $this, 'callback_add_menu_page' )
+				array( $this, 'callback_add_menu_page' ),
+				5
 			);
 
 			// Initialize the WP_List_Table for invoices when on the invoice page

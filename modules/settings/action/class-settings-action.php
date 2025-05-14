@@ -28,7 +28,7 @@ class Settings_Action {
 	 * @version 2.0.0
 	 */
 	public function __construct() {
-		add_action( 'admin_menu', array( $this, 'callback_admin_menu' ), 80 );
+		add_action( 'admin_menu', array( $this, 'callback_admin_menu' ), 70 );
 		add_action( 'admin_notices', array( $this, 'notice_activate_erp' ) );
 
 		add_action( 'admin_post_wps_load_settings_tab', array( $this, 'callback_load_tab' ) );
@@ -40,6 +40,7 @@ class Settings_Action {
 		add_action( 'wp_ajax_wps_hide_notice_erp', array( $this, 'dismiss_notice_erp' ) );
 
 		add_action( 'init', array( $this, 'callback_add_product_thumbnail_size' ) );
+
 	}
 
 	/**
@@ -50,8 +51,7 @@ class Settings_Action {
 	 */
 	public function callback_admin_menu() {
 		if ( user_can( get_current_user_id(), 'manage_options' ) ) {
-			add_submenu_page( 'wpshop', __( 'Settings', 'wpshop' ), __( 'Settings', 'wpshop' ), 'manage_options', 'wps-settings', array( $this, 'callback_add_menu_page' ) );
-			// CMH::register_menu( 'wpshop', __( 'Settings', 'wpshop' ), __( 'Settings', 'wpshop' ), 'manage_options', 'wps-settings', array( $this, 'callback_add_menu_page' ), 'fas fa-cog', 9 );
+			add_submenu_page( 'wpshop', __( 'Settings', 'wpshop' ), __( 'Settings', 'wpshop' ), 'manage_options', 'wps-settings', array( $this, 'callback_add_menu_page' ), 7 );
 		}
 	}
 
