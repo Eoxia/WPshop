@@ -399,9 +399,6 @@ const CheckoutForm = () => {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
       class: "wps-checkout-subtitle wps-checkout-subtitle-step-1",
       children: [(0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Personnal and shipping informations', 'wpshop'), " "]
-    }), error && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
-      class: "wps-checkout-error",
-      children: error
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
       class: "wpeo-gridlayout grid-6",
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
@@ -512,6 +509,9 @@ const CheckoutForm = () => {
           })
         })
       })]
+    }), error && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+      class: "wps-checkout-error",
+      children: error
     })]
   });
 };

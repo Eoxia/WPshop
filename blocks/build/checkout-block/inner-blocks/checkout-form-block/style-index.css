@@ -139,4 +139,15 @@
   content: "02.";
 }
 
+.wps-checkout-error {
+  margin: 0.8em 0;
+  padding: 1em;
+  background: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: 0.4em;
+  color: #721c24;
+  font-size: 14px;
+  font-weight: 500;
+}
+
 /*# sourceMappingURL=style-index.css.map*/
