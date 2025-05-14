@@ -201,6 +201,9 @@ class Order_List_Table extends \WP_List_Table {
             case 'date':
                 return isset($item->data['datec']) ? $item->data['datec'] : '';
             case 'customer':
+                if (empty($item->data['parent_id'])) {
+                    return '-';
+                }
                 $third_party = Third_Party::g()->get( array( 'id' => $item->data['parent_id'] ), true );
                 if ( ! empty( $third_party ) ) {
                     return sprintf(
