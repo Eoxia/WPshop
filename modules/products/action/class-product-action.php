@@ -69,12 +69,15 @@ class Product_Action {
 	public function display_product_list_page() {
 		require_once(ABSPATH . 'wp-admin/includes/class-wp-list-table.php');
 		require_once(plugin_dir_path(__FILE__) . 'class-product-list-table.php');
+
+		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
+		$dolibarr_url = $dolibarr_option['dolibarr_url'];
 		
 		$product_list_table = new Product_List_Table();
 		$product_list_table->prepare_items();
 		
 		echo '<div class="wrap wpeo-wrap">';
-		echo '<h1>' . esc_html__('Products', 'wpshop') . ' <a href="' . esc_url(admin_url('post-new.php?post_type=wps-product')) . '" class="page-title-action">' . esc_html__('Add New', 'wpshop') . '</a></h1>';
+		echo '<h1>' . esc_html__('Products', 'wpshop') . ' <a href="' . esc_url($dolibarr_url . '/product/card.php?&action=create') . '" target="_blank" class="page-title-action">' . esc_html__('Add', 'wpshop') . '</a></h1>';
 		
 		// Display search box
 		echo '<form method="post">';
