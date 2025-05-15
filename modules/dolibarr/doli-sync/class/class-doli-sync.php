@@ -178,8 +178,10 @@ class Doli_Sync extends Singleton_Util {
 				break;
 			case 'wps-product':
 				$doli_product = Request_Util::get( 'products/' . $entry_id );
+				
 				$wp_product   = Product::g()->get( array( 'id' => $wp_id ), true );
 				$wp_product   = Doli_Products::g()->doli_to_wp( $doli_product, $wp_product );
+				Doli_Products::g()->update_post_image( $wp_product->data['id'], $entry_id );
 
 				$messages[] = sprintf( __( 'Erase data for the product <strong>%s</strong> with the <strong>dolibarr</strong> data', 'wpshop' ), $wp_product->data['title'] );
 
@@ -347,6 +349,36 @@ class Doli_Sync extends Singleton_Util {
 				);
 			}
 		}
+
+
+		if ( $type == 'wps-product' ) {
+
+			$current_thumbnail_id = get_post_thumbnail_id($id);
+
+			$files = Request_Util::get('documents?modulepart=product&id=' . $external_id);
+			
+			if (!empty($current_thumbnail_id) || !empty(!$files)) {
+				$file = $files[0];
+
+				$existing_attachment = get_posts(array(
+					'post_type'      => 'attachment',
+					'posts_per_page' => 1,
+					'post_parent'    => $id,
+					'title'          => sanitize_file_name($file->filename),
+				));
+
+				if ((!empty($current_thumbnail_id) && empty($existing_attachment)) || $current_thumbnail_id != $existing_attachment[0]->ID) {
+					return array(
+						'status' => true,
+						'status_code' => '0x3',
+						'status_message' => __('WP Object is not equal Dolibarr Object', 'wpshop'),
+						'response->sha' => $response->sha,
+						'sha_256' => $sha_256,
+					);
+				}
+			}
+		}
+
 
 		return array(
 			'status' => true,

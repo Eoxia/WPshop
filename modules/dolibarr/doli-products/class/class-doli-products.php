@@ -90,6 +90,88 @@ class Doli_Products extends Singleton_Util {
 			return $wp_product;
 	}
 
+	public function update_post_image( $post_id, $doli_id ) {
+		$files = Request_Util::get('documents?modulepart=product&id=' . $doli_id);
+		
+		if (empty($files)) {
+			return;
+		}
+
+		$file = $files[0];
+
+		$level1 = $file->level1name;
+		$filename = $file->filename;
+
+		// Check if an attachment with this filename already exists for this post
+		$existing_attachment = get_posts(array(
+			'post_type'      => 'attachment',
+			'posts_per_page' => 1,
+			'post_parent'    => $post_id,
+			'title'          => sanitize_file_name($filename),
+		));
+
+		// If attachment exists and is set as featured image, don't recreate
+		if (!empty($existing_attachment)) {
+			$existing_id = $existing_attachment[0]->ID;
+			$current_thumbnail_id = get_post_thumbnail_id($post_id);
+			
+			// If this attachment is already the featured image, exit
+			if ($current_thumbnail_id == $existing_id) {
+				return;
+			}
+			
+			// If attachment exists but isn't set as featured image, just set it
+			set_post_thumbnail($post_id, $existing_id);
+			return;
+		}
+
+		$filepath = rawurlencode($level1 . '/' . $filename);
+
+		$image = Request_Util::get('documents/download?modulepart=product' . '&original_file=' . $filepath);
+
+		// Prépare le nom du fichier
+		$filename = basename(parse_url($filename, PHP_URL_PATH));
+
+		// Détermine le chemin de destination personnalisé
+		$upload_dir = wp_upload_dir();
+		$custom_subdir = '/product/' . $post_id;
+		$custom_dir = $upload_dir['basedir'] . $custom_subdir;
+
+		// Crée le dossier s'il n'existe pas
+		if (!file_exists($custom_dir)) {
+			wp_mkdir_p($custom_dir);
+		}
+
+		// Écrit le fichier localement
+		$file_path = $custom_dir . '/' . $filename;
+		file_put_contents($file_path, base64_decode($image->content));
+		// URL de l'image
+		$file_url = $upload_dir['baseurl'] . $custom_subdir . '/' . $filename;
+
+		// Vérifie le type de fichier
+		$filetype = wp_check_filetype($filename, null);
+
+		// Crée la pièce jointe
+		$attachment = array(
+			'post_mime_type' => $filetype['type'],
+			'post_title'     => sanitize_file_name($filename),
+			'post_content'   => '',
+			'post_status'    => 'inherit',
+			'guid'           => $file_url
+		);
+
+		// Insère l'attachement dans la base
+		$attach_id = wp_insert_attachment($attachment, $file_path, $post_id);
+
+		// Génère les métadonnées
+		require_once(ABSPATH . 'wp-admin/includes/image.php');
+		$attach_data = wp_generate_attachment_metadata($attach_id, $file_path);
+		wp_update_attachment_metadata($attach_id, $attach_data);
+
+		// Définit comme image à la une du produit
+		set_post_thumbnail($post_id, $attach_id);
+	}
+
 	/**
 	 * Récupère l'id d'un produit WordPress selon l'id d'un produit de Dolibarr.
 	 *
