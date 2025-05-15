@@ -297,31 +297,119 @@ const CartProductsList = () => {
     });
   };
   const incrementProduct = productId => {
+    // Optimistic update - Create a copy of the current state
+    const previousState = JSON.parse(JSON.stringify(products));
+
+    // Update the product quantity locally first
+    const updatedProducts = {
+      ...products,
+      products: products.products.map(product => {
+        if (product.id === productId) {
+          return {
+            ...product,
+            qty: product.qty + 1
+          };
+        }
+        return product;
+      })
+    };
+    updatedProducts.total = updatedProducts.products.reduce((acc, product) => {
+      return acc + product.price * product.qty;
+    }, 0);
+    updatedProducts.total_ttc = updatedProducts.products.reduce((acc, product) => {
+      return acc + product.price_ttc * product.qty;
+    }, 0);
+    updatedProducts.taxes = updatedProducts.total_ttc - updatedProducts.total;
+
+    // Update UI immediately
+    setValue(updatedProducts);
+
+    // Then make the API call
     _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_5___default()({
       path: `/wp-shop/v1/cart/${productId}/increment`,
-      method: 'POST'
-    }).then(response => {
-      if (response) {
-        setValue(response);
-      } else {
-        console.error('Erreur lors de l\'incrémentation du produit:', response);
+      method: 'POST',
+      data: {
+        qty: 1
       }
+    }).then(response => {
+      if (!response) {
+        console.error('Erreur lors de l\'incrémentation du produit:', response);
+        setValue(previousState);
+      }
+    }).catch(error => {
+      console.error('Échec de l\'incrémentation du produit:', error);
+      // Restore previous state if request fails
+      setValue(previousState);
     });
   };
   const decrementProduct = productId => {
+    // Find the current product
+    const currentProduct = products.products.find(product => product.id === productId);
+    if (!currentProduct) return;
+
+    // Optimistic update - Create a copy of the current state
+    const previousState = JSON.parse(JSON.stringify(products));
+
+    // If qty will be 0, handle differently (potential removal)
+    if (currentProduct.qty <= 1) {
+      // For qty=1, we'll let the API handle it as normal (may need to refresh)
+      _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_5___default()({
+        path: `/wp-shop/v1/cart/${productId}/decrement`,
+        method: 'POST'
+      }).then(response => {
+        if (response) {
+          if (!response?.products?.length) {
+            window.location.reload();
+          } else {
+            setValue(response);
+          }
+        } else {
+          console.error('Erreur lors de la décrémentation du produit:', response);
+        }
+      }).catch(error => {
+        console.error('Échec de la décrémentation du produit:', error);
+      });
+      return;
+    }
+
+    // Update the product quantity locally first
+    const updatedProducts = {
+      ...products,
+      products: products.products.map(product => {
+        if (product.id === productId) {
+          return {
+            ...product,
+            qty: product.qty - 1
+          };
+        }
+        return product;
+      })
+    };
+    updatedProducts.total = updatedProducts.products.reduce((acc, product) => {
+      return acc + product.price * product.qty;
+    }, 0);
+    updatedProducts.total_ttc = updatedProducts.products.reduce((acc, product) => {
+      return acc + product.price_ttc * product.qty;
+    }, 0);
+    updatedProducts.taxes = updatedProducts.total_ttc - updatedProducts.total;
+
+    // Update UI immediately
+    setValue(updatedProducts);
+
+    // Then make the API call
     _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_5___default()({
       path: `/wp-shop/v1/cart/${productId}/decrement`,
       method: 'POST'
     }).then(response => {
-      if (response) {
-        if (!response?.products?.length) {
-          window.location.reload();
-        } else {
-          setValue(response);
-        }
-      } else {
-        console.error('Erreur lors de l\'incrémentation du produit:', response);
+      if (!response) {
+        console.error('Erreur lors de la décrémentation du produit:', response);
+        // Restore previous state if request fails
+        setValue(previousState);
       }
+    }).catch(error => {
+      console.error('Échec de la décrémentation du produit:', error);
+      // Restore previous state if request fails
+      setValue(previousState);
     });
   };
   if (!products) {
