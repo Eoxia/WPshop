@@ -32,8 +32,7 @@ defined( 'ABSPATH' ) || exit;
 					<input type="text" readonly name="api" id="api" aria-describedby="api-description" value="<?php echo esc_attr( $token ); ?>" class="regular-text ltr">
 					<i class="wpeo-button fas fa-redo action-attribute"
 						data-action="<?php echo esc_attr( 'generate_api_key' ); ?>"
-						data-nonce="<?php echo wp_create_nonce( 'generate_api_key' ); ?>"
-						data-id="<?php echo esc_attr( $id ); ?>"></i>
+						data-nonce="<?php echo wp_create_nonce( 'generate_api_key' ); ?>"></i>
 				</td>
 			</tr>
 		</tbody>

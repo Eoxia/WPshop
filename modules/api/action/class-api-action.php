@@ -160,7 +160,7 @@ class API_Action {
 	public function callback_generate_api_key() {
 		check_ajax_referer( 'generate_api_key' );
 
-		$id = ! empty( $_POST['id'] ) ? (int) $_POST['id'] : 0;
+		$id = get_current_user_id();
 
 		if ( empty( $id ) ) {
 			wp_send_json_error();
@@ -171,7 +171,6 @@ class API_Action {
 
 		ob_start();
 		View_Util::exec( 'wpshop', 'api', 'field-api', array(
-			'id'    => $id,
 			'token' => $token,
 		) );
 
