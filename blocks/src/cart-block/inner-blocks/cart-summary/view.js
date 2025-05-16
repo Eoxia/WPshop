@@ -18,7 +18,7 @@ const CartProductsList = () => {
     }, []);
 
     if (!products) {
-        return <div className="loading">{ __('Chargement des produits...', 'wpshop') }</div>;
+        return null;
     }
 
     return (

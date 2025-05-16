@@ -255,7 +255,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 const CartProductsList = () => {
+  const [loader, setLoader] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)([]);
+
   // Récupérer la valeur du compteur depuis le store
   const products = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useSelect)(select => {
     try {
@@ -281,6 +284,7 @@ const CartProductsList = () => {
     });
   }, []);
   const suppressProduct = productId => {
+    setLoader(prev => [...prev, productId]);
     _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_5___default()({
       path: `/wp-shop/v1/cart/${productId}`,
       method: 'DELETE'
@@ -294,6 +298,7 @@ const CartProductsList = () => {
       } else {
         console.error('Erreur lors de la suppression du produit:', response);
       }
+      setLoader(prev => prev.filter(id => id !== productId));
     });
   };
   const incrementProduct = productId => {
@@ -414,8 +419,13 @@ const CartProductsList = () => {
   };
   if (!products) {
     return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
-      className: "loading",
-      children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Chargement des produits...', 'wpshop')
+      className: "wps-list-product gridw-2",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+        className: "wpeo-loader",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
+          class: "loader-spin"
+        })
+      })
     });
   }
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
@@ -423,8 +433,10 @@ const CartProductsList = () => {
     children: products.products?.map(product => /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
       itemscope: true,
       itemtype: "https://schema.org/Product",
-      class: "wps-product",
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("a", {
+      class: `wps-product ${loader.includes(product.id) ? 'wpeo-loader' : ''}`,
+      children: [loader.includes(product.id) && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
+        class: "loader-spin"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("a", {
         class: "wps-delete-product",
         onClick: () => suppressProduct(product.id),
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("i", {
@@ -482,7 +494,7 @@ const CartProductsList = () => {
           })]
         })]
       })]
-    }))
+    }, product.id))
   });
 };
 (0,_utils__WEBPACK_IMPORTED_MODULE_0__.render)(/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(CartProductsList, {}), '.wp-block-wpshop-cart-products');
