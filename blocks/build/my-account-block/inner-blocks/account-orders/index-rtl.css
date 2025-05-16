@@ -8,3 +8,89 @@
 .wps-list-box .wps-box {
   width: 100%;
 }
+
+.wps-list-box .wps-box {
+  background: rgba(0, 0, 0, 0.075);
+  padding: 1em;
+  margin-bottom: 1em;
+}
+
+.wps-list-box .wps-box .wps-box-resume {
+  display: flex;
+}
+.wps-list-box .wps-box .wps-box-resume > * {
+  margin: auto 0;
+}
+.wps-list-box .wps-box .wps-box-resume .wps-box-primary {
+  width: 100%;
+}
+.wps-list-box .wps-box .wps-box-resume .wps-box-primary .wps-box-title {
+  font-size: 20px;
+  color: rgba(0, 0, 0, 0.9);
+  line-height: 1.2;
+}
+.wps-list-box .wps-box .wps-box-resume .wps-box-primary .wps-box-attributes {
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+.wps-list-box .wps-box .wps-box-resume .wps-box-primary .wps-box-attributes .wps-box-subtitle-item {
+  list-style-type: none;
+  margin: 0 0 0 0.5em;
+  color: rgba(0, 0, 0, 0.4);
+  font-size: 14px;
+}
+.wps-list-box .wps-box .wps-box-resume .wps-box-primary .wps-box-attributes .wps-box-subtitle-icon {
+  margin-left: 0.2em;
+}
+.wps-list-box .wps-box .wps-box-resume .wps-box-primary .wps-box-display-more {
+  color: #0088FF;
+  font-size: 14px;
+  margin-top: 0.6em;
+}
+.wps-list-box .wps-box .wps-box-resume .wps-box-primary .wps-box-display-more:hover {
+  cursor: pointer;
+  opacity: 0.6;
+}
+.wps-list-box .wps-box .wps-box-resume .wps-box-secondary {
+  text-align: left;
+  padding: 0 1.2em;
+}
+.wps-list-box .wps-box .wps-box-resume .wps-box-secondary .wps-box-status {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+}
+.wps-list-box .wps-box .wps-box-resume .wps-box-secondary .wps-box-status .wps-box-status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.8);
+  margin-left: 0.2em;
+}
+.wps-list-box .wps-box .wps-box-resume .wps-box-secondary .wps-box-price {
+  font-weight: 700;
+  font-size: 35px;
+}
+.wps-list-box .wps-box .wps-box-resume .wps-box-action {
+  display: flex;
+}
+.wps-list-box .wps-box .wps-box-resume .wps-box-action > * {
+  margin: auto 0;
+}
+
+.wps-list-box .wps-box .wps-box-detail {
+  display: none;
+}
+
+.wps-product-thumbnail {
+  min-width: 20%;
+  width: 20%;
+  margin-left: 0.6em;
+}
+.wps-product-thumbnail .attachment-wps-product-thumbnail {
+  width: 100%;
+  height: auto;
+  display: block;
+}

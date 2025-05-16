@@ -74,7 +74,7 @@ function Edit() {
       total_ttc: 100,
       download: '#',
       lines: [{
-        thumbnail: '<img src="https://via.placeholder.com/150" alt="Product Thumbnail">',
+        thumbnail: '<img src="https://picsum.photos/id/256/200/300" alt="Product Thumbnail" class="attachment-wps-product-thumbnail">',
         libelle: 'Product 1',
         subprice: 50,
         qty: 2
