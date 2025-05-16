@@ -4,10 +4,18 @@ use wpshop\Cart_Session;
 
 $cart = Cart_Session::g()->cart_contents;
 
-$total_price_no_shipping = Cart_Session::g()->total_price_no_shipping;
-$total_price_ttc = Cart_Session::g()->total_price_ttc;
-$tva_amount = Cart_Session::g()->tva_amount;
+$total_price_no_shipping = 0;
+$total_price_ttc = 0;
 
+if ( ! empty( $cart ) ) {
+    foreach ( $cart as $key => $product ) {
+        if ( ! empty( $product['price_ttc'] ) ) {
+            $total_price_no_shipping += $product['price'] * $product['qty'];
+            $total_price_ttc += $product['price_ttc'] * $product['qty'];
+        }
+    }
+}
+$tva_amount = $total_price_ttc - $total_price_no_shipping;
 ?>
 
 <div class="wps-checkout-subtitle wps-checkout-subtitle-step-2"><?php echo esc_html( 'Your order', 'wpshop' ) ?></div>
