@@ -1,169 +1,153 @@
-/*--------------------------------------------------------------
-	Module : Form
-	Version : 1.0.0
-	--------------------------------------------------------------*/
-    
-    /** Formulaire design */
-    .wpeo-form .form-element {
-        width: 100%;
-    
-        .form-label {
-            display: block;
-            font-size: 12px;
-            text-transform: uppercase;
-            font-weight: 900;
-            margin: 0.6em 0;
-            color: rgba(0,0,0,0.8);
-        }
-        .form-field-container {
-            display: block;
-            flex-wrap: nowrap;
-    
-            &:hover {
-                box-shadow: none;
-            }
-        }
-        .form-field {
-            border-radius: 0;
-    
-            &:hover {
-                box-shadow: none;
-            }
-        }
-        .form-sublabel {
-            font-size: 12px;
-            font-style: italic;
-            color: rgba(0,0,0,0.6);
-        }
-    }
-    
-    /** Alignement */
-    .wpeo-form .form-element {
-        .form-field-inline {
-            margin-right: 0.4em;
-        }
-        &.form-align-vertical .form-field-container {
-            flex-direction: column;
-        }
-        &.form-align-horizontal .form-field-container {
-            flex-wrap: wrap;
-        }
-    }
-    
-    /** Couleur */
-    .wpeo-form .form-element {
-        .form-field-container {
-            .form-field, [class*="form-field-icon"] {
-                background: #ececec;
-            }
-            &:hover .form-field, &:hover [class*="form-field-icon"] {
-                background: darken(#ececec, 5%);
-            }
-        }
-        [class*="form-field-label"] {
-            background: darken(#ececec, 5%);
-        }
-    }
-    .wpeo-form.form-light .form-element {
-        .form-field-container {
-            .form-field, [class*="form-field-icon"] {
-                background: #fff;
-            }
-            &:hover .form-field, &:hover [class*="form-field-icon"] {
-                background: #ececec;
-            }
-        }
-        [class*="form-field-label"] {
-            background: #ececec;
-        }
-    }
-    
-    /** Icone */
-    .wpeo-form .form-element {
-        [class*="form-field-icon"] {
-            padding: 0.8em 0 0.8em 0.8em;
-            color: rgba(0,0,0,0.4);
-            font-size: 16px;
-    
-            [class*="fa"] {
-                vertical-align: middle;
-            }
-        }
-        .form-field-icon-prev {
-            padding: 0.8em 0 0.8em 0.8em;
-        }
-        .form-field-icon-next {
-            padding: 0.8em 0.8em 0.8em 0;
-        }
-    }
-    
-    /** Previous & next label */
-    .wpeo-form .form-element {
-        [class*="form-field-label"] {
-            padding: 1.2em 1em;
-            font-size: 12px;
-        }
-        .form-field-label-prev {
-            border-right: 1px solid rgba(0,0,0,0.1);
-        }
-        .form-field-label-next {
-            border-left: 1px solid rgba(0,0,0,0.1);
-        }
-    }
-    
-    /** Required */
-    .wpeo-form .form-element {
-        &.form-element-required .form-label::after {
-            display: inline-block;
-            content: '*';
-            color: #e05353;
-            padding: 0 0.4em;
-        }
-    }
-    
-    /** Erreur sur un champs */
-    .wpeo-form .form-element {
-        &.form-element-error .form-field-container {
-            border: 1px solid #e05353;
-        }
-    }
-    
-    /** Champs disabled */
-    .wpeo-form .form-element {
-        &.form-element-disable .form-field-container {
-            opacity: 0.6;
-            pointer-events: none;
-        }
-    }
-    
-    /* Simple */
-    .wpeo-form {
-        // @import "simple";
-    }
-    
-    
-    /* Moderne */
-    .wpeo-form {
-        // @import "moderne";
-    }
-
-    .wps-checkout-subtitle {
-		font-weight: 700;
-		font-size: 18px;
-		margin-bottom: 0.8em;
-		color: rgba(0,0,0,0.8);
-
-		&::before {
-			display: inline-block;
-			content: '';
-			font-weight: 900;
-			color: #0088FF;
-			margin-right: 0.4em;
+// Design
+.form-element {
+	input, textarea {
+		border: 0;
+		border-bottom: 1px solid #2b2b2b;
+		box-shadow: none;
+		padding: 10px 0;
+		margin: 0;
+		width: 100%;
+		font-size: 14px;
+		background: transparent;
+		&:focus ~ .form-bar {
+			width: 100%;
 		}
-        .wps-checkout-subtitle-step-1 {
-            content: '01.';
-        }
-        .wps-checkout-subtitle-step-2 {
-            content: '02.';
-        }
 	}
+	textarea {
+		&:focus ~ .form-bar {
+			width: 100%;
+		}
+	}
+	.form-bar {
+		position: absolute;
+		width: 0;
+		height: 3px;
+		left: 0;
+		right: 0;
+		background: #0088FF;
+		transition: all 0.2s ease-out;
+	}
+	input ~ .form-bar {
+		bottom: -1px;
+	}
+	input:after {
+		display: block;
+		content: '';
+
+	}
+	textarea ~ .form-bar {
+		bottom: -1px;
+		left: 0;
+		right: 0;
+	}
+	select {
+		width: 100%;
+		padding: 6px;
+		height: 40px;
+		border: 1px solid rgba(0,0,0,0.8);
+		transition: all 0.2s ease-out;
+		&:focus {
+			border: 1px solid #0088FF;
+		}
+	}
+}
+
+// Active
+.form-element {
+	&.form-active input, &.form-active textarea, input:focus, textarea:focus, select:focus {
+		outline: none;
+		& ~ label {
+			font-size: 12px;
+			color: #0088FF;
+			pointer-events: auto;
+		}
+	}
+	&.form-active input, input:focus {
+		& ~ label {
+			top: -10px;
+		}
+	}
+	&.form-active textarea, textarea:focus {
+		& ~ label {
+			top: -16px;
+		}
+	}
+}
+
+.wpeo-gridlayout {
+	display: grid;
+	grid-gap: 1em 1em;
+	grid-template-columns: repeat( 4, 1fr );
+}
+
+/** Définition des tailles */
+.wpeo-gridlayout {
+	/** Du parent */
+	@for $i from 1 through 6 {
+		&.grid-#{$i} {
+			grid-template-columns: repeat( $i, 1fr );
+		}
+
+		/** Chaque enfant peut modifier sa propre taille */
+		@for $y from 1 through 6 {
+			@if ( $y <= $i ) {
+				&.grid-#{$i} > .gridw-#{$y} {
+					grid-column: auto / span $y;
+
+					@if ( $y > 1 ) {
+						@media ( max-width: 770px ) {
+							grid-column: auto / span 2;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+/** Mages */
+.wpeo-gridlayout {
+	@for $i from 0 through 6 {
+		&.grid-margin-#{$i} {
+			margin: #{$i}em  0;
+		}
+	}
+}
+
+/** Gouttières */
+.wpeo-gridlayout {
+	@for $i from 0 through 6 {
+		&.grid-gap-#{$i} {
+			grid-gap: #{$i}em  #{$i}em;
+		}
+	}
+}
+
+
+/** Définition des hauteur des enfants */
+.wpeo-gridlayout {
+	@for $i from 1 through 6 {
+		> .gridh-#{$i} {
+			grid-row: auto / span $i;
+
+			@media ( max-width: 770px ) {
+				grid-row: auto / span 1 !important;
+			}
+		}
+	}
+}
+
+/** Media queries */
+.wpeo-gridlayout {
+	@media ( max-width: 770px ) {
+		grid-template-columns: repeat( 2, 1fr ) !important;
+	}
+	@media ( max-width: 480px ) {
+		grid-template-columns: repeat( 1, 1fr ) !important;
+	}
+	> * {
+		@media ( max-width: 480px ) {
+			grid-column: auto / span 1 !important;
+		}
+	}
+}
