@@ -255,10 +255,7 @@ const CartProductsList = () => {
     }
   }, []);
   if (!products) {
-    return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
-      className: "loading",
-      children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Chargement des produits...', 'wpshop')
-    });
+    return null;
   }
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("ul", {
     class: "wps-cart-resume",

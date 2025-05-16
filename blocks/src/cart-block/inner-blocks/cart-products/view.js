@@ -3,11 +3,15 @@ import { __ } from '@wordpress/i18n';
 import { useEffect } from '@wordpress/element';
 
 import { useSelect, useDispatch } from '@wordpress/data';
+import { useState } from '@wordpress/element';
 import { storeName } from '../../../store/cart-products-store';
 
 import apiFetch from '@wordpress/api-fetch';
 
 const CartProductsList = () => {
+
+    const [loader, setLoader] = useState(null);
+
     // Récupérer la valeur du compteur depuis le store
     const products = useSelect((select) => {
         try {
@@ -34,6 +38,9 @@ const CartProductsList = () => {
     }, []);
 
     const suppressProduct = (productId) => {
+
+        setLoader(productId);
+
         apiFetch({
             path: `/wp-shop/v1/cart/${productId}`,
             method: 'DELETE'
@@ -47,6 +54,7 @@ const CartProductsList = () => {
             } else {
                 console.error('Erreur lors de la suppression du produit:', response);
             }
+            setLoader(null);
         });
     }
 
@@ -165,13 +173,22 @@ const CartProductsList = () => {
 
 
     if (!products) {
-        return <div className="loading">{ __('Chargement des produits...', 'wpshop') }</div>;
+        return (
+            <div className="wps-list-product gridw-2">
+                <div className="wpeo-loader">
+                    <span class="loader-spin"></span>
+                </div>
+            </div>
+        )
     }
 
     return (
         <div className="wps-list-product gridw-2">
             {products.products?.map((product) => (
-                <div itemscope itemtype="https://schema.org/Product" class="wps-product">
+                <div itemscope itemtype="https://schema.org/Product" class={`wps-product ${loader === product.id ? 'wpeo-loader' : ''}`} key={product.id}>
+                    {loader === product.id && (
+                        <span class="loader-spin"></span>
+                    )}
                     <a class="wps-delete-product" onClick={() => suppressProduct(product.id)}>
                         <i class="wps-delete-product-icon fas fa-times-circle"></i>
                     </a>
