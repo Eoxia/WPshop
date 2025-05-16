@@ -257,7 +257,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const CartProductsList = () => {
-  const [loader, setLoader] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(null);
+  const [loader, setLoader] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)([]);
 
   // Récupérer la valeur du compteur depuis le store
   const products = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useSelect)(select => {
@@ -284,7 +284,7 @@ const CartProductsList = () => {
     });
   }, []);
   const suppressProduct = productId => {
-    setLoader(productId);
+    setLoader(prev => [...prev, productId]);
     _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_5___default()({
       path: `/wp-shop/v1/cart/${productId}`,
       method: 'DELETE'
@@ -298,7 +298,7 @@ const CartProductsList = () => {
       } else {
         console.error('Erreur lors de la suppression du produit:', response);
       }
-      setLoader(null);
+      setLoader(prev => prev.filter(id => id !== productId));
     });
   };
   const incrementProduct = productId => {
@@ -433,8 +433,8 @@ const CartProductsList = () => {
     children: products.products?.map(product => /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
       itemscope: true,
       itemtype: "https://schema.org/Product",
-      class: `wps-product ${loader === product.id ? 'wpeo-loader' : ''}`,
-      children: [loader === product.id && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
+      class: `wps-product ${loader.includes(product.id) ? 'wpeo-loader' : ''}`,
+      children: [loader.includes(product.id) && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
         class: "loader-spin"
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("a", {
         class: "wps-delete-product",

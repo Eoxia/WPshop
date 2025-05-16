@@ -10,7 +10,7 @@ import apiFetch from '@wordpress/api-fetch';
 
 const CartProductsList = () => {
 
-    const [loader, setLoader] = useState(null);
+    const [loader, setLoader] = useState([]);
 
     // Récupérer la valeur du compteur depuis le store
     const products = useSelect((select) => {
@@ -39,7 +39,7 @@ const CartProductsList = () => {
 
     const suppressProduct = (productId) => {
 
-        setLoader(productId);
+        setLoader((prev) => [...prev, productId]);
 
         apiFetch({
             path: `/wp-shop/v1/cart/${productId}`,
@@ -54,7 +54,7 @@ const CartProductsList = () => {
             } else {
                 console.error('Erreur lors de la suppression du produit:', response);
             }
-            setLoader(null);
+            setLoader((prev) => prev.filter(id => id !== productId));
         });
     }
 
@@ -185,8 +185,8 @@ const CartProductsList = () => {
     return (
         <div className="wps-list-product gridw-2">
             {products.products?.map((product) => (
-                <div itemscope itemtype="https://schema.org/Product" class={`wps-product ${loader === product.id ? 'wpeo-loader' : ''}`} key={product.id}>
-                    {loader === product.id && (
+                <div itemscope itemtype="https://schema.org/Product" class={`wps-product ${loader.includes(product.id) ? 'wpeo-loader' : ''}`} key={product.id}>
+                    {loader.includes(product.id) && (
                         <span class="loader-spin"></span>
                     )}
                     <a class="wps-delete-product" onClick={() => suppressProduct(product.id)}>
