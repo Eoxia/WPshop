@@ -280,9 +280,38 @@ __webpack_require__.r(__webpack_exports__);
 
 const ProductAddCart = props => {
   const {
-    productId
+    productId,
+    cartUrl
   } = props;
   const [qty, setQty] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(1);
+  const showAddToCartNotification = (productTitle, quantity) => {
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = 'wpeo-notification notification-active notification-add-to-cart notification-blue';
+    notification.style.opacity = '1';
+    notification.style.background = 'rgba(255,255,255,1)';
+
+    // Add notification content
+    notification.innerHTML = `
+            <i class="notification-icon fas fa-info"></i>
+            <div class="notification-title">
+                ${(0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Product "%1$s" x%2$d added to the card', 'wpshop').replace('%1$s', productTitle).replace('%2$d', quantity)}
+                
+                <a href="${cartUrl}" class="view-cart wpeo-button button-grey">
+                    ${(0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('View cart', 'wpshop')}
+                </a>
+            </div>
+            <div class="notification-close"><i class="fas fa-times"></i></div>
+        `;
+
+    // Add to body
+    document.body.appendChild(notification);
+
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+      notification.remove();
+    }, 5000);
+  };
   const addToCart = productId => {
     _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_5___default()({
       path: `/wp-shop/v1/cart/${productId}/increment`,
@@ -292,6 +321,11 @@ const ProductAddCart = props => {
       }
     }).then(response => {
       if (response) {
+        // Get product title from response or from page
+        const productTitle = response.title || document.querySelector('.wp-block-wpshop-product-title') ? document.querySelector('.wp-block-wpshop-product-title').textContent.trim() : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Product', 'wpshop');
+
+        // Show notification
+        showAddToCartNotification(productTitle, qty);
         setQty(1);
       } else {
         console.error('Erreur lors de l\'incrémentation du produit:', response);
@@ -331,7 +365,8 @@ const ProductAddCart = props => {
   });
 };
 (0,_utils__WEBPACK_IMPORTED_MODULE_0__.render)(/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(ProductAddCart, {
-  productId: document.querySelector('.wp-block-wpshop-product-add-cart').getAttribute('data-product-id')
+  productId: document.querySelector('.wp-block-wpshop-product-add-cart').getAttribute('data-product-id'),
+  cartUrl: document.querySelector('.wp-block-wpshop-product-add-cart').getAttribute('data-cart-url')
 }), '.wp-block-wpshop-product-add-cart');
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ProductAddCart);
 })();

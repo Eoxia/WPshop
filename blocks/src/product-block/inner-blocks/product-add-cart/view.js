@@ -33,11 +33,38 @@ import { select } from '@wordpress/data';
 
 const ProductAddCart = (props) => {
 
-    const { productId } = props;
+    const { productId, cartUrl } = props;
 
     const [ qty, setQty ] = useState( 1 );
 
-
+    const showAddToCartNotification = (productTitle, quantity) => {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = 'wpeo-notification notification-active notification-add-to-cart notification-blue';
+        notification.style.opacity = '1';
+        notification.style.background = 'rgba(255,255,255,1)';
+        
+        // Add notification content
+        notification.innerHTML = `
+            <i class="notification-icon fas fa-info"></i>
+            <div class="notification-title">
+                ${__('Product "%1$s" x%2$d added to the card', 'wpshop').replace('%1$s', productTitle).replace('%2$d', quantity)}
+                
+                <a href="${cartUrl}" class="view-cart wpeo-button button-grey">
+                    ${__('View cart', 'wpshop')}
+                </a>
+            </div>
+            <div class="notification-close"><i class="fas fa-times"></i></div>
+        `;
+        
+        // Add to body
+        document.body.appendChild(notification);
+        
+        // Auto remove after 5 seconds
+        setTimeout(() => {
+            notification.remove();
+        }, 5000);
+    }
 
     const addToCart = (productId) => {
         apiFetch({
@@ -48,6 +75,14 @@ const ProductAddCart = (props) => {
             },  
         }).then((response) => {
             if (response) {
+                // Get product title from response or from page
+                const productTitle = response.title || document.querySelector('.wp-block-wpshop-product-title') ? 
+                    document.querySelector('.wp-block-wpshop-product-title').textContent.trim() : 
+                    __('Product', 'wpshop');
+                
+                // Show notification
+                showAddToCartNotification(productTitle, qty);
+                
                 setQty(1);
             } else {
                 console.error('Erreur lors de l\'incrémentation du produit:', response);
@@ -80,5 +115,6 @@ const ProductAddCart = (props) => {
 
 render(<ProductAddCart 
     productId={document.querySelector('.wp-block-wpshop-product-add-cart').getAttribute('data-product-id')}
+    cartUrl={document.querySelector('.wp-block-wpshop-product-add-cart').getAttribute('data-cart-url')}
 />, '.wp-block-wpshop-product-add-cart');
 export default ProductAddCart;
