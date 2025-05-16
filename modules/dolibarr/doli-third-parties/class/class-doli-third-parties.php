@@ -173,6 +173,24 @@ class Doli_Third_Parties extends Singleton_Util {
 			return;
 		}
 	}
+
+	public function search($s = '', $default_args = array(), $count = false) {
+
+		$route = 'thirdparties?sortfield=t.rowid&sortorder=DESC';
+
+		if ( ! empty( $s ) ) {
+			$route .= '&sqlfilters=(t.name%3Alike%3A\'%25' . $s . '%25\')';
+		}
+
+		$doli_third_parties = Request_Util::get( $route );
+
+		if ( $count && ! empty( $doli_third_parties ) ) {
+			return count( $doli_third_parties );
+		}
+
+		return $doli_third_parties;
+
+	}
 }
 
 Doli_Third_Parties::g();

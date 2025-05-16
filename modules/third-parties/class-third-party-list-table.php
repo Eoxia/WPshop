@@ -50,7 +50,6 @@ class Third_Party_List_Table extends \WP_List_Table {
             'phone'        => __( 'Phone', 'wpshop' ),
             'full_address' => __( 'Address', 'wpshop' ),
             'country'      => __( 'Country', 'wpshop' ),
-            'date_created' => __( 'Date', 'wpshop' ),
         );
     }
 
@@ -68,7 +67,6 @@ class Third_Party_List_Table extends \WP_List_Table {
             'phone'        => array( 'phone', false ),
             'full_address' => array( 'address', false ),
             'country'      => array( 'country', false ),
-            'date_created' => array( 'date_created', false ),
         );
     }
 
@@ -96,20 +94,18 @@ class Third_Party_List_Table extends \WP_List_Table {
             'orderby'    => ! empty( $_GET['orderby'] ) ? sanitize_text_field( $_GET['orderby'] ) : 'date_created',
             'order'      => ! empty( $_GET['order'] ) ? sanitize_text_field( $_GET['order'] ) : 'desc',
         );
-
-        // Recherche directe (contournement temporaire)
-        if (empty($search)) {
-            $this->items = Third_Party::g()->get(array('limit' => $per_page));
-            $total_items = Third_Party::g()->get(array('count' => true));
-        } else {
-            $this->items = Third_Party::g()->search($search, $args);
-            $total_items = Third_Party::g()->search($search, array(), true);
-        }
         
+        $this->items = Doli_Third_Parties::g()->search($search, $args);
+        $this->items = array_filter($this->items, function($object) {
+            return !empty($object->array_options->options__wps_id);
+        });
+
+        $total_items = count($this->items);
+
         $this->set_pagination_args( array(
-            'total_items' => count( $total_items ),
+            'total_items' => $total_items,
             'per_page'    => $per_page,
-            'total_pages' => ceil( count($total_items) / $per_page ),
+            'total_pages' => ceil( $total_items / $per_page ),
         ) );
     }
 
@@ -124,38 +120,32 @@ class Third_Party_List_Table extends \WP_List_Table {
      * @return string
      */
     public function column_default( $item, $column_name ) {
-        // Vérifier si $item est un objet et s'il a la propriété data
-        if (!is_object($item) || !isset($item->data)) {
-            return 'Invalid item structure';
-        }
 
         switch ( $column_name ) {
             case 'email':
-                return ! empty( $item->data['email'] ) ? '<a href="mailto:' . esc_attr( $item->data['email'] ) . '">' . esc_html( $item->data['email'] ) . '</a>' : '—';
+                return ! empty( $item->email ) ? '<a href="mailto:' . esc_attr( $item->email ) . '">' . esc_html( $item->email ) . '</a>' : '—';
             case 'phone':
-                return ! empty( $item->data['phone'] ) ? '<a href="tel:' . esc_attr( $item->data['phone'] ) . '">' . esc_html( $item->data['phone'] ) . '</a>' : '—';
+                return ! empty( $item->phone ) ? '<a href="tel:' . esc_attr( $item->phone ) . '">' . esc_html( $item->phone ) . '</a>' : '—';
             case 'full_address':
                 $address_parts = array();
-                if (!empty($item->data['address'])) {
-                    $address_parts[] = esc_html($item->data['address']);
+                if (!empty($item->address)) {
+                    $address_parts[] = esc_html($item->address);
                 }
-                if (!empty($item->data['zip']) && !empty($item->data['town'])) {
-                    $address_parts[] = esc_html($item->data['zip'] . ', ' . $item->data['town']);
+                if (!empty($item->zip) && !empty($item->town)) {
+                    $address_parts[] = esc_html($item->zip . ', ' . $item->town);
                 } else {
-                    if (!empty($item->data['zip'])) {
-                        $address_parts[] = esc_html($item->data['zip']);
+                    if (!empty($item->zip)) {
+                        $address_parts[] = esc_html($item->zip);
                     }
-                    if (!empty($item->data['town'])) {
-                        $address_parts[] = esc_html($item->data['town']);
+                    if (!empty($item->town)) {
+                        $address_parts[] = esc_html($item->town);
                     }
                 }
                 return !empty($address_parts) ? implode('<br />', $address_parts) : '—';
             case 'country':
-                return ! empty( $item->data['country'] ) ? get_from_id( $item->data['country'] )['label'] : '—';
-            case 'date_created':
-                return ! empty( $item->data['date']['raw'] ) ? $item->data['date']['raw'] : '—';
+                return ! empty( $item->country_id ) ? get_from_id( $item->country_id )['label'] : '—';
             default:
-                return isset( $item->data[ $column_name ] ) ? $item->data[ $column_name ] : '—';
+                return isset( $item->$column_name ) ? $item->$column_name : '—';
         }
     }
 
@@ -171,7 +161,7 @@ class Third_Party_List_Table extends \WP_List_Table {
     public function column_cb( $item ) {
         return sprintf(
             '<input type="checkbox" name="third_party_ids[]" value="%s" />',
-            $item->data['id']
+            $item->id
         );
     }
 
@@ -185,8 +175,8 @@ class Third_Party_List_Table extends \WP_List_Table {
      * @return string
      */
     public function column_title( $item ) {
-        $title = ! empty( $item->data['title'] ) ? $item->data['title'] : __( '(no title)', 'wpshop' );
-        $edit_link = admin_url( 'admin.php?page=wps-third-party&id=' . $item->data['id'] );
+        $title = ! empty( $item->name ) ? $item->name : __( '(no title)', 'wpshop' );
+        $edit_link = admin_url( 'admin.php?page=wps-third-party&id=' . $item->id );
         
         $actions = array(
             'edit' => '<a href="' . esc_url( $edit_link ) . '">' . __( 'Edit', 'wpshop' ) . '</a>',
