@@ -356,18 +356,20 @@ class Doli_Sync extends Singleton_Util {
 			$current_thumbnail_id = get_post_thumbnail_id($id);
 
 			$files = Request_Util::get('documents?modulepart=product&id=' . $external_id);
-			
-			if (!empty($current_thumbnail_id) || !empty(!$files)) {
+
+			if (!empty($current_thumbnail_id) || !empty($files)) {
 				$file = $files[0];
 
 				$existing_attachment = get_posts(array(
 					'post_type'      => 'attachment',
 					'posts_per_page' => 1,
 					'post_parent'    => $id,
-					'title'          => sanitize_file_name($file->filename),
+					'title'          => sanitize_file_name($file['filename']),
 				));
 
-				if ((!empty($current_thumbnail_id) && empty($existing_attachment)) || $current_thumbnail_id != $existing_attachment[0]->ID) {
+				if ((!empty($current_thumbnail_id) && empty($existing_attachment)) || 
+					$current_thumbnail_id != $existing_attachment[0]->ID ||
+					empty($existing_attachment) && !empty($files)) {
 					return array(
 						'status' => true,
 						'status_code' => '0x3',
