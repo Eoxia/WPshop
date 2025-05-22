@@ -99,8 +99,8 @@ class Doli_Products extends Singleton_Util {
 
 		$file = $files[0];
 
-		$level1 = $file->level1name;
-		$filename = $file->filename;
+		$level1 = $file['level1name'];
+		$filename = $file['filename'];
 
 		// Check if an attachment with this filename already exists for this post
 		$existing_attachment = get_posts(array(
@@ -109,6 +109,7 @@ class Doli_Products extends Singleton_Util {
 			'post_parent'    => $post_id,
 			'title'          => sanitize_file_name($filename),
 		));
+
 
 		// If attachment exists and is set as featured image, don't recreate
 		if (!empty($existing_attachment)) {

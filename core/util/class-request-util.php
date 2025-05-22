@@ -115,9 +115,13 @@ class Request_Util extends Singleton_Util {
 
 		if ( ! is_wp_error( $request ) ) {
 			if ( 200 === $request['response']['code'] ) {
-				return json_decode( $request['body'] );
+				
+				if ( strpos( $end_point, 'documents?modulepart=product' ) !== false ) {
+					return json_decode(wp_remote_retrieve_body($request), true);
+				}
+				return json_decode( wp_remote_retrieve_body($request) );
 			} else {
-				$body = json_decode( $request['body'], true );
+				$body = json_decode( wp_remote_retrieve_body($request), true );
 				set_transient( 'wps_request_error', $body['error']['message'] ?? '', 60 );
 			}
 		}
