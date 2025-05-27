@@ -111,7 +111,16 @@ class Products_Shortcode {
 
 		global $wpdb;
 
-		$doli_categories = Request_Util::get( 'categories/'  );
+		$a = shortcode_atts( [
+			'product_id' => 0,			
+		], $atts );
+
+		if (! empty( $a['product_id'] ) ) {
+			$product_id = (int) $a['product_id'];
+			$doli_category = Request_Util::get( 'categories/' . $product_id );
+		} else {
+			$doli_categories = Request_Util::get( 'categories/'  );
+		}
 
 		if ( ! empty( $doli_categories )) {
 			foreach( $doli_categories as $doli_category) {
