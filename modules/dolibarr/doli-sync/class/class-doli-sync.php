@@ -185,7 +185,7 @@ class Doli_Sync extends Singleton_Util {
 
 				$messages[] = sprintf( __( 'Erase data for the product <strong>%s</strong> with the <strong>dolibarr</strong> data', 'wpshop' ), $wp_product->data['title'] );
 
-				echo do_shortcode('[wps_categories]');
+				echo do_shortcode('[wps_categories product_id="' . $wp_product->data['id'] . '"]');
 
 				$doli_categories = Request_Util::get( 'categories/object/product/' . $entry_id . '?' );
 				$wpdb->delete($wpdb->prefix . 'term_relationships', array( 'object_id' => $wp_product->data['id'] ) );
