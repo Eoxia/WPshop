@@ -41,6 +41,10 @@ class WPshop extends Singleton_Util {
 			Pages::g()->create_default_page();
 
 			update_option( 'wpshop2_database_version', '1.0.0' );
+		} elseif ( version_compare( $db_version, '1.0.1', '<' ) ) {
+			Pages::g()->create_connection_page();
+			
+			update_option( 'wpshop2_database_version', '1.0.1' );
 		}
 	}
 }
