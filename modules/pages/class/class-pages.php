@@ -200,7 +200,7 @@ class Pages extends Singleton_Util {
 			'post_title'  => __( 'Connection' ),
 			'post_type'   => 'page',
 			'post_name'   => 'connection',
-			'post_status' => 'private',
+			'post_status' => 'publish',
 			'post_content' => __( 'This page is used for connection.' ),
 		) );
 		if ( ! empty( $page_id ) ) {
