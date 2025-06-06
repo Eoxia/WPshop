@@ -401,6 +401,10 @@ class Doli_Order extends Post_Class {
 			Doli_Order::g()->update( $order->data );
 		}
 	}
+
+	public function register_routes() {
+		
+	}
 }
 
 Doli_Order::g();

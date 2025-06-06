@@ -386,6 +386,10 @@ class Product extends Post_Class {
 			return get_posts( $args );
 		}
 	}
+
+	public function register_routes() {
+		
+	}
 }
 
 Product::g();

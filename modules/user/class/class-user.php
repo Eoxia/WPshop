@@ -92,6 +92,10 @@ class User extends User_Class {
 			'contacts' => $contacts,
 		) );
 	}
+
+	public function register_routes() {
+		
+	}
 }
 
 User::g();

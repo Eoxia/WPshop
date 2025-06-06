@@ -255,6 +255,10 @@ class Doli_Documents extends Attachment_Class {
 
 		return $attachments;
 	}
+
+	public function register_routes() {
+		
+	}
 }
 
 Doli_Documents::g();

@@ -92,6 +92,10 @@ class Proposals extends \eoxia\Post_Class {
 	 * @var string
 	 */
 	public $option_per_page = 'proposal_per_page';
+
+	public function register_routes() {
+		
+	}
 }
 
 Proposals::g();

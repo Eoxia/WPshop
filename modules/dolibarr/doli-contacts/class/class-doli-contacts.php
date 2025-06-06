@@ -158,6 +158,10 @@ class Doli_Contacts extends Post_Class {
 
 		return $wp_contact;
 	}
+
+	public function register_routes() {
+		
+	}
 }
 
 Doli_Contacts::g();

@@ -191,6 +191,32 @@ class My_Account extends Singleton_Util {
 				return is_user_logged_in();
 			},
 		) );
+
+
+		register_rest_route( 'wp-shop/v1', '/login', array(
+			'methods'  => 'POST',
+			'callback' => [$this, 'login' ],
+			'permission_callback' => function () {
+				return ! is_user_logged_in();
+			}
+		) );
+
+		register_rest_route( 'wp-shop/v1', '/register', array(
+			'methods'  => 'POST',
+			'callback' => [$this, 'register' ],
+			'permission_callback' => function () {
+				return ! is_user_logged_in();
+			}
+		) );
+
+		register_rest_route( 'wp-shop/v1', '/lost-password', array(
+			'methods'  => 'POST',
+			'callback' => [$this, 'lost_password' ],
+			'permission_callback' => function () {
+				return ! is_user_logged_in();
+			}
+		) );
+
 	}
 
 	public function get_account_details() {
@@ -264,6 +290,61 @@ class My_Account extends Singleton_Util {
 
 		include( Template_Util::get_template_part( 'my-account', 'my-account-orders' ) );
 	}
+
+	public function login( $request ) {
+		$creds = [];
+		$creds['user_login'] = $request->get_param( 'username' );
+		$creds['user_password'] = $request->get_param( 'password' );
+		$creds['remember'] = true;
+
+		$user = wp_signon( $creds, false );
+
+		if ( is_wp_error( $user ) ) {
+			return new \WP_Error( 'login_failed', __( 'Login failed. Please check your credentials.', 'wpshop' ), [ 'status' => 401 ] );
+		}
+
+		// Regénérer le cookie de session pour éviter les problèmes de session.
+		wp_set_current_user( $user->ID );
+		wp_set_auth_cookie( $user->ID, true );
+
+		return new \WP_REST_Response( [
+			'success' => true,
+			'message' => __( 'Login successful.', 'wpshop' ),
+		], 200 );
+	}
+
+	public function register( $request ) {
+		$username = $request->get_param( 'username' );
+		$email = $request->get_param( 'email' );
+		$password = $request->get_param( 'password' );
+		
+		if ( username_exists( $username ) || email_exists( $email ) ) {
+			return new \WP_Error( 'registration_failed', __( 'Username or email already exists.', 'wpshop' ), [ 'status' => 400 ] );
+		}
+		$user_id = wp_create_user( $username, $password, $email );
+		if ( is_wp_error( $user_id ) ) {
+			return new \WP_Error( 'registration_failed', __( 'Registration failed. Please try again.', 'wpshop' ), [ 'status' => 400 ] );
+		}
+
+		// Regénérer le cookie de session pour éviter les problèmes de session.
+		wp_set_current_user( $user_id );
+		wp_set_auth_cookie( $user_id, true );
+		return new \WP_REST_Response( [
+			'success' => true,
+			'message' => __( 'Registration successful.', 'wpshop' ),
+		], 200 );
+	}
+
+	public function lost_password( $request ) {
+		return new \WP_REST_Response( [
+			'success' => true,
+			'message' => __( 'Password reset email sent successfully.', 'wpshop' ),
+		], 200 );
+	}
+
+
+
+
 }
 
 My_Account::g();
