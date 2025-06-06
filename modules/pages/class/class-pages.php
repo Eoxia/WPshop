@@ -195,6 +195,23 @@ class Pages extends Singleton_Util {
 		}
 	}
 
+	public function create_connection_page() {
+		$page_id = wp_insert_post( array(
+			'post_title'  => __( 'Connection' ),
+			'post_type'   => 'page',
+			'post_name'   => 'connection',
+			'post_status' => 'private',
+			'post_content' => __( 'This page is used for connection.' ),
+		) );
+		if ( ! empty( $page_id ) ) {
+			$this->page_ids['connection_id'] = $page_id;
+			LOG_Util::log( 'Create the connection page when activate plugin success', 'wpshop' );
+		} else {
+			LOG_Util::log( 'Error create the connection page when activate plugin', 'wpshop' );
+		}
+		update_option( 'wps_page_ids', $this->page_ids );
+	}
+
 	/**
 	 * Récupère le slug de la page "Boutique".
 	 *
