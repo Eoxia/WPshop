@@ -211,6 +211,7 @@ class Doli_Sync extends Singleton_Util {
 			case 'wps-product-cat':
 				$doli_category = Request_Util::get( 'categories/' . $entry_id );
 				$wp_category   = Doli_Category::g()->get( array( 'id' => $wp_id ), true );
+
 				$wp_category   = Doli_Category::g()->doli_to_wp( $doli_category, $wp_category);
 
 				$wp_object = $wp_category;

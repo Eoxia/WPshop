@@ -282,6 +282,10 @@ class Doli_Category extends Term_Class {
 		return $related_categories;
 
 	}
+
+	public function register_routes() {
+		
+	}
 }
 
 Doli_Category::g();

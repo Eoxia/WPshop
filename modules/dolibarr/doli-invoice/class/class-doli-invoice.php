@@ -347,6 +347,10 @@ class Doli_Invoice extends Post_Class {
 			return $this->convert_to_wp_invoice_format( $doli_invoices );
 		}
 	}
+
+	public function register_routes() {
+		
+	}
 }
 
 Doli_Invoice::g();

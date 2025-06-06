@@ -1,16 +1,14 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
   "apiVersion": 3,
-  "name": "wpshop/product-add-cart",
+  "name": "wpshop/connection-block",
   "version": "0.1.0",
-  "title": "Product Add Cart",
+  "title": "Connection Block",
   "category": "wpshop",
-  "icon": "smiley",
-  "description": "Example block scaffolded with Create Block tool.",
-  "example": {},
+  "icon": "lock",
+  "description": "A block for user login and registration",
   "supports": {
-    "html": false,
-    "inserter": false
+    "html": false
   },
   "textdomain": "wpshop",
   "editorScript": "file:./index.js",

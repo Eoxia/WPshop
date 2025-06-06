@@ -317,6 +317,10 @@ class Third_Party extends Post_Class {
 
 		return $messages;
 	}
+	
+	public function register_routes() {
+		
+	}
 }
 
 Third_Party::g();

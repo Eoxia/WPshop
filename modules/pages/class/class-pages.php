@@ -93,6 +93,7 @@ class Pages extends Singleton_Util {
 			'checkout_id'                => 0,
 			'my_account_id'              => 0,
 			'general_conditions_of_sale' => 0,
+			'connection_id'              => 0,
 		);
 
 		$this->page_state_titles_private = array(
@@ -126,6 +127,7 @@ class Pages extends Singleton_Util {
 			'checkout_id'                => 'Checkout',
 			'my_account_id'              => 'My account',
 			'general_conditions_of_sale' => 'General conditions of sale',
+			'connection_id'              => 'Connection',
 		);
 
 		$this->page_content_default = array(
@@ -365,6 +367,18 @@ class Pages extends Singleton_Util {
 	 */
 	public function get_customer_new_account_link() {
 		return get_permalink( $this->page_ids['customer_new_account'] );
+	}
+
+	/**
+	 * Récupère le lien vers la page "Connection".
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 *
+	 * @return string Le lien vers la page "Nouveau compte".
+	 */
+	public function get_connection_link() {
+		return get_permalink( $this->page_ids['connection_id'] );
 	}
 
 	/**
