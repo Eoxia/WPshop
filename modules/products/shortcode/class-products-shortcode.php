@@ -109,26 +109,36 @@ class Products_Shortcode {
 	 */
 	public function do_shortcode_categories( $atts ) {
 
-		global $wpdb;
+		shortcode_atts( array(
+			'product_id' => 0,
+		), $atts );
 
-		$a = shortcode_atts( [
-			'product_id' => 0,			
-		], $atts );
+		// Garantit l'existence des catégories produit de Dolibarr côté WP, de façon idempotente.
+		// IMPORTANT : l'ancienne version utilisait l'id du produit comme id de catégorie et, par une
+		// confusion de variable ($doli_category vs $doli_categories), tombait dans un else qui
+		// SUPPRIMAIT toute la taxonomie wps-product-cat à chaque synchronisation. On ne supprime plus rien.
+		$doli_categories = Request_Util::get( 'categories?type=product&sortfield=t.rowid&sortorder=ASC&limit=1000' );
 
-		if (! empty( $a['product_id'] ) ) {
-			$product_id = (int) $a['product_id'];
-			$doli_category = Request_Util::get( 'categories/' . $product_id );
-		} else {
-			$doli_categories = Request_Util::get( 'categories/'  );
-		}
+		if ( ! empty( $doli_categories ) ) {
+			foreach ( $doli_categories as $doli_category ) {
+				$existing = get_terms( array(
+					'taxonomy'   => 'wps-product-cat',
+					'hide_empty' => false,
+					'meta_key'   => '_external_id',
+					'meta_value' => (int) $doli_category->id,
+					'number'     => 1,
+					'fields'     => 'ids',
+				) );
 
-		if ( ! empty( $doli_categories )) {
-			foreach( $doli_categories as $doli_category) {
-				wp_insert_term($doli_category->label, 'wps-product-cat', array('description'=>$doli_category->description ));
+				if ( empty( $existing ) ) {
+					$term = wp_insert_term( $doli_category->label, 'wps-product-cat', array(
+						'description' => isset( $doli_category->description ) ? $doli_category->description : '',
+					) );
+					if ( ! is_wp_error( $term ) && ! empty( $term['term_id'] ) ) {
+						update_term_meta( $term['term_id'], '_external_id', (int) $doli_category->id );
+					}
+				}
 			}
-		}
-		else {
-			$wpdb->delete('wp_term_taxonomy', array('taxonomy' => 'wps-product-cat'));
 		}
 	}
 }

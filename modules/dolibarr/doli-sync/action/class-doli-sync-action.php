@@ -123,6 +123,21 @@ class Doli_Sync_Action {
 					'meta_value' => (int) $doli_entry->id,
 				), true );
 
+				// Repli anti-doublons : si le lien _external_id a été perdu, on retrouve le produit
+				// existant par sa référence (_ref) au lieu d'en recréer un nouveau à chaque synchro.
+				if ( empty( $wp_entry ) && 'wps-product' === $type && ! empty( $doli_entry->ref ) ) {
+					$wp_entry = $sync_info['wp_class']::g()->get( array(
+						'meta_key'   => '_ref',
+						'meta_value' => $doli_entry->ref,
+					), true );
+
+					// get() renvoie un tableau si plusieurs doublons partagent la même référence :
+					// on conserve alors le premier (les autres pourront être nettoyés séparément).
+					if ( is_array( $wp_entry ) ) {
+						$wp_entry = ! empty( $wp_entry ) ? reset( $wp_entry ) : null;
+					}
+				}
+
 				if ( empty( $wp_entry ) ) {
 					$wp_entry = $sync_info['wp_class']::g()->get( array( 'schema' => true ), true );
 				}

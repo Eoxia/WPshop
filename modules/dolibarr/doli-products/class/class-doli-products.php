@@ -59,7 +59,12 @@ class Doli_Products extends Singleton_Util {
 			$wp_product->data['stock']             = (int) $doli_product->stock_reel ?? 0;
 			$wp_product->data['barcode']           = $doli_product->barcode;
 			$wp_product->data['fk_product_type']   = (int) $doli_product->type; // Product 0 or Service 1.
-			$wp_product->data['status']            = $doli_product->array_options->options__wps_status;
+
+			// Un produit sans statut WPshop explicite est considéré publié (c'est la valeur par défaut
+			// de l'extrafield "_wps_status" côté Dolibarr). Sans ce repli, un statut NULL faisait basculer
+			// le produit en brouillon et le faisait disparaître de la boutique (fausse désynchro).
+			$wps_status                            = isset( $doli_product->array_options->options__wps_status ) ? $doli_product->array_options->options__wps_status : '';
+			$wp_product->data['status']            = ( '' === $wps_status || null === $wps_status ) ? 'publish' : $wps_status;
 
 			$wp_product = Product::g()->update( $wp_product->data );
 
@@ -68,8 +73,11 @@ class Doli_Products extends Singleton_Util {
 
 				$data_sha['doli_id']     = $doli_product->id;
 				$data_sha['wp_id']       = $wp_product->data['id'];
-				$data_sha['label']       = $wp_product->data['title'];
-				$data_sha['description'] = $wp_product->data['content'];
+				// Décodage des entités HTML pour que le SHA soit insensible à l'encodage : WordPress
+				// ré-encode les caractères à l'enregistrement (&#39;->&#039;, &eacute;...), ce qui faisait
+				// systématiquement diverger ce SHA de celui recalculé côté Dolibarr (faux "désynchronisé").
+				$data_sha['label']       = html_entity_decode( (string) $wp_product->data['title'], ENT_QUOTES, 'UTF-8' );
+				$data_sha['description'] = html_entity_decode( (string) $wp_product->data['content'], ENT_QUOTES, 'UTF-8' );
 				$data_sha['price']       = $doli_product->price;
 				$data_sha['price_ttc']   = $doli_product->price_ttc;
 				$data_sha['tva_tx']      = $doli_product->tva_tx;
@@ -82,6 +90,11 @@ class Doli_Products extends Singleton_Util {
 				remove_all_actions( 'save_post' );
 				update_post_meta( $wp_product->data['id'], '_sync_sha_256', $wp_product->data['sync_sha_256'] );
 				update_post_meta( $wp_product->data['id'], '_external_id', (int) $doli_product->id );
+
+				// Écrit le lien retour (_wps_id) côté Dolibarr pour rendre la liaison bidirectionnelle.
+				// Sans cela, check_status() voyait options__wps_id vide, jugeait le produit "non lié" et
+				// supprimait _external_id : au sync suivant un nouveau produit était recréé (doublons).
+				Request_Util::get( 'doliwpshop/associateProduct?wp_id=' . (int) $wp_product->data['id'] . '&doli_id=' . (int) $doli_product->id );
 
 				// translators: Erase data for the product <strong>dolibarr</strong> data.
 				$notices['messages'][] = sprintf( __( 'Erase data for the product <strong>%s</strong> with the <strong>dolibarr</strong> data', 'wpshop' ), $wp_product->data['title'] );

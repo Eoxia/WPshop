@@ -93,15 +93,17 @@ class Doli_Sync_Filter extends Singleton_Util {
 		//@todo wp_id en id_wordpress
 		$data_sha['doli_id']              = $response->id;
 		$data_sha['wp_id']                = $wp_id;
-		$data_sha['label']                = $response->label;
-		$data_sha['description']          = $response->description;
+		// Même normalisation que côté écriture (Doli_Products::doli_to_wp) : on décode les entités
+		// HTML pour comparer le contenu réel et non sa représentation encodée.
+		$data_sha['label']                = html_entity_decode( (string) $response->label, ENT_QUOTES, 'UTF-8' );
+		$data_sha['description']          = html_entity_decode( (string) $response->description, ENT_QUOTES, 'UTF-8' );
 		$data_sha['price']                = $response->price;
 		$data_sha['price_ttc']            = $response->price_ttc;
 		$data_sha['tva_tx']               = $response->tva_tx;
 		$data_sha['stock']                = $response->stock_reel ?? 0;
 		$data_sha['status']               = $response->array_options->options__wps_status;
 
-		if ( $response->array_options->options__wps_status == 1  || $response->array_options->options__wps_status == 'publish' ) {
+		if ( empty( $response->array_options->options__wps_status ) || $response->array_options->options__wps_status == 1 || $response->array_options->options__wps_status == 'publish' ) {
 			$data_sha['status'] = 'publish';
 		} else {
 			$data_sha['status'] = 'draft';
