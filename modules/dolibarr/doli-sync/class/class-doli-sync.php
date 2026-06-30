@@ -185,16 +185,20 @@ class Doli_Sync extends Singleton_Util {
 
 				$messages[] = sprintf( __( 'Erase data for the product <strong>%s</strong> with the <strong>dolibarr</strong> data', 'wpshop' ), $wp_product->data['title'] );
 
-				echo do_shortcode('[wps_categories product_id="' . $wp_product->data['id'] . '"]');
-
+				// Rattachement des catégories par identifiant Dolibarr (_external_id) et non par nom :
+				// robuste aux accents/encodage et aux doublons. La catégorie absente est créée puis liée,
+				// et l'ensemble est remplacé d'un seul appel wp_set_object_terms (compteurs + caches à jour).
 				$doli_categories = Request_Util::get( 'categories/object/product/' . $entry_id . '?' );
-				$wpdb->delete($wpdb->prefix . 'term_relationships', array( 'object_id' => $wp_product->data['id'] ) );
+				$term_ids        = array();
 				if ( ! empty( $doli_categories ) ) {
 					foreach ( $doli_categories as $doli_category ) {
-						$term_taxonomy_id = get_term_by('name', $doli_category->label, 'wps-product-cat' )->term_id;
-						$wpdb->insert( $wpdb->prefix . 'term_relationships', array( 'object_id' => $wp_product->data['id'] , 'term_taxonomy_id' => $term_taxonomy_id, 'term_order' => 0 ) );
+						$term_id = $this->resolve_category_term_id( $doli_category, true );
+						if ( $term_id ) {
+							$term_ids[] = $term_id;
+						}
 					}
 				}
+				wp_set_object_terms( $wp_product->data['id'], $term_ids, 'wps-product-cat', false );
 
 				$wp_object = $wp_product;
 				break;
@@ -225,6 +229,58 @@ class Doli_Sync extends Singleton_Util {
 			'wp_error'  => $wp_error,
 			'wp_object' => $wp_object,
 		);
+	}
+
+	/**
+	 * Retrouve (ou crée) le terme WP "wps-product-cat" correspondant à une catégorie Dolibarr,
+	 * en s'appuyant sur l'identifiant Dolibarr (_external_id) plutôt que sur le nom (insensible
+	 * aux accents/encodage et aux doublons). Si le terme existe par son nom mais sans lien, on
+	 * le réutilise et on le lie (backfill de _external_id).
+	 *
+	 * @since   2.5.1
+	 *
+	 * @param  stdClass $doli_category Catégorie Dolibarr (au moins ->id et ->label).
+	 * @param  boolean  $create        Crée le terme s'il est introuvable.
+	 *
+	 * @return integer                 L'ID du terme WP, ou 0 si introuvable et non créé.
+	 */
+	private function resolve_category_term_id( $doli_category, $create = false ) {
+		if ( empty( $doli_category->id ) ) {
+			return 0;
+		}
+
+		$found = get_terms( array(
+			'taxonomy'   => 'wps-product-cat',
+			'hide_empty' => false,
+			'meta_key'   => '_external_id',
+			'meta_value' => (int) $doli_category->id,
+			'number'     => 1,
+			'fields'     => 'ids',
+		) );
+		if ( ! empty( $found ) ) {
+			return (int) $found[0];
+		}
+
+		// Repli : un terme du même nom existe déjà mais sans lien -> on le réutilise et on le lie.
+		$by_name = ! empty( $doli_category->label ) ? get_term_by( 'name', $doli_category->label, 'wps-product-cat' ) : false;
+		if ( $by_name ) {
+			update_term_meta( $by_name->term_id, '_external_id', (int) $doli_category->id );
+			return (int) $by_name->term_id;
+		}
+
+		if ( ! $create ) {
+			return 0;
+		}
+
+		$created = wp_insert_term( $doli_category->label, 'wps-product-cat', array(
+			'description' => isset( $doli_category->description ) ? $doli_category->description : '',
+		) );
+		if ( is_wp_error( $created ) || empty( $created['term_id'] ) ) {
+			return 0;
+		}
+		update_term_meta( $created['term_id'], '_external_id', (int) $doli_category->id );
+
+		return (int) $created['term_id'];
 	}
 
 	/**
@@ -261,69 +317,60 @@ class Doli_Sync extends Singleton_Util {
 
 		$response = Request_Util::get( $sync_info['endpoint'] . '/' . $external_id );
 
-		// Dolibarr return false when object is not found.
+		// Request_Util::get() renvoie false aussi bien quand l'objet est introuvable que lors d'une
+		// erreur API transitoire (timeout, 401, 500...). On ne supprime donc PLUS le lien automatiquement :
+		// une erreur passagère ne doit pas casser la liaison et provoquer des doublons au sync suivant.
 		if ( ! $response ) {
-			// @todo: Doublon
-			if ( $type == 'wps-user' ) {
-				delete_user_meta( $id, '_external_id' );
-				delete_user_meta( $id, '_sync_sha_256' );
-			} elseif ( $type == 'wps-product-cat' ) {
-				delete_term_meta( $id, '_external_id' );
-				delete_term_meta( $id, '_sync_sha_256' );
-			}  else {
-				delete_post_meta( $id, '_external_id' );
-				delete_post_meta( $id, '_sync_sha_256' );
-			}
-
 			return array(
 				'status' => true,
 				'status_code' => '0x1',
-				'status_message' => 'Dolibarr Object: #' . $external_id . ' not exist. Automatically delete external_id.',
+				'status_message' => 'Dolibarr Object: #' . $external_id . ' injoignable (lien conservé).',
 			);
 		}
 
-		// Dolibarr Object is not linked to this WP Object.
+		// Le lien retour _wps_id côté Dolibarr ne pointe pas vers ce post WP.
 		if ( $response->array_options->options__wps_id != $id ) {
-			// @todo: Doublon
-			if ( $type == 'wps-user' ) {
-				delete_user_meta( $id, '_external_id' );
-				delete_user_meta( $id, '_sync_sha_256' );
-			} elseif ( $type == 'wps-product-cat' ) {
-				delete_term_meta( $id, '_external_id' );
-				delete_term_meta( $id, '_sync_sha_256' );
+			if ( empty( $response->array_options->options__wps_id ) ) {
+				// Cas normal après un import Doli -> WP : _wps_id n'a jamais été renseigné côté Dolibarr.
+				// On RÉPARE le lien (au lieu de détruire _external_id, ce qui générait des doublons).
+				if ( $type == 'wps-product' ) {
+					Request_Util::get( 'doliwpshop/associateProduct?wp_id=' . (int) $id . '&doli_id=' . (int) $external_id );
+				} elseif ( $type == 'wps-third-party' ) {
+					Request_Util::get( 'doliwpshop/associateThirdparty?wp_id=' . (int) $id . '&doli_id=' . (int) $external_id );
+				} elseif ( $type == 'wps-product-cat' ) {
+					Request_Util::get( 'doliwpshop/associatecategory?wp_id=' . (int) $id . '&doli_id=' . (int) $external_id );
+				}
+				// Le lien est désormais cohérent : on reflète la valeur en mémoire et on poursuit la vérification.
+				$response->array_options->options__wps_id = $id;
 			} else {
-				delete_post_meta( $id, '_external_id' );
-				delete_post_meta( $id, '_sync_sha_256' );
+				// _wps_id pointe vers un AUTRE post WP : vrai conflit. On le signale sans rien supprimer.
+				return array(
+					'status' => true,
+					'status_code' => '0x2',
+					'status_message' => 'Dolibarr Object lié à un autre post WP (#' . $response->array_options->options__wps_id . '). Lien conservé.',
+				);
 			}
-
-			return array(
-				'status' => true,
-				'status_code' => '0x2',
-				'status_message' => 'Dolibarr Object is not linked to this WP Object.',
-			);
 		}
 
-		$object_id = $response->array_options->options__wps_id;
+		// Comparaison des catégories par identifiant Dolibarr (_external_id), insensible à l'ordre.
+		// (Auparavant : appariement par NOM, qui échouait dès qu'un accent/une entité différait.)
 		$doli_categories = Request_Util::get('categories/object/product/' . $response->id . '?');
-		$wp_categories   = $wpdb->get_results("SELECT * FROM ".$wpdb->term_relationships." WHERE object_id = $object_id", ARRAY_A);
 
-		$wp_category_labels = array();
 		$doli_category_labels = array();
-
-		if ( ! empty ($doli_categories) ) {
-			foreach ($doli_categories as $doli_category) {
-				$term = get_term_by('name', $doli_category->label, 'wps-product-cat' );
-				if ( ! empty($term) ) {
-					$doli_category_labels[] = get_term_by('name', $doli_category->label, 'wps-product-cat' )->term_id;
+		if ( ! empty( $doli_categories ) ) {
+			foreach ( $doli_categories as $doli_category ) {
+				$term_id = $this->resolve_category_term_id( $doli_category, false );
+				if ( $term_id ) {
+					$doli_category_labels[] = $term_id;
 				}
 			}
 		}
 
-		if ( ! empty ( $wp_categories) ) {
-			foreach ($wp_categories as $wp_category){
-				$wp_category_labels[] = $wp_category['term_taxonomy_id'];
-			}
-		}
+		$wp_category_labels = wp_get_object_terms( $id, 'wps-product-cat', array( 'fields' => 'ids' ) );
+		$wp_category_labels = is_wp_error( $wp_category_labels ) ? array() : array_map( 'intval', $wp_category_labels );
+
+		sort( $doli_category_labels );
+		sort( $wp_category_labels );
 
 		$response = apply_filters( 'doli_build_sha_' . $type, $response, $id );
 		// WP Object is not equal Dolibarr Object.
@@ -358,19 +405,23 @@ class Doli_Sync extends Singleton_Util {
 
 			$files = Request_Util::get('documents?modulepart=product&id=' . $external_id);
 
-			if (!empty($current_thumbnail_id) || !empty($files)) {
-				$file = $files[0];
+			$doli_filename = ( ! empty( $files ) && ! empty( $files[0]['filename'] ) ) ? $files[0]['filename'] : '';
+			$has_wp_image   = ! empty( $current_thumbnail_id );
+			$has_doli_image = ! empty( $doli_filename );
 
-				$existing_attachment = get_posts(array(
+			if ( $has_wp_image || $has_doli_image ) {
+				$existing_attachment = $has_doli_image ? get_posts( array(
 					'post_type'      => 'attachment',
 					'posts_per_page' => 1,
 					'post_parent'    => $id,
-					'title'          => sanitize_file_name($file['filename']),
-				));
+					'title'          => sanitize_file_name( $doli_filename ),
+				) ) : array();
 
-				if ((!empty($current_thumbnail_id) && empty($existing_attachment)) || 
-					$current_thumbnail_id != $existing_attachment[0]->ID ||
-					empty($existing_attachment) && !empty($files)) {
+				$existing_id = ! empty( $existing_attachment ) ? (int) $existing_attachment[0]->ID : 0;
+
+				// Image désynchronisée : présente d'un seul côté, ou ne correspond pas à la vignette WP.
+				if ( $has_wp_image !== $has_doli_image
+					|| ( $has_doli_image && (int) $current_thumbnail_id !== $existing_id ) ) {
 					return array(
 						'status' => true,
 						'status_code' => '0x3',
