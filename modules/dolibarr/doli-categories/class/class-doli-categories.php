@@ -220,6 +220,7 @@ class Doli_Category extends Term_Class {
 
 			update_term_meta( $wp_category->data['id'], '_sync_sha_256', $wp_category->data['sync_sha_256'] );
 			update_term_meta( $wp_category->data['id'], '_external_id', (int) $doli_category->id );
+			update_term_meta( $wp_category->data['id'], '_sync_debug', wp_json_encode( $data_sha ) );
 			$notices['messages'][] = sprintf( __( 'Erase data for the product <strong>%s</strong> with the <strong>dolibarr</strong> data', 'wpshop' ), $wp_category->data['name'] );
 		}
 

@@ -109,7 +109,8 @@ class Doli_Sync_Filter extends Singleton_Util {
 			$data_sha['status'] = 'draft';
 		}
 
-		$response->sha = hash( 'sha256', implode( ',', $data_sha ) );
+		$response->sha_data = $data_sha;
+		$response->sha      = hash( 'sha256', implode( ',', $data_sha ) );
 
 		return $response;
 	}
@@ -139,7 +140,8 @@ class Doli_Sync_Filter extends Singleton_Util {
 		$data_sha['phone']    = Doli_Sync::format_text( $response->phone );
 		$data_sha['email']    = Doli_Sync::format_text( $response->email );
 
-		$response->sha = hash( 'sha256', implode( ',', $data_sha ) );
+		$response->sha_data = $data_sha;
+		$response->sha      = hash( 'sha256', implode( ',', $data_sha ) );
 
 		return $response;
 	}
@@ -169,7 +171,8 @@ class Doli_Sync_Filter extends Singleton_Util {
 		$data_sha['name']    = Doli_Sync::format_text( $response->label );
 		$data_sha['slug']    = Doli_Sync::format_text( $slug );
 
-		$response->sha = hash( 'sha256', implode( ',', $data_sha ) );
+		$response->sha_data = $data_sha;
+		$response->sha      = hash( 'sha256', implode( ',', $data_sha ) );
 
 		return $response;
 	}
