@@ -211,27 +211,16 @@ class Doli_Category extends Term_Class {
 
 		if ( $save ) {
 			$data_sha = array();
-			$data_sha['doli_id']  = (int) $wp_category->data['external_id'];
-			$data_sha['wp_id']    = $wp_category->data['id'];
-			$data_sha['name']     = $wp_category->data['name'];
-			$data_sha['slug']  	  = $wp_category->data['slug'];
+			$data_sha['doli_id'] = Doli_Sync::format_int( $wp_category->data['external_id'] );
+			$data_sha['wp_id']   = Doli_Sync::format_int( $wp_category->data['id'] );
+			$data_sha['name']    = Doli_Sync::format_text( $wp_category->data['name'] );
+			$data_sha['slug']    = Doli_Sync::format_text( $wp_category->data['slug'] );
 
 			$wp_category->data['sync_sha_256'] = hash( 'sha256', implode( ',', $data_sha ) );
-			//@todo save_post utilisé ?
 
 			update_term_meta( $wp_category->data['id'], '_sync_sha_256', $wp_category->data['sync_sha_256'] );
 			update_term_meta( $wp_category->data['id'], '_external_id', (int) $doli_category->id );
 			$notices['messages'][] = sprintf( __( 'Erase data for the product <strong>%s</strong> with the <strong>dolibarr</strong> data', 'wpshop' ), $wp_category->data['name'] );
-		}
-
-		if ($save) {
-			$data_sha = [];
-			$data_sha['doli_id']  = (int) $wp_category->data['external_id'];
-			$data_sha['wp_id']    = $wp_category->data['id'];
-			$data_sha['name']     = $wp_category->data['name'];
-			$data_sha['slug']  	  = $wp_category->data['slug'];
-
-			$wp_category->data['sync_sha_256'] = hash( 'sha256', implode( ',', $data_sha ) );
 		}
 
 		return $wp_category;

@@ -97,9 +97,9 @@ class Doli_Sync_Filter extends Singleton_Util {
 		// HTML pour comparer le contenu réel et non sa représentation encodée.
 		$data_sha['label']                = html_entity_decode( (string) $response->label, ENT_QUOTES, 'UTF-8' );
 		$data_sha['description']          = html_entity_decode( (string) $response->description, ENT_QUOTES, 'UTF-8' );
-		$data_sha['price']                = $response->price;
-		$data_sha['price_ttc']            = $response->price_ttc;
-		$data_sha['tva_tx']               = $response->tva_tx;
+		$data_sha['price']                = Doli_Sync::format_price( $response->price );
+		$data_sha['price_ttc']            = Doli_Sync::format_price( $response->price_ttc );
+		$data_sha['tva_tx']               = Doli_Sync::format_price( $response->tva_tx );
 		$data_sha['stock']                = $response->stock_reel ?? 0;
 		$data_sha['status']               = $response->array_options->options__wps_status;
 
@@ -128,16 +128,16 @@ class Doli_Sync_Filter extends Singleton_Util {
 	public function build_sha_third_party( $response, $wp_id ) {
 		$data_sha = array();
 
-		$data_sha['doli_id']  = $response->id;
-		$data_sha['wp_id']    = $wp_id;
-		$data_sha['title']    = $response->name;
-		$data_sha['town']     = $response->town;
-		$data_sha['zip']      = $response->zip;
-		$data_sha['state']    = $response->state_id;
-		$data_sha['country']  = $response->country_id;
-		$data_sha['address']  = $response->address;
-		$data_sha['phone']    = $response->phone;
-		$data_sha['email']    = $response->email;
+		$data_sha['doli_id']  = Doli_Sync::format_int( $response->id );
+		$data_sha['wp_id']    = Doli_Sync::format_int( $wp_id );
+		$data_sha['title']    = Doli_Sync::format_text( $response->name );
+		$data_sha['town']     = Doli_Sync::format_text( $response->town );
+		$data_sha['zip']      = Doli_Sync::format_text( $response->zip );
+		$data_sha['state']    = Doli_Sync::format_int( $response->state_id );
+		$data_sha['country']  = Doli_Sync::format_int( $response->country_id );
+		$data_sha['address']  = Doli_Sync::format_text( $response->address );
+		$data_sha['phone']    = Doli_Sync::format_text( $response->phone );
+		$data_sha['email']    = Doli_Sync::format_text( $response->email );
 
 		$response->sha = hash( 'sha256', implode( ',', $data_sha ) );
 
@@ -158,10 +158,16 @@ class Doli_Sync_Filter extends Singleton_Util {
 	public function build_sha_categories( $response, $wp_id ) {
 		$data_sha = array();
 
-		$data_sha['doli_id']  = (int) $response->id;
-		$data_sha['wp_id']    = $wp_id;
-		$data_sha['name']    = $response->label;
-		$data_sha['slug']  	  = $response->array_options->options__wps_slug;
+		// Le slug stocké côté WP est celui du terme (assaini). On compare donc
+		// au slug réel du terme : sinon une catégorie sans extrafield wps_slug
+		// ressortirait en permanence comme désynchronisée.
+		$wp_term = get_term( $wp_id );
+		$slug    = ( $wp_term && ! is_wp_error( $wp_term ) ) ? $wp_term->slug : '';
+
+		$data_sha['doli_id'] = Doli_Sync::format_int( $response->id );
+		$data_sha['wp_id']   = Doli_Sync::format_int( $wp_id );
+		$data_sha['name']    = Doli_Sync::format_text( $response->label );
+		$data_sha['slug']    = Doli_Sync::format_text( $slug );
 
 		$response->sha = hash( 'sha256', implode( ',', $data_sha ) );
 
