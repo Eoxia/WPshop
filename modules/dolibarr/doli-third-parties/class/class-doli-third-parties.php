@@ -77,6 +77,7 @@ class Doli_Third_Parties extends Singleton_Util {
 			$data_sha['email'] = Doli_Sync::format_text( $wp_third_party->data['email'] );
 
 			update_post_meta($wp_third_party->data['id'], '_sync_sha_256', hash('sha256', implode(',', $data_sha)));
+			update_post_meta($wp_third_party->data['id'], '_sync_debug', wp_json_encode($data_sha));
 
 			$user = User::g()->get(array('search' => $wp_third_party->data['email'], 'search_columns' => array('user_email')), true);
 

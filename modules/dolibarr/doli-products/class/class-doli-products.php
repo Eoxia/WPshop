@@ -90,6 +90,7 @@ class Doli_Products extends Singleton_Util {
 				remove_all_actions( 'save_post' );
 				update_post_meta( $wp_product->data['id'], '_sync_sha_256', $wp_product->data['sync_sha_256'] );
 				update_post_meta( $wp_product->data['id'], '_external_id', (int) $doli_product->id );
+				update_post_meta( $wp_product->data['id'], '_sync_debug', wp_json_encode( $data_sha ) );
 
 				// Écrit le lien retour (_wps_id) côté Dolibarr pour rendre la liaison bidirectionnelle.
 				// Sans cela, check_status() voyait options__wps_id vide, jugeait le produit "non lié" et

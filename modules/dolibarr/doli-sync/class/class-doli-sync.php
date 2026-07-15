@@ -360,6 +360,58 @@ class Doli_Sync extends Singleton_Util {
 	}
 
 	/**
+	 * Récupère l'instantané des champs enregistrés au dernier sync (méta _sync_debug),
+	 * pour permettre une comparaison champ par champ lors du diagnostic.
+	 *
+	 * @since   2.6.2
+	 *
+	 * @param  integer $id   L'id de l'entité WordPress.
+	 * @param  string  $type Le type de l'entité.
+	 *
+	 * @return array         Le tableau des champs enregistrés, ou vide.
+	 */
+	private function get_stored_sha_data( $id, $type ) {
+		if ( 'wps-user' === $type ) {
+			$raw = get_user_meta( $id, '_sync_debug', true );
+		} elseif ( 'wps-product-cat' === $type ) {
+			$raw = get_term_meta( $id, '_sync_debug', true );
+		} else {
+			$raw = get_post_meta( $id, '_sync_debug', true );
+		}
+
+		$data = ! empty( $raw ) ? json_decode( $raw, true ) : array();
+
+		return is_array( $data ) ? $data : array();
+	}
+
+	/**
+	 * Compare le jeu de champs enregistré et celui recalculé, et renvoie uniquement
+	 * les champs qui diffèrent (avec la valeur stockée et la valeur recalculée).
+	 *
+	 * @since   2.6.2
+	 *
+	 * @param  array $stored  Les champs enregistrés au dernier sync.
+	 * @param  array $current Les champs recalculés depuis Dolibarr.
+	 *
+	 * @return array          Les écarts : [champ => ['stored' => ..., 'current' => ...]].
+	 */
+	private function diff_sha_data( $stored, $current ) {
+		$diff = array();
+		$keys = array_unique( array_merge( array_keys( $stored ), array_keys( $current ) ) );
+
+		foreach ( $keys as $key ) {
+			$s = isset( $stored[ $key ] ) ? $stored[ $key ] : null;
+			$c = isset( $current[ $key ] ) ? $current[ $key ] : null;
+
+			if ( (string) $s !== (string) $c ) {
+				$diff[ $key ] = array( 'stored' => $s, 'current' => $c );
+			}
+		}
+
+		return $diff;
+	}
+
+	/**
 	 * Vérifie la SHA256 entre une entité WPShop et une entité Dolibarr.
 	 *
 	 * @since   2.0.0
@@ -389,6 +441,13 @@ class Doli_Sync extends Singleton_Util {
 			$sha_256 = get_post_meta( $id, '_sync_sha_256', true );
 		}
 
+		$debug = array(
+			'wp_id'       => (int) $id,
+			'type'        => $type,
+			'external_id' => $external_id,
+			'sha_stored'  => $sha_256,
+		);
+
 		$sync_info = $this->sync_infos[ $type ];
 
 		$response = Request_Util::get( $sync_info['endpoint'] . '/' . $external_id );
@@ -397,12 +456,17 @@ class Doli_Sync extends Singleton_Util {
 		// erreur API transitoire (timeout, 401, 500...). On ne supprime donc PLUS le lien automatiquement :
 		// une erreur passagère ne doit pas casser la liaison et provoquer des doublons au sync suivant.
 		if ( ! $response ) {
+			$debug['dolibarr_found'] = false;
+
 			return array(
 				'status' => true,
 				'status_code' => '0x1',
 				'status_message' => 'Dolibarr Object: #' . $external_id . ' injoignable (lien conservé).',
+				'debug' => $debug,
 			);
 		}
+
+		$debug['dolibarr_found'] = true;
 
 		// Le lien retour _wps_id côté Dolibarr ne pointe pas vers ce post WP.
 		if ( $response->array_options->options__wps_id != $id ) {
@@ -420,10 +484,13 @@ class Doli_Sync extends Singleton_Util {
 				$response->array_options->options__wps_id = $id;
 			} else {
 				// _wps_id pointe vers un AUTRE post WP : vrai conflit. On le signale sans rien supprimer.
+				$debug['doli_wps_id'] = $response->array_options->options__wps_id;
+
 				return array(
 					'status' => true,
 					'status_code' => '0x2',
 					'status_message' => 'Dolibarr Object lié à un autre post WP (#' . $response->array_options->options__wps_id . '). Lien conservé.',
+					'debug' => $debug,
 				);
 			}
 		}
@@ -449,6 +516,16 @@ class Doli_Sync extends Singleton_Util {
 		sort( $wp_category_labels );
 
 		$response = apply_filters( 'doli_build_sha_' . $type, $response, $id );
+
+		// Diagnostic : quel test échoue, et pour le hash, quel champ diffère (stocké vs recalculé).
+		$stored_data               = $this->get_stored_sha_data( $id, $type );
+		$debug['sha_computed']     = $response->sha;
+		$debug['sha_match']        = ( $response->sha === $sha_256 );
+		$debug['field_diff']       = $this->diff_sha_data( $stored_data, isset( $response->sha_data ) ? $response->sha_data : array() );
+		$debug['wp_categories']    = $wp_category_labels;
+		$debug['doli_categories']  = $doli_category_labels;
+		$debug['categories_match'] = ( $wp_category_labels == $doli_category_labels );
+
 		// WP Object is not equal Dolibarr Object.
 		if  ( $type == 'wps-product-cat' || $type == 'wps-third-party' ) {
 			if ( $response->sha !== $sha_256 ) {
@@ -458,6 +535,7 @@ class Doli_Sync extends Singleton_Util {
 					'status_message' => __('WP Object is not equal Dolibarr Object', 'wpshop'),
 					'response->sha' => $response->sha,
 					'sha_256' => $sha_256,
+					'debug' => $debug,
 				);
 			}
 		} else {
@@ -470,6 +548,7 @@ class Doli_Sync extends Singleton_Util {
 					'sha_256' => $sha_256,
 					'wp_category_labels' => $wp_category_labels,
 					'doli_category_labels' => $doli_category_labels,
+					'debug' => $debug,
 				);
 			}
 		}
@@ -495,6 +574,14 @@ class Doli_Sync extends Singleton_Util {
 
 				$existing_id = ! empty( $existing_attachment ) ? (int) $existing_attachment[0]->ID : 0;
 
+				$debug['image'] = array(
+					'has_wp_image'    => $has_wp_image,
+					'has_doli_image'  => $has_doli_image,
+					'wp_thumbnail_id' => (int) $current_thumbnail_id,
+					'doli_filename'   => $doli_filename,
+					'existing_id'     => $existing_id,
+				);
+
 				// Image désynchronisée : présente d'un seul côté, ou ne correspond pas à la vignette WP.
 				if ( $has_wp_image !== $has_doli_image
 					|| ( $has_doli_image && (int) $current_thumbnail_id !== $existing_id ) ) {
@@ -504,6 +591,7 @@ class Doli_Sync extends Singleton_Util {
 						'status_message' => __('WP Object is not equal Dolibarr Object', 'wpshop'),
 						'response->sha' => $response->sha,
 						'sha_256' => $sha_256,
+						'debug' => $debug,
 					);
 				}
 			}
@@ -514,6 +602,7 @@ class Doli_Sync extends Singleton_Util {
 			'status' => true,
 			'status_code' => '0x0',
 			'status_message' => __('Sync OK', 'wpshop'),
+			'debug' => $debug,
 		);
 	}
 

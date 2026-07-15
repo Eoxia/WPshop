@@ -202,7 +202,7 @@ class Doli_Sync_Action {
 		$item_view = ob_get_clean();
 
 		ob_start();
-		Doli_Sync::g()->display_sync_status( $sync_status['wp_object'], $type, true );
+		$status_check = Doli_Sync::g()->display_sync_status( $sync_status['wp_object'], $type, true );
 		$sync_view = ob_get_clean();
 
 		wp_send_json_success( array(
@@ -212,6 +212,8 @@ class Doli_Sync_Action {
 			'callback_success' => 'syncEntrySuccess',
 			'item_view'        => $item_view,
 			'sync_view'        => $sync_view,
+			'status_code'      => is_array( $status_check ) && isset( $status_check['status_code'] ) ? $status_check['status_code'] : null,
+			'debug'            => is_array( $status_check ) && isset( $status_check['debug'] ) ? $status_check['debug'] : null,
 		) );
 	}
 
