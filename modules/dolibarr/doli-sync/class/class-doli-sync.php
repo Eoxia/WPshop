@@ -94,6 +94,82 @@ class Doli_Sync extends Singleton_Util {
 	}
 
 	/**
+	 * Normalise un montant pour la comparaison de synchronisation.
+	 *
+	 * Dolibarr renvoie les montants en double(24,8) sous forme de chaîne
+	 * ("10.00000000"). On les ramène à une forme décimale canonique, sans
+	 * zéros de fin superflus, pour que "10", "10.0" et "10.00000000" soient
+	 * considérés identiques.
+	 *
+	 * @since   2.6.2
+	 * @version 2.6.2
+	 *
+	 * @param  mixed $value Le montant brut.
+	 *
+	 * @return string       Le montant canonicalisé.
+	 */
+	public static function format_price( $value ) {
+		$value = number_format( (float) $value, 8, '.', '' );
+		$value = rtrim( rtrim( $value, '0' ), '.' );
+
+		return ( '' === $value || '-0' === $value ) ? '0' : $value;
+	}
+
+	/**
+	 * Normalise une valeur entière pour la comparaison de synchronisation.
+	 *
+	 * @since   2.6.2
+	 * @version 2.6.2
+	 *
+	 * @param  mixed $value La valeur brute.
+	 *
+	 * @return integer      La valeur en entier.
+	 */
+	public static function format_int( $value ) {
+		return (int) $value;
+	}
+
+	/**
+	 * Normalise un texte pour la comparaison de synchronisation.
+	 *
+	 * Neutralise les différences invisibles qui font échouer la comparaison
+	 * alors que le contenu affiché est identique : entités HTML, accents non
+	 * normalisés (NFC/NFD), espaces insécables, retours à la ligne et espaces
+	 * multiples.
+	 *
+	 * @since   2.6.2
+	 * @version 2.6.2
+	 *
+	 * @param  mixed $value Le texte brut.
+	 *
+	 * @return string       Le texte canonicalisé.
+	 */
+	public static function format_text( $value ) {
+		$value = (string) $value;
+		$value = html_entity_decode( $value, ENT_QUOTES, 'UTF-8' );
+
+		if ( class_exists( '\Normalizer' ) ) {
+			$normalized = \Normalizer::normalize( $value, \Normalizer::FORM_C );
+
+			if ( is_string( $normalized ) ) {
+				$value = $normalized;
+			}
+		}
+
+		// Espace insécable (U+00A0) -> espace normale.
+		$value = str_replace( "\xC2\xA0", ' ', $value );
+
+		// Fusionne les blancs (retours à la ligne, tabulations, espaces multiples).
+		$collapsed = preg_replace( '/\s+/u', ' ', $value );
+
+		if ( is_string( $collapsed ) ) {
+			$value = $collapsed;
+		}
+
+		return trim( $value );
+	}
+
+	/**
 	 * Get sync info by type.
 	 *
 	 * @todo: Mal nommé

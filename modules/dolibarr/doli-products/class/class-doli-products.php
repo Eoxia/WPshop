@@ -78,9 +78,9 @@ class Doli_Products extends Singleton_Util {
 				// systématiquement diverger ce SHA de celui recalculé côté Dolibarr (faux "désynchronisé").
 				$data_sha['label']       = html_entity_decode( (string) $wp_product->data['title'], ENT_QUOTES, 'UTF-8' );
 				$data_sha['description'] = html_entity_decode( (string) $wp_product->data['content'], ENT_QUOTES, 'UTF-8' );
-				$data_sha['price']       = $doli_product->price;
-				$data_sha['price_ttc']   = $doli_product->price_ttc;
-				$data_sha['tva_tx']      = $doli_product->tva_tx;
+				$data_sha['price']       = Doli_Sync::format_price( $doli_product->price );
+				$data_sha['price_ttc']   = Doli_Sync::format_price( $doli_product->price_ttc );
+				$data_sha['tva_tx']      = Doli_Sync::format_price( $doli_product->tva_tx );
 				$data_sha['stock']       = $doli_product->stock_reel ?? 0;
 				$data_sha['status']      = $wp_product->data['status'];
 
