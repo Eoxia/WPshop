@@ -561,30 +561,29 @@ class Doli_Sync extends Singleton_Util {
 			$files = Request_Util::get('documents?modulepart=product&id=' . $external_id);
 
 			$doli_filename = ( ! empty( $files ) && ! empty( $files[0]['filename'] ) ) ? $files[0]['filename'] : '';
-			$has_wp_image   = ! empty( $current_thumbnail_id );
-			$has_doli_image = ! empty( $doli_filename );
 
-			if ( $has_wp_image || $has_doli_image ) {
-				$existing_attachment = $has_doli_image ? get_posts( array(
+			// Une vignette présente uniquement côté WP n'est PAS une désynchronisation : la synchro
+			// d'image ne fonctionne que dans le sens Dolibarr -> WP (update_post_image), elle ne pousse
+			// jamais la vignette WP vers Dolibarr. On ne compare donc que lorsque Dolibarr a un document.
+			if ( ! empty( $doli_filename ) ) {
+				$existing_attachment = get_posts( array(
 					'post_type'      => 'attachment',
 					'posts_per_page' => 1,
 					'post_parent'    => $id,
 					'title'          => sanitize_file_name( $doli_filename ),
-				) ) : array();
+				) );
 
 				$existing_id = ! empty( $existing_attachment ) ? (int) $existing_attachment[0]->ID : 0;
 
 				$debug['image'] = array(
-					'has_wp_image'    => $has_wp_image,
-					'has_doli_image'  => $has_doli_image,
 					'wp_thumbnail_id' => (int) $current_thumbnail_id,
 					'doli_filename'   => $doli_filename,
 					'existing_id'     => $existing_id,
 				);
 
-				// Image désynchronisée : présente d'un seul côté, ou ne correspond pas à la vignette WP.
-				if ( $has_wp_image !== $has_doli_image
-					|| ( $has_doli_image && (int) $current_thumbnail_id !== $existing_id ) ) {
+				// Image désynchronisée : le document Dolibarr n'a jamais été importé côté WP,
+				// ou la vignette du produit ne correspond pas à ce document.
+				if ( 0 === $existing_id || (int) $current_thumbnail_id !== $existing_id ) {
 					return array(
 						'status' => true,
 						'status_code' => '0x3',
