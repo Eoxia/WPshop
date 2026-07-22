@@ -526,13 +526,21 @@ class Doli_Sync extends Singleton_Util {
 		$debug['doli_categories']  = $doli_category_labels;
 		$debug['categories_match'] = ( $wp_category_labels == $doli_category_labels );
 
+		// Noms des champs qui divergent, affichés dans la tooltip pour diagnostiquer sans accès BDD.
+		// field_diff est vide si l'entité n'a jamais été resynchronisée depuis l'ajout de _sync_debug :
+		// dans ce cas seul le hash global peut parler -> on indique qu'une resynchro est requise.
+		$sha_diff_fields = array_keys( $debug['field_diff'] );
+		if ( ! $debug['sha_match'] && empty( $sha_diff_fields ) ) {
+			$sha_diff_fields[] = 'sha (resync requise)';
+		}
+
 		// WP Object is not equal Dolibarr Object.
 		if  ( $type == 'wps-product-cat' || $type == 'wps-third-party' ) {
 			if ( $response->sha !== $sha_256 ) {
 				return array(
 					'status' => true,
 					'status_code' => '0x3',
-					'status_message' => __('WP Object is not equal Dolibarr Object', 'wpshop'),
+					'status_message' => __('WP Object is not equal Dolibarr Object', 'wpshop') . ' (' . implode( ', ', $sha_diff_fields ) . ')',
 					'response->sha' => $response->sha,
 					'sha_256' => $sha_256,
 					'debug' => $debug,
@@ -540,10 +548,15 @@ class Doli_Sync extends Singleton_Util {
 			}
 		} else {
 			if ( $response->sha !== $sha_256 || $wp_category_labels != $doli_category_labels ) {
+				$detail_fields = ( $response->sha !== $sha_256 ) ? $sha_diff_fields : array();
+				if ( $wp_category_labels != $doli_category_labels ) {
+					$detail_fields[] = 'categories';
+				}
+
 				return array(
 					'status' => true,
 					'status_code' => '0x3',
-					'status_message' => __('WP Object is not equal Dolibarr Object', 'wpshop'),
+					'status_message' => __('WP Object is not equal Dolibarr Object', 'wpshop') . ' (' . implode( ', ', $detail_fields ) . ')',
 					'response->sha' => $response->sha,
 					'sha_256' => $sha_256,
 					'wp_category_labels' => $wp_category_labels,
@@ -587,7 +600,7 @@ class Doli_Sync extends Singleton_Util {
 					return array(
 						'status' => true,
 						'status_code' => '0x3',
-						'status_message' => __('WP Object is not equal Dolibarr Object', 'wpshop'),
+						'status_message' => __('WP Object is not equal Dolibarr Object', 'wpshop') . ' (image)',
 						'response->sha' => $response->sha,
 						'sha_256' => $sha_256,
 						'debug' => $debug,

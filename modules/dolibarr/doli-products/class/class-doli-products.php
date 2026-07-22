@@ -76,11 +76,12 @@ class Doli_Products extends Singleton_Util {
 
 				$data_sha['doli_id']     = $doli_product->id;
 				$data_sha['wp_id']       = $wp_product->data['id'];
-				// Décodage des entités HTML pour que le SHA soit insensible à l'encodage : WordPress
-				// ré-encode les caractères à l'enregistrement (&#39;->&#039;, &eacute;...), ce qui faisait
-				// systématiquement diverger ce SHA de celui recalculé côté Dolibarr (faux "désynchronisé").
-				$data_sha['label']       = html_entity_decode( (string) $wp_product->data['title'], ENT_QUOTES, 'UTF-8' );
-				$data_sha['description'] = html_entity_decode( (string) $wp_product->data['content'], ENT_QUOTES, 'UTF-8' );
+				// Même SOURCE et même normalisation que Doli_Sync_Filter::build_sha_product : les champs
+				// bruts Dolibarr passés par format_text. Ne surtout pas repartir de $wp_product->data :
+				// Product::g()->update() relit le post après sauvegarde, donc titre/contenu ressortent
+				// retraités par WordPress (kses, entités, blancs) et le SHA divergerait à la vérification.
+				$data_sha['label']       = Doli_Sync::format_text( $doli_product->label );
+				$data_sha['description'] = Doli_Sync::format_text( $doli_product->description );
 				$data_sha['price']       = Doli_Sync::format_price( $doli_product->price );
 				$data_sha['price_ttc']   = Doli_Sync::format_price( $doli_product->price_ttc );
 				$data_sha['tva_tx']      = Doli_Sync::format_price( $doli_product->tva_tx );
