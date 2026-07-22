@@ -93,10 +93,10 @@ class Doli_Sync_Filter extends Singleton_Util {
 		//@todo wp_id en id_wordpress
 		$data_sha['doli_id']              = $response->id;
 		$data_sha['wp_id']                = $wp_id;
-		// Même normalisation que côté écriture (Doli_Products::doli_to_wp) : on décode les entités
-		// HTML pour comparer le contenu réel et non sa représentation encodée.
-		$data_sha['label']                = html_entity_decode( (string) $response->label, ENT_QUOTES, 'UTF-8' );
-		$data_sha['description']          = html_entity_decode( (string) $response->description, ENT_QUOTES, 'UTF-8' );
+		// Même normalisation ET même source que côté écriture (Doli_Products::doli_to_wp) :
+		// les champs bruts Dolibarr canonicalisés par format_text (entités, NFC, blancs).
+		$data_sha['label']                = Doli_Sync::format_text( $response->label );
+		$data_sha['description']          = Doli_Sync::format_text( $response->description );
 		$data_sha['price']                = Doli_Sync::format_price( $response->price );
 		$data_sha['price_ttc']            = Doli_Sync::format_price( $response->price_ttc );
 		$data_sha['tva_tx']               = Doli_Sync::format_price( $response->tva_tx );
