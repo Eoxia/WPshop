@@ -63,8 +63,11 @@ class Doli_Products extends Singleton_Util {
 			// Un produit sans statut WPshop explicite est considéré publié (c'est la valeur par défaut
 			// de l'extrafield "_wps_status" côté Dolibarr). Sans ce repli, un statut NULL faisait basculer
 			// le produit en brouillon et le faisait disparaître de la boutique (fausse désynchro).
+			// Normalisation IDENTIQUE à celle de Doli_Sync_Filter::build_sha_product : toute autre valeur
+			// (ex. l'extrafield à 1) stockée brute divergerait du SHA recalculé à la vérification,
+			// produisant un "désynchronisé" permanent impossible à résorber par une re-synchro.
 			$wps_status                            = isset( $doli_product->array_options->options__wps_status ) ? $doli_product->array_options->options__wps_status : '';
-			$wp_product->data['status']            = ( '' === $wps_status || null === $wps_status ) ? 'publish' : $wps_status;
+			$wp_product->data['status']            = ( empty( $wps_status ) || $wps_status == 1 || $wps_status == 'publish' ) ? 'publish' : 'draft';
 
 			$wp_product = Product::g()->update( $wp_product->data );
 
