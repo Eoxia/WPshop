@@ -18,7 +18,7 @@ defined( 'ABSPATH' ) || exit; ?>
 	<div class="notification-title">
 		<?php esc_html_e( 'Connection failed with your ERP', 'wpshop' ); ?>
 		<p>
-			<?php esc_html_e( 'Your ERP is not connected. Maybe your ERP is not connected or your configuration is not correct', 'wpshop' ); ?>
+			<?php echo esc_html( Error_Util::get( 'WPS-ERP-002' ) ); ?>
 			<a href="https://wpshop.fr/documentation/" target="_blank"><?php _e( 'Need help ? Follow this guide', 'wpshop' ); ?></a>
 		</p>
 	</div>
