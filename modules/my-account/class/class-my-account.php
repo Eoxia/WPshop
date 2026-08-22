@@ -295,13 +295,13 @@ class My_Account extends Singleton_Util {
 		$captcha_response = $request->get_param( 'recaptcha_token' );
 
 		if ( empty( $captcha_response ) ) {
-			return new \WP_Error( 'captcha_missing', __( 'Captcha response is required.', 'wpshop' ), [ 'status' => 400 ] );
+			return Error_Util::get_wp_error( 'WPS-AUTH-005', [ 'status' => 400 ] );
 		}
 
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
 		$secret_key = $dolibarr_option['re_captcha_private_key'] ?? '';
 		if ( empty( $secret_key ) ) {
-			return new \WP_Error( 'captcha_not_configured', __( 'Captcha is not configured on this site.', 'wpshop' ), [ 'status' => 500 ] );
+			return Error_Util::get_wp_error( 'WPS-AUTH-006', [ 'status' => 500 ] );
 		}
 
 		$response = wp_remote_post( 'https://www.google.com/recaptcha/api/siteverify', array(
@@ -315,11 +315,11 @@ class My_Account extends Singleton_Util {
 			),
 		) );
 		if ( is_wp_error( $response ) ) {
-			return new \WP_Error( 'captcha_verification_failed', __( 'Captcha verification failed. Please try again.', 'wpshop' ), [ 'status' => 500 ] );
+			return Error_Util::get_wp_error( 'WPS-AUTH-004', [ 'status' => 500 ] );
 		}
 		$body = json_decode( wp_remote_retrieve_body( $response ), true );
 		if ( ! $body['success'] ) {
-			return new \WP_Error( 'captcha_invalid', __( 'Invalid captcha response. Please try again.', 'wpshop' ), [ 'status' => 400 ] );
+			return Error_Util::get_wp_error( 'WPS-AUTH-007', [ 'status' => 400 ] );
 		}
 		return true;
 	}
@@ -343,7 +343,7 @@ class My_Account extends Singleton_Util {
 		$user = wp_signon( $creds, false );
 
 		if ( is_wp_error( $user ) ) {
-			return new \WP_Error( 'login_failed', __( 'Login failed. Please check your credentials.', 'wpshop' ), [ 'status' => 401 ] );
+			return Error_Util::get_wp_error( 'WPS-AUTH-001', [ 'status' => 401 ] );
 		}
 
 		// Regénérer le cookie de session pour éviter les problèmes de session.
@@ -370,11 +370,11 @@ class My_Account extends Singleton_Util {
 		}
 
 		if ( username_exists( $username ) || email_exists( $email ) ) {
-			return new \WP_Error( 'registration_failed', __( 'Username or email already exists.', 'wpshop' ), [ 'status' => 400 ] );
+			return Error_Util::get_wp_error( 'WPS-AUTH-008', [ 'status' => 400 ] );
 		}
 		$user_id = wp_create_user( $username, $password, $email );
 		if ( is_wp_error( $user_id ) ) {
-			return new \WP_Error( 'registration_failed', __( 'Registration failed. Please try again.', 'wpshop' ), [ 'status' => 400 ] );
+			return Error_Util::get_wp_error( 'WPS-AUTH-002', [ 'status' => 400 ] );
 		}
 
 		// Regénérer le cookie de session pour éviter les problèmes de session.
@@ -398,16 +398,16 @@ class My_Account extends Singleton_Util {
 
 		$email = $request->get_param( 'email' );
 		if ( empty( $email ) || ! is_email( $email ) ) {
-			return new \WP_Error( 'invalid_email', __( 'Please provide a valid email address.', 'wpshop' ), [ 'status' => 400 ] );
+			return Error_Util::get_wp_error( 'WPS-AUTH-009', [ 'status' => 400 ] );
 		}
 
 		$user = get_user_by( 'email', $email );
 		if ( ! $user ) {
-			return new \WP_Error( 'user_not_found', __( 'No user found with this email address.', 'wpshop' ), [ 'status' => 404 ] );
+			return Error_Util::get_wp_error( 'WPS-AUTH-010', [ 'status' => 404 ] );
 		}
 		$retrieve_password_result = retrieve_password( $user->user_login );
 		if ( is_wp_error( $retrieve_password_result ) ) {
-			return new \WP_Error( 'password_reset_failed', __( 'Password reset failed. Please try again.', 'wpshop' ), [ 'status' => 500 ] );
+			return Error_Util::get_wp_error( 'WPS-AUTH-011', [ 'status' => 500 ] );
 		}
 
 		return new \WP_REST_Response( [

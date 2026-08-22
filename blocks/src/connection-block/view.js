@@ -175,12 +175,12 @@ const ConnectionBlock = ({ accountUrl, useRecaptcha, reCaptchaPublicKey }) => {
 
     const handleRecaptchaExpired = () => {
         setRecaptchaToken('');
-        setRecaptchaError(__('reCAPTCHA expired. Please verify again.', 'wpshop'));
+        setRecaptchaError(__('[WPS-AUTH-012] reCAPTCHA expired. Please verify again.', 'wpshop'));
     };
 
     const handleRecaptchaError = () => {
         setRecaptchaToken('');
-        setRecaptchaError(__('reCAPTCHA error. Please try again.', 'wpshop'));
+        setRecaptchaError(__('[WPS-AUTH-004] reCAPTCHA error. Please try again.', 'wpshop'));
     };
 
     const resetRecaptcha = () => {
@@ -205,7 +205,7 @@ const ConnectionBlock = ({ accountUrl, useRecaptcha, reCaptchaPublicKey }) => {
         setError('');
         
         if (useRecaptcha && !recaptchaToken) {
-            setError(__('Please complete the reCAPTCHA verification.', 'wpshop'));
+            setError(__('[WPS-AUTH-005] Captcha response is required.', 'wpshop'));
             setIsLoading(false);
             return;
         }
@@ -227,7 +227,7 @@ const ConnectionBlock = ({ accountUrl, useRecaptcha, reCaptchaPublicKey }) => {
             // Redirect to my-account page on successful login
             redirectToMyAccount();
         }).catch((error) => {
-            setError(error.message || __('Login failed. Please check your credentials.', 'wpshop'));
+            setError(error.message || __('[WPS-AUTH-001] Login failed. Please check your credentials.', 'wpshop'));
             if (useRecaptcha) {
                 resetRecaptcha();
             }
@@ -243,19 +243,19 @@ const ConnectionBlock = ({ accountUrl, useRecaptcha, reCaptchaPublicKey }) => {
         
         // Validation
         if (registerInfo.password !== registerInfo.confirmPassword) {
-            setError(__('Passwords do not match', 'wpshop'));
+            setError(__('[WPS-AUTH-013] Passwords do not match.', 'wpshop'));
             setIsLoading(false);
             return;
         }
         
         if (!registerInfo.agreeTerms) {
-            setError(__('You must agree to the terms and conditions', 'wpshop'));
+            setError(__('[WPS-AUTH-014] You must agree to the terms and conditions.', 'wpshop'));
             setIsLoading(false);
             return;
         }
         
         if (useRecaptcha && !recaptchaToken) {
-            setError(__('Please complete the reCAPTCHA verification.', 'wpshop'));
+            setError(__('[WPS-AUTH-005] Captcha response is required.', 'wpshop'));
             setIsLoading(false);
             return;
         }
@@ -286,7 +286,7 @@ const ConnectionBlock = ({ accountUrl, useRecaptcha, reCaptchaPublicKey }) => {
             // Redirect to my-account page on successful registration
             redirectToMyAccount();
         }).catch((error) => {
-            setError(error.message || __('Registration failed.', 'wpshop'));
+            setError(error.message || __('[WPS-AUTH-002] Registration failed. Please try again.', 'wpshop'));
             if (useRecaptcha) {
                 resetRecaptcha();
             }
@@ -302,7 +302,7 @@ const ConnectionBlock = ({ accountUrl, useRecaptcha, reCaptchaPublicKey }) => {
         setForgotPasswordMessage('');
 
         if (useRecaptcha && !recaptchaToken) {
-            setError(__('Please complete the reCAPTCHA verification.', 'wpshop'));
+            setError(__('[WPS-AUTH-005] Captcha response is required.', 'wpshop'));
             setIsLoading(false);
             return;
         }
@@ -326,7 +326,7 @@ const ConnectionBlock = ({ accountUrl, useRecaptcha, reCaptchaPublicKey }) => {
                 resetRecaptcha();
             }
         }).catch((error) => {
-            setError(error.message || __('Failed to send reset email. Please try again.', 'wpshop'));
+            setError(error.message || __('[WPS-AUTH-003] Failed to send reset email. Please try again.', 'wpshop'));
             if (useRecaptcha) {
                 resetRecaptcha();
             }

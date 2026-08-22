@@ -122,8 +122,16 @@ class Request_Util extends Singleton_Util {
 				return json_decode( wp_remote_retrieve_body($request) );
 			} else {
 				$body = json_decode( wp_remote_retrieve_body($request), true );
-				set_transient( 'wps_request_error', $body['error']['message'] ?? '', 60 );
+				$error_msg = $body['error']['message'] ?? 'HTTP ' . $request['response']['code'];
+				if ( 401 === $request['response']['code'] || 403 === $request['response']['code'] ) {
+					$error_msg = __( 'Invalid API Key or unauthorized access.', 'wpshop' );
+				} elseif ( 404 === $request['response']['code'] ) {
+					$error_msg = __( 'REST API route not found. Make sure the DoliWPshop module is activated in Dolibarr.', 'wpshop' );
+				}
+				set_transient( 'wps_request_error', $error_msg, 60 );
 			}
+		} else {
+			set_transient( 'wps_request_error', $request->get_error_message(), 60 );
 		}
 
 		return false;

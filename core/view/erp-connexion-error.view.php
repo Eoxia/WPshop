@@ -18,8 +18,17 @@ defined( 'ABSPATH' ) || exit; ?>
 	<div class="notification-title">
 		<?php esc_html_e( 'Connection failed with your ERP', 'wpshop' ); ?>
 		<p>
-			<?php esc_html_e( 'Your ERP is not connected. Maybe your ERP is not connected or your configuration is not correct', 'wpshop' ); ?>
-			<a href="https://wpshop.fr/documentation/" target="_blank"><?php _e( 'Need help ? Follow this guide', 'wpshop' ); ?></a>
+			<?php echo esc_html( Error_Util::get( 'WPS-ERP-002' ) ); ?>
+			<?php 
+			$detailed_error = get_transient( 'wps_request_error' );
+			if ( ! empty( $detailed_error ) ) : ?>
+				<br><br><strong><?php _e( 'Details:', 'wpshop' ); ?></strong> <?php echo esc_html( $detailed_error ); ?>
+			<?php endif; ?>
+			<br><br>
+			<a href="<?php echo esc_url( admin_url( 'admin.php?page=wps-settings&tab=erp' ) ); ?>" class="wpeo-button button-main" style="color: #fff; text-decoration: none;">
+				<?php _e( 'Configure ERP', 'wpshop' ); ?>
+			</a>
+			<a href="https://wpshop.fr/documentation/" target="_blank" style="margin-left: 10px;"><?php _e( 'Need help ? Follow this guide', 'wpshop' ); ?></a>
 		</p>
 	</div>
 	<div class="notification-close"><i class="fas fa-times"></i></div>

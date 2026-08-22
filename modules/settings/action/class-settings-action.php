@@ -158,7 +158,17 @@ class Settings_Action {
 
 		$response = Request_Util::get( 'doliwpshop/checkPermissions' );
 		if ( false === $response ) {
-			$dolibarr_option['error'] = __( 'WPshop cannot connect to dolibarr. Please check your settings', 'wpshop' );
+			$base_error = Error_Util::get( 'WPS-ERP-001' );
+			$errorMessage = get_transient( 'wps_request_error' );
+			delete_transient( 'wps_request_error' );
+			
+			if ( ! empty( $errorMessage ) ) {
+				$error = __('Error') . ' : ' . $errorMessage;
+				$dolibarr_option['error'] = $base_error . '<br><strong>' . __( 'Details:', 'wpshop' ) . '</strong> ' . $errorMessage;
+			} else {
+				$dolibarr_option['error'] = $base_error;
+			}
+
 		} else {
 			$dolibarr_option['error'] = '';
 		}
@@ -234,12 +244,15 @@ class Settings_Action {
 
 		$response = Request_Util::get( 'doliwpshop/checkPermissions' );
 		if ( false === $response ) {
-			$dolibarr_option['error'] = __( 'WPshop cannot connect to dolibarr. Please check your settings', 'wpshop' );
-
+			$base_error = Error_Util::get( 'WPS-ERP-001' );
 			$errorMessage = get_transient( 'wps_request_error' );
 			delete_transient( 'wps_request_error' );
+			
 			if ( ! empty( $errorMessage ) ) {
 				$error = __('Error') . ' : ' . $errorMessage;
+				$dolibarr_option['error'] = $base_error . '<br><strong>' . __( 'Details:', 'wpshop' ) . '</strong> ' . $errorMessage;
+			} else {
+				$dolibarr_option['error'] = $base_error;
 			}
 
 		} else {

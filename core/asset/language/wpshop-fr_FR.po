@@ -2394,3 +2394,27 @@ msgstr "Le reCAPTCHA a expiré. Veuillez vérifier à nouveau."
 
 msgid "Avatar"
 msgstr "Avatar"
+
+msgid "Test Connection"
+msgstr "Tester la connexion"
+
+msgid "Configure ERP"
+msgstr "Configurer l'ERP"
+
+msgid "[WPS-ERP-002] Your ERP is not connected or the configuration is incomplete."
+msgstr "[WPS-ERP-002] Votre ERP n'est pas connecté ou la configuration est incorrecte."
+
+msgid "[WPS-ERP-001] Connection to Dolibarr failed. Please check your settings."
+msgstr "[WPS-ERP-001] La connexion à Dolibarr a échoué. Veuillez vérifier vos paramètres."
+
+msgid "Enter the URL pointing to the root of your Dolibarr installation (usually ending with /htdocs)."
+msgstr "Saisissez l'URL pointant vers la racine de votre installation Dolibarr (se terminant généralement par /htdocs)."
+
+msgid "Invalid API Key or unauthorized access."
+msgstr "Clé API invalide ou accès non autorisé."
+
+msgid "REST API route not found. Make sure the DoliWPshop module is activated in Dolibarr."
+msgstr "Route de l'API REST introuvable. Assurez-vous que le module DoliWPshop est activé dans Dolibarr."
+
+msgid "Details:"
+msgstr "Détails :"
