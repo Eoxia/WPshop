@@ -49,6 +49,9 @@ defined( 'ABSPATH' ) || exit;
 
 	<div>
 		<input type="submit" class="wpeo-button button-main" value="<?php esc_html_e( 'Save Changes', 'wpshop' ); ?>" />
+		<button type="submit" name="test_connection" value="1" class="wpeo-button button-secondary" style="margin-left: 10px;">
+			<?php esc_html_e( 'Test Connection', 'wpshop' ); ?>
+		</button>
 	</div>
 </form>
 
