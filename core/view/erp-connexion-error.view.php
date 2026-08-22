@@ -20,7 +20,7 @@ defined( 'ABSPATH' ) || exit; ?>
 		<p>
 			<?php echo esc_html( Error_Util::get( 'WPS-ERP-002' ) ); ?>
 			<br><br>
-			<a href="<?php echo esc_url( admin_url( 'admin.php?page=wps-settings&tab=erp' ) ); ?>" class="wpeo-button button-main">
+			<a href="<?php echo esc_url( admin_url( 'admin.php?page=wps-settings&tab=erp' ) ); ?>" class="wpeo-button button-main" style="color: #fff; text-decoration: none;">
 				<?php _e( 'Configure ERP', 'wpshop' ); ?>
 			</a>
 			<a href="https://wpshop.fr/documentation/" target="_blank" style="margin-left: 10px;"><?php _e( 'Need help ? Follow this guide', 'wpshop' ); ?></a>
