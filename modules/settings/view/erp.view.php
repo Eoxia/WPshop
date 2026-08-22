@@ -28,8 +28,9 @@ defined( 'ABSPATH' ) || exit;
 	<div class="form-element">
 		<span class="form-label"><?php esc_html_e( 'Dolibarr URL', 'wpshop' ); ?></span>
 		<label class="form-field-container">
-			<input type="text" class="form-field" name="dolibarr_url" value="<?php echo esc_attr( $dolibarr_option['dolibarr_url'] ); ?>" />
+			<input type="text" class="form-field" name="dolibarr_url" placeholder="ex: http://localhost/dolibarr/htdocs" value="<?php echo esc_attr( $dolibarr_option['dolibarr_url'] ); ?>" />
 		</label>
+		<p class="description"><?php _e( 'Enter the URL pointing to the root of your Dolibarr installation (usually ending with /htdocs).', 'wpshop' ); ?></p>
 	</div>
 
 	<div class="form-element">

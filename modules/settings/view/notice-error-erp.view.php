@@ -22,7 +22,7 @@ defined( 'ABSPATH' ) || exit;
 
 <div class="notice notice-warning is-dismissible notice-erp">
 	<p>
-		<?php echo esc_attr( $error ); ?>
+		<?php echo wp_kses_post( $error ); ?>
 		<a class="wpeo-button button-main" target="_blank" href="https://wpshop.fr/documentation/"><span><?php _e( 'Follow this guide', 'wpshop' ); ?></span></a>
 
 

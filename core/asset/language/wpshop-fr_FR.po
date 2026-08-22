@@ -2403,3 +2403,9 @@ msgstr "Configurer l'ERP"
 
 msgid "[WPS-ERP-002] Your ERP is not connected or the configuration is incomplete."
 msgstr "[WPS-ERP-002] Votre ERP n'est pas connecté ou la configuration est incorrecte."
+
+msgid "[WPS-ERP-001] Connection to Dolibarr failed. Please check your settings."
+msgstr "[WPS-ERP-001] La connexion à Dolibarr a échoué. Veuillez vérifier vos paramètres."
+
+msgid "Enter the URL pointing to the root of your Dolibarr installation (usually ending with /htdocs)."
+msgstr "Saisissez l'URL pointant vers la racine de votre installation Dolibarr (se terminant généralement par /htdocs)."
