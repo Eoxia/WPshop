@@ -89,19 +89,62 @@ class Doli_Category_Action {
 			});</script>
 			<?php
 		} else {
+			// Find already linked dolibarr categories
+			$linked_terms = get_terms( array(
+				'taxonomy'   => 'wps-product-cat',
+				'hide_empty' => false,
+				'meta_query' => array(
+					array(
+						'key'     => '_external_id',
+						'compare' => 'EXISTS'
+					)
+				)
+			) );
+			$linked_doli_ids = array();
+			if ( ! is_wp_error( $linked_terms ) ) {
+				foreach ( $linked_terms as $t ) {
+					$ext_id = get_term_meta( $t->term_id, '_external_id', true );
+					if ( ! empty( $ext_id ) ) {
+						$linked_doli_ids[] = (int) $ext_id;
+					}
+				}
+			}
+
+			// Fetch Dolibarr categories
+			$doli_categories = \wpshop\Request_Util::get( 'categories?type=product' );
+			$options = '<option value="">-- Sélectionnez une catégorie --</option>';
+			if ( ! empty( $doli_categories ) && ! isset( $doli_categories->error ) ) {
+				// We can sort them by name for convenience
+				$sorted_doli_cats = (array) $doli_categories;
+				usort($sorted_doli_cats, function($a, $b) {
+					return strcasecmp($a->label, $b->label);
+				});
+				foreach ( $sorted_doli_cats as $doli_cat ) {
+					if ( ! in_array( (int) $doli_cat->id, $linked_doli_ids ) ) {
+						$options .= '<option value="' . esc_attr( $doli_cat->id ) . '">' . esc_html( $doli_cat->id . ' - ' . $doli_cat->label ) . '</option>';
+					}
+				}
+			}
 			?>
 			<tr class="form-field">
 				<th scope="row" valign="top"><label>Dolibarr</label></th>
 				<td>
 					<p class="description" style="color:#d63638;">
-						Catégorie non synchronisée avec Dolibarr vous pouvez l'associer en notant l'Id de la catégorie : 
-						<input type="text" name="doli_external_id" value="" style="width: 100px; display: inline-block;">
+						Catégorie non synchronisée avec Dolibarr. Vous pouvez l'associer en sélectionnant une catégorie Dolibarr libre :<br><br>
+						<select name="doli_external_id" style="min-width: 300px; max-width: 100%;">
+							<?php echo $options; ?>
+						</select>
 					</p>
-					<p class="description" style="color:#d63638;">Dolibarr dans ce cas la description sera écrasée par celle de Dolibarr.</p>
+					<p class="description" style="color:#d63638;">Dans ce cas la description sera écrasée par celle de Dolibarr.</p>
 				</td>
 			</tr>
 			<script>jQuery(document).ready(function($){ 
 				$("#description").after("<p class=\'description\' style=\'color:#d63638;\'>Ce champ est en lecture seule uniquement s\'il est associé à une catégorie Dolibarr, ce qui n\'est pas le cas ici.</p>");
+				if ($.fn.select2) {
+					$("select[name='doli_external_id']").select2({ width: 'resolve' });
+				} else if ($.fn.selectWoo) {
+					$("select[name='doli_external_id']").selectWoo({ width: 'resolve' });
+				}
 			});</script>
 			<?php
 		}
