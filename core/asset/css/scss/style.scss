@@ -138,3 +138,48 @@
 .fa-toggle-on {
 	color: green;
 }
+
+/* ERP Settings UI */
+.wps-erp-label-text {
+    vertical-align: middle;
+}
+.wps-erp-tooltip-icon {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    line-height: 18px;
+    text-align: center;
+    border-radius: 50%;
+    background: #007cba;
+    color: #fff;
+    font-size: 11px;
+    font-weight: bold;
+    cursor: help;
+    margin-left: 5px;
+    vertical-align: middle;
+}
+.wps-erp-status-icon {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    line-height: 18px;
+    text-align: center;
+    font-size: 14px;
+    margin-left: 5px;
+    vertical-align: middle;
+}
+.wps-erp-status-icon--success {
+    color: #46b450;
+}
+.wps-erp-status-icon--error {
+    color: #dc3232;
+}
+.wps-erp-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 15px;
+}
+.wps-erp-actions .wpeo-button {
+    margin: 0;
+}
