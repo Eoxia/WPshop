@@ -72,7 +72,7 @@ class Doli_Category_Action {
 			$doli_cat = \wpshop\Request_Util::get( 'categories/' . $external_id );
 			$name = ( ! empty( $doli_cat ) && isset( $doli_cat->label ) ) ? $doli_cat->label : 'ID ' . $external_id;
 			
-			$link = $doli_url . '/categories/card.php?id=' . $external_id . '&type=product';
+			$link = $doli_url . '/categories/viewcat.php?id=' . $external_id . '&type=product';
 			
 			?>
 			<tr class="form-field">
