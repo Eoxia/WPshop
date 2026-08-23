@@ -213,6 +213,12 @@ class Doli_Category extends Term_Class {
 
 		$wp_category = Doli_Category::g()->update( $wp_category->data );
 
+		if ( isset($doli_category->description) && ! empty($wp_category->data['id']) ) {
+			wp_update_term( $wp_category->data['id'], 'wps-product-cat', array(
+				'description' => $doli_category->description,
+			) );
+		}
+
 		if ( $save ) {
 			$data_sha = array();
 			$data_sha['doli_id'] = Doli_Sync::format_int( $wp_category->data['external_id'] );
