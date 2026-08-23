@@ -61,6 +61,38 @@ class Doli_Category_Action {
 				echo '<script>jQuery(document).ready(function($){ $("#description").prop("readonly", true); });</script>';
 			}
 		});
+
+		add_action( 'wps-product-cat_edit_form_fields', array( $this, 'add_dolibarr_info_field' ), 10, 2 );
+	}
+
+	/**
+	 * Ajoute un champ d'information Dolibarr sur l'édition de la catégorie.
+	 *
+	 * @param \WP_Term $term     Term object.
+	 * @param string   $taxonomy Taxonomy slug.
+	 */
+	public function add_dolibarr_info_field( $term, $taxonomy ) {
+		$external_id = get_term_meta( $term->term_id, '_external_id', true );
+		if ( ! empty( $external_id ) ) {
+			$dolibarr_option = get_option( 'wps_dolibarr', \wpshop\Settings::g()->default_settings );
+			$doli_url = rtrim( $dolibarr_option['dolibarr_url'], '/' );
+			
+			$doli_cat = \wpshop\Request_Util::get( 'categories/' . $external_id );
+			$name = ( ! empty( $doli_cat ) && isset( $doli_cat->label ) ) ? $doli_cat->label : 'ID ' . $external_id;
+			
+			$link = $doli_url . '/categories/card.php?id=' . $external_id . '&type=product';
+			
+			?>
+			<tr class="form-field">
+				<th scope="row" valign="top"><label>Dolibarr</label></th>
+				<td>
+					<p class="description">
+						Id de la catégorie : <a href="<?php echo esc_url( $link ); ?>" target="_blank" style="text-decoration:none;"><strong><?php echo esc_html( $name ); ?></strong></a>
+					</p>
+				</td>
+			</tr>
+			<?php
+		}
 	}
 
 	/**
