@@ -25,38 +25,43 @@ defined( 'ABSPATH' ) || exit;
 	<input type="hidden" name="tab" value="categories">
 	<?php wp_nonce_field( 'callback_update_categories_settings' ); ?>
 
+	<p><em>Cette liste récapitule uniquement les catégories qui ont été synchronisées depuis Dolibarr. L'arborescence et la création sont pilotées directement depuis Dolibarr.</em></p>
 	<table class="form-table">
 		<thead>
 			<tr>
 				<th>Catégorie WordPress</th>
-				<th>Synchroniser avec Dolibarr</th>
-				<th>Catégorie parente sur Dolibarr</th>
+				<th>Id Dolibarr</th>
+				<th>Nom Dolibarr</th>
 			</tr>
 		</thead>
 		<tbody>
 			<?php if ( ! empty( $wp_categories ) && ! is_wp_error( $wp_categories ) ) : ?>
 				<?php foreach ( $wp_categories as $wp_cat ) : 
-					$sync_enabled = isset( $settings[ $wp_cat->term_id ]['sync'] ) ? $settings[ $wp_cat->term_id ]['sync'] : false;
-					$parent_id = isset( $settings[ $wp_cat->term_id ]['parent'] ) ? $settings[ $wp_cat->term_id ]['parent'] : 0;
+					$external_id = get_term_meta( $wp_cat->term_id, '_external_id', true );
+					if ( empty( $external_id ) ) {
+						continue; // Only list categories created/synced from WPShop (having an external ID)
+					}
+					
+					// Find the corresponding Dolibarr category name
+					$doli_name = '-';
+					if ( ! empty( $doli_categories ) && ! isset( $doli_categories->error ) ) {
+						foreach ( $doli_categories as $doli_cat ) {
+							if ( $doli_cat->id == $external_id ) {
+								$doli_name = $doli_cat->label;
+								break;
+							}
+						}
+					}
 				?>
 				<tr>
 					<td>
 						<strong><?php echo esc_html( $wp_cat->name ); ?></strong>
 					</td>
 					<td>
-						<input type="checkbox" name="wps_sync_categories[<?php echo esc_attr( $wp_cat->term_id ); ?>][sync]" value="1" <?php checked( $sync_enabled, 1 ); ?> />
+						<?php echo esc_html( $external_id ); ?>
 					</td>
 					<td>
-						<select name="wps_sync_categories[<?php echo esc_attr( $wp_cat->term_id ); ?>][parent]">
-							<option value="0"><?php esc_html_e( 'Aucun', 'wpshop' ); ?></option>
-							<?php if ( ! empty( $doli_categories ) && ! isset( $doli_categories->error ) ) : ?>
-								<?php foreach ( $doli_categories as $doli_cat ) : ?>
-									<option value="<?php echo esc_attr( $doli_cat->id ); ?>" <?php selected( $parent_id, $doli_cat->id ); ?>>
-										<?php echo esc_html( $doli_cat->label ); ?>
-									</option>
-								<?php endforeach; ?>
-							<?php endif; ?>
-						</select>
+						<?php echo esc_html( $doli_name ); ?>
 					</td>
 				</tr>
 				<?php endforeach; ?>
@@ -68,7 +73,4 @@ defined( 'ABSPATH' ) || exit;
 		</tbody>
 	</table>
 
-	<p class="submit">
-		<input type="submit" name="submit" id="submit" class="button button-primary" value="<?php esc_attr_e( 'Save Changes' ); ?>">
-	</p>
 </form>
