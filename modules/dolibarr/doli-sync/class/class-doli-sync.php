@@ -321,7 +321,17 @@ class Doli_Sync extends Singleton_Util {
 	 * @return integer                 L'ID du terme WP, ou 0 si introuvable et non créé.
 	 */
 	private function resolve_category_term_id( $doli_category, $create = false ) {
-		if ( empty( $doli_category->id ) || empty( $doli_category->array_options->options__wps_id ) ) {
+		if ( empty( $doli_category->id ) ) {
+			return 0;
+		}
+		
+		static $auto_sync = null;
+		if ( $auto_sync === null ) {
+			$setup = Request_Util::get( 'setup/conf' );
+			$auto_sync = ( isset($setup->WPSHOP_AUTO_SYNC_PRODUCT_CATEGORIES) && $setup->WPSHOP_AUTO_SYNC_PRODUCT_CATEGORIES == 1 );
+		}
+
+		if ( ! $auto_sync && empty( $doli_category->array_options->options__wps_id ) ) {
 			return 0;
 		}
 
