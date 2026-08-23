@@ -36,6 +36,7 @@ class Settings_Action {
 		add_action( 'admin_post_wps_update_general_settings', array( $this, 'callback_update_general_settings' ) );
 		add_action( 'admin_post_wps_update_pages_settings', array( $this, 'callback_update_pages_settings' ) );
 		add_action( 'admin_post_wps_update_erp_settings', array( $this, 'callback_update_erp_settings' ) );
+		add_action( 'admin_post_wps_update_categories_settings', array( $this, 'callback_update_categories_settings' ) );
 
 		add_action( 'wp_ajax_wps_hide_notice_erp', array( $this, 'dismiss_notice_erp' ) );
 
@@ -268,6 +269,38 @@ class Settings_Action {
 		}
 
 		wp_redirect( admin_url( 'admin.php?page=wps-settings&tab= ' . $tab ) );
+	}
+
+	/**
+	 * Met à jour les options catégories.
+	 *
+	 * @since   2.4.0
+	 */
+	public function callback_update_categories_settings() {
+		check_admin_referer( 'callback_update_categories_settings' );
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die();
+		}
+
+		$tab = ! empty( $_POST['tab'] ) ? sanitize_text_field( $_POST['tab'] ) : 'general';
+		
+		if ( isset( $_POST['wps_sync_categories'] ) && is_array( $_POST['wps_sync_categories'] ) ) {
+			$sync_categories = array();
+			foreach ( $_POST['wps_sync_categories'] as $term_id => $data ) {
+				$sync_categories[ intval( $term_id ) ] = array(
+					'sync'   => isset( $data['sync'] ) ? intval( $data['sync'] ) : 0,
+					'parent' => isset( $data['parent'] ) ? intval( $data['parent'] ) : 0,
+				);
+			}
+			update_option( 'wps_sync_categories', $sync_categories );
+		} else {
+			update_option( 'wps_sync_categories', array() );
+		}
+
+		set_transient( 'updated_wpshop_option_' . get_current_user_id(), __( 'Your settings have been saved.', 'wpshop' ), 30 );
+
+		wp_redirect( admin_url( 'admin.php?page=wps-settings&tab=' . $tab ) );
 	}
 
 	/**

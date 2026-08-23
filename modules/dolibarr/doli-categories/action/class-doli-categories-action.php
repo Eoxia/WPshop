@@ -55,6 +55,12 @@ class Doli_Category_Action {
 			}
 		});
 
+		add_action( 'admin_footer', function() {
+			$screen = get_current_screen();
+			if ( $screen && $screen->id === 'edit-wps-product-cat' ) {
+				echo '<script>jQuery(document).ready(function($){ $("#description").prop("readonly", true); });</script>';
+			}
+		});
 	}
 
 	/**
