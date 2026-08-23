@@ -42,9 +42,7 @@ class Doli_Category_Action {
 	 * @version   2.1.0
 	 */
 	public function __construct() {
-
 		add_action( 'admin_menu', array( $this, 'callback_admin_menu' ), 20 );
-
 		add_action( 'wps_checkout_create_category', array( $this, 'create_category' ), 10, 1 );
 		add_action( 'admin_post_wps_download_category', array( $this, 'download_category' ) );
 
@@ -55,14 +53,8 @@ class Doli_Category_Action {
 			}
 		});
 
-		add_action( 'admin_footer', function() {
-			$screen = get_current_screen();
-			if ( $screen && $screen->id === 'edit-wps-product-cat' ) {
-				echo '<script>jQuery(document).ready(function($){ $("#description").prop("readonly", true); });</script>';
-			}
-		});
-
 		add_action( 'wps-product-cat_edit_form_fields', array( $this, 'add_dolibarr_info_field' ), 10, 2 );
+		add_action( 'edited_wps-product-cat', array( $this, 'save_dolibarr_info_field' ), 10, 2 );
 	}
 
 	/**
@@ -91,7 +83,46 @@ class Doli_Category_Action {
 					</p>
 				</td>
 			</tr>
+			<script>jQuery(document).ready(function($){ 
+				$("#description").prop("readonly", true);
+				$("#description").after("<p class=\'description\' style=\'color:#d63638;\'>Ce champ est en lecture seule car cette catégorie est synchronisée avec Dolibarr.</p>");
+			});</script>
 			<?php
+		} else {
+			?>
+			<tr class="form-field">
+				<th scope="row" valign="top"><label>Dolibarr</label></th>
+				<td>
+					<p class="description" style="color:#d63638;">
+						Catégorie non synchronisée avec Dolibarr vous pouvez l'associer en notant l'Id de la catégorie : 
+						<input type="text" name="doli_external_id" value="" style="width: 100px; display: inline-block;">
+					</p>
+					<p class="description" style="color:#d63638;">Dolibarr dans ce cas la description sera écrasée par celle de Dolibarr.</p>
+				</td>
+			</tr>
+			<script>jQuery(document).ready(function($){ 
+				$("#description").after("<p class=\'description\' style=\'color:#d63638;\'>Ce champ est en lecture seule uniquement s\'il est associé à une catégorie Dolibarr, ce qui n\'est pas le cas ici.</p>");
+			});</script>
+			<?php
+		}
+	}
+
+	/**
+	 * Sauvegarde l'association manuelle de la catégorie
+	 */
+	public function save_dolibarr_info_field( $term_id ) {
+		if ( isset( $_POST['doli_external_id'] ) ) {
+			$external_id = intval( $_POST['doli_external_id'] );
+			if ( $external_id > 0 ) {
+				update_term_meta( $term_id, '_external_id', $external_id );
+				
+				// Re-synchronize category from Dolibarr immediately to get the description and name
+				$doli_cat = \wpshop\Request_Util::get( 'categories/' . $external_id );
+				if ( ! empty( $doli_cat ) && isset( $doli_cat->label ) ) {
+					$wp_cat = \wpshop\Doli_Category::g()->get( array( 'id' => $term_id ), true );
+					\wpshop\Doli_Category::g()->doli_to_wp( $doli_cat, $wp_cat );
+				}
+			}
 		}
 	}
 
