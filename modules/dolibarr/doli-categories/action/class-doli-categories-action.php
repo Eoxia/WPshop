@@ -159,6 +159,9 @@ class Doli_Category_Action {
 			if ( $external_id > 0 ) {
 				update_term_meta( $term_id, '_external_id', $external_id );
 				
+				// Assigner l'ID WordPress à la catégorie côté Dolibarr pour que l'association soit bidirectionnelle
+				\wpshop\Request_Util::get( 'doliwpshop/associatecategory?wp_id=' . (int) $term_id . '&doli_id=' . (int) $external_id );
+				
 				// Re-synchronize category from Dolibarr immediately to get the description and name
 				$doli_cat = \wpshop\Request_Util::get( 'categories/' . $external_id );
 				if ( ! empty( $doli_cat ) && isset( $doli_cat->label ) ) {
