@@ -87,7 +87,7 @@ class Doli_Category_Action {
 				<th scope="row" valign="top"><label>Dolibarr</label></th>
 				<td>
 					<p class="description">
-						Id de la catégorie : <a href="<?php echo esc_url( $link ); ?>" target="_blank" style="text-decoration:none;"><strong><?php echo esc_html( $name ); ?></strong></a>
+						Id de la catégorie : <strong><?php echo esc_html( $external_id ); ?></strong> - <a href="<?php echo esc_url( $link ); ?>" target="_blank" style="text-decoration:none;"><strong><?php echo esc_html( $name ); ?></strong></a>
 					</p>
 				</td>
 			</tr>
