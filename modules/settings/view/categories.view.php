@@ -25,17 +25,21 @@ defined( 'ABSPATH' ) || exit;
 	<input type="hidden" name="tab" value="categories">
 	<?php wp_nonce_field( 'callback_update_categories_settings' ); ?>
 
-	<p><em>Cette liste récapitule uniquement les catégories qui ont été synchronisées depuis Dolibarr. L'arborescence et la création sont pilotées directement depuis Dolibarr.</em></p>
+	<p><em>Cette liste récapitule uniquement les catégories de produits/services qui ont été synchronisées depuis Dolibarr. L'arborescence et la création sont pilotées directement depuis Dolibarr.</em></p>
 	<table class="form-table">
 		<thead>
 			<tr>
-				<th>Catégorie WordPress</th>
+				<th>Id WP</th>
+				<th>Nom</th>
 				<th>Id Dolibarr</th>
 				<th>Nom Dolibarr</th>
 			</tr>
 		</thead>
 		<tbody>
-			<?php if ( ! empty( $wp_categories ) && ! is_wp_error( $wp_categories ) ) : ?>
+			<?php if ( ! empty( $wp_categories ) && ! is_wp_error( $wp_categories ) ) : 
+				$wps_dolibarr = get_option( 'wps_dolibarr' );
+				$dolibarr_url = !empty($wps_dolibarr['dolibarr_url']) ? rtrim($wps_dolibarr['dolibarr_url'], '/') : '';
+				?>
 				<?php foreach ( $wp_categories as $wp_cat ) : 
 					$external_id = get_term_meta( $wp_cat->term_id, '_external_id', true );
 					if ( empty( $external_id ) ) {
@@ -59,13 +63,20 @@ defined( 'ABSPATH' ) || exit;
 				?>
 				<tr>
 					<td>
+						<?php echo esc_html( $wp_cat->term_id ); ?>
+					</td>
+					<td>
 						<strong><?php echo esc_html( $wp_cat->name ); ?></strong>
 						<?php if ( ! $wps_id_present ): ?>
 							<span style="color: #888; font-size: 11px;">(Auto)</span>
 						<?php endif; ?>
 					</td>
 					<td>
-						<?php echo esc_html( $external_id ); ?>
+						<?php if ( $dolibarr_url ) : ?>
+							<a href="<?php echo esc_url( $dolibarr_url . '/categories/viewcat.php?id=' . $external_id . '&type=product' ); ?>" target="_blank"><?php echo esc_html( $external_id ); ?></a>
+						<?php else : ?>
+							<?php echo esc_html( $external_id ); ?>
+						<?php endif; ?>
 					</td>
 					<td>
 						<?php echo esc_html( $doli_name ); ?>
