@@ -132,6 +132,29 @@ class API_Action {
 				return Rest_Class::g()->check_cap( 'get', $request );
 			},
 		) );
+
+		register_rest_route( 'wpshop/v2', '/category/(?P<id>[\d]+)', array(
+			'methods'             => array( 'GET' ),
+			'callback'            => array( $this, 'callback_get_category' ),
+			'permission_callback' => function( $request ) {
+				return Rest_Class::g()->check_cap( 'get', $request );
+			},
+		) );
+	}
+
+	/**
+	 * Récupère les infos d'une catégorie.
+	 *
+	 * @param  WP_REST_Request $request
+	 * @return WP_REST_Response
+	 */
+	public function callback_get_category( $request ) {
+		$param = $request->get_params();
+		$term = get_term( (int) $param['id'], 'wps-product-cat' );
+		if ( ! empty( $term ) && ! is_wp_error( $term ) ) {
+			return new \WP_REST_Response( array( 'slug' => $term->slug, 'name' => $term->name ) );
+		}
+		return new \WP_REST_Response( false );
 	}
 
 	/**

@@ -163,6 +163,31 @@ class Settings extends Singleton_Util {
 	}
 
 	/**
+	 * Affiche l'onglet "Catégories" de la page options.
+	 *
+	 * @since   2.0.0
+	 * @version 2.0.0
+	 *
+	 * @param string $section La section.
+	 */
+	public function display_categories( $section = '' ) {
+		$wp_categories = get_terms( array(
+			'taxonomy'   => 'wps-product-cat',
+			'hide_empty' => false,
+		) );
+		
+		$doli_categories = Request_Util::get( 'categories?type=product' );
+		
+		$settings = get_option( 'wps_sync_categories', array() );
+
+		View_Util::exec( 'wpshop', 'settings', 'categories', array(
+			'wp_categories'   => $wp_categories,
+			'doli_categories' => $doli_categories,
+			'settings'        => $settings,
+		) );
+	}
+
+	/**
 	 * Vérifie si dolibarr est actif.
 	 *
 	 * @since   2.0.0
