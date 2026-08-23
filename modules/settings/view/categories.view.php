@@ -42,15 +42,23 @@ defined( 'ABSPATH' ) || exit;
 						continue; // Only list categories created/synced from WPShop (having an external ID)
 					}
 					
-					// Find the corresponding Dolibarr category name
+					// Find the corresponding Dolibarr category name and check wps_id
 					$doli_name = '-';
+					$is_created_in_dolibarr = false;
 					if ( ! empty( $doli_categories ) && ! isset( $doli_categories->error ) ) {
 						foreach ( $doli_categories as $doli_cat ) {
 							if ( $doli_cat->id == $external_id ) {
-								$doli_name = $doli_cat->label;
+								if ( ! empty( $doli_cat->array_options->options__wps_id ) ) {
+									$doli_name = $doli_cat->label;
+									$is_created_in_dolibarr = true;
+								}
 								break;
 							}
 						}
+					}
+					
+					if ( ! $is_created_in_dolibarr ) {
+						continue; // Only show categories explicitly marked as synced in Dolibarr
 					}
 				?>
 				<tr>
