@@ -28,7 +28,7 @@ class Error_Util {
 		$messages = array(
 			// Erreurs ERP
 			'WPS-ERP-001' => __( '[WPS-ERP-001] Connection to Dolibarr failed. Please check your settings.', 'wpshop' ),
-			'WPS-ERP-002' => __( '[WPS-ERP-002] Your ERP is not connected or the configuration is incomplete.', 'wpshop' ),
+			'WPS-ERP-002' => __( '[WPS-ERP-002] Cannot connect to your ERP. The URL might be incorrect, the API module might be disabled in Dolibarr, or the API key is missing.', 'wpshop' ),
 			'WPS-ERP-003' => __( '[WPS-ERP-003] Dolibarr API responded with an error: %s', 'wpshop' ),
 
 			// Erreurs Auth

@@ -371,7 +371,7 @@ class WPshop_Action {
 			) );
 		}
 
-		$response = Request_Util::get( 'status' );
+		$response = Request_Util::get( 'doliwpshop/checkPermissions' );
 
 		if ( ! empty( $response ) && 200 === $response->success->code ) {
 			$statut = true;

@@ -115,11 +115,16 @@ class Request_Util extends Singleton_Util {
 
 		if ( ! is_wp_error( $request ) ) {
 			if ( 200 === $request['response']['code'] ) {
+				$body_str = wp_remote_retrieve_body($request);
+				$is_assoc = ( strpos( $end_point, 'documents?modulepart=product' ) !== false );
+				$decoded  = json_decode( $body_str, $is_assoc );
 				
-				if ( strpos( $end_point, 'documents?modulepart=product' ) !== false ) {
-					return json_decode(wp_remote_retrieve_body($request), true);
+				if ( json_last_error() !== JSON_ERROR_NONE ) {
+					// Si l'ERP renvoie de l'HTML (ex: page de connexion) au lieu du JSON
+					set_transient( 'wps_request_error', __( 'The ERP returned an invalid format (non-JSON). Make sure the URL points exactly to Dolibarr.', 'wpshop' ), 60 );
+					return false;
 				}
-				return json_decode( wp_remote_retrieve_body($request) );
+				return $decoded;
 			} else {
 				$body = json_decode( wp_remote_retrieve_body($request), true );
 				$error_msg = $body['error']['message'] ?? 'HTTP ' . $request['response']['code'];
