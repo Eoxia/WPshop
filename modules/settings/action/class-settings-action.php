@@ -243,19 +243,18 @@ class Settings_Action {
 
 		update_option( 'wps_dolibarr', $dolibarr_option );
 
-		$response = Request_Util::get( 'doliwpshop/checkPermissions' );
-		if ( false === $response ) {
+		$test_result = Request_Util::test_erp_connection( $dolibarr_url, $dolibarr_secret );
+		
+		if ( false === $test_result['statut'] ) {
 			$base_error = Error_Util::get( 'WPS-ERP-001' );
-			$errorMessage = get_transient( 'wps_request_error' );
-			delete_transient( 'wps_request_error' );
+			$errorMessage = $test_result['detailed_error'];
 			
 			if ( ! empty( $errorMessage ) ) {
 				$error = __('Error') . ' : ' . $errorMessage;
-				$dolibarr_option['error'] = $base_error . '<br><strong>' . __( 'Details:', 'wpshop' ) . '</strong> ' . $errorMessage;
+				$dolibarr_option['error'] = $base_error . '<br><br><strong>' . __( 'Details:', 'wpshop' ) . '</strong><br>' . nl2br( esc_html( $errorMessage ) );
 			} else {
 				$dolibarr_option['error'] = $base_error;
 			}
-
 		} else {
 			$dolibarr_option['error'] = '';
 		}

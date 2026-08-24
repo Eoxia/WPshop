@@ -370,75 +370,15 @@ class WPshop_Action {
 				'connected' => false,
 			) );
 		}
+		$test_result = Request_Util::test_erp_connection( $dolibarr_option['dolibarr_url'], $dolibarr_option['dolibarr_secret'] );
+		$statut = $test_result['statut'];
 
-		$dolibarr_url = $dolibarr_option['dolibarr_url'];
-		if ( substr( trim( $dolibarr_url ), -1 ) === '/' ) {
-			$dolibarr_url = substr( trim( $dolibarr_url ), 0, -1 );
-		}
-		
-		$api_url = $dolibarr_url . '/api/index.php/doliwpshop/checkPermissions';
-		$request = wp_remote_get( $api_url, array(
-			'headers' => array(
-				'Content-type' => 'application/json',
-				'DOLAPIKEY'    => $dolibarr_option['dolibarr_secret'],
-			),
-		) );
-
-		$checklist = array(
-			'url' => '✅',
-			'api' => '✅',
-			'key' => '✅',
-			'msg' => ''
-		);
-
-		if ( is_wp_error( $request ) ) {
-			$checklist['url'] = '❌';
-			$checklist['api'] = '⏳';
-			$checklist['key'] = '⏳';
-			$checklist['msg'] = $request->get_error_message();
-		} else {
-			$code = wp_remote_retrieve_response_code( $request );
-			$body = wp_remote_retrieve_body( $request );
-			$json = json_decode( $body );
-
-			if ( json_last_error() !== JSON_ERROR_NONE ) {
-				$checklist['url'] = '✅';
-				$checklist['api'] = '❌';
-				$checklist['key'] = '⏳';
-				$checklist['msg'] = __( 'The ERP returned an invalid format (non-JSON). Make sure the URL points exactly to Dolibarr.', 'wpshop' );
-			} elseif ( 404 === $code ) {
-				$checklist['url'] = '✅';
-				$checklist['api'] = '❌';
-				$checklist['key'] = '⏳';
-				$checklist['msg'] = __( 'REST API route not found. Make sure the DoliWPshop module is activated in Dolibarr.', 'wpshop' );
-			} elseif ( 401 === $code || 403 === $code ) {
-				$checklist['url'] = '✅';
-				$checklist['api'] = '✅';
-				$checklist['key'] = '❌';
-				$checklist['msg'] = __( 'Invalid API Key or unauthorized access.', 'wpshop' );
-			} elseif ( 200 === $code && ! empty($json->success) && 200 === $json->success->code ) {
-				$statut = true;
-				if ( ! empty( $json->success->user ) ) {
-					set_transient( 'wps_connected_erp_user', $json->success->user, 3600 );
-				}
-			} else {
-				$checklist['url'] = '✅';
-				$checklist['api'] = '❌';
-				$checklist['key'] = '⏳';
-				$error_msg = 'HTTP ' . $code;
-				if ( ! empty( $json->error->message ) ) {
-					$error_msg .= ' : ' . $json->error->message;
-				}
-				$checklist['msg'] = $error_msg;
+		if ( $statut ) {
+			if ( ! empty( $test_result['user'] ) ) {
+				set_transient( 'wps_connected_erp_user', $test_result['user'], 3600 );
 			}
-		}
-
-		if ( ! $statut ) {
-			$detailed_error  = "- URL Dolibarr : " . $checklist['url'] . "\n";
-			$detailed_error .= "- Module DoliWPShop (REST) : " . $checklist['api'] . "\n";
-			$detailed_error .= "- Clé API : " . $checklist['key'] . "\n\n";
-			$detailed_error .= $checklist['msg'];
-			set_transient( 'wps_request_error', $detailed_error, 60 );
+		} else {
+			set_transient( 'wps_request_error', $test_result['detailed_error'], 60 );
 		}
 
 		ob_start();

@@ -141,6 +141,93 @@ class Request_Util extends Singleton_Util {
 
 		return false;
 	}
+
+	/**
+	 * Test the ERP connection and return detailed checklist.
+	 * 
+	 * @param string $url The Dolibarr URL
+	 * @param string $key The API key
+	 * @return array
+	 */
+	public static function test_erp_connection( $url, $key ) {
+		if ( substr( trim( $url ), -1 ) === '/' ) {
+			$url = substr( trim( $url ), 0, -1 );
+		}
+		
+		$api_url = $url . '/api/index.php/doliwpshop/checkPermissions';
+		$request = wp_remote_get( $api_url, array(
+			'headers' => array(
+				'Content-type' => 'application/json',
+				'DOLAPIKEY'    => $key,
+			),
+		) );
+
+		$checklist = array(
+			'url' => '✅',
+			'api' => '✅',
+			'key' => '✅',
+			'msg' => ''
+		);
+
+		$statut = false;
+		$user_info = null;
+
+		if ( is_wp_error( $request ) ) {
+			$checklist['url'] = '❌';
+			$checklist['api'] = '⏳';
+			$checklist['key'] = '⏳';
+			$checklist['msg'] = $request->get_error_message();
+		} else {
+			$code = wp_remote_retrieve_response_code( $request );
+			$body = wp_remote_retrieve_body( $request );
+			$json = json_decode( $body );
+
+			if ( json_last_error() !== JSON_ERROR_NONE ) {
+				$checklist['url'] = '✅';
+				$checklist['api'] = '❌';
+				$checklist['key'] = '⏳';
+				$checklist['msg'] = __( 'The ERP returned an invalid format (non-JSON). Make sure the URL points exactly to Dolibarr.', 'wpshop' );
+			} elseif ( 404 === $code ) {
+				$checklist['url'] = '✅';
+				$checklist['api'] = '❌';
+				$checklist['key'] = '⏳';
+				$checklist['msg'] = __( 'REST API route not found. Make sure the DoliWPshop module is activated in Dolibarr.', 'wpshop' );
+			} elseif ( 401 === $code || 403 === $code ) {
+				$checklist['url'] = '✅';
+				$checklist['api'] = '✅';
+				$checklist['key'] = '❌';
+				$checklist['msg'] = __( 'Invalid API Key or unauthorized access.', 'wpshop' );
+			} elseif ( 200 === $code && ! empty($json->success) && 200 === $json->success->code ) {
+				$statut = true;
+				if ( ! empty( $json->success->user ) ) {
+					$user_info = $json->success->user;
+				}
+			} else {
+				$checklist['url'] = '✅';
+				$checklist['api'] = '❌';
+				$checklist['key'] = '⏳';
+				$error_msg = 'HTTP ' . $code;
+				if ( ! empty( $json->error->message ) ) {
+					$error_msg .= ' : ' . $json->error->message;
+				}
+				$checklist['msg'] = $error_msg;
+			}
+		}
+
+		$detailed_error = '';
+		if ( ! $statut ) {
+			$detailed_error  = "- URL Dolibarr : " . $checklist['url'] . "\n";
+			$detailed_error .= "- Module DoliWPShop (REST) : " . $checklist['api'] . "\n";
+			$detailed_error .= "- Clé API : " . $checklist['key'] . "\n\n";
+			$detailed_error .= $checklist['msg'];
+		}
+
+		return array(
+			'statut' => $statut,
+			'detailed_error' => $detailed_error,
+			'user' => $user_info
+		);
+	}
 }
 
 new Request_Util();
