@@ -23,31 +23,47 @@ defined( 'ABSPATH' ) || exit;
  */
 ?>
 
-<div class="wps-metabox view gridw-3">
-	<h3 class="metabox-title"><?php esc_html_e( 'Latest customers', 'wpshop' ); ?></h3>
-	<a href="<?php echo esc_attr( $dolibarr_url . $dolibarr_tiers_lists ); ?>" target="_blank"><?php esc_html_e( 'See in Dolibarr', 'wpshop' ); ?></a>
-
-	<div class="wpeo-table table-flex table-3">
-		<div class="table-row table-header">
-			<div class="table-cell">#</div>
-			<div class="table-cell"><?php esc_html_e( 'Name', 'wpshop' ); ?></div>
-			<div class="table-cell"><?php esc_html_e( 'Date', 'wpshop' ); ?></div>
-		</div>
-
-		<?php if ( ! empty( $third_parties ) ) :
-			foreach ( $third_parties as $third_party ) : ?>
-				<div class="table-row">
-					<div class="table-cell"><a href="<?php echo esc_attr( admin_url( 'admin.php?page=wps-third-party&id=' . $third_party->data['id'] ) ); ?>"><?php echo esc_html( $third_party->data['id'] ); ?></a></div>
-					<div class="table-cell break-word"><a href="<?php echo esc_attr( admin_url( 'admin.php?page=wps-third-party&id=' . $third_party->data['id'] ) ); ?>"><?php echo esc_html( $third_party->data['title'] ); ?></a></div>
-					<div class="table-cell"><?php echo esc_html( $third_party->data['date']['rendered']['date_time'] ); ?></div>
-				</div>
-			<?php endforeach;
-		else : ?>
-			<div class="table-row">
-				<div class="table-cell">
-					<?php esc_html_e( 'No customer for the moment', 'wpshop' ); ?>
-				</div>
-			</div>
-		<?php endif; ?>
+<div class="wps-dashboard-card gridw-3">
+	<div class="wps-dashboard-card-header">
+		<h3 class="wps-dashboard-card-title">
+			<?php esc_html_e( 'Latest customers', 'wpshop' ); ?>
+			<a href="<?php echo esc_attr( $dolibarr_url . $dolibarr_tiers_lists ); ?>" target="_blank"><?php esc_html_e( 'See in Dolibarr', 'wpshop' ); ?></a>
+		</h3>
 	</div>
+
+	<table class="wps-dashboard-table">
+		<thead>
+			<tr>
+				<th>#</th>
+				<th><?php esc_html_e( 'Name', 'wpshop' ); ?></th>
+				<th><?php esc_html_e( 'Date', 'wpshop' ); ?></th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php if ( ! empty( $third_parties ) ) :
+				foreach ( $third_parties as $third_party ) : ?>
+					<tr>
+						<td>
+							<a href="<?php echo esc_attr( admin_url( 'admin.php?page=wps-third-party&id=' . $third_party->data['id'] ) ); ?>">
+								<?php echo esc_html( $third_party->data['id'] ); ?>
+							</a>
+						</td>
+						<td>
+							<i class="far fa-building wps-icon-customer"></i>
+							<a href="<?php echo esc_attr( admin_url( 'admin.php?page=wps-third-party&id=' . $third_party->data['id'] ) ); ?>">
+								<?php echo esc_html( $third_party->data['title'] ); ?>
+							</a>
+						</td>
+						<td><?php echo esc_html( $third_party->data['date']['rendered']['date_time'] ); ?></td>
+					</tr>
+				<?php endforeach;
+			else : ?>
+				<tr>
+					<td colspan="3" style="text-align: center; color: #999;">
+						<?php esc_html_e( 'No customer for the moment', 'wpshop' ); ?>
+					</td>
+				</tr>
+			<?php endif; ?>
+		</tbody>
+	</table>
 </div>

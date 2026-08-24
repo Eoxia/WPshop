@@ -349,8 +349,7 @@ class WPshop_Action {
 	}
 
 	public function display_menu_page() {
-		// Code pour afficher le contenu de la page de menu
-		echo '<h1>Bienvenue sur la page de menu WPshop</h1>';
+		Dashboard::g()->callback_add_menu_page();
 	}
 
 	/**
