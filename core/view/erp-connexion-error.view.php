@@ -22,7 +22,7 @@ defined( 'ABSPATH' ) || exit; ?>
 			<?php 
 			$detailed_error = get_transient( 'wps_request_error' );
 			if ( ! empty( $detailed_error ) ) : ?>
-				<br><br><strong><?php _e( 'Details:', 'wpshop' ); ?></strong> <?php echo esc_html( $detailed_error ); ?>
+				<br><br><strong><?php _e( 'Details:', 'wpshop' ); ?></strong><br> <?php echo nl2br( esc_html( $detailed_error ) ); ?>
 			<?php endif; ?>
 			<br><br>
 			<a href="<?php echo esc_url( admin_url( 'admin.php?page=wps-settings&tab=erp' ) ); ?>" class="wpeo-button button-main" style="color: #fff; text-decoration: none;">
