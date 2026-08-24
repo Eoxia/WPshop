@@ -39,6 +39,14 @@ defined( 'ABSPATH' ) || exit;
 			<span class="wpeo-tooltip-event wps-erp-tooltip-icon" aria-label="<?php esc_attr_e( 'Secret key used for sell with Dolibarr', 'wpshop' ); ?>">?</span>
 			<?php if (Settings::g()->dolibarr_is_active()): ?>
 				<span class="wpeo-tooltip-event wps-erp-status-icon wps-erp-status-icon--success" aria-label="<?php esc_attr_e( 'Connected to Dolibarr', 'wpshop' ); ?>">✔</span>
+				<?php 
+				$connected_user = get_transient( 'wps_connected_erp_user' );
+				if ( ! empty( $connected_user ) ) {
+					$doli_url = rtrim( $dolibarr_option['dolibarr_url'], '/' );
+					$user_link = $doli_url . '/user/card.php?id=' . $connected_user->id;
+					echo '<span style="margin-left: 10px; font-weight: normal; font-size: 13px;">Connecté en tant que : <a href="' . esc_url( $user_link ) . '" target="_blank"><strong>' . esc_html( $connected_user->name ) . '</strong></a> ('. esc_html($connected_user->login) .')</span>';
+				}
+				?>
 			<?php else: ?>
 				<span class="wpeo-tooltip-event wps-erp-status-icon wps-erp-status-icon--error" aria-label="<?php esc_attr_e( 'Connection to dolibarr failed', 'wpshop' ); ?>">✖</span>
 			<?php endif; ?>

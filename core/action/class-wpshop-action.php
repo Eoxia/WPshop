@@ -418,6 +418,9 @@ class WPshop_Action {
 				$checklist['msg'] = __( 'Invalid API Key or unauthorized access.', 'wpshop' );
 			} elseif ( 200 === $code && ! empty($json->success) && 200 === $json->success->code ) {
 				$statut = true;
+				if ( ! empty( $json->success->user ) ) {
+					set_transient( 'wps_connected_erp_user', $json->success->user, 3600 );
+				}
 			} else {
 				$checklist['url'] = '✅';
 				$checklist['api'] = '❌';
