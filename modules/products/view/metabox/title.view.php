@@ -52,6 +52,19 @@ defined( 'ABSPATH' ) || exit;
 		</div>
 	</div>
 
+	<div class="wps-product-description-container" style="margin-top: 20px;">
+		<h4 style="margin: 0 0 10px 0; font-size: 1.1em; color: #333; font-weight: normal;"><?php esc_html_e( 'Description', 'wpshop' ); ?></h4>
+		<div class="wps-product-description" style="border: 1px solid #ddd; padding: 10px 15px; border-radius: 3px; background: #fafafa; color: #555; max-height: 250px; overflow-y: auto;">
+			<?php 
+			if ( ! empty( $product->data['content'] ) ) {
+				echo wp_kses_post( $product->data['content'] ); 
+			} else {
+				echo '<p style="font-style: italic; color: #999; margin: 0;">' . esc_html__( 'No description.', 'wpshop' ) . '</p>';
+			}
+			?>
+		</div>
+	</div>
+
 	<?php
 	// On conserve le hook pour afficher le statut de synchro (pastille couleur) s'il y a d'autres éléments branchés dessus,
 	// mais on le place dans un div caché si on ne veut pas l'afficher sous forme de table-cell qui casse le layout.
