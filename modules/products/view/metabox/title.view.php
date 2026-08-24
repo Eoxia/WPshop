@@ -49,6 +49,39 @@ defined( 'ABSPATH' ) || exit;
 				<strong>N/A</strong>
 			</div>
 			<?php endif; ?>
+
+			<?php 
+			// Ajout du statut de synchronisation
+			if ( \wpshop\Settings::g()->dolibarr_is_active() && class_exists('\wpshop\Doli_Sync') ) {
+				$status_color = 'grey';
+				$message_tooltip = __( 'Looking for sync status', 'wpshop' );
+				
+				if ( empty( $product->data['external_id'] ) ) {
+					$message_tooltip = __('No associated to an ERP Entity', 'wpshop');
+				} else {
+					$response = \wpshop\Doli_Sync::g()->check_status( $product->data['id'], 'wps-product' );
+					if ( $response && $response['status'] ) {
+						switch ( $response['status_code'] ) {
+							case '0x0':
+								$status_color = 'green';
+								break;
+							case '0x3':
+								$status_color = 'red';
+								break;
+						}
+						$message_tooltip = isset( $response['status_message'] ) ? $response['status_message'] : __( 'Error not defined', 'wpshop' );
+					}
+				}
+				
+				$bg_color = '#ececec'; // grey
+				if ( $status_color === 'green' ) { $bg_color = '#47e58e'; }
+				elseif ( $status_color === 'red' ) { $bg_color = '#e05353'; }
+				elseif ( $status_color === 'orange' ) { $bg_color = '#e9ad4f'; }
+				?>
+				<div class="wpeo-tooltip-event" data-direction="left" aria-label="<?php echo esc_attr( $message_tooltip ); ?>" style="width: 14px; height: 14px; border-radius: 50%; background-color: <?php echo esc_attr( $bg_color ); ?>; margin-left: 5px; cursor: help; box-shadow: 0 1px 3px rgba(0,0,0,0.2);"></div>
+				<?php
+			}
+			?>
 		</div>
 	</div>
 
