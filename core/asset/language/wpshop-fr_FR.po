@@ -2401,8 +2401,11 @@ msgstr "Tester la connexion"
 msgid "Configure ERP"
 msgstr "Configurer l'ERP"
 
-msgid "[WPS-ERP-002] Your ERP is not connected or the configuration is incomplete."
-msgstr "[WPS-ERP-002] Votre ERP n'est pas connecté ou la configuration est incorrecte."
+msgid "[WPS-ERP-002] Cannot connect to your ERP. The URL might be incorrect, the API module might be disabled in Dolibarr, or the API key is missing."
+msgstr "[WPS-ERP-002] Impossible de se connecter à l'ERP. L'URL est peut-être incorrecte, le module API désactivé sur Dolibarr, ou la clé API est invalide."
+
+msgid "The ERP returned an invalid format (non-JSON). Make sure the URL points exactly to Dolibarr."
+msgstr "L'ERP a renvoyé un format invalide (non-JSON). Vérifiez que l'URL pointe bien vers la racine de Dolibarr."
 
 msgid "[WPS-ERP-001] Connection to Dolibarr failed. Please check your settings."
 msgstr "[WPS-ERP-001] La connexion à Dolibarr a échoué. Veuillez vérifier vos paramètres."
