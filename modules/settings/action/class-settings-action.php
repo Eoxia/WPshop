@@ -37,6 +37,7 @@ class Settings_Action {
 		add_action( 'admin_post_wps_update_pages_settings', array( $this, 'callback_update_pages_settings' ) );
 		add_action( 'admin_post_wps_update_erp_settings', array( $this, 'callback_update_erp_settings' ) );
 		add_action( 'admin_post_wps_update_categories_settings', array( $this, 'callback_update_categories_settings' ) );
+		add_action( 'admin_post_wps_update_sync_settings', array( $this, 'callback_update_sync_settings' ) );
 
 		add_action( 'wp_ajax_wps_hide_notice_erp', array( $this, 'dismiss_notice_erp' ) );
 

@@ -24,7 +24,7 @@ defined( 'ABSPATH' ) || exit;
 <?php
 $wp_url = '';
 $doli_card_url = '';
-$dolibarr_option = get_option( 'wps_erp_settings' );
+$dolibarr_option = get_option( 'wps_dolibarr' );
 $dolibarr_url = ! empty( $dolibarr_option['dolibarr_url'] ) ? rtrim($dolibarr_option['dolibarr_url'], '/') : '';
 
 if ( ! empty( $object->data['id'] ) ) {
@@ -91,7 +91,7 @@ if ( ! empty( $object->data['id'] ) ) {
 			</strong>
 		</div>
 
-		<div style="display: inline-flex; align-items: center; gap: 6px; margin-left: auto;">
+		<div style="display: inline-flex; align-items: center; gap: 6px; margin-left: 20px;">
 			<div class="button-synchro <?php echo $can_sync ? 'action-attribute' : 'wpeo-modal-event'; ?>"
 				 style="cursor: pointer; color: #666; transition: color 0.2s;"
 				 data-class="synchro-single wpeo-wrap"
@@ -106,13 +106,15 @@ if ( ! empty( $object->data['id'] ) ) {
 			</div>
 
 			<?php 
-			$bg_color = '#ececec'; // grey
-			if ( $status_color === 'green' ) { $bg_color = '#47e58e'; }
-			elseif ( $status_color === 'red' ) { $bg_color = '#e05353'; }
-			elseif ( $status_color === 'orange' ) { $bg_color = '#e9ad4f'; }
+			$sync_settings = get_option( 'wps_sync_settings', array() );
+			$bg_color = '#ececec';
+			if ( $status_color === 'green' ) { $bg_color = ! empty( $sync_settings['color_ok'] ) ? $sync_settings['color_ok'] : '#47e58e'; }
+			elseif ( $status_color === 'red' ) { $bg_color = ! empty( $sync_settings['color_error'] ) ? $sync_settings['color_error'] : '#e05353'; }
+			elseif ( $status_color === 'orange' ) { $bg_color = ! empty( $sync_settings['color_orange'] ) ? $sync_settings['color_orange'] : '#e9ad4f'; }
 			?>
 			<div class="statut wpeo-tooltip-event" data-direction="left" aria-label="<?php echo esc_attr( $message_tooltip ); ?>" style="width: 12px; height: 12px; border-radius: 50%; background-color: <?php echo esc_attr( $bg_color ); ?>; cursor: help; box-shadow: 0 1px 3px rgba(0,0,0,0.2);"></div>
 		</div>
 
 	</div>
 </div>
+

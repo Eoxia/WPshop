@@ -718,7 +718,7 @@ msgstr "Factures"
 
 #: modules/dolibarr/doli-invoice/action/class-doli-invoice-action.php:364
 msgid "Invoice not found"
-msgstr "Facture non trouvée"
+msgstr "Facture n°n trouvée"
 
 #: modules/dolibarr/doli-invoice/filter/class-doli-invoice-filter.php:74
 #: modules/dolibarr/doli-order/filter/class-doli-order-filter.php:51
@@ -2423,10 +2423,10 @@ msgid "Details:"
 msgstr "Détails :"
 
 msgid "Oldest Unpaid Invoices"
-msgstr "Derni�res factures"
+msgstr "Plus anciennes factures impayées"
 
 msgid "Invoice #"
-msgstr "Facture n�"
+msgstr "Facture n°"
 
 msgid "Order #"
 msgstr "Commande n�"

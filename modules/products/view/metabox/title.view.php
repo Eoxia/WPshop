@@ -77,10 +77,11 @@ defined( 'ABSPATH' ) || exit;
 					}
 				}
 				
-				$bg_color = '#ececec'; // grey
-				if ( $status_color === 'green' ) { $bg_color = '#47e58e'; }
-				elseif ( $status_color === 'red' ) { $bg_color = '#e05353'; }
-				elseif ( $status_color === 'orange' ) { $bg_color = '#e9ad4f'; }
+				$sync_settings = get_option( 'wps_sync_settings', array() );
+				$bg_color = '#ececec';
+				if ( $status_color === 'green' ) { $bg_color = ! empty( $sync_settings['color_ok'] ) ? $sync_settings['color_ok'] : '#47e58e'; }
+				elseif ( $status_color === 'red' ) { $bg_color = ! empty( $sync_settings['color_error'] ) ? $sync_settings['color_error'] : '#e05353'; }
+				elseif ( $status_color === 'orange' ) { $bg_color = ! empty( $sync_settings['color_orange'] ) ? $sync_settings['color_orange'] : '#e9ad4f'; }
 				?>
 				<div class="button-synchro <?php echo $can_sync ? 'action-attribute' : 'wpeo-modal-event'; ?>"
 					 style="cursor: pointer; color: #666; transition: color 0.2s;"
@@ -122,3 +123,4 @@ defined( 'ABSPATH' ) || exit;
 		<?php do_action( 'wps_listing_table_end', $product, $sync_status ); ?>
 	</div>
 </div>
+

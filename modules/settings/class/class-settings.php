@@ -188,6 +188,20 @@ class Settings extends Singleton_Util {
 	}
 
 	/**
+	 * Affiche l'onglet "Synchronisation" de la page réglages.
+	 *
+	 * @since   2.4.0
+	 * @version 2.4.0
+	 *
+	 * @param  string $section La section à afficher.
+	 */
+	public function display_sync( $section = '' ) {
+		View_Util::exec( 'wpshop', 'settings', 'sync', array(
+			'section' => $section,
+		) );
+	}
+
+	/**
 	 * Vérifie si dolibarr est actif.
 	 *
 	 * @since   2.0.0
