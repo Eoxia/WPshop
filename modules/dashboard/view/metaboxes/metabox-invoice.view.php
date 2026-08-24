@@ -23,37 +23,68 @@ defined( 'ABSPATH' ) || exit;
  */
 ?>
 
-<div class="wps-metabox view gridw-3">
-	<h3 class="metabox-title"><?php esc_html_e( 'Latest invoices', 'wpshop' ); ?></h3>
-	<a href="<?php echo esc_attr( $dolibarr_url . $dolibarr_invoices_lists ); ?>" target="_blank"><?php esc_html_e( 'See in Dolibarr', 'wpshop' ); ?></a>
-
-	<div class="wpeo-table table-flex table-4">
-		<div class="table-row table-header">
-			<div class="table-cell">#</div>
-			<div class="table-cell"><?php esc_html_e( 'Customer', 'wpshop' ); ?></div>
-			<div class="table-cell"><?php esc_html_e( 'Price TTC', 'wpshop' ); ?></div>
-			<div class="table-cell"><?php esc_html_e( 'Date', 'wpshop' ); ?></div>
-		</div>
-
-		<?php if ( ! empty( $invoices ) ) :
-			foreach ( $invoices as $invoice ) : ?>
-				<div class="table-row">
-					<div class="table-cell"><a href="<?php echo esc_attr( $dolibarr_url . '/compta/facture/card.php?facid=' . $invoice->data['external_id'] ); ?>"><?php echo esc_html( $invoice->data['title'] ); ?></a></div>
-				<?php if ( ! empty( $invoice->data['third_party']->data['id'] ) ): ?>
-					<div class="table-cell break-word"><a href="<?php echo esc_attr( admin_url( 'admin.php?page=wps-third-party&id=' . $invoice->data['third_party']->data['id'] ) ); ?>"><?php echo esc_html( $invoice->data['third_party']->data['title'] ); ?></a></div>
-				<?php else : ?>
-					<div class="table-cell"><?php esc_html_e('unknown', 'wpshop' ); ?></div>
-				<?php endif; ?>
-					<div class="table-cell"><?php echo esc_html( number_format( $invoice->data['total_ttc'], 2, ',', '' ) ); ?>€</div>
-					<div class="table-cell"><?php echo esc_html( date( 'd/m/Y H:i', strtotime( $invoice->data['date_invoice'] ) ) ); ?></div>
-				</div>
-			<?php endforeach;
-		else : ?>
-			<div class="table-row">
-				<div class="table-cell">
-					<?php esc_html_e( 'No invoice for the moment', 'wpshop' ); ?>
-				</div>
-			</div>
-		<?php endif; ?>
+<div class="wps-dashboard-card gridw-3">
+	<div class="wps-dashboard-card-header">
+		<h3 class="wps-dashboard-card-title">
+			<?php esc_html_e( 'Oldest Unpaid Invoices', 'wpshop' ); ?>
+			<a href="<?php echo esc_attr( $dolibarr_url . $dolibarr_invoices_lists ); ?>" target="_blank"><?php esc_html_e( 'See in Dolibarr', 'wpshop' ); ?></a>
+		</h3>
 	</div>
+
+	<table class="wps-dashboard-table">
+		<thead>
+			<tr>
+				<th><?php esc_html_e( 'Invoice #', 'wpshop' ); ?></th>
+				<th><?php esc_html_e( 'Customer', 'wpshop' ); ?></th>
+				<th><?php esc_html_e( 'Amount', 'wpshop' ); ?></th>
+				<th><?php esc_html_e( 'Date', 'wpshop' ); ?></th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php 
+			$total_amount = 0;
+			if ( ! empty( $invoices ) ) :
+				foreach ( $invoices as $invoice ) : 
+					$total_amount += (float) $invoice->data['total_ttc'];
+					?>
+					<tr>
+						<td>
+							<a href="<?php echo esc_attr( $dolibarr_url . '/compta/facture/card.php?facid=' . $invoice->data['external_id'] ); ?>">
+								<?php echo esc_html( $invoice->data['title'] ); ?>
+							</a>
+							<i class="fas fa-exclamation-triangle wps-icon-warning"></i>
+						</td>
+						<td>
+							<i class="far fa-building wps-icon-customer"></i>
+							<?php if ( ! empty( $invoice->data['third_party']->data['id'] ) ): ?>
+								<a href="<?php echo esc_attr( admin_url( 'admin.php?page=wps-third-party&id=' . $invoice->data['third_party']->data['id'] ) ); ?>"><?php echo esc_html( $invoice->data['third_party']->data['title'] ); ?></a>
+							<?php else : ?>
+								<?php esc_html_e('unknown', 'wpshop' ); ?>
+							<?php endif; ?>
+						</td>
+						<td><?php echo esc_html( number_format( $invoice->data['total_ttc'], 2, ',', ' ' ) ); ?> €</td>
+						<td><?php echo esc_html( date( 'd/m/Y', strtotime( $invoice->data['date_invoice'] ) ) ); ?></td>
+						<td>
+							<span class="wps-status-dot filled-gold"></span>
+						</td>
+					</tr>
+				<?php endforeach;
+			else : ?>
+				<tr>
+					<td colspan="5" style="text-align: center; color: #999;">
+						<?php esc_html_e( 'No invoice for the moment', 'wpshop' ); ?>
+					</td>
+				</tr>
+			<?php endif; ?>
+		</tbody>
+		<?php if ( ! empty( $invoices ) ) : ?>
+		<tfoot>
+			<tr class="wps-dashboard-total-row">
+				<td colspan="2">Total</td>
+				<td colspan="3"><?php echo esc_html( number_format( $total_amount, 2, ',', ' ' ) ); ?> €</td>
+			</tr>
+		</tfoot>
+		<?php endif; ?>
+	</table>
 </div>
