@@ -14,7 +14,6 @@ namespace wpshop;
 defined( 'ABSPATH' ) || exit; ?>
 
 <div class="wpeo-notification notification-active notification-red" style="opacity: 1; background: rgba(255,255,255,1);">
-	<i class="notification-icon fas fa-times"></i>
 	<div class="notification-title">
 		<?php esc_html_e( 'Connection failed with your ERP', 'wpshop' ); ?>
 		<p>
