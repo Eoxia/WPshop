@@ -2421,3 +2421,19 @@ msgstr "Route de l'API REST introuvable. Assurez-vous que le module DoliWPshop e
 
 msgid "Details:"
 msgstr "DÃ©tails :"
+
+msgid "Oldest Unpaid Invoices"
+msgstr "Dernières factures"
+
+msgid "Invoice #"
+msgstr "Facture n°"
+
+msgid "Order #"
+msgstr "Commande n°"
+
+msgid "Proposal #"
+msgstr "Devis n°"
+
+msgid "Amount"
+msgstr "Montant"
+
