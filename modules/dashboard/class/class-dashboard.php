@@ -235,7 +235,7 @@ class Dashboard extends Singleton_Util {
 		$dolibarr_url               = $dolibarr_option['dolibarr_url'];
 		$dolibarr_invoices_lists    = $dolibarr_option['dolibarr_invoices_lists'];
 
-		$doli_invoices = Request_Util::get( 'invoices?sortfield=t.rowid&sortorder=DESC&limit=3' );
+		$doli_invoices = Request_Util::get( 'invoices?sortfield=t.rowid&sortorder=DESC&limit=5' );
 		$invoices      = Doli_Invoice::g()->convert_to_wp_invoice_format( $doli_invoices );
 
 		if ( ! empty( $invoices ) ) {
