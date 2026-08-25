@@ -46,12 +46,21 @@ class Doli_Category_Action {
 		add_action( 'wps_checkout_create_category', array( $this, 'create_category' ), 10, 1 );
 		add_action( 'admin_post_wps_download_category', array( $this, 'download_category' ) );
 
-		add_action( 'admin_init', function () {
-			if ( isset( $_GET['page'] ) && $_GET['page'] === 'wps-doli-categories' ) {
-				wp_redirect( admin_url( 'edit-tags.php?taxonomy=wps-product-cat' ) );
-				exit;
+		add_filter( 'parent_file', function( $parent_file ) {
+			global $current_screen;
+			if ( isset( $current_screen->id ) && 'edit-wps-product-cat' === $current_screen->id ) {
+				return 'wpshop';
 			}
-		});
+			return $parent_file;
+		} );
+
+		add_filter( 'submenu_file', function( $submenu_file ) {
+			global $current_screen;
+			if ( isset( $current_screen->id ) && 'edit-wps-product-cat' === $current_screen->id ) {
+				return 'edit-tags.php?taxonomy=wps-product-cat&post_type=wps-product';
+			}
+			return $submenu_file;
+		} );
 
 		add_action( 'wps-product-cat_edit_form_fields', array( $this, 'add_dolibarr_info_field' ), 10, 2 );
 		add_action( 'edited_wps-product-cat', array( $this, 'save_dolibarr_info_field' ), 10, 2 );
@@ -184,9 +193,8 @@ class Doli_Category_Action {
 									  __( 'Categories', 'wpshop' ), 
 									  __( 'Categories', 'wpshop' ), 
 									  'manage_options',
-									  'wps-doli-categories',
-									  '__return_null',
-									  2 );
+									  'edit-tags.php?taxonomy=wps-product-cat&post_type=wps-product'
+									  );
 		}
 	}
 
