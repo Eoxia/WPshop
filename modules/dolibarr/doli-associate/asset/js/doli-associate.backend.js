@@ -14,7 +14,11 @@ window.eoxiaJS.wpshop.doliAssociate = {};
  */
 window.eoxiaJS.wpshop.doliAssociate.init = function() {
 	jQuery( document ).on( 'keyup', '.synchro-single .filter-entry', window.eoxiaJS.wpshop.doliAssociate.filter );
-	jQuery( document ).on( 'click', '.synchro-single li', window.eoxiaJS.wpshop.doliAssociate.clickEntry );
+	
+	// Bind click event directly on the modal container to bypass document-level stopPropagation
+	jQuery( document ).on( 'modal-opened', '.synchro-single', function( event ) {
+		jQuery( this ).off( 'click', 'li' ).on( 'click', 'li', window.eoxiaJS.wpshop.doliAssociate.clickEntry );
+	});
 };
 
 /**
