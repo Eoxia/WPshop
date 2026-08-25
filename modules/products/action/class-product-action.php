@@ -320,7 +320,7 @@ class Product_Action {
 		global $wp_query;
 		global $post;
 
-		$shipping_cost_option = get_option( 'wps_shipping_cost', Settings::g()->shipping_cost_default_settings );
+		$shipping_cost_option = get_option( 'wps_shipping_cost', array() );
 		if ( ! empty( $shipping_cost_option['shipping_product_id'] ) ) {
 			$wp_query->query_vars['post__not_in'] = array( $shipping_cost_option['shipping_product_id'] );
 		}
