@@ -564,7 +564,16 @@ class Doli_Sync extends Singleton_Util {
 			$img_ok = true;
 			$current_thumbnail_id = get_post_thumbnail_id($id);
 			$files = Request_Util::get('documents?modulepart=product&id=' . $external_id);
-			$doli_filename = ( ! empty( $files ) && ! empty( $files[0]['filename'] ) ) ? $files[0]['filename'] : '';
+			
+			$doli_filename = '';
+			if ( ! empty( $files ) && is_array( $files ) ) {
+				foreach ( $files as $f ) {
+					if ( isset( $f['filename'] ) && preg_match( '/\.(jpg|jpeg|png|gif|webp)$/i', $f['filename'] ) ) {
+						$doli_filename = $f['filename'];
+						break;
+					}
+				}
+			}
 			
 			if ( ! empty( $doli_filename ) ) {
 				$existing_attachment = get_posts( array(
