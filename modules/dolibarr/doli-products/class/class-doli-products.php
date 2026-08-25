@@ -111,11 +111,21 @@ class Doli_Products extends Singleton_Util {
 	public function update_post_image( $post_id, $doli_id ) {
 		$files = Request_Util::get('documents?modulepart=product&id=' . $doli_id);
 		
-		if (empty($files)) {
+		if (empty($files) || !is_array($files)) {
 			return;
 		}
 
-		$file = $files[0];
+		$file = null;
+		foreach ( $files as $f ) {
+			if ( isset( $f['filename'] ) && preg_match( '/\.(jpg|jpeg|png|gif|webp)$/i', $f['filename'] ) ) {
+				$file = $f;
+				break;
+			}
+		}
+
+		if ( empty( $file ) ) {
+			return;
+		}
 
 		$level1 = $file['level1name'];
 		$filename = $file['filename'];

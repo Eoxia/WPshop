@@ -66,8 +66,8 @@ if ( ! empty( $object->data['id'] ) ) {
 	}
 }
 ?>
-<div class="table-cell table-200 wps-sync">
-	<div style="display: flex; align-items: center; justify-content: flex-start; gap: 10px; font-size: 13px;">
+<div class="wps-sync-container">
+	<div style="display: flex; align-items: center; justify-content: flex-start; gap: 8px; flex-wrap: wrap; font-size: 13px;">
 		
 		<div style="display: inline-flex; align-items: center; gap: 4px;">
 			<img src="<?php echo PLUGIN_WPSHOP_URL . '/core/asset/image/logo-wordpress.jpg'; ?>" style="width: 14px; height: 14px; border-radius: 50%;" />
@@ -91,7 +91,7 @@ if ( ! empty( $object->data['id'] ) ) {
 			</strong>
 		</div>
 
-		<div style="display: inline-flex; align-items: center; gap: 6px; margin-left: 20px;">
+		<div style="display: inline-flex; align-items: center; gap: 6px; margin-left: 8px;">
 			<div class="button-synchro <?php echo $can_sync ? 'action-attribute' : 'wpeo-modal-event'; ?>"
 				 style="cursor: pointer; color: #666; transition: color 0.2s;"
 				 data-class="synchro-single wpeo-wrap"

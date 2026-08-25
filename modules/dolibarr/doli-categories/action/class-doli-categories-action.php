@@ -46,12 +46,21 @@ class Doli_Category_Action {
 		add_action( 'wps_checkout_create_category', array( $this, 'create_category' ), 10, 1 );
 		add_action( 'admin_post_wps_download_category', array( $this, 'download_category' ) );
 
-		add_action( 'admin_init', function () {
-			if ( isset( $_GET['page'] ) && $_GET['page'] === 'wps-doli-categories' ) {
-				wp_redirect( admin_url( 'edit-tags.php?taxonomy=wps-product-cat' ) );
-				exit;
+		add_filter( 'parent_file', function( $parent_file ) {
+			global $current_screen;
+			if ( isset( $current_screen->id ) && 'edit-wps-product-cat' === $current_screen->id ) {
+				return 'wpshop';
 			}
-		});
+			return $parent_file;
+		} );
+
+		add_filter( 'submenu_file', function( $submenu_file ) {
+			global $current_screen;
+			if ( isset( $current_screen->id ) && 'edit-wps-product-cat' === $current_screen->id ) {
+				return 'edit-tags.php?taxonomy=wps-product-cat&post_type=wps-product';
+			}
+			return $submenu_file;
+		} );
 
 		add_action( 'wps-product-cat_edit_form_fields', array( $this, 'add_dolibarr_info_field' ), 10, 2 );
 		add_action( 'edited_wps-product-cat', array( $this, 'save_dolibarr_info_field' ), 10, 2 );
@@ -154,6 +163,10 @@ class Doli_Category_Action {
 	 * Sauvegarde l'association manuelle de la catégorie
 	 */
 	public function save_dolibarr_info_field( $term_id ) {
+		static $doing_sync = false;
+		if ( $doing_sync ) return;
+		$doing_sync = true;
+		$external_id = 0;
 		if ( isset( $_POST['doli_external_id'] ) ) {
 			$external_id = intval( $_POST['doli_external_id'] );
 			if ( $external_id > 0 ) {
@@ -161,13 +174,20 @@ class Doli_Category_Action {
 				
 				// Assigner l'ID WordPress à la catégorie côté Dolibarr pour que l'association soit bidirectionnelle
 				\wpshop\Request_Util::get( 'doliwpshop/associatecategory?wp_id=' . (int) $term_id . '&doli_id=' . (int) $external_id );
-				
-				// Re-synchronize category from Dolibarr immediately to get the description and name
-				$doli_cat = \wpshop\Request_Util::get( 'categories/' . $external_id );
-				if ( ! empty( $doli_cat ) && isset( $doli_cat->label ) ) {
-					$wp_cat = \wpshop\Doli_Category::g()->get( array( 'id' => $term_id ), true );
-					\wpshop\Doli_Category::g()->doli_to_wp( $doli_cat, $wp_cat );
-				}
+			}
+		} else {
+			$existing_external_id = get_term_meta( $term_id, '_external_id', true );
+			if ( ! empty( $existing_external_id ) ) {
+				$external_id = intval( $existing_external_id );
+			}
+		}
+
+		if ( $external_id > 0 ) {
+			// Re-synchronize category from Dolibarr immediately to get the description and name
+			$doli_cat = \wpshop\Request_Util::get( 'categories/' . $external_id );
+			if ( ! empty( $doli_cat ) && isset( $doli_cat->label ) ) {
+				$wp_cat = \wpshop\Doli_Category::g()->get( array( 'id' => $term_id ), true );
+				\wpshop\Doli_Category::g()->doli_to_wp( $doli_cat, $wp_cat );
 			}
 		}
 	}
@@ -184,9 +204,8 @@ class Doli_Category_Action {
 									  __( 'Categories', 'wpshop' ), 
 									  __( 'Categories', 'wpshop' ), 
 									  'manage_options',
-									  'wps-doli-categories',
-									  '__return_null',
-									  2 );
+									  'edit-tags.php?taxonomy=wps-product-cat&post_type=wps-product'
+									  );
 		}
 	}
 

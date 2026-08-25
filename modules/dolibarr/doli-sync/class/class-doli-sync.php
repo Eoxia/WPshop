@@ -290,6 +290,9 @@ class Doli_Sync extends Singleton_Util {
 //@todo à supprimer **********************************************************
 			case 'wps-product-cat':
 				$doli_category = Request_Util::get( 'categories/' . $entry_id );
+				if ( empty( $wp_id ) ) {
+					$wp_id = $this->resolve_category_term_id( $doli_category, false );
+				}
 				$wp_category   = Doli_Category::g()->get( array( 'id' => $wp_id ), true );
 
 				$wp_category   = Doli_Category::g()->doli_to_wp( $doli_category, $wp_category);
@@ -564,7 +567,16 @@ class Doli_Sync extends Singleton_Util {
 			$img_ok = true;
 			$current_thumbnail_id = get_post_thumbnail_id($id);
 			$files = Request_Util::get('documents?modulepart=product&id=' . $external_id);
-			$doli_filename = ( ! empty( $files ) && ! empty( $files[0]['filename'] ) ) ? $files[0]['filename'] : '';
+			
+			$doli_filename = '';
+			if ( ! empty( $files ) && is_array( $files ) ) {
+				foreach ( $files as $f ) {
+					if ( isset( $f['filename'] ) && preg_match( '/\.(jpg|jpeg|png|gif|webp)$/i', $f['filename'] ) ) {
+						$doli_filename = $f['filename'];
+						break;
+					}
+				}
+			}
 			
 			if ( ! empty( $doli_filename ) ) {
 				$existing_attachment = get_posts( array(
