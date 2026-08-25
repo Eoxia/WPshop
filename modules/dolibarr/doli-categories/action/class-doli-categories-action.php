@@ -163,6 +163,9 @@ class Doli_Category_Action {
 	 * Sauvegarde l'association manuelle de la catégorie
 	 */
 	public function save_dolibarr_info_field( $term_id ) {
+		static $doing_sync = false;
+		if ( $doing_sync ) return;
+		$doing_sync = true;
 		$external_id = 0;
 		if ( isset( $_POST['doli_external_id'] ) ) {
 			$external_id = intval( $_POST['doli_external_id'] );
