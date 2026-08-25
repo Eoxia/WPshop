@@ -66,7 +66,7 @@ if ( ! empty( $object->data['id'] ) ) {
 	}
 }
 ?>
-<div class="table-cell table-200 wps-sync">
+<div class="table-cell table-200 wps-sync-container">
 	<div style="display: flex; align-items: center; justify-content: flex-start; gap: 10px; font-size: 13px;">
 		
 		<div style="display: inline-flex; align-items: center; gap: 4px;">
