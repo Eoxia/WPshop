@@ -273,7 +273,8 @@ class API_Action {
 			return $response;
 		}
 
-		$sync_status = Doli_Sync::g()->sync( 0, $param['doli_id'], $param['type'] );
+		$wp_id = ! empty( $param['wp_id'] ) ? (int) $param['wp_id'] : 0;
+		$sync_status = Doli_Sync::g()->sync( $wp_id, $param['doli_id'], $param['type'] );
 
 		if ( ! empty( $sync_status['wp_object'] ) && ! is_wp_error( $sync_status['wp_object'] ) && ! empty( $sync_status['wp_object']->data['id'] ) ) {
 			if ( strpos( $param['type'], 'cat' ) !== false ) {
