@@ -545,7 +545,7 @@ class Doli_Sync extends Singleton_Util {
 		}
 
 		// WP Object is not equal Dolibarr Object.
-		if  ( $type == 'wps-product-cat' || $type == 'wps-third-party' ) {
+		if ( $type == 'wps-product-cat' || $type == 'wps-third-party' ) {
 			if ( $response->sha !== $sha_256 ) {
 				return array(
 					'status' => true,
@@ -553,6 +553,56 @@ class Doli_Sync extends Singleton_Util {
 					'status_message' => __('WP Object is not equal Dolibarr Object', 'wpshop') . ' (' . implode( ', ', $sha_diff_fields ) . ')',
 					'response->sha' => $response->sha,
 					'sha_256' => $sha_256,
+					'debug' => $debug,
+				);
+			}
+		} else if ( $type == 'wps-product' ) {
+			$data_ok = ( $response->sha === $sha_256 );
+			$cat_ok  = ( $wp_category_labels == $doli_category_labels );
+			
+			// Image check
+			$img_ok = true;
+			$current_thumbnail_id = get_post_thumbnail_id($id);
+			$files = Request_Util::get('documents?modulepart=product&id=' . $external_id);
+			$doli_filename = ( ! empty( $files ) && ! empty( $files[0]['filename'] ) ) ? $files[0]['filename'] : '';
+			
+			if ( ! empty( $doli_filename ) ) {
+				$existing_attachment = get_posts( array(
+					'post_type'      => 'attachment',
+					'posts_per_page' => 1,
+					'post_parent'    => $id,
+					'title'          => sanitize_file_name( $doli_filename ),
+				) );
+				$existing_id = ! empty( $existing_attachment ) ? (int) $existing_attachment[0]->ID : 0;
+				$debug['image'] = array(
+					'wp_thumbnail_id' => (int) $current_thumbnail_id,
+					'doli_filename'   => $doli_filename,
+					'existing_id'     => $existing_id,
+				);
+				if ( 0 === $existing_id || (int) $current_thumbnail_id !== $existing_id ) {
+					$img_ok = false;
+				}
+			}
+
+			if ( ! $data_ok || ! $cat_ok || ! $img_ok ) {
+				$status_message  = "Statut de synchronisation : Échec\n";
+				$status_message .= ( $data_ok ? "✅" : "❌" ) . " Données produit : " . ( $data_ok ? "OK" : "HS" ) . "\n";
+				$status_message .= ( $cat_ok ? "✅" : "❌" ) . " Tags / Catégories : " . ( $cat_ok ? "OK" : "HS" ) . "\n";
+				$status_message .= ( $img_ok ? "✅" : "❌" ) . " Médias : " . ( $img_ok ? "OK" : "HS" );
+
+				$status_code = '0x3';
+				if ( $data_ok && ( ! $cat_ok || ! $img_ok ) ) {
+					$status_code = '0x4';
+				}
+
+				return array(
+					'status' => true,
+					'status_code' => $status_code,
+					'status_message' => $status_message,
+					'response->sha' => $response->sha,
+					'sha_256' => $sha_256,
+					'wp_category_labels' => $wp_category_labels,
+					'doli_category_labels' => $doli_category_labels,
 					'debug' => $debug,
 				);
 			}
@@ -576,54 +626,19 @@ class Doli_Sync extends Singleton_Util {
 			}
 		}
 
-
 		if ( $type == 'wps-product' ) {
-
-			$current_thumbnail_id = get_post_thumbnail_id($id);
-
-			$files = Request_Util::get('documents?modulepart=product&id=' . $external_id);
-
-			$doli_filename = ( ! empty( $files ) && ! empty( $files[0]['filename'] ) ) ? $files[0]['filename'] : '';
-
-			// Une vignette présente uniquement côté WP n'est PAS une désynchronisation : la synchro
-			// d'image ne fonctionne que dans le sens Dolibarr -> WP (update_post_image), elle ne pousse
-			// jamais la vignette WP vers Dolibarr. On ne compare donc que lorsque Dolibarr a un document.
-			if ( ! empty( $doli_filename ) ) {
-				$existing_attachment = get_posts( array(
-					'post_type'      => 'attachment',
-					'posts_per_page' => 1,
-					'post_parent'    => $id,
-					'title'          => sanitize_file_name( $doli_filename ),
-				) );
-
-				$existing_id = ! empty( $existing_attachment ) ? (int) $existing_attachment[0]->ID : 0;
-
-				$debug['image'] = array(
-					'wp_thumbnail_id' => (int) $current_thumbnail_id,
-					'doli_filename'   => $doli_filename,
-					'existing_id'     => $existing_id,
-				);
-
-				// Image désynchronisée : le document Dolibarr n'a jamais été importé côté WP,
-				// ou la vignette du produit ne correspond pas à ce document.
-				if ( 0 === $existing_id || (int) $current_thumbnail_id !== $existing_id ) {
-					return array(
-						'status' => true,
-						'status_code' => '0x3',
-						'status_message' => __('WP Object is not equal Dolibarr Object', 'wpshop') . ' (image)',
-						'response->sha' => $response->sha,
-						'sha_256' => $sha_256,
-						'debug' => $debug,
-					);
-				}
-			}
+			$status_message  = "Statut de synchronisation : Succès\n";
+			$status_message .= "✅ Données produit : OK\n";
+			$status_message .= "✅ Tags / Catégories : OK\n";
+			$status_message .= "✅ Médias : OK";
+		} else {
+			$status_message = __('Sync OK', 'wpshop');
 		}
-
 
 		return array(
 			'status' => true,
 			'status_code' => '0x0',
-			'status_message' => __('Sync OK', 'wpshop'),
+			'status_message' => $status_message,
 			'debug' => $debug,
 		);
 	}
@@ -684,6 +699,10 @@ class Doli_Sync extends Singleton_Util {
 //					break;
 				case '0x3':
 					$data_view['status_color'] = 'red';
+					$data_view['can_sync'] = true;
+					break;
+				case '0x4':
+					$data_view['status_color'] = 'orange';
 					$data_view['can_sync'] = true;
 					break;
 			}

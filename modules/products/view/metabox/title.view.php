@@ -55,8 +55,9 @@ defined( 'ABSPATH' ) || exit;
 			if ( \wpshop\Settings::g()->dolibarr_is_active() && class_exists('\wpshop\Doli_Sync') ) {
 				$status_color = 'grey';
 				$message_tooltip = __( 'Looking for sync status', 'wpshop' );
+				$can_sync = ! empty( $product->data['external_id'] );
 				
-				if ( empty( $product->data['external_id'] ) ) {
+				if ( ! $can_sync ) {
 					$message_tooltip = __('No associated to an ERP Entity', 'wpshop');
 				} else {
 					$response = \wpshop\Doli_Sync::g()->check_status( $product->data['id'], 'wps-product' );
@@ -68,16 +69,31 @@ defined( 'ABSPATH' ) || exit;
 							case '0x3':
 								$status_color = 'red';
 								break;
+							case '0x4':
+								$status_color = 'orange';
+								break;
 						}
 						$message_tooltip = isset( $response['status_message'] ) ? $response['status_message'] : __( 'Error not defined', 'wpshop' );
 					}
 				}
 				
-				$bg_color = '#ececec'; // grey
-				if ( $status_color === 'green' ) { $bg_color = '#47e58e'; }
-				elseif ( $status_color === 'red' ) { $bg_color = '#e05353'; }
-				elseif ( $status_color === 'orange' ) { $bg_color = '#e9ad4f'; }
+				$sync_settings = get_option( 'wps_sync_settings', array() );
+				$bg_color = '#ececec';
+				if ( $status_color === 'green' ) { $bg_color = ! empty( $sync_settings['color_ok'] ) ? $sync_settings['color_ok'] : '#47e58e'; }
+				elseif ( $status_color === 'red' ) { $bg_color = ! empty( $sync_settings['color_error'] ) ? $sync_settings['color_error'] : '#e05353'; }
+				elseif ( $status_color === 'orange' ) { $bg_color = ! empty( $sync_settings['color_orange'] ) ? $sync_settings['color_orange'] : '#e9ad4f'; }
 				?>
+				<div class="button-synchro <?php echo $can_sync ? 'action-attribute' : 'wpeo-modal-event'; ?>"
+					 style="cursor: pointer; color: #666; transition: color 0.2s;"
+					 data-class="synchro-single wpeo-wrap"
+					 data-title="<?php printf( __( 'Associate and synchronize %s', 'wpshop' ), esc_attr( $product->data['title'] ) ); ?>"
+					 data-action="<?php echo $can_sync ? 'sync_entry' : 'load_associate_modal'; ?>"
+					 data-wp-id="<?php echo esc_attr( $product->data['id'] ); ?>"
+					 data-entry-id="<?php echo esc_attr( $product->data['external_id'] ); ?>"
+					 data-type="wps-product"
+					 data-nonce="<?php echo esc_attr( wp_create_nonce( $can_sync ? 'sync_entry' : 'load_associate_modal' ) ); ?>">
+					 <i class="fas fa-sync" onmouseover="this.style.color='#1897e7';" onmouseout="this.style.color='#666';"></i>
+				</div>
 				<div class="wpeo-tooltip-event" data-direction="left" aria-label="<?php echo esc_attr( $message_tooltip ); ?>" style="width: 14px; height: 14px; border-radius: 50%; background-color: <?php echo esc_attr( $bg_color ); ?>; margin-left: 5px; cursor: help; box-shadow: 0 1px 3px rgba(0,0,0,0.2);"></div>
 				<?php
 			}
@@ -107,3 +123,4 @@ defined( 'ABSPATH' ) || exit;
 		<?php do_action( 'wps_listing_table_end', $product, $sync_status ); ?>
 	</div>
 </div>
+
