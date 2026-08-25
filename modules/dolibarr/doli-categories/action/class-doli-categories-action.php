@@ -163,6 +163,7 @@ class Doli_Category_Action {
 	 * Sauvegarde l'association manuelle de la catégorie
 	 */
 	public function save_dolibarr_info_field( $term_id ) {
+		$external_id = 0;
 		if ( isset( $_POST['doli_external_id'] ) ) {
 			$external_id = intval( $_POST['doli_external_id'] );
 			if ( $external_id > 0 ) {
@@ -170,13 +171,20 @@ class Doli_Category_Action {
 				
 				// Assigner l'ID WordPress à la catégorie côté Dolibarr pour que l'association soit bidirectionnelle
 				\wpshop\Request_Util::get( 'doliwpshop/associatecategory?wp_id=' . (int) $term_id . '&doli_id=' . (int) $external_id );
-				
-				// Re-synchronize category from Dolibarr immediately to get the description and name
-				$doli_cat = \wpshop\Request_Util::get( 'categories/' . $external_id );
-				if ( ! empty( $doli_cat ) && isset( $doli_cat->label ) ) {
-					$wp_cat = \wpshop\Doli_Category::g()->get( array( 'id' => $term_id ), true );
-					\wpshop\Doli_Category::g()->doli_to_wp( $doli_cat, $wp_cat );
-				}
+			}
+		} else {
+			$existing_external_id = get_term_meta( $term_id, '_external_id', true );
+			if ( ! empty( $existing_external_id ) ) {
+				$external_id = intval( $existing_external_id );
+			}
+		}
+
+		if ( $external_id > 0 ) {
+			// Re-synchronize category from Dolibarr immediately to get the description and name
+			$doli_cat = \wpshop\Request_Util::get( 'categories/' . $external_id );
+			if ( ! empty( $doli_cat ) && isset( $doli_cat->label ) ) {
+				$wp_cat = \wpshop\Doli_Category::g()->get( array( 'id' => $term_id ), true );
+				\wpshop\Doli_Category::g()->doli_to_wp( $doli_cat, $wp_cat );
 			}
 		}
 	}
