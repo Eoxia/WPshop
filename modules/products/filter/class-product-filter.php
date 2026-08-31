@@ -38,6 +38,7 @@ class Product_Filter {
 		add_filter( 'bulk_actions-edit-wps-product-cat', array( $this, 'add_bulk_action_delete_empty' ) );
 		add_filter( 'handle_bulk_actions-edit-wps-product-cat', array( $this, 'handle_bulk_action_delete_empty' ), 10, 3 );
 		add_action( 'admin_notices', array( $this, 'admin_notice_delete_empty' ) );
+		add_action( 'admin_post_confirm_delete_empty_categories', array( $this, 'process_confirm_delete_empty_categories' ) );
 
 		add_filter( 'eo_model_wps-product_after_get', function( $object, $args ) {
 			$object->data['thumbnail'] = wp_get_attachment_image_src( $object->data['thumbnail_id'], 'wps-product-thumbnail' );
@@ -328,28 +329,79 @@ class Product_Filter {
 			return $redirect_to;
 		}
 
-		$deleted = 0;
+		$to_delete = array();
 		foreach ( $object_ids as $term_id ) {
 			$term = get_term( $term_id, 'wps-product-cat' );
-			
 			if ( ! is_wp_error( $term ) ) {
-				// Vérifie les relations directes peu importe le statut du produit
 				$objects_in_term = get_objects_in_term( $term_id, 'wps-product-cat' );
-				// Vérifie si la catégorie a des enfants
 				$children = get_term_children( $term_id, 'wps-product-cat' );
 				
 				if ( empty( $objects_in_term ) && empty( $children ) ) {
-					// Log the deletion
-					error_log( 'WPShop: Catégorie vide supprimée - ID: ' . $term->term_id . ' Nom: ' . $term->name );
-					
-					wp_delete_term( $term_id, 'wps-product-cat' );
-					$deleted++;
+					$to_delete[] = $term;
 				}
 			}
 		}
 
-		$redirect_to = add_query_arg( 'bulk_empty_categories_deleted', $deleted, $redirect_to );
-		return $redirect_to;
+		if ( empty( $to_delete ) ) {
+			return add_query_arg( 'bulk_empty_categories_deleted', 0, $redirect_to );
+		}
+
+		// Affiche l'écran de confirmation
+		$form_action = admin_url( 'admin-post.php' );
+		
+		$html  = '<h1>' . __( 'Confirmation de suppression', 'wpshop' ) . '</h1>';
+		$html .= '<p>' . __( 'Les catégories suivantes sont vides et vont être supprimées définitivement :', 'wpshop' ) . '</p>';
+		$html .= '<ul>';
+		$term_ids_to_delete = array();
+		foreach ( $to_delete as $term ) {
+			$html .= '<li><strong>' . esc_html( $term->name ) . '</strong></li>';
+			$term_ids_to_delete[] = $term->term_id;
+		}
+		$html .= '</ul>';
+
+		$html .= '<form method="post" action="' . esc_url( $form_action ) . '">';
+		$html .= '<input type="hidden" name="action" value="confirm_delete_empty_categories">';
+		$html .= '<input type="hidden" name="term_ids" value="' . esc_attr( implode( ',', $term_ids_to_delete ) ) . '">';
+		$html .= wp_nonce_field( 'delete_empty_categories_nonce', '_wpnonce', true, false );
+		$html .= '<input type="hidden" name="redirect_to" value="' . esc_attr( $redirect_to ) . '">';
+		$html .= submit_button( __( 'Confirmer la suppression', 'wpshop' ), 'primary', 'submit', false ) . ' ';
+		$html .= '<a href="' . esc_url( $redirect_to ) . '" class="button">' . __( 'Annuler', 'wpshop' ) . '</a>';
+		$html .= '</form>';
+
+		wp_die( $html, __( 'Confirmer la suppression', 'wpshop' ), array( 'back_link' => true ) );
+	}
+
+	/**
+	 * Traite la soumission du formulaire de confirmation.
+	 */
+	public function process_confirm_delete_empty_categories() {
+		check_admin_referer( 'delete_empty_categories_nonce' );
+
+		if ( ! current_user_can( 'manage_categories' ) ) {
+			wp_die( __( 'Vous n\'avez pas les droits suffisants.', 'wpshop' ) );
+		}
+
+		$term_ids_str = isset( $_POST['term_ids'] ) ? sanitize_text_field( wp_unslash( $_POST['term_ids'] ) ) : '';
+		$redirect_to  = isset( $_POST['redirect_to'] ) ? esc_url_raw( wp_unslash( $_POST['redirect_to'] ) ) : admin_url( 'edit-tags.php?taxonomy=wps-product-cat&post_type=wps-product' );
+
+		$deleted = 0;
+		if ( ! empty( $term_ids_str ) ) {
+			$term_ids = explode( ',', $term_ids_str );
+			foreach ( $term_ids as $term_id ) {
+				$term_id = intval( $term_id );
+				if ( $term_id > 0 ) {
+					$term = get_term( $term_id, 'wps-product-cat' );
+					if ( ! is_wp_error( $term ) ) {
+						error_log( 'WPShop: Catégorie vide supprimée - ID: ' . $term->term_id . ' Nom: ' . $term->name );
+						wp_delete_term( $term_id, 'wps-product-cat' );
+						$deleted++;
+					}
+				}
+			}
+		}
+
+		wp_redirect( add_query_arg( 'bulk_empty_categories_deleted', $deleted, $redirect_to ) );
+		exit;
 	}
 
 	/**
