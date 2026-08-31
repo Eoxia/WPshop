@@ -331,12 +331,20 @@ class Product_Filter {
 		$deleted = 0;
 		foreach ( $object_ids as $term_id ) {
 			$term = get_term( $term_id, 'wps-product-cat' );
-			if ( ! is_wp_error( $term ) && $term->count === 0 ) {
-				// Log the deletion
-				error_log( 'WPShop: Catégorie vide supprimée - ID: ' . $term->term_id . ' Nom: ' . $term->name );
+			
+			if ( ! is_wp_error( $term ) ) {
+				// Vérifie les relations directes peu importe le statut du produit
+				$objects_in_term = get_objects_in_term( $term_id, 'wps-product-cat' );
+				// Vérifie si la catégorie a des enfants
+				$children = get_term_children( $term_id, 'wps-product-cat' );
 				
-				wp_delete_term( $term_id, 'wps-product-cat' );
-				$deleted++;
+				if ( empty( $objects_in_term ) && empty( $children ) ) {
+					// Log the deletion
+					error_log( 'WPShop: Catégorie vide supprimée - ID: ' . $term->term_id . ' Nom: ' . $term->name );
+					
+					wp_delete_term( $term_id, 'wps-product-cat' );
+					$deleted++;
+				}
 			}
 		}
 
