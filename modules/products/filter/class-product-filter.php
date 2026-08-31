@@ -384,7 +384,7 @@ class Product_Filter {
 			});
 		</script>';
 
-		wp_die( $html, __( 'Confirmer la suppression', 'wpshop' ), array( 'back_link' => false ) );
+		wp_die( $html, __( 'Confirmer la suppression', 'wpshop' ), array( 'back_link' => true ) );
 	}
 
 	/**
@@ -398,7 +398,11 @@ class Product_Filter {
 		}
 
 		$term_ids_str = isset( $_POST['term_ids'] ) ? sanitize_text_field( wp_unslash( $_POST['term_ids'] ) ) : '';
-		$redirect_to  = isset( $_POST['redirect_to'] ) ? esc_url_raw( wp_unslash( $_POST['redirect_to'] ) ) : admin_url( 'edit-tags.php?taxonomy=wps-product-cat&post_type=wps-product' );
+		$redirect_to  = isset( $_POST['redirect_to'] ) ? esc_url_raw( wp_unslash( $_POST['redirect_to'] ) ) : '';
+		
+		if ( empty( $redirect_to ) ) {
+			$redirect_to = admin_url( 'edit-tags.php?taxonomy=wps-product-cat&post_type=wps-product' );
+		}
 
 		$deleted = 0;
 		if ( ! empty( $term_ids_str ) ) {
