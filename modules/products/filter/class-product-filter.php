@@ -366,7 +366,7 @@ class Product_Filter {
 		$html .= '<input type="hidden" name="redirect_to" value="' . esc_attr( $redirect_to ) . '">';
 		
 		$html .= '<div style="margin-top: 20px; display: flex; align-items: center; gap: 10px;">';
-		$html .= submit_button( __( 'Confirmer la suppression', 'wpshop' ), 'primary', 'submit', false );
+		$html .= get_submit_button( __( 'Confirmer la suppression', 'wpshop' ), 'primary', 'submit', false );
 		$html .= '<a id="delete-cancel-btn" href="' . esc_url( $redirect_to ) . '" class="button">' . __( 'Annuler', 'wpshop' ) . '</a>';
 		$html .= '<span id="delete-loader" style="display:none; align-items: center; gap: 5px; color: #666;">';
 		$html .= '<img src="' . admin_url( 'images/spinner.gif' ) . '" alt="loading" /> ' . __( 'Suppression en cours...', 'wpshop' );
@@ -384,7 +384,7 @@ class Product_Filter {
 			});
 		</script>';
 
-		wp_die( $html, __( 'Confirmer la suppression', 'wpshop' ), array( 'back_link' => true ) );
+		wp_die( $html, __( 'Confirmer la suppression', 'wpshop' ), array( 'back_link' => false ) );
 	}
 
 	/**
