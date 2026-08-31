@@ -359,14 +359,30 @@ class Product_Filter {
 		}
 		$html .= '</ul>';
 
-		$html .= '<form method="post" action="' . esc_url( $form_action ) . '">';
+		$html .= '<form id="delete-empty-categories-form" method="post" action="' . esc_url( $form_action ) . '">';
 		$html .= '<input type="hidden" name="action" value="confirm_delete_empty_categories">';
 		$html .= '<input type="hidden" name="term_ids" value="' . esc_attr( implode( ',', $term_ids_to_delete ) ) . '">';
 		$html .= wp_nonce_field( 'delete_empty_categories_nonce', '_wpnonce', true, false );
 		$html .= '<input type="hidden" name="redirect_to" value="' . esc_attr( $redirect_to ) . '">';
-		$html .= submit_button( __( 'Confirmer la suppression', 'wpshop' ), 'primary', 'submit', false ) . ' ';
-		$html .= '<a href="' . esc_url( $redirect_to ) . '" class="button">' . __( 'Annuler', 'wpshop' ) . '</a>';
+		
+		$html .= '<div style="margin-top: 20px; display: flex; align-items: center; gap: 10px;">';
+		$html .= submit_button( __( 'Confirmer la suppression', 'wpshop' ), 'primary', 'submit', false );
+		$html .= '<a id="delete-cancel-btn" href="' . esc_url( $redirect_to ) . '" class="button">' . __( 'Annuler', 'wpshop' ) . '</a>';
+		$html .= '<span id="delete-loader" style="display:none; align-items: center; gap: 5px; color: #666;">';
+		$html .= '<img src="' . admin_url( 'images/spinner.gif' ) . '" alt="loading" /> ' . __( 'Suppression en cours...', 'wpshop' );
+		$html .= '</span>';
+		$html .= '</div>';
 		$html .= '</form>';
+
+		$html .= '<script>
+			document.getElementById("delete-empty-categories-form").addEventListener("submit", function(e) {
+				var btn = document.getElementById("submit");
+				btn.disabled = true;
+				btn.value = "' . esc_js( __( 'Veuillez patienter...', 'wpshop' ) ) . '";
+				document.getElementById("delete-loader").style.display = "inline-flex";
+				document.getElementById("delete-cancel-btn").style.display = "none";
+			});
+		</script>';
 
 		wp_die( $html, __( 'Confirmer la suppression', 'wpshop' ), array( 'back_link' => true ) );
 	}
