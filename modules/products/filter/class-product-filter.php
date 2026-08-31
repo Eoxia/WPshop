@@ -34,6 +34,11 @@ class Product_Filter {
 		add_filter( 'wps_product_add_to_cart_class', array( $this, 'disable_button_add_to_cart' ), 10, 2 );
 		add_filter( 'wps_product_single', array( $this, 'display_stock' ), 10, 2 );
 
+		// Custom bulk action to delete empty categories
+		add_filter( 'bulk_actions-edit-wps-product-cat', array( $this, 'add_bulk_action_delete_empty' ) );
+		add_filter( 'handle_bulk_actions-edit-wps-product-cat', array( $this, 'handle_bulk_action_delete_empty' ), 10, 3 );
+		add_action( 'admin_notices', array( $this, 'admin_notice_delete_empty' ) );
+
 		add_filter( 'eo_model_wps-product_after_get', function( $object, $args ) {
 			$object->data['thumbnail'] = wp_get_attachment_image_src( $object->data['thumbnail_id'], 'wps-product-thumbnail' );
 
@@ -297,6 +302,63 @@ class Product_Filter {
 		}
 
 		return $content;
+	}
+
+	/**
+	 * Ajoute l'action groupée pour supprimer les catégories vides.
+	 *
+	 * @param array $bulk_actions Actions groupées existantes.
+	 * @return array Actions groupées modifiées.
+	 */
+	public function add_bulk_action_delete_empty( $bulk_actions ) {
+		$bulk_actions['delete_empty_categories'] = __( 'Supprimer les catégories vides', 'wpshop' );
+		return $bulk_actions;
+	}
+
+	/**
+	 * Gère l'action groupée de suppression des catégories vides.
+	 *
+	 * @param string $redirect_to L'URL de redirection.
+	 * @param string $doaction    L'action demandée.
+	 * @param array  $object_ids  Les IDs des termes sélectionnés.
+	 * @return string L'URL de redirection modifiée.
+	 */
+	public function handle_bulk_action_delete_empty( $redirect_to, $doaction, $object_ids ) {
+		if ( 'delete_empty_categories' !== $doaction ) {
+			return $redirect_to;
+		}
+
+		$deleted = 0;
+		foreach ( $object_ids as $term_id ) {
+			$term = get_term( $term_id, 'wps-product-cat' );
+			if ( ! is_wp_error( $term ) && $term->count === 0 ) {
+				// Log the deletion
+				error_log( 'WPShop: Catégorie vide supprimée - ID: ' . $term->term_id . ' Nom: ' . $term->name );
+				
+				wp_delete_term( $term_id, 'wps-product-cat' );
+				$deleted++;
+			}
+		}
+
+		$redirect_to = add_query_arg( 'bulk_empty_categories_deleted', $deleted, $redirect_to );
+		return $redirect_to;
+	}
+
+	/**
+	 * Affiche une notice d'administration suite à la suppression des catégories vides.
+	 */
+	public function admin_notice_delete_empty() {
+		if ( ! empty( $_REQUEST['bulk_empty_categories_deleted'] ) ) {
+			$count = intval( $_REQUEST['bulk_empty_categories_deleted'] );
+			printf(
+				'<div id="message" class="updated notice is-dismissible"><p>%s</p></div>',
+				sprintf(
+					/* translators: %s: Number of categories deleted */
+					_n( '%s catégorie vide supprimée.', '%s catégories vides supprimées.', $count, 'wpshop' ),
+					$count
+				)
+			);
+		}
 	}
 }
 
