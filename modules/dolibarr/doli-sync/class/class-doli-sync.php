@@ -334,7 +334,16 @@ class Doli_Sync extends Singleton_Util {
 			$auto_sync = ( isset($setup->WPSHOP_AUTO_SYNC_PRODUCT_CATEGORIES) && $setup->WPSHOP_AUTO_SYNC_PRODUCT_CATEGORIES == 1 );
 		}
 
-		if ( ! $auto_sync && empty( $doli_category->array_options->options__wps_id ) ) {
+		$wps_id = 0;
+		if (!empty($doli_category->array_options)) {
+			if (is_object($doli_category->array_options) && !empty($doli_category->array_options->options__wps_id)) {
+				$wps_id = $doli_category->array_options->options__wps_id;
+			} elseif (is_array($doli_category->array_options) && !empty($doli_category->array_options['options__wps_id'])) {
+				$wps_id = $doli_category->array_options['options__wps_id'];
+			}
+		}
+
+		if ( ! $auto_sync && empty( $wps_id ) ) {
 			return 0;
 		}
 
@@ -481,9 +490,18 @@ class Doli_Sync extends Singleton_Util {
 
 		$debug['dolibarr_found'] = true;
 
+		$doli_wps_id = 0;
+		if (!empty($response->array_options)) {
+			if (is_object($response->array_options) && isset($response->array_options->options__wps_id)) {
+				$doli_wps_id = $response->array_options->options__wps_id;
+			} elseif (is_array($response->array_options) && isset($response->array_options['options__wps_id'])) {
+				$doli_wps_id = $response->array_options['options__wps_id'];
+			}
+		}
+
 		// Le lien retour _wps_id côté Dolibarr ne pointe pas vers ce post WP.
-		if ( $response->array_options->options__wps_id != $id ) {
-			if ( empty( $response->array_options->options__wps_id ) ) {
+		if ( $doli_wps_id != $id ) {
+			if ( empty( $doli_wps_id ) ) {
 				// Cas normal après un import Doli -> WP : _wps_id n'a jamais été renseigné côté Dolibarr.
 				// On RÉPARE le lien (au lieu de détruire _external_id, ce qui générait des doublons).
 				if ( $type == 'wps-product' ) {
@@ -494,15 +512,19 @@ class Doli_Sync extends Singleton_Util {
 					Request_Util::get( 'doliwpshop/associatecategory?wp_id=' . (int) $id . '&doli_id=' . (int) $external_id );
 				}
 				// Le lien est désormais cohérent : on reflète la valeur en mémoire et on poursuit la vérification.
-				$response->array_options->options__wps_id = $id;
+				if (is_object($response->array_options)) {
+					$response->array_options->options__wps_id = $id;
+				} elseif (is_array($response->array_options)) {
+					$response->array_options['options__wps_id'] = $id;
+				}
 			} else {
 				// _wps_id pointe vers un AUTRE post WP : vrai conflit. On le signale sans rien supprimer.
-				$debug['doli_wps_id'] = $response->array_options->options__wps_id;
+				$debug['doli_wps_id'] = $doli_wps_id;
 
 				return array(
 					'status' => true,
 					'status_code' => '0x2',
-					'status_message' => 'Dolibarr Object lié à un autre post WP (#' . $response->array_options->options__wps_id . '). Lien conservé.',
+					'status_message' => 'Dolibarr Object lié à un autre post WP (#' . $doli_wps_id . '). Lien conservé.',
 					'debug' => $debug,
 				);
 			}
