@@ -46,6 +46,8 @@ class Product_Filter {
 		add_filter( 'pre_insert_term', array( $this, 'prevent_manual_category_creation' ), 10, 2 );
 		add_filter( 'manage_edit-wps-product-cat_columns', array( $this, 'add_ids_column' ) );
 		add_action( 'manage_wps-product-cat_custom_column', array( $this, 'render_ids_column' ), 10, 3 );
+		add_filter( 'manage_edit-wps-product-cat_sortable_columns', array( $this, 'sortable_columns' ) );
+		add_filter( 'get_terms_args', array( $this, 'sort_doli_id_column' ), 10, 2 );
 
 		// AJAX action to update slugs inline
 		add_action( 'wp_ajax_wps_update_category_slug', array( $this, 'ajax_update_category_slug' ) );
@@ -615,6 +617,8 @@ class Product_Filter {
 			if ( 'posts' === $key ) {
 				$new_columns['wps_wp_id']   = __( 'ID WP', 'wpshop' );
 				$new_columns['wps_doli_id'] = __( 'ID Dolibarr', 'wpshop' );
+				$new_columns['posts']       = __( 'Nbre Produits', 'wpshop' );
+				continue;
 			}
 			$new_columns[ $key ] = $value;
 		}
@@ -647,6 +651,36 @@ class Product_Filter {
 			return 'â€”'; // tiret
 		}
 		return $content;
+	}
+
+	/**
+	 * Makes ID columns sortable.
+	 */
+	public function sortable_columns( $sortable_columns ) {
+		$sortable_columns['wps_wp_id']   = 'wps_wp_id';
+		$sortable_columns['wps_doli_id'] = 'wps_doli_id';
+		return $sortable_columns;
+	}
+
+	/**
+	 * Modifies get_terms_args to sort by custom columns.
+	 */
+	public function sort_doli_id_column( $args, $taxonomies ) {
+		global $pagenow;
+		if ( ! is_admin() || 'edit-tags.php' !== $pagenow || empty( $_GET['taxonomy'] ) || 'wps-product-cat' !== $_GET['taxonomy'] ) {
+			return $args;
+		}
+
+		if ( isset( $_GET['orderby'] ) ) {
+			if ( 'wps_doli_id' === $_GET['orderby'] ) {
+				$args['meta_key'] = '_external_id';
+				$args['orderby']  = 'meta_value_num';
+			} elseif ( 'wps_wp_id' === $_GET['orderby'] ) {
+				$args['orderby'] = 'term_id';
+			}
+		}
+
+		return $args;
 	}
 
 	/**
