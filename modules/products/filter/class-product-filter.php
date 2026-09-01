@@ -635,7 +635,7 @@ class Product_Filter {
 	public function render_ids_column( $content, $column_name, $term_id ) {
 		if ( 'wps_wp_id' === $column_name ) {
 			$img_wp = PLUGIN_WPSHOP_URL . '/core/asset/image/logo-wordpress.jpg';
-			return sprintf( '<div style="display:flex; align-items:center; gap:5px;"><img src="%s" style="width:18px; height:18px; border-radius:50%%;" /> <strong>#%d</strong></div>', esc_url( $img_wp ), $term_id );
+			return sprintf( '<div style="display:flex; align-items:center; gap:5px;"><img src="%s" style="width:18px; height:18px; border-radius:50%%;" /> <span style="display:inline-block; padding: 2px 6px; background: #0073aa; color: #fff; border-radius: 3px; font-size: 11px;">#%d</span></div>', esc_url( $img_wp ), $term_id );
 		}
 
 		if ( 'wps_doli_id' === $column_name ) {
@@ -646,9 +646,9 @@ class Product_Filter {
 				$dolibarr_url = ! empty( $wps_dolibarr['dolibarr_url'] ) ? rtrim( $wps_dolibarr['dolibarr_url'], '/' ) : '';
 				if ( $dolibarr_url ) {
 					$doli_link = $dolibarr_url . '/categories/viewcat.php?id=' . $external_id . '&type=product';
-					return sprintf( '<a href="%s" target="_blank" style="display:inline-flex; align-items:center; gap:5px; text-decoration:none; color:#1897e7; transition:color 0.2s;" onmouseover="this.style.color=\'#855b8e\'" onmouseout="this.style.color=\'#1897e7\'"><img src="%s" style="width:18px; height:18px; border-radius:50%%;" /> <strong>#%s</strong></a>', esc_url( $doli_link ), esc_url( $img_doli ), esc_html( $external_id ) );
+					return sprintf( '<div style="display:flex; align-items:center; gap:5px;"><img src="%s" style="width:18px; height:18px; border-radius:50%%;" /> <a href="%s" target="_blank" style="display:inline-block; padding: 2px 6px; background: #855b8e; color: #fff; border-radius: 3px; font-size: 11px; text-decoration: none;">#%s</a></div>', esc_url( $img_doli ), esc_url( $doli_link ), esc_html( $external_id ) );
 				}
-				return sprintf( '<div style="display:flex; align-items:center; gap:5px; color:#333;"><img src="%s" style="width:18px; height:18px; border-radius:50%%;" /> <strong>#%s</strong></div>', esc_url( $img_doli ), esc_html( $external_id ) );
+				return sprintf( '<div style="display:flex; align-items:center; gap:5px;"><img src="%s" style="width:18px; height:18px; border-radius:50%%;" /> <span style="display:inline-block; padding: 2px 6px; background: #855b8e; color: #fff; border-radius: 3px; font-size: 11px;">#%s</span></div>', esc_url( $img_doli ), esc_html( $external_id ) );
 			}
 			return 'â€”'; // tiret
 		}
