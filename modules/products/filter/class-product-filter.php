@@ -34,11 +34,10 @@ class Product_Filter {
 		add_filter( 'wps_product_add_to_cart_class', array( $this, 'disable_button_add_to_cart' ), 10, 2 );
 		add_filter( 'wps_product_single', array( $this, 'display_stock' ), 10, 2 );
 
-		// Custom bulk action to delete empty categories
-		add_filter( 'bulk_actions-edit-wps-product-cat', array( $this, 'add_bulk_action_delete_empty' ) );
-		add_filter( 'handle_bulk_actions-edit-wps-product-cat', array( $this, 'handle_bulk_action_delete_empty' ), 10, 3 );
-		add_action( 'admin_notices', array( $this, 'admin_notice_delete_empty' ) );
+		// Tool to delete empty categories (from Settings > Categories)
+		add_action( 'admin_post_tool_delete_empty_categories', array( $this, 'tool_delete_empty_categories' ) );
 		add_action( 'admin_post_confirm_delete_empty_categories', array( $this, 'process_confirm_delete_empty_categories' ) );
+		add_action( 'admin_notices', array( $this, 'admin_notice_delete_empty' ) );
 
 		add_filter( 'eo_model_wps-product_after_get', function( $object, $args ) {
 			$object->data['thumbnail'] = wp_get_attachment_image_src( $object->data['thumbnail_id'], 'wps-product-thumbnail' );
@@ -156,7 +155,17 @@ class Product_Filter {
 				'slug' => __( 'wps-product-cat', 'wpshop' ),
 			),
 		);
-	$args['register_meta_box_cb'] = array( Product::g(), 'callback_register_meta_box' );
+		
+		if ( Settings::g()->dolibarr_is_active() ) {
+			$args['capabilities'] = array(
+				'manage_terms' => 'manage_categories', // Allow seeing the list
+				'edit_terms'   => 'do_not_allow',      // Prevent editing & adding
+				'delete_terms' => 'do_not_allow',      // Prevent deleting
+				'assign_terms' => 'edit_posts',        // Allow assigning to products
+			);
+		}
+
+		$args['register_meta_box_cb'] = array( Product::g(), 'callback_register_meta_box' );
 		return $args;
 	}
 
@@ -306,35 +315,28 @@ class Product_Filter {
 	}
 
 	/**
-	 * Ajoute l'action groupée pour supprimer les catégories vides.
-	 *
-	 * @param array $bulk_actions Actions groupées existantes.
-	 * @return array Actions groupées modifiées.
+	 * Gère l'action de l'outil de suppression des catégories vides depuis les réglages.
 	 */
-	public function add_bulk_action_delete_empty( $bulk_actions ) {
-		$bulk_actions['delete_empty_categories'] = __( 'Supprimer les catégories vides', 'wpshop' );
-		return $bulk_actions;
-	}
-
-	/**
-	 * Gère l'action groupée de suppression des catégories vides.
-	 *
-	 * @param string $redirect_to L'URL de redirection.
-	 * @param string $doaction    L'action demandée.
-	 * @param array  $object_ids  Les IDs des termes sélectionnés.
-	 * @return string L'URL de redirection modifiée.
-	 */
-	public function handle_bulk_action_delete_empty( $redirect_to, $doaction, $object_ids ) {
-		if ( 'delete_empty_categories' !== $doaction ) {
-			return $redirect_to;
+	public function tool_delete_empty_categories() {
+		if ( ! current_user_can( 'manage_categories' ) ) {
+			wp_die( __( 'Vous n\'avez pas les droits suffisants.', 'wpshop' ) );
 		}
 
+		check_admin_referer( 'wps_tool_delete_empty_categories' );
+
+		$redirect_to = admin_url( 'admin-post.php?action=wps_load_settings_tab&tab=categories' );
+
+		// RÃ©cupÃ©rer TOUTES les catÃ©gories de produits
+		$all_terms = get_terms( array(
+			'taxonomy'   => 'wps-product-cat',
+			'hide_empty' => false,
+		) );
+
 		$to_delete = array();
-		foreach ( $object_ids as $term_id ) {
-			$term = get_term( $term_id, 'wps-product-cat' );
-			if ( ! is_wp_error( $term ) ) {
-				$objects_in_term = get_objects_in_term( $term_id, 'wps-product-cat' );
-				$children = get_term_children( $term_id, 'wps-product-cat' );
+		if ( ! is_wp_error( $all_terms ) ) {
+			foreach ( $all_terms as $term ) {
+				$objects_in_term = get_objects_in_term( $term->term_id, 'wps-product-cat' );
+				$children = get_term_children( $term->term_id, 'wps-product-cat' );
 				
 				if ( empty( $objects_in_term ) && empty( $children ) ) {
 					$to_delete[] = $term;
@@ -343,14 +345,15 @@ class Product_Filter {
 		}
 
 		if ( empty( $to_delete ) ) {
-			return add_query_arg( 'bulk_empty_categories_deleted', 0, $redirect_to );
+			wp_redirect( add_query_arg( 'bulk_empty_categories_deleted', 0, $redirect_to ) );
+			exit;
 		}
 
-		// Affiche l'écran de confirmation
+		// Affiche l'Ã©cran de confirmation
 		$form_action = admin_url( 'admin-post.php' );
 		
 		$html  = '<h1>' . __( 'Confirmation de suppression', 'wpshop' ) . '</h1>';
-		$html .= '<p>' . __( 'Les catégories suivantes sont vides et vont être supprimées définitivement :', 'wpshop' ) . '</p>';
+		$html .= '<p>' . __( 'Les catÃ©gories suivantes sont vides et vont Ãªtre supprimÃ©es dÃ©finitivement :', 'wpshop' ) . '</p>';
 		$html .= '<ul>';
 		$term_ids_to_delete = array();
 		foreach ( $to_delete as $term ) {

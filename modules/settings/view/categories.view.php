@@ -25,6 +25,14 @@ defined( 'ABSPATH' ) || exit;
 	<input type="hidden" name="tab" value="categories">
 	<?php wp_nonce_field( 'callback_update_categories_settings' ); ?>
 
+	<div style="margin-bottom: 20px; padding: 15px; background: #fff; border: 1px solid #ccd0d4; box-shadow: 0 1px 1px rgba(0,0,0,.04);">
+		<h3><?php esc_html_e( 'Outils de nettoyage', 'wpshop' ); ?></h3>
+		<p><?php esc_html_e( 'Analysez et nettoyez votre catalogue WordPress en supprimant définitivement toutes les catégories vides (sans aucun produit ni sous-catégorie).', 'wpshop' ); ?></p>
+		<a href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=tool_delete_empty_categories' ), 'wps_tool_delete_empty_categories' ) ); ?>" class="button button-secondary">
+			<?php esc_html_e( 'Supprimer les catégories vides', 'wpshop' ); ?>
+		</a>
+	</div>
+
 	<p><em>Cette liste récapitule uniquement les catégories de produits/services qui ont été synchronisées depuis Dolibarr. L'arborescence et la création sont pilotées directement depuis Dolibarr.</em></p>
 	<table class="form-table">
 		<thead>
