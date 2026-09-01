@@ -72,9 +72,10 @@ defined( 'ABSPATH' ) || exit;
 				?>
 				<tr>
 					<td>
-						<span style="display:inline-block; padding: 2px 6px; background: #0073aa; color: #fff; border-radius: 3px; font-size: 11px;">
-							<?php echo esc_html( $wp_cat->term_id ); ?>
-						</span>
+						<div style="display:flex; align-items:center; gap:5px;">
+							<img src="<?php echo esc_url( PLUGIN_WPSHOP_URL . '/core/asset/image/logo-wordpress.jpg' ); ?>" style="width:18px; height:18px; border-radius:50%;" />
+							<strong>#<?php echo esc_html( $wp_cat->term_id ); ?></strong>
+						</div>
 					</td>
 					<td>
 						<strong><?php echo esc_html( $wp_cat->name ); ?></strong>
@@ -84,13 +85,15 @@ defined( 'ABSPATH' ) || exit;
 					</td>
 					<td>
 						<?php if ( $dolibarr_url ) : ?>
-							<a href="<?php echo esc_url( $dolibarr_url . '/categories/viewcat.php?id=' . $external_id . '&type=product' ); ?>" target="_blank" style="display:inline-block; padding: 2px 6px; background: #855b8e; color: #fff; border-radius: 3px; font-size: 11px; text-decoration: none;">
-								<?php echo esc_html( $external_id ); ?>
+							<a href="<?php echo esc_url( $dolibarr_url . '/categories/viewcat.php?id=' . $external_id . '&type=product' ); ?>" target="_blank" style="display:inline-flex; align-items:center; gap:5px; text-decoration:none; color:#1897e7; transition:color 0.2s;" onmouseover="this.style.color='#855b8e'" onmouseout="this.style.color='#1897e7'">
+								<img src="<?php echo esc_url( PLUGIN_WPSHOP_URL . '/core/asset/image/logo-dolibarr.jpg' ); ?>" style="width:18px; height:18px; border-radius:50%;" />
+								<strong>#<?php echo esc_html( $external_id ); ?></strong>
 							</a>
 						<?php else : ?>
-							<span style="display:inline-block; padding: 2px 6px; background: #855b8e; color: #fff; border-radius: 3px; font-size: 11px;">
-								<?php echo esc_html( $external_id ); ?>
-							</span>
+							<div style="display:flex; align-items:center; gap:5px; color:#333;">
+								<img src="<?php echo esc_url( PLUGIN_WPSHOP_URL . '/core/asset/image/logo-dolibarr.jpg' ); ?>" style="width:18px; height:18px; border-radius:50%;" />
+								<strong>#<?php echo esc_html( $external_id ); ?></strong>
+							</div>
 						<?php endif; ?>
 					</td>
 					<td>
