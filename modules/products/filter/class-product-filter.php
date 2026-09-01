@@ -45,10 +45,8 @@ class Product_Filter {
 		add_action( 'admin_head-edit-tags.php', array( $this, 'hide_add_category_form' ) );
 		add_filter( 'pre_insert_term', array( $this, 'prevent_manual_category_creation' ), 10, 2 );
 
-		// Bulk action to update slugs
-		add_filter( 'bulk_actions-edit-wps-product-cat', array( $this, 'add_bulk_action_update_slugs' ) );
-		add_filter( 'handle_bulk_actions-edit-wps-product-cat', array( $this, 'handle_bulk_action_update_slugs' ), 10, 3 );
-		add_action( 'admin_notices', array( $this, 'admin_notice_update_slugs' ) );
+		// AJAX action to update slugs inline
+		add_action( 'wp_ajax_wps_update_category_slug', array( $this, 'ajax_update_category_slug' ) );
 
 		add_filter( 'eo_model_wps-product_after_get', function( $object, $args ) {
 			$object->data['thumbnail'] = wp_get_attachment_image_src( $object->data['thumbnail_id'], 'wps-product-thumbnail' );
@@ -507,13 +505,90 @@ class Product_Filter {
 						termId = termId.replace("tag-", "");
 						var $slugCol = $row.find(".column-slug");
 						var slugText = $slugCol.text().trim();
-						if (slugText !== "â€”" && slugText !== "-") {
-							$slugCol.html("<input type=\'text\' name=\'custom_slug[" + termId + "]\' value=\'" + slugText + "\' class=\'wps-slug-input\'>");
+						if (slugText.length > 0 && slugText !== "-") {
+							$slugCol.html("<input type=\'text\' value=\'" + slugText + "\' class=\'wps-slug-input\' data-term-id=\'" + termId + "\'>");
 						}
+					});
+
+					// Handle inline save on blur or enter
+					$(document).on("blur keyup", ".wps-slug-input", function(e) {
+						if (e.type === "keyup" && e.keyCode !== 13) return; // Only trigger on Enter key
+
+						var $input = $(this);
+						var termId = $input.data("term-id");
+						var newSlug = $input.val().trim();
+						var oldSlug = $input.attr("data-old-slug") || $input.prop("defaultValue");
+
+						if (newSlug === oldSlug) return;
+
+						$input.prop("disabled", true).css("opacity", "0.5");
+
+						$.post(ajaxurl, {
+							action: "wps_update_category_slug",
+							term_id: termId,
+							slug: newSlug,
+							_ajax_nonce: "' . wp_create_nonce( 'wps_update_slug' ) . '"
+						}, function(response) {
+							$input.prop("disabled", false).css("opacity", "1");
+							if (response.success) {
+								$input.val(response.data.slug);
+								$input.attr("data-old-slug", response.data.slug);
+								// Flash green
+								$input.css({"transition": "border 0.3s", "border": "2px solid #46b450", "box-shadow": "0 0 5px #46b450"});
+								setTimeout(function() {
+									$input.css({"border": "", "box-shadow": ""});
+								}, 1500);
+							} else {
+								alert(response.data || "Erreur lors de la sauvegarde du slug.");
+								$input.val(oldSlug); // revert
+							}
+						}).fail(function() {
+							$input.prop("disabled", false).css("opacity", "1");
+							alert("Erreur serveur lors de la sauvegarde.");
+							$input.val(oldSlug);
+						});
 					});
 				});
 			</script>';
 		}
+	}
+
+	/**
+	 * AJAX handler to update category slug inline.
+	 */
+	public function ajax_update_category_slug() {
+		check_ajax_referer( 'wps_update_slug' );
+
+		if ( ! current_user_can( 'manage_categories' ) ) {
+			wp_send_json_error( __( 'Droits insuffisants.', 'wpshop' ) );
+		}
+
+		$term_id = isset( $_POST['term_id'] ) ? intval( $_POST['term_id'] ) : 0;
+		$new_slug = isset( $_POST['slug'] ) ? sanitize_title( wp_unslash( $_POST['slug'] ) ) : '';
+
+		if ( $term_id <= 0 || empty( $new_slug ) ) {
+			wp_send_json_error( __( 'DonnÃ©es invalides.', 'wpshop' ) );
+		}
+
+		$term = get_term( $term_id, 'wps-product-cat' );
+		if ( is_wp_error( $term ) || ! $term ) {
+			wp_send_json_error( __( 'CatÃ©gorie introuvable.', 'wpshop' ) );
+		}
+
+		if ( $term->slug === $new_slug ) {
+			wp_send_json_success( array( 'slug' => $term->slug ) );
+		}
+
+		$result = wp_update_term( $term_id, 'wps-product-cat', array(
+			'slug' => $new_slug,
+		) );
+
+		if ( is_wp_error( $result ) ) {
+			wp_send_json_error( $result->get_error_message() );
+		}
+
+		$updated_term = get_term( $term_id, 'wps-product-cat' );
+		wp_send_json_success( array( 'slug' => $updated_term->slug ) );
 	}
 
 	/**
@@ -529,59 +604,6 @@ class Product_Filter {
 	}
 
 	/**
-	 * Adds the bulk action to update slugs.
-	 */
-	public function add_bulk_action_update_slugs( $bulk_actions ) {
-		if ( Settings::g()->dolibarr_is_active() ) {
-			$bulk_actions['update_slugs'] = __( 'Enregistrer les slugs modifiÃ©s', 'wpshop' );
-		}
-		return $bulk_actions;
-	}
-
-	/**
-	 * Handles the bulk action to update slugs.
-	 */
-	public function handle_bulk_action_update_slugs( $redirect_to, $doaction, $object_ids ) {
-		if ( 'update_slugs' !== $doaction ) {
-			return $redirect_to;
-		}
-
-		$updated = 0;
-		if ( isset( $_POST['custom_slug'] ) && is_array( $_POST['custom_slug'] ) ) {
-			foreach ( $object_ids as $term_id ) {
-				if ( isset( $_POST['custom_slug'][ $term_id ] ) ) {
-					$new_slug = sanitize_title( wp_unslash( $_POST['custom_slug'][ $term_id ] ) );
-					$term = get_term( $term_id, 'wps-product-cat' );
-					if ( ! is_wp_error( $term ) && $term->slug !== $new_slug ) {
-						wp_update_term( $term_id, 'wps-product-cat', array(
-							'slug' => $new_slug,
-						) );
-						$updated++;
-					}
-				}
-			}
-		}
-
-		return add_query_arg( 'bulk_slugs_updated', $updated, $redirect_to );
-	}
-
-	/**
-	 * Displays notice after updating slugs.
-	 */
-	public function admin_notice_update_slugs() {
-		if ( isset( $_REQUEST['bulk_slugs_updated'] ) ) {
-			$count = intval( $_REQUEST['bulk_slugs_updated'] );
-			printf(
-				'<div id="message" class="updated notice is-dismissible"><p>%s</p></div>',
-				sprintf(
-					/* translators: %s: Number of slugs updated */
-					_n( '%s slug a Ã©tÃ© mis Ã  jour.', '%s slugs ont Ã©tÃ© mis Ã  jour.', $count, 'wpshop' ),
-					$count
-				)
-			);
-		}
-	}
-
 	/**
 	 * Force les capacités de la taxonomie après son enregistrement (évite l'écrasement par le framework)
 	 *
