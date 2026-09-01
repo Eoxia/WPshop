@@ -123,5 +123,9 @@ $color_orange = ! empty( $sync_settings['color_orange'] ) ? $sync_settings['colo
 			<i class="fas fa-save" style="margin-right: 8px;"></i>
 			<?php esc_html_e( 'Enregistrer les changements', 'wpshop' ); ?>
 		</button>
+		<button type="submit" name="wps_sync_reset" value="1" class="wpeo-button button-secondary button-right" style="margin-right: 15px;" onclick="return confirm('<?php esc_attr_e( 'Êtes-vous sûr de vouloir réinitialiser les couleurs ?', 'wpshop' ); ?>');">
+			<i class="fas fa-undo" style="margin-right: 8px;"></i>
+			<?php esc_html_e( 'Remettre les couleurs par défaut', 'wpshop' ); ?>
+		</button>
 	</div>
 </form>

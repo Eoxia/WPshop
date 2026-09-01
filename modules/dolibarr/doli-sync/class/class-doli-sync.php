@@ -641,11 +641,16 @@ class Doli_Sync extends Singleton_Util {
 			}
 
 			if ( ! $data_ok || ! $cat_ok || ! $img_ok ) {
+				$sync_settings = get_option( 'wps_sync_settings', array() );
+				$color_ok     = ! empty( $sync_settings['color_ok'] ) ? $sync_settings['color_ok'] : '#47e58e';
+				$color_error  = ! empty( $sync_settings['color_error'] ) ? $sync_settings['color_error'] : '#e05353';
+				$color_orange = ! empty( $sync_settings['color_orange'] ) ? $sync_settings['color_orange'] : '#e9ad4f';
+
 				$status_message  = "<div style='display:flex; gap:10px; align-items:center; white-space:nowrap;'>";
-				$status_message .= "<strong>Synchronisation : <span style='display:inline-block; width:10px; height:10px; border-radius:50%; background-color:#e9ad4f; margin-left:4px;'></span></strong> <span style='color:#666;'>|</span> ";
-				$status_message .= "<span>Données produit : <strong style='color:" . ($data_ok ? "#47e58e" : "#e05353") . ";'>" . ($data_ok ? "OK" : "HS") . "</strong></span> <span style='color:#666;'>|</span> ";
-				$status_message .= "<span>Tags/catégorie : <strong style='color:" . ($cat_ok ? "#47e58e" : "#e05353") . ";'>" . ($cat_ok ? "OK" : "HS") . "</strong></span> <span style='color:#666;'>|</span> ";
-				$status_message .= "<span>Médias : <strong style='color:" . ($img_ok ? "#47e58e" : "#e05353") . ";'>" . ($img_ok ? "OK" : "HS") . "</strong></span>";
+				$status_message .= "<strong>Synchronisation : <span style='display:inline-block; width:10px; height:10px; border-radius:50%; background-color:" . esc_attr( $color_orange ) . "; margin-left:4px;'></span></strong> <span style='color:#666;'>|</span> ";
+				$status_message .= "<span>Données produit : <strong style='color:" . ($data_ok ? esc_attr( $color_ok ) : esc_attr( $color_error )) . ";'>" . ($data_ok ? "OK" : "HS") . "</strong></span> <span style='color:#666;'>|</span> ";
+				$status_message .= "<span>Tags/catégorie : <strong style='color:" . ($cat_ok ? esc_attr( $color_ok ) : esc_attr( $color_error )) . ";'>" . ($cat_ok ? "OK" : "HS") . "</strong></span> <span style='color:#666;'>|</span> ";
+				$status_message .= "<span>Médias : <strong style='color:" . ($img_ok ? esc_attr( $color_ok ) : esc_attr( $color_error )) . ";'>" . ($img_ok ? "OK" : "HS") . "</strong></span>";
 				$status_message .= "</div>";
 
 				$status_code = '0x3';
@@ -685,11 +690,14 @@ class Doli_Sync extends Singleton_Util {
 		}
 
 		if ( $type == 'wps-product' ) {
+			$sync_settings = get_option( 'wps_sync_settings', array() );
+			$color_ok     = ! empty( $sync_settings['color_ok'] ) ? $sync_settings['color_ok'] : '#47e58e';
+
 			$status_message  = "<div style='display:flex; gap:10px; align-items:center; white-space:nowrap;'>";
-			$status_message .= "<strong>Synchronisation : <span style='display:inline-block; width:10px; height:10px; border-radius:50%; background-color:#47e58e; margin-left:4px;'></span></strong> <span style='color:#666;'>|</span> ";
-			$status_message .= "<span>Données produit : <strong style='color:#47e58e;'>OK</strong></span> <span style='color:#666;'>|</span> ";
-			$status_message .= "<span>Tags/catégorie : <strong style='color:#47e58e;'>OK</strong></span> <span style='color:#666;'>|</span> ";
-			$status_message .= "<span>Médias : <strong style='color:#47e58e;'>OK</strong></span>";
+			$status_message .= "<strong>Synchronisation : <span style='display:inline-block; width:10px; height:10px; border-radius:50%; background-color:" . esc_attr( $color_ok ) . "; margin-left:4px;'></span></strong> <span style='color:#666;'>|</span> ";
+			$status_message .= "<span>Données produit : <strong style='color:" . esc_attr( $color_ok ) . ";'>OK</strong></span> <span style='color:#666;'>|</span> ";
+			$status_message .= "<span>Tags/catégorie : <strong style='color:" . esc_attr( $color_ok ) . ";'>OK</strong></span> <span style='color:#666;'>|</span> ";
+			$status_message .= "<span>Médias : <strong style='color:" . esc_attr( $color_ok ) . ";'>OK</strong></span>";
 			$status_message .= "</div>";
 		} else {
 			$status_message = __('Sync OK', 'wpshop');
