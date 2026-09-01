@@ -359,10 +359,6 @@ class Doli_Sync extends Singleton_Util {
 			}
 		}
 
-		if ( ! $create && ! $auto_sync && empty( $wps_id ) ) {
-			return 0;
-		}
-
 		$found = get_terms( array(
 			'taxonomy'   => 'wps-product-cat',
 			'hide_empty' => false,
@@ -373,6 +369,10 @@ class Doli_Sync extends Singleton_Util {
 		) );
 		if ( ! empty( $found ) ) {
 			return (int) $found[0];
+		}
+
+		if ( ! $create && ! $auto_sync && empty( $wps_id ) ) {
+			return 0;
 		}
 
 		// Repli : un terme du même nom existe déjà mais sans lien -> on le réutilise et on le lie.
