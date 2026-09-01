@@ -27,6 +27,7 @@ class Product_Filter {
 	public function __construct() {
 		add_filter( 'eo_model_wps-product_register_post_type_args', array( $this, 'callback_register_post_type_args' ) );
 		add_filter( 'eo_model_wps-product_wps-product-cat', array( $this, 'callback_taxonomy' ) );
+		add_filter( 'register_taxonomy_args', array( $this, 'force_taxonomy_capabilities' ), 99, 2 );
 		add_filter( 'the_content', array( $this, 'display_content_grid_product' ) );
 		add_filter( 'the_content', array( $this, 'display_single_page_product' ) );
 
@@ -34,11 +35,22 @@ class Product_Filter {
 		add_filter( 'wps_product_add_to_cart_class', array( $this, 'disable_button_add_to_cart' ), 10, 2 );
 		add_filter( 'wps_product_single', array( $this, 'display_stock' ), 10, 2 );
 
-		// Custom bulk action to delete empty categories
-		add_filter( 'bulk_actions-edit-wps-product-cat', array( $this, 'add_bulk_action_delete_empty' ) );
-		add_filter( 'handle_bulk_actions-edit-wps-product-cat', array( $this, 'handle_bulk_action_delete_empty' ), 10, 3 );
-		add_action( 'admin_notices', array( $this, 'admin_notice_delete_empty' ) );
+		// Tool to delete empty categories (from Settings > Categories)
+		add_action( 'admin_post_tool_delete_empty_categories', array( $this, 'tool_delete_empty_categories' ) );
 		add_action( 'admin_post_confirm_delete_empty_categories', array( $this, 'process_confirm_delete_empty_categories' ) );
+		add_action( 'admin_notices', array( $this, 'admin_notice_delete_empty' ) );
+
+		// Taxonomy UI customization
+		add_filter( 'wps-product-cat_row_actions', array( $this, 'custom_category_row_actions' ), 10, 2 );
+		add_action( 'admin_head-edit-tags.php', array( $this, 'hide_add_category_form' ) );
+		add_filter( 'pre_insert_term', array( $this, 'prevent_manual_category_creation' ), 10, 2 );
+		add_filter( 'manage_edit-wps-product-cat_columns', array( $this, 'add_ids_column' ) );
+		add_action( 'manage_wps-product-cat_custom_column', array( $this, 'render_ids_column' ), 10, 3 );
+		add_filter( 'manage_edit-wps-product-cat_sortable_columns', array( $this, 'sortable_columns' ) );
+		add_filter( 'get_terms_args', array( $this, 'sort_doli_id_column' ), 10, 2 );
+
+		// AJAX action to update slugs inline
+		add_action( 'wp_ajax_wps_update_category_slug', array( $this, 'ajax_update_category_slug' ) );
 
 		add_filter( 'eo_model_wps-product_after_get', function( $object, $args ) {
 			$object->data['thumbnail'] = wp_get_attachment_image_src( $object->data['thumbnail_id'], 'wps-product-thumbnail' );
@@ -156,7 +168,17 @@ class Product_Filter {
 				'slug' => __( 'wps-product-cat', 'wpshop' ),
 			),
 		);
-	$args['register_meta_box_cb'] = array( Product::g(), 'callback_register_meta_box' );
+		
+		if ( Settings::g()->dolibarr_is_active() ) {
+			$args['capabilities'] = array(
+				'manage_terms' => 'manage_categories', // Allow seeing the list
+				'edit_terms'   => 'manage_categories', // Allow editing the slug
+				'delete_terms' => 'do_not_allow',      // Prevent deleting
+				'assign_terms' => 'edit_posts',        // Allow assigning to products
+			);
+		}
+
+		$args['register_meta_box_cb'] = array( Product::g(), 'callback_register_meta_box' );
 		return $args;
 	}
 
@@ -306,35 +328,28 @@ class Product_Filter {
 	}
 
 	/**
-	 * Ajoute l'action groupée pour supprimer les catégories vides.
-	 *
-	 * @param array $bulk_actions Actions groupées existantes.
-	 * @return array Actions groupées modifiées.
+	 * Gère l'action de l'outil de suppression des catégories vides depuis les réglages.
 	 */
-	public function add_bulk_action_delete_empty( $bulk_actions ) {
-		$bulk_actions['delete_empty_categories'] = __( 'Supprimer les catégories vides', 'wpshop' );
-		return $bulk_actions;
-	}
-
-	/**
-	 * Gère l'action groupée de suppression des catégories vides.
-	 *
-	 * @param string $redirect_to L'URL de redirection.
-	 * @param string $doaction    L'action demandée.
-	 * @param array  $object_ids  Les IDs des termes sélectionnés.
-	 * @return string L'URL de redirection modifiée.
-	 */
-	public function handle_bulk_action_delete_empty( $redirect_to, $doaction, $object_ids ) {
-		if ( 'delete_empty_categories' !== $doaction ) {
-			return $redirect_to;
+	public function tool_delete_empty_categories() {
+		if ( ! current_user_can( 'manage_categories' ) ) {
+			wp_die( __( 'Vous n\'avez pas les droits suffisants.', 'wpshop' ) );
 		}
 
+		check_admin_referer( 'wps_tool_delete_empty_categories' );
+
+		$redirect_to = admin_url( 'admin.php?page=wps-settings&tab=categories' );
+
+		// RÃ©cupÃ©rer TOUTES les catÃ©gories de produits
+		$all_terms = get_terms( array(
+			'taxonomy'   => 'wps-product-cat',
+			'hide_empty' => false,
+		) );
+
 		$to_delete = array();
-		foreach ( $object_ids as $term_id ) {
-			$term = get_term( $term_id, 'wps-product-cat' );
-			if ( ! is_wp_error( $term ) ) {
-				$objects_in_term = get_objects_in_term( $term_id, 'wps-product-cat' );
-				$children = get_term_children( $term_id, 'wps-product-cat' );
+		if ( ! is_wp_error( $all_terms ) ) {
+			foreach ( $all_terms as $term ) {
+				$objects_in_term = get_objects_in_term( $term->term_id, 'wps-product-cat' );
+				$children = get_term_children( $term->term_id, 'wps-product-cat' );
 				
 				if ( empty( $objects_in_term ) && empty( $children ) ) {
 					$to_delete[] = $term;
@@ -343,14 +358,15 @@ class Product_Filter {
 		}
 
 		if ( empty( $to_delete ) ) {
-			return add_query_arg( 'bulk_empty_categories_deleted', 0, $redirect_to );
+			wp_redirect( add_query_arg( 'bulk_empty_categories_deleted', 0, $redirect_to ) );
+			exit;
 		}
 
-		// Affiche l'écran de confirmation
+		// Affiche l'Ã©cran de confirmation
 		$form_action = admin_url( 'admin-post.php' );
 		
 		$html  = '<h1>' . __( 'Confirmation de suppression', 'wpshop' ) . '</h1>';
-		$html .= '<p>' . __( 'Les catégories suivantes sont vides et vont être supprimées définitivement :', 'wpshop' ) . '</p>';
+		$html .= '<p>' . __( 'Les catÃ©gories suivantes sont vides et vont Ãªtre supprimÃ©es dÃ©finitivement :', 'wpshop' ) . '</p>';
 		$html .= '<ul>';
 		$term_ids_to_delete = array();
 		foreach ( $to_delete as $term ) {
@@ -439,6 +455,287 @@ class Product_Filter {
 				)
 			);
 		}
+	}
+
+	/**
+	 * Customizes the row actions for the categories.
+	 */
+	public function custom_category_row_actions( $actions, $tag ) {
+		if ( ! Settings::g()->dolibarr_is_active() ) {
+			return $actions;
+		}
+
+		$new_actions = array();
+
+		// "Voir"
+		$view_link = get_term_link( $tag );
+		if ( ! is_wp_error( $view_link ) ) {
+			$new_actions['view'] = sprintf( '<a href="%s">%s</a>', esc_url( $view_link ), __( 'Voir', 'wpshop' ) );
+		}
+
+		// "Voir sur Dolibarr"
+		$external_id = get_term_meta( $tag->term_id, '_external_id', true );
+		if ( ! empty( $external_id ) ) {
+			$wps_dolibarr = get_option( 'wps_dolibarr' );
+			$dolibarr_url = ! empty( $wps_dolibarr['dolibarr_url'] ) ? rtrim( $wps_dolibarr['dolibarr_url'], '/' ) : '';
+			if ( $dolibarr_url ) {
+				$doli_link = $dolibarr_url . '/categories/viewcat.php?id=' . $external_id . '&type=product';
+				$new_actions['view_dolibarr'] = sprintf( '<a href="%s" target="_blank" style="color: #855b8e;">%s</a>', esc_url( $doli_link ), __( 'Voir sur Dolibarr', 'wpshop' ) );
+			}
+		}
+
+		return $new_actions;
+	}
+
+	/**
+	 * Hides the "Add New Category" form and replaces Slugs with input fields.
+	 */
+	public function hide_add_category_form() {
+		global $current_screen;
+		if ( isset( $current_screen->id ) && 'edit-wps-product-cat' === $current_screen->id && Settings::g()->dolibarr_is_active() ) {
+			echo '<style>
+				#col-left { display: none !important; }
+				#col-right { width: 100% !important; }
+				.wp-list-table .column-slug { width: 25%; }
+				.wps-slug-input { width: 100%; box-sizing: border-box; }
+			</style>';
+			echo '<script>
+				jQuery(document).ready(function($) {
+					// Transform text slugs into click-to-edit fields
+					$(".wp-list-table tbody tr").each(function() {
+						var $row = $(this);
+						var termId = $row.attr("id");
+						if (!termId) return;
+						termId = termId.replace("tag-", "");
+						var $slugCol = $row.find(".column-slug");
+						var slugText = $slugCol.text().trim();
+						if (slugText.length > 0 && slugText !== "-") {
+							$slugCol.html("<span class=\'wps-slug-display\' data-term-id=\'" + termId + "\' style=\'cursor:pointer; border-bottom:1px dashed #999; display:inline-block; padding:3px;\' title=\'Cliquez pour modifier\'>" + slugText + "</span><input type=\'text\' value=\'" + slugText + "\' class=\'wps-slug-input\' data-term-id=\'" + termId + "\' style=\'display:none; width:100%; box-sizing:border-box;\'>");
+						}
+					});
+
+					// Show input on click
+					$(document).on("click", ".wps-slug-display", function() {
+						var $display = $(this);
+						var $input = $display.next(".wps-slug-input");
+						$display.hide();
+						$input.show().focus();
+					});
+
+					// Handle inline save on blur or enter
+					$(document).on("blur keyup", ".wps-slug-input", function(e) {
+						if (e.type === "keyup" && e.keyCode !== 13 && e.keyCode !== 27) return; // Enter or Esc
+
+						var $input = $(this);
+						var $display = $input.prev(".wps-slug-display");
+						var termId = $input.data("term-id");
+						var newSlug = $input.val().trim();
+						var oldSlug = $input.attr("data-old-slug") || $input.prop("defaultValue");
+
+						if (e.keyCode === 27) { // Esc key pressed
+							$input.val(oldSlug);
+							$input.hide();
+							$display.show();
+							return;
+						}
+
+						if (newSlug === oldSlug) {
+							$input.hide();
+							$display.show();
+							return;
+						}
+
+						$input.prop("disabled", true).css("opacity", "0.5");
+
+						$.post(ajaxurl, {
+							action: "wps_update_category_slug",
+							term_id: termId,
+							slug: newSlug,
+							_ajax_nonce: "' . wp_create_nonce( 'wps_update_slug' ) . '"
+						}, function(response) {
+							$input.prop("disabled", false).css("opacity", "1");
+							if (response.success) {
+								$input.val(response.data.slug);
+								$input.attr("data-old-slug", response.data.slug);
+								$display.text(response.data.slug);
+								
+								// Hide input, show display
+								$input.hide();
+								$display.show();
+								
+								// Flash green
+								$display.css({"transition": "color 0.3s", "color": "#46b450"});
+								setTimeout(function() {
+									$display.css({"color": ""});
+								}, 1500);
+							} else {
+								alert(response.data || "Erreur lors de la sauvegarde du slug.");
+								$input.val(oldSlug); // revert
+								$input.hide();
+								$display.show();
+							}
+						}).fail(function() {
+							$input.prop("disabled", false).css("opacity", "1");
+							alert("Erreur serveur lors de la sauvegarde.");
+							$input.val(oldSlug);
+							$input.hide();
+							$display.show();
+						});
+					});
+				});
+			</script>';
+		}
+	}
+
+	/**
+	 * AJAX handler to update category slug inline.
+	 */
+	public function ajax_update_category_slug() {
+		check_ajax_referer( 'wps_update_slug' );
+
+		if ( ! current_user_can( 'manage_categories' ) ) {
+			wp_send_json_error( __( 'Droits insuffisants.', 'wpshop' ) );
+		}
+
+		$term_id = isset( $_POST['term_id'] ) ? intval( $_POST['term_id'] ) : 0;
+		$new_slug = isset( $_POST['slug'] ) ? sanitize_title( wp_unslash( $_POST['slug'] ) ) : '';
+
+		if ( $term_id <= 0 || empty( $new_slug ) ) {
+			wp_send_json_error( __( 'DonnÃ©es invalides.', 'wpshop' ) );
+		}
+
+		$term = get_term( $term_id, 'wps-product-cat' );
+		if ( is_wp_error( $term ) || ! $term ) {
+			wp_send_json_error( __( 'CatÃ©gorie introuvable.', 'wpshop' ) );
+		}
+
+		if ( $term->slug === $new_slug ) {
+			wp_send_json_success( array( 'slug' => $term->slug ) );
+		}
+
+		$result = wp_update_term( $term_id, 'wps-product-cat', array(
+			'slug' => $new_slug,
+		) );
+
+		if ( is_wp_error( $result ) ) {
+			wp_send_json_error( $result->get_error_message() );
+		}
+
+		$updated_term = get_term( $term_id, 'wps-product-cat' );
+		wp_send_json_success( array( 'slug' => $updated_term->slug ) );
+	}
+
+	/**
+	 * Prevents manual creation of categories from the WP UI.
+	 */
+	public function prevent_manual_category_creation( $term, $taxonomy ) {
+		if ( 'wps-product-cat' === $taxonomy && Settings::g()->dolibarr_is_active() ) {
+			if ( isset( $_POST['action'] ) && 'add-tag' === $_POST['action'] ) {
+				return new \WP_Error( 'not_allowed', __( 'La crÃ©ation de catÃ©gories est pilotÃ©e par Dolibarr.', 'wpshop' ) );
+			}
+		}
+		return $term;
+	}
+
+	/**
+	 * Adds the IDs columns to the categories table.
+	 */
+	public function add_ids_column( $columns ) {
+		// Insert before the 'posts' (Total) column if it exists
+		$new_columns = array();
+		foreach ( $columns as $key => $value ) {
+			if ( 'posts' === $key ) {
+				$new_columns['wps_wp_id']   = __( 'ID WP', 'wpshop' );
+				$new_columns['wps_doli_id'] = __( 'ID Dolibarr', 'wpshop' );
+				$new_columns['posts']       = __( 'Nbre Produits', 'wpshop' );
+				continue;
+			}
+			$new_columns[ $key ] = $value;
+		}
+		if ( ! isset( $new_columns['wps_wp_id'] ) ) {
+			$new_columns['wps_wp_id']   = __( 'ID WP', 'wpshop' );
+			$new_columns['wps_doli_id'] = __( 'ID Dolibarr', 'wpshop' );
+		}
+		return $new_columns;
+	}
+
+	/**
+	 * Renders the IDs columns content.
+	 */
+	public function render_ids_column( $content, $column_name, $term_id ) {
+		if ( 'wps_wp_id' === $column_name ) {
+			$img_wp = PLUGIN_WPSHOP_URL . '/core/asset/image/logo-wordpress.jpg';
+			$view_link = get_term_link( (int) $term_id, 'wps-product-cat' );
+			if ( ! is_wp_error( $view_link ) ) {
+				return sprintf( '<div style="display:flex; align-items:center; gap:5px;"><img src="%s" style="width:18px; height:18px; border-radius:50%%;" /> <a href="%s" target="_blank" style="display:inline-block; padding: 2px 6px; background: #0073aa; color: #fff; border-radius: 3px; font-size: 11px; text-decoration: none;">#%d</a></div>', esc_url( $img_wp ), esc_url( $view_link ), $term_id );
+			}
+			return sprintf( '<div style="display:flex; align-items:center; gap:5px;"><img src="%s" style="width:18px; height:18px; border-radius:50%%;" /> <span style="display:inline-block; padding: 2px 6px; background: #0073aa; color: #fff; border-radius: 3px; font-size: 11px;">#%d</span></div>', esc_url( $img_wp ), $term_id );
+		}
+
+		if ( 'wps_doli_id' === $column_name ) {
+			$external_id = get_term_meta( $term_id, '_external_id', true );
+			if ( ! empty( $external_id ) ) {
+				$img_doli = PLUGIN_WPSHOP_URL . '/core/asset/image/logo-dolibarr.jpg';
+				$wps_dolibarr = get_option( 'wps_dolibarr' );
+				$dolibarr_url = ! empty( $wps_dolibarr['dolibarr_url'] ) ? rtrim( $wps_dolibarr['dolibarr_url'], '/' ) : '';
+				if ( $dolibarr_url ) {
+					$doli_link = $dolibarr_url . '/categories/viewcat.php?id=' . $external_id . '&type=product';
+					return sprintf( '<div style="display:flex; align-items:center; gap:5px;"><img src="%s" style="width:18px; height:18px; border-radius:50%%;" /> <a href="%s" target="_blank" style="display:inline-block; padding: 2px 6px; background: #855b8e; color: #fff; border-radius: 3px; font-size: 11px; text-decoration: none;">#%s</a></div>', esc_url( $img_doli ), esc_url( $doli_link ), esc_html( $external_id ) );
+				}
+				return sprintf( '<div style="display:flex; align-items:center; gap:5px;"><img src="%s" style="width:18px; height:18px; border-radius:50%%;" /> <span style="display:inline-block; padding: 2px 6px; background: #855b8e; color: #fff; border-radius: 3px; font-size: 11px;">#%s</span></div>', esc_url( $img_doli ), esc_html( $external_id ) );
+			}
+			return 'â€”'; // tiret
+		}
+		return $content;
+	}
+
+	/**
+	 * Makes ID columns sortable.
+	 */
+	public function sortable_columns( $sortable_columns ) {
+		$sortable_columns['wps_wp_id']   = 'wps_wp_id';
+		$sortable_columns['wps_doli_id'] = 'wps_doli_id';
+		return $sortable_columns;
+	}
+
+	/**
+	 * Modifies get_terms_args to sort by custom columns.
+	 */
+	public function sort_doli_id_column( $args, $taxonomies ) {
+		global $pagenow;
+		if ( ! is_admin() || 'edit-tags.php' !== $pagenow || empty( $_GET['taxonomy'] ) || 'wps-product-cat' !== $_GET['taxonomy'] ) {
+			return $args;
+		}
+
+		if ( isset( $_GET['orderby'] ) ) {
+			if ( 'wps_doli_id' === $_GET['orderby'] ) {
+				$args['meta_key'] = '_external_id';
+				$args['orderby']  = 'meta_value_num';
+			} elseif ( 'wps_wp_id' === $_GET['orderby'] ) {
+				$args['orderby'] = 'term_id';
+			}
+		}
+
+		return $args;
+	}
+
+	/**
+	 * Force les capacités de la taxonomie après son enregistrement (évite l'écrasement par le framework)
+	 *
+	 * @param array  $args     Les arguments de la taxonomie.
+	 * @param string $taxonomy Le nom de la taxonomie.
+	 * @return array
+	 */
+	public function force_taxonomy_capabilities( $args, $taxonomy ) {
+		if ( 'wps-product-cat' === $taxonomy && Settings::g()->dolibarr_is_active() ) {
+			$args['capabilities'] = array(
+				'manage_terms' => 'manage_categories', // Permet de voir la liste
+				'edit_terms'   => 'manage_categories', // Rétabli pour modifier le slug
+				'delete_terms' => 'do_not_allow',      // Interdit suppression
+				'assign_terms' => 'edit_posts',        // Permet l'assignation
+			);
+		}
+		return $args;
 	}
 }
 

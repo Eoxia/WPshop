@@ -205,6 +205,52 @@ class Doli_Sync_Action {
 		$status_check = Doli_Sync::g()->display_sync_status( $sync_status['wp_object'], $type, true );
 		$sync_view = ob_get_clean();
 
+		$js_scripts = '';
+
+		if ( $type === 'wps-product' ) {
+			$terms = get_the_terms( $wp_id, 'wps-product-cat' );
+			$categories_html = '';
+			if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
+				$links = array();
+				foreach ( $terms as $term ) {
+					$link = admin_url( 'edit.php?wps-product-cat=' . $term->slug . '&post_type=wps-product' );
+					$links[] = '<a href="' . esc_url( $link ) . '">' . esc_html( $term->name ) . '</a>';
+				}
+				$categories_html = implode( ', ', $links );
+			} else {
+				$categories_html = '—';
+			}
+			$js_scripts .= 'var row = $("#post-' . (int) $wp_id . '"); if(row.length){ row.find(".column-taxonomy-wps-product-cat").html("' . addslashes( $categories_html ) . '"); }';
+		}
+
+		if ( ! empty( $sync_status['messages'] ) ) {
+			$is_error = ! empty( $sync_status['wp_error'] ) && $sync_status['wp_error']->has_errors();
+			$bg_color = $is_error ? '#dc3232' : '#46b450';
+			
+			$messages_html = '';
+			foreach ( $sync_status['messages'] as $message ) {
+				$messages_html .= '<div style="margin-bottom:4px;">' . wp_kses_post( $message ) . '</div>';
+			}
+
+			$js_scripts .= '
+				var notice = $("<div class=\'notice is-dismissible\' style=\'border-left: 4px solid ' . $bg_color . '; background: #fff; padding: 10px 15px; margin: 15px 0; box-shadow: 0 1px 1px rgba(0,0,0,.04);\'><p style=\'margin:0; color: #3c434a; font-weight: 500;\'>' . addslashes($messages_html) . '</p><button type=\'button\' class=\'notice-dismiss\'><span class=\'screen-reader-text\'>Cacher</span></button></div>");
+				
+				notice.find(".notice-dismiss").on("click", function() {
+					notice.fadeTo(100, 0, function() { notice.slideUp(100, function() { notice.remove(); }); });
+				});
+
+				$(".wp-header-end").after(notice);
+				
+				setTimeout(function() {
+					notice.fadeTo(100, 0, function() { notice.slideUp(100, function() { notice.remove(); }); });
+				}, 7000);
+			';
+		}
+
+		if ( ! empty( $js_scripts ) ) {
+			$sync_view .= '<script>(function($) { ' . $js_scripts . ' })(jQuery);</script>';
+		}
+
 		wp_send_json_success( array(
 			'id'               => $wp_id,
 			'namespace'        => 'wpshop',

@@ -247,8 +247,7 @@ class Doli_Sync extends Singleton_Util {
 
 				$wp_third_party = Doli_Third_Parties::g()->doli_to_wp( $doli_third_party, $wp_third_party );
 
-				// translators: Erase date for the third party <strong>Eoxia</strong> with the <strong>dolibarr</strong> data.
-				$messages[] = sprintf( __( 'Erase data for the third party <strong>%s</strong> with the <strong>dolibarr</strong> data', 'wpshop' ), $wp_third_party->data['title'] );
+				$messages[] = sprintf( __( 'Mise à jour du tiers <strong>%s</strong> avec les données de Dolibarr.', 'wpshop' ), $wp_third_party->data['title'] );
 
 				$wp_object = $wp_third_party;
 				break;
@@ -259,22 +258,28 @@ class Doli_Sync extends Singleton_Util {
 				$wp_product   = Doli_Products::g()->doli_to_wp( $doli_product, $wp_product );
 				Doli_Products::g()->update_post_image( $wp_product->data['id'], $entry_id );
 
-				$messages[] = sprintf( __( 'Erase data for the product <strong>%s</strong> with the <strong>dolibarr</strong> data', 'wpshop' ), $wp_product->data['title'] );
+				$messages[] = sprintf( __( 'Mise à jour du produit <strong>%s</strong> avec les données de Dolibarr.', 'wpshop' ), $wp_product->data['title'] );
 
 				// Rattachement des catégories par identifiant Dolibarr (_external_id) et non par nom :
 				// robuste aux accents/encodage et aux doublons. La catégorie absente est créée puis liée,
 				// et l'ensemble est remplacé d'un seul appel wp_set_object_terms (compteurs + caches à jour).
 				$doli_categories = Request_Util::get( 'categories/object/product/' . $entry_id . '?' );
 				$term_ids        = array();
+				$cat_names       = array();
 				if ( ! empty( $doli_categories ) ) {
 					foreach ( $doli_categories as $doli_category ) {
 						$term_id = $this->resolve_category_term_id( $doli_category, true );
 						if ( $term_id ) {
-							$term_ids[] = $term_id;
+							$term_ids[]  = $term_id;
+							$cat_names[] = $doli_category->label;
 						}
 					}
 				}
 				wp_set_object_terms( $wp_product->data['id'], $term_ids, 'wps-product-cat', false );
+
+				if ( ! empty( $cat_names ) ) {
+					$messages[] = sprintf( __( 'Synchronisation de %d catégories : %s', 'wpshop' ), count( $cat_names ), implode( ', ', $cat_names ) );
+				}
 
 				$wp_object = $wp_product;
 				break;
@@ -290,6 +295,17 @@ class Doli_Sync extends Singleton_Util {
 //@todo à supprimer **********************************************************
 			case 'wps-product-cat':
 				$doli_category = Request_Util::get( 'categories/' . $entry_id );
+				if ( ! empty( $wp_id ) ) {
+					$term = get_term( $wp_id, 'wps-product-cat' );
+					if ( ! $term || is_wp_error( $term ) ) {
+						$wp_error->add( 'term_deleted', sprintf( __( "La catégorie id %d n'existe plus, elle a été supprimée.", 'wpshop' ), $wp_id ) );
+						return array(
+							'messages'  => $messages,
+							'wp_error'  => $wp_error,
+							'wp_object' => null,
+						);
+					}
+				}
 				if ( empty( $wp_id ) ) {
 					$wp_id = $this->resolve_category_term_id( $doli_category, false );
 				}
@@ -334,8 +350,13 @@ class Doli_Sync extends Singleton_Util {
 			$auto_sync = ( isset($setup->WPSHOP_AUTO_SYNC_PRODUCT_CATEGORIES) && $setup->WPSHOP_AUTO_SYNC_PRODUCT_CATEGORIES == 1 );
 		}
 
-		if ( ! $auto_sync && empty( $doli_category->array_options->options__wps_id ) ) {
-			return 0;
+		$wps_id = 0;
+		if (!empty($doli_category->array_options)) {
+			if (is_object($doli_category->array_options) && !empty($doli_category->array_options->options__wps_id)) {
+				$wps_id = $doli_category->array_options->options__wps_id;
+			} elseif (is_array($doli_category->array_options) && !empty($doli_category->array_options['options__wps_id'])) {
+				$wps_id = $doli_category->array_options['options__wps_id'];
+			}
 		}
 
 		$found = get_terms( array(
@@ -348,6 +369,10 @@ class Doli_Sync extends Singleton_Util {
 		) );
 		if ( ! empty( $found ) ) {
 			return (int) $found[0];
+		}
+
+		if ( ! $create && ! $auto_sync && empty( $wps_id ) ) {
+			return 0;
 		}
 
 		// Repli : un terme du même nom existe déjà mais sans lien -> on le réutilise et on le lie.
@@ -481,9 +506,18 @@ class Doli_Sync extends Singleton_Util {
 
 		$debug['dolibarr_found'] = true;
 
+		$doli_wps_id = 0;
+		if (!empty($response->array_options)) {
+			if (is_object($response->array_options) && isset($response->array_options->options__wps_id)) {
+				$doli_wps_id = $response->array_options->options__wps_id;
+			} elseif (is_array($response->array_options) && isset($response->array_options['options__wps_id'])) {
+				$doli_wps_id = $response->array_options['options__wps_id'];
+			}
+		}
+
 		// Le lien retour _wps_id côté Dolibarr ne pointe pas vers ce post WP.
-		if ( $response->array_options->options__wps_id != $id ) {
-			if ( empty( $response->array_options->options__wps_id ) ) {
+		if ( $doli_wps_id != $id ) {
+			if ( empty( $doli_wps_id ) ) {
 				// Cas normal après un import Doli -> WP : _wps_id n'a jamais été renseigné côté Dolibarr.
 				// On RÉPARE le lien (au lieu de détruire _external_id, ce qui générait des doublons).
 				if ( $type == 'wps-product' ) {
@@ -494,15 +528,19 @@ class Doli_Sync extends Singleton_Util {
 					Request_Util::get( 'doliwpshop/associatecategory?wp_id=' . (int) $id . '&doli_id=' . (int) $external_id );
 				}
 				// Le lien est désormais cohérent : on reflète la valeur en mémoire et on poursuit la vérification.
-				$response->array_options->options__wps_id = $id;
+				if (is_object($response->array_options)) {
+					$response->array_options->options__wps_id = $id;
+				} elseif (is_array($response->array_options)) {
+					$response->array_options['options__wps_id'] = $id;
+				}
 			} else {
 				// _wps_id pointe vers un AUTRE post WP : vrai conflit. On le signale sans rien supprimer.
-				$debug['doli_wps_id'] = $response->array_options->options__wps_id;
+				$debug['doli_wps_id'] = $doli_wps_id;
 
 				return array(
 					'status' => true,
 					'status_code' => '0x2',
-					'status_message' => 'Dolibarr Object lié à un autre post WP (#' . $response->array_options->options__wps_id . '). Lien conservé.',
+					'status_message' => 'Dolibarr Object lié à un autre post WP (#' . $doli_wps_id . '). Lien conservé.',
 					'debug' => $debug,
 				);
 			}
@@ -518,6 +556,12 @@ class Doli_Sync extends Singleton_Util {
 				$term_id = $this->resolve_category_term_id( $doli_category, false );
 				if ( $term_id ) {
 					$doli_category_labels[] = $term_id;
+				} else {
+					// La catégorie existe dans Dolibarr mais pas dans WordPress.
+					// On ajoute un ID négatif fictif pour forcer l'échec de la comparaison
+					// avec $wp_category_labels, ce qui marquera correctement le statut 
+					// comme désynchronisé (point orange).
+					$doli_category_labels[] = -(int) $doli_category->id;
 				}
 			}
 		}
@@ -597,10 +641,12 @@ class Doli_Sync extends Singleton_Util {
 			}
 
 			if ( ! $data_ok || ! $cat_ok || ! $img_ok ) {
-				$status_message  = "Statut de synchronisation : Échec\n";
-				$status_message .= ( $data_ok ? "✅" : "❌" ) . " Données produit : " . ( $data_ok ? "OK" : "HS" ) . "\n";
-				$status_message .= ( $cat_ok ? "✅" : "❌" ) . " Tags / Catégories : " . ( $cat_ok ? "OK" : "HS" ) . "\n";
-				$status_message .= ( $img_ok ? "✅" : "❌" ) . " Médias : " . ( $img_ok ? "OK" : "HS" );
+				$status_message  = "<div style='display:flex; gap:10px; align-items:center; white-space:nowrap;'>";
+				$status_message .= "<strong>Synchronisation : <span style='display:inline-block; width:10px; height:10px; border-radius:50%; background-color:#e9ad4f; margin-left:4px;'></span></strong> <span style='color:#666;'>|</span> ";
+				$status_message .= "<span>Données produit : <strong style='color:" . ($data_ok ? "#47e58e" : "#e05353") . ";'>" . ($data_ok ? "OK" : "HS") . "</strong></span> <span style='color:#666;'>|</span> ";
+				$status_message .= "<span>Tags/catégorie : <strong style='color:" . ($cat_ok ? "#47e58e" : "#e05353") . ";'>" . ($cat_ok ? "OK" : "HS") . "</strong></span> <span style='color:#666;'>|</span> ";
+				$status_message .= "<span>Médias : <strong style='color:" . ($img_ok ? "#47e58e" : "#e05353") . ";'>" . ($img_ok ? "OK" : "HS") . "</strong></span>";
+				$status_message .= "</div>";
 
 				$status_code = '0x3';
 				if ( $data_ok && ( ! $cat_ok || ! $img_ok ) ) {
@@ -639,10 +685,12 @@ class Doli_Sync extends Singleton_Util {
 		}
 
 		if ( $type == 'wps-product' ) {
-			$status_message  = "Statut de synchronisation : Succès\n";
-			$status_message .= "✅ Données produit : OK\n";
-			$status_message .= "✅ Tags / Catégories : OK\n";
-			$status_message .= "✅ Médias : OK";
+			$status_message  = "<div style='display:flex; gap:10px; align-items:center; white-space:nowrap;'>";
+			$status_message .= "<strong>Synchronisation : <span style='display:inline-block; width:10px; height:10px; border-radius:50%; background-color:#47e58e; margin-left:4px;'></span></strong> <span style='color:#666;'>|</span> ";
+			$status_message .= "<span>Données produit : <strong style='color:#47e58e;'>OK</strong></span> <span style='color:#666;'>|</span> ";
+			$status_message .= "<span>Tags/catégorie : <strong style='color:#47e58e;'>OK</strong></span> <span style='color:#666;'>|</span> ";
+			$status_message .= "<span>Médias : <strong style='color:#47e58e;'>OK</strong></span>";
+			$status_message .= "</div>";
 		} else {
 			$status_message = __('Sync OK', 'wpshop');
 		}

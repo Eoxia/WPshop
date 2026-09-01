@@ -160,16 +160,9 @@ class Doli_Sync_Filter extends Singleton_Util {
 	public function build_sha_categories( $response, $wp_id ) {
 		$data_sha = array();
 
-		// Le slug stocké côté WP est celui du terme (assaini). On compare donc
-		// au slug réel du terme : sinon une catégorie sans extrafield wps_slug
-		// ressortirait en permanence comme désynchronisée.
-		$wp_term = get_term( $wp_id );
-		$slug    = ( $wp_term && ! is_wp_error( $wp_term ) ) ? $wp_term->slug : '';
-
 		$data_sha['doli_id'] = Doli_Sync::format_int( $response->id );
 		$data_sha['wp_id']   = Doli_Sync::format_int( $wp_id );
 		$data_sha['name']    = Doli_Sync::format_text( $response->label );
-		$data_sha['slug']    = Doli_Sync::format_text( $slug );
 
 		$response->sha_data = $data_sha;
 		$response->sha      = hash( 'sha256', implode( ',', $data_sha ) );

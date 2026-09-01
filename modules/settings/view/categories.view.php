@@ -25,14 +25,23 @@ defined( 'ABSPATH' ) || exit;
 	<input type="hidden" name="tab" value="categories">
 	<?php wp_nonce_field( 'callback_update_categories_settings' ); ?>
 
+	<div style="margin-bottom: 20px; padding: 15px; background: #fff; border: 1px solid #ccd0d4; box-shadow: 0 1px 1px rgba(0,0,0,.04);">
+		<h3><?php esc_html_e( 'Outils de nettoyage', 'wpshop' ); ?></h3>
+		<p><?php esc_html_e( 'Analysez et nettoyez votre catalogue WordPress en supprimant définitivement toutes les catégories vides (sans aucun produit ni sous-catégorie).', 'wpshop' ); ?></p>
+		<a href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=tool_delete_empty_categories' ), 'wps_tool_delete_empty_categories' ) ); ?>" class="button button-secondary">
+			<?php esc_html_e( 'Supprimer les catégories vides', 'wpshop' ); ?>
+		</a>
+	</div>
+
 	<p><em>Cette liste récapitule uniquement les catégories de produits/services qui ont été synchronisées depuis Dolibarr. L'arborescence et la création sont pilotées directement depuis Dolibarr.</em></p>
 	<table class="form-table">
 		<thead>
 			<tr>
-				<th>Id WP</th>
+				<th>ID WP</th>
 				<th>Nom</th>
-				<th>Id Dolibarr</th>
+				<th>ID Dolibarr</th>
 				<th>Nom Dolibarr</th>
+				<th>Nbre Produits</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -63,7 +72,16 @@ defined( 'ABSPATH' ) || exit;
 				?>
 				<tr>
 					<td>
-						<?php echo esc_html( $wp_cat->term_id ); ?>
+						<div style="display:flex; align-items:center; gap:5px;">
+							<img src="<?php echo esc_url( PLUGIN_WPSHOP_URL . '/core/asset/image/logo-wordpress.jpg' ); ?>" style="width:18px; height:18px; border-radius:50%;" />
+							<?php
+							$view_link = get_term_link( (int) $wp_cat->term_id, 'wps-product-cat' );
+							if ( ! is_wp_error( $view_link ) ) : ?>
+								<a href="<?php echo esc_url( $view_link ); ?>" target="_blank" style="display:inline-block; padding: 2px 6px; background: #0073aa; color: #fff; border-radius: 3px; font-size: 11px; text-decoration: none;">#<?php echo esc_html( $wp_cat->term_id ); ?></a>
+							<?php else : ?>
+								<span style="display:inline-block; padding: 2px 6px; background: #0073aa; color: #fff; border-radius: 3px; font-size: 11px;">#<?php echo esc_html( $wp_cat->term_id ); ?></span>
+							<?php endif; ?>
+						</div>
 					</td>
 					<td>
 						<strong><?php echo esc_html( $wp_cat->name ); ?></strong>
@@ -73,19 +91,28 @@ defined( 'ABSPATH' ) || exit;
 					</td>
 					<td>
 						<?php if ( $dolibarr_url ) : ?>
-							<a href="<?php echo esc_url( $dolibarr_url . '/categories/viewcat.php?id=' . $external_id . '&type=product' ); ?>" target="_blank"><?php echo esc_html( $external_id ); ?></a>
+							<div style="display:flex; align-items:center; gap:5px;">
+								<img src="<?php echo esc_url( PLUGIN_WPSHOP_URL . '/core/asset/image/logo-dolibarr.jpg' ); ?>" style="width:18px; height:18px; border-radius:50%;" />
+								<a href="<?php echo esc_url( $dolibarr_url . '/categories/viewcat.php?id=' . $external_id . '&type=product' ); ?>" target="_blank" style="display:inline-block; padding: 2px 6px; background: #855b8e; color: #fff; border-radius: 3px; font-size: 11px; text-decoration: none;">#<?php echo esc_html( $external_id ); ?></a>
+							</div>
 						<?php else : ?>
-							<?php echo esc_html( $external_id ); ?>
+							<div style="display:flex; align-items:center; gap:5px;">
+								<img src="<?php echo esc_url( PLUGIN_WPSHOP_URL . '/core/asset/image/logo-dolibarr.jpg' ); ?>" style="width:18px; height:18px; border-radius:50%;" />
+								<span style="display:inline-block; padding: 2px 6px; background: #855b8e; color: #fff; border-radius: 3px; font-size: 11px;">#<?php echo esc_html( $external_id ); ?></span>
+							</div>
 						<?php endif; ?>
 					</td>
 					<td>
 						<?php echo esc_html( $doli_name ); ?>
 					</td>
+					<td>
+						<?php echo esc_html( $wp_cat->count ); ?>
+					</td>
 				</tr>
 				<?php endforeach; ?>
 			<?php else : ?>
 				<tr>
-					<td colspan="3"><?php esc_html_e( 'Aucune catégorie WordPress trouvée.', 'wpshop' ); ?></td>
+					<td colspan="5"><?php esc_html_e( 'Aucune catégorie WordPress trouvée.', 'wpshop' ); ?></td>
 				</tr>
 			<?php endif; ?>
 		</tbody>

@@ -122,7 +122,15 @@ class Doli_Category extends Term_Class {
 
 
 		foreach ( $doli_categories as $key => $doli_category ) {
-			if ( $doli_category->array_options->options__wps_id == 0 ) {
+			$wps_id = 0;
+			if (!empty($doli_category->array_options)) {
+				if (is_object($doli_category->array_options) && isset($doli_category->array_options->options__wps_id)) {
+					$wps_id = $doli_category->array_options->options__wps_id;
+				} elseif (is_array($doli_category->array_options) && isset($doli_category->array_options['options__wps_id'])) {
+					$wps_id = $doli_category->array_options['options__wps_id'];
+				}
+			}
+			if ( $wps_id == 0 ) {
 				unset( $doli_categories[$key] );
 			}
 		}
@@ -203,8 +211,12 @@ class Doli_Category extends Term_Class {
 		$wp_category->data['external_id'] = (int) $doli_category->id;
 		$wp_category->data['name'] = $doli_category->label;
 
-		if ( ! empty($doli_category->array_options->options__wps_slug) ) {
-			$wp_category->data['slug'] = $doli_category->array_options->options__wps_slug;
+		if ( ! empty($doli_category->array_options) ) {
+			if ( is_object($doli_category->array_options) && ! empty($doli_category->array_options->options__wps_slug) ) {
+				$wp_category->data['slug'] = $doli_category->array_options->options__wps_slug;
+			} elseif ( is_array($doli_category->array_options) && ! empty($doli_category->array_options['options__wps_slug']) ) {
+				$wp_category->data['slug'] = $doli_category->array_options['options__wps_slug'];
+			}
 		}
 
 		if ( isset($doli_category->description) ) {
@@ -224,7 +236,6 @@ class Doli_Category extends Term_Class {
 			$data_sha['doli_id'] = Doli_Sync::format_int( $wp_category->data['external_id'] );
 			$data_sha['wp_id']   = Doli_Sync::format_int( $wp_category->data['id'] );
 			$data_sha['name']    = Doli_Sync::format_text( $wp_category->data['name'] );
-			$data_sha['slug']    = Doli_Sync::format_text( $wp_category->data['slug'] );
 
 			$wp_category->data['sync_sha_256'] = hash( 'sha256', implode( ',', $data_sha ) );
 
@@ -258,7 +269,15 @@ class Doli_Category extends Term_Class {
 
 		$doli_categories = Request_Util::get( $route );
 		foreach ( $doli_categories as $key => $doli_category ) {
-			if ( $doli_category->array_options->options__wps_id == 0 ) {
+			$wps_id = 0;
+			if (!empty($doli_category->array_options)) {
+				if (is_object($doli_category->array_options) && isset($doli_category->array_options->options__wps_id)) {
+					$wps_id = $doli_category->array_options->options__wps_id;
+				} elseif (is_array($doli_category->array_options) && isset($doli_category->array_options['options__wps_id'])) {
+					$wps_id = $doli_category->array_options['options__wps_id'];
+				}
+			}
+			if ( $wps_id == 0 ) {
 				unset( $doli_categories[$key] );
 			}
 		}
