@@ -236,7 +236,6 @@ class Doli_Category extends Term_Class {
 			$data_sha['doli_id'] = Doli_Sync::format_int( $wp_category->data['external_id'] );
 			$data_sha['wp_id']   = Doli_Sync::format_int( $wp_category->data['id'] );
 			$data_sha['name']    = Doli_Sync::format_text( $wp_category->data['name'] );
-			$data_sha['slug']    = Doli_Sync::format_text( $wp_category->data['slug'] );
 
 			$wp_category->data['sync_sha_256'] = hash( 'sha256', implode( ',', $data_sha ) );
 
