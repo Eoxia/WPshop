@@ -43,8 +43,12 @@ class Product_Filter {
 		// Taxonomy UI customization
 		add_filter( 'wps-product-cat_row_actions', array( $this, 'custom_category_row_actions' ), 10, 2 );
 		add_action( 'admin_head-edit-tags.php', array( $this, 'hide_add_category_form' ) );
-		add_action( 'admin_head-term.php', array( $this, 'lock_category_fields_js' ) );
 		add_filter( 'pre_insert_term', array( $this, 'prevent_manual_category_creation' ), 10, 2 );
+
+		// Bulk action to update slugs
+		add_filter( 'bulk_actions-edit-wps-product-cat', array( $this, 'add_bulk_action_update_slugs' ) );
+		add_filter( 'handle_bulk_actions-edit-wps-product-cat', array( $this, 'handle_bulk_action_update_slugs' ), 10, 3 );
+		add_action( 'admin_notices', array( $this, 'admin_notice_update_slugs' ) );
 
 		add_filter( 'eo_model_wps-product_after_get', function( $object, $args ) {
 			$object->data['thumbnail'] = wp_get_attachment_image_src( $object->data['thumbnail_id'], 'wps-product-thumbnail' );
@@ -478,21 +482,11 @@ class Product_Filter {
 			}
 		}
 
-		// "Modifier le slug" (Modification rapide)
-		if ( isset( $actions['inline hide-if-no-js'] ) ) {
-			$new_actions['inline hide-if-no-js'] = str_replace( 'Modification rapide', 'Modifier le slug', $actions['inline hide-if-no-js'] );
-		}
-
-		// Classic Edit (Modifier)
-		if ( isset( $actions['edit'] ) ) {
-			$new_actions['edit'] = $actions['edit'];
-		}
-
 		return $new_actions;
 	}
 
 	/**
-	 * Hides the "Add New Category" form.
+	 * Hides the "Add New Category" form and replaces Slugs with input fields.
 	 */
 	public function hide_add_category_form() {
 		global $current_screen;
@@ -500,35 +494,23 @@ class Product_Filter {
 			echo '<style>
 				#col-left { display: none !important; }
 				#col-right { width: 100% !important; }
-				.wp-list-table .column-name { width: 30%; }
+				.wp-list-table .column-slug { width: 25%; }
+				.wps-slug-input { width: 100%; box-sizing: border-box; }
 			</style>';
 			echo '<script>
 				jQuery(document).ready(function($) {
-					// Disable all fields in quick edit except slug
-					$(document).on("click", ".editinline", function() {
-						var $row = $(this).closest("tr").next(".inline-edit-row");
-						setTimeout(function() {
-							$row.find("input[name=\'name\']").prop("readonly", true).css("background", "#f0f0f1");
-							// Hide description and parent in quick edit? Actually quick edit only has name and slug.
-						}, 50);
+					// Transform text slugs into input fields
+					$(".wp-list-table tbody tr").each(function() {
+						var $row = $(this);
+						var termId = $row.attr("id");
+						if (!termId) return;
+						termId = termId.replace("tag-", "");
+						var $slugCol = $row.find(".column-slug");
+						var slugText = $slugCol.text().trim();
+						if (slugText !== "â€”" && slugText !== "-") {
+							$slugCol.html("<input type=\'text\' name=\'custom_slug[" + termId + "]\' value=\'" + slugText + "\' class=\'wps-slug-input\'>");
+						}
 					});
-				});
-			</script>';
-		}
-	}
-
-	/**
-	 * Locks fields in the Edit Term screen (only Slug is editable).
-	 */
-	public function lock_category_fields_js() {
-		global $current_screen;
-		if ( isset( $current_screen->id ) && 'edit-wps-product-cat' === $current_screen->id && Settings::g()->dolibarr_is_active() ) {
-			echo '<script>
-				jQuery(document).ready(function($) {
-					$("#name").prop("readonly", true).css("background", "#f0f0f1");
-					$("#parent").prop("disabled", true).css("background", "#f0f0f1");
-					$("#description").prop("readonly", true).css("background", "#f0f0f1");
-					$("<p class=\'description\'>Le nom, parent et description sont gérés par Dolibarr.</p>").insertAfter("#name");
 				});
 			</script>';
 		}
@@ -540,10 +522,64 @@ class Product_Filter {
 	public function prevent_manual_category_creation( $term, $taxonomy ) {
 		if ( 'wps-product-cat' === $taxonomy && Settings::g()->dolibarr_is_active() ) {
 			if ( isset( $_POST['action'] ) && 'add-tag' === $_POST['action'] ) {
-				return new \WP_Error( 'not_allowed', __( 'La création de catégories est pilotée par Dolibarr.', 'wpshop' ) );
+				return new \WP_Error( 'not_allowed', __( 'La crÃ©ation de catÃ©gories est pilotÃ©e par Dolibarr.', 'wpshop' ) );
 			}
 		}
 		return $term;
+	}
+
+	/**
+	 * Adds the bulk action to update slugs.
+	 */
+	public function add_bulk_action_update_slugs( $bulk_actions ) {
+		if ( Settings::g()->dolibarr_is_active() ) {
+			$bulk_actions['update_slugs'] = __( 'Enregistrer les slugs modifiÃ©s', 'wpshop' );
+		}
+		return $bulk_actions;
+	}
+
+	/**
+	 * Handles the bulk action to update slugs.
+	 */
+	public function handle_bulk_action_update_slugs( $redirect_to, $doaction, $object_ids ) {
+		if ( 'update_slugs' !== $doaction ) {
+			return $redirect_to;
+		}
+
+		$updated = 0;
+		if ( isset( $_POST['custom_slug'] ) && is_array( $_POST['custom_slug'] ) ) {
+			foreach ( $object_ids as $term_id ) {
+				if ( isset( $_POST['custom_slug'][ $term_id ] ) ) {
+					$new_slug = sanitize_title( wp_unslash( $_POST['custom_slug'][ $term_id ] ) );
+					$term = get_term( $term_id, 'wps-product-cat' );
+					if ( ! is_wp_error( $term ) && $term->slug !== $new_slug ) {
+						wp_update_term( $term_id, 'wps-product-cat', array(
+							'slug' => $new_slug,
+						) );
+						$updated++;
+					}
+				}
+			}
+		}
+
+		return add_query_arg( 'bulk_slugs_updated', $updated, $redirect_to );
+	}
+
+	/**
+	 * Displays notice after updating slugs.
+	 */
+	public function admin_notice_update_slugs() {
+		if ( isset( $_REQUEST['bulk_slugs_updated'] ) ) {
+			$count = intval( $_REQUEST['bulk_slugs_updated'] );
+			printf(
+				'<div id="message" class="updated notice is-dismissible"><p>%s</p></div>',
+				sprintf(
+					/* translators: %s: Number of slugs updated */
+					_n( '%s slug a Ã©tÃ© mis Ã  jour.', '%s slugs ont Ã©tÃ© mis Ã  jour.', $count, 'wpshop' ),
+					$count
+				)
+			);
+		}
 	}
 
 	/**
