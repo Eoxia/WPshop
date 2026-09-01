@@ -206,11 +206,29 @@ class Doli_Sync_Action {
 		$sync_view = ob_get_clean();
 
 		if ( ! empty( $sync_status['messages'] ) ) {
-			$sync_view .= '<div class="wps-sync-messages" style="margin-top: 4px; font-size: 11px; color: #46b450; line-height: 1.2; text-align: right;">';
+			$is_error = ! empty( $sync_status['wp_error'] ) && $sync_status['wp_error']->has_errors();
+			$bg_color = $is_error ? '#dc3232' : '#46b450';
+			
+			$messages_html = '';
 			foreach ( $sync_status['messages'] as $message ) {
-				$sync_view .= '<div>' . wp_kses_post( $message ) . '</div>';
+				$messages_html .= '<div style="margin-bottom:4px;">' . wp_kses_post( $message ) . '</div>';
 			}
-			$sync_view .= '</div>';
+
+			$sync_view .= '<script>
+				(function($) {
+					var notice = $("<div class=\'notice is-dismissible\' style=\'border-left: 4px solid ' . $bg_color . '; background: #fff; padding: 10px 15px; margin: 15px 0; box-shadow: 0 1px 1px rgba(0,0,0,.04);\'><p style=\'margin:0; color: #3c434a; font-weight: 500;\'>' . addslashes($messages_html) . '</p><button type=\'button\' class=\'notice-dismiss\'><span class=\'screen-reader-text\'>Cacher</span></button></div>");
+					
+					notice.find(".notice-dismiss").on("click", function() {
+						notice.fadeTo(100, 0, function() { notice.slideUp(100, function() { notice.remove(); }); });
+					});
+
+					$(".wp-header-end").after(notice);
+					
+					setTimeout(function() {
+						notice.fadeTo(100, 0, function() { notice.slideUp(100, function() { notice.remove(); }); });
+					}, 7000);
+				})(jQuery);
+			</script>';
 		}
 
 		wp_send_json_success( array(
