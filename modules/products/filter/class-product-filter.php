@@ -40,6 +40,12 @@ class Product_Filter {
 		add_action( 'admin_post_confirm_delete_empty_categories', array( $this, 'process_confirm_delete_empty_categories' ) );
 		add_action( 'admin_notices', array( $this, 'admin_notice_delete_empty' ) );
 
+		// Taxonomy UI customization
+		add_filter( 'wps-product-cat_row_actions', array( $this, 'custom_category_row_actions' ), 10, 2 );
+		add_action( 'admin_head-edit-tags.php', array( $this, 'hide_add_category_form' ) );
+		add_action( 'admin_head-term.php', array( $this, 'lock_category_fields_js' ) );
+		add_filter( 'pre_insert_term', array( $this, 'prevent_manual_category_creation' ), 10, 2 );
+
 		add_filter( 'eo_model_wps-product_after_get', function( $object, $args ) {
 			$object->data['thumbnail'] = wp_get_attachment_image_src( $object->data['thumbnail_id'], 'wps-product-thumbnail' );
 
@@ -160,7 +166,7 @@ class Product_Filter {
 		if ( Settings::g()->dolibarr_is_active() ) {
 			$args['capabilities'] = array(
 				'manage_terms' => 'manage_categories', // Allow seeing the list
-				'edit_terms'   => 'do_not_allow',      // Prevent editing & adding
+				'edit_terms'   => 'manage_categories', // Allow editing the slug
 				'delete_terms' => 'do_not_allow',      // Prevent deleting
 				'assign_terms' => 'edit_posts',        // Allow assigning to products
 			);
@@ -446,6 +452,101 @@ class Product_Filter {
 	}
 
 	/**
+	 * Customizes the row actions for the categories.
+	 */
+	public function custom_category_row_actions( $actions, $tag ) {
+		if ( ! Settings::g()->dolibarr_is_active() ) {
+			return $actions;
+		}
+
+		$new_actions = array();
+
+		// "Voir"
+		$view_link = get_term_link( $tag );
+		if ( ! is_wp_error( $view_link ) ) {
+			$new_actions['view'] = sprintf( '<a href="%s">%s</a>', esc_url( $view_link ), __( 'Voir', 'wpshop' ) );
+		}
+
+		// "Voir sur Dolibarr"
+		$external_id = get_term_meta( $tag->term_id, '_external_id', true );
+		if ( ! empty( $external_id ) ) {
+			$wps_dolibarr = get_option( 'wps_dolibarr' );
+			$dolibarr_url = ! empty( $wps_dolibarr['dolibarr_url'] ) ? rtrim( $wps_dolibarr['dolibarr_url'], '/' ) : '';
+			if ( $dolibarr_url ) {
+				$doli_link = $dolibarr_url . '/categories/viewcat.php?id=' . $external_id . '&type=product';
+				$new_actions['view_dolibarr'] = sprintf( '<a href="%s" target="_blank" style="color: #d63638;">%s</a>', esc_url( $doli_link ), __( 'Voir sur Dolibarr', 'wpshop' ) );
+			}
+		}
+
+		// "Modifier le slug" (Modification rapide)
+		if ( isset( $actions['inline hide-if-no-js'] ) ) {
+			$new_actions['inline hide-if-no-js'] = str_replace( 'Modification rapide', 'Modifier le slug', $actions['inline hide-if-no-js'] );
+		}
+
+		// Classic Edit (Modifier)
+		if ( isset( $actions['edit'] ) ) {
+			$new_actions['edit'] = $actions['edit'];
+		}
+
+		return $new_actions;
+	}
+
+	/**
+	 * Hides the "Add New Category" form.
+	 */
+	public function hide_add_category_form() {
+		global $current_screen;
+		if ( isset( $current_screen->id ) && 'edit-wps-product-cat' === $current_screen->id && Settings::g()->dolibarr_is_active() ) {
+			echo '<style>
+				#col-left { display: none !important; }
+				#col-right { width: 100% !important; }
+				.wp-list-table .column-name { width: 30%; }
+			</style>';
+			echo '<script>
+				jQuery(document).ready(function($) {
+					// Disable all fields in quick edit except slug
+					$(document).on("click", ".editinline", function() {
+						var $row = $(this).closest("tr").next(".inline-edit-row");
+						setTimeout(function() {
+							$row.find("input[name=\'name\']").prop("readonly", true).css("background", "#f0f0f1");
+							// Hide description and parent in quick edit? Actually quick edit only has name and slug.
+						}, 50);
+					});
+				});
+			</script>';
+		}
+	}
+
+	/**
+	 * Locks fields in the Edit Term screen (only Slug is editable).
+	 */
+	public function lock_category_fields_js() {
+		global $current_screen;
+		if ( isset( $current_screen->id ) && 'edit-wps-product-cat' === $current_screen->id && Settings::g()->dolibarr_is_active() ) {
+			echo '<script>
+				jQuery(document).ready(function($) {
+					$("#name").prop("readonly", true).css("background", "#f0f0f1");
+					$("#parent").prop("disabled", true).css("background", "#f0f0f1");
+					$("#description").prop("readonly", true).css("background", "#f0f0f1");
+					$("<p class=\'description\'>Le nom, parent et description sont gérés par Dolibarr.</p>").insertAfter("#name");
+				});
+			</script>';
+		}
+	}
+
+	/**
+	 * Prevents manual creation of categories from the WP UI.
+	 */
+	public function prevent_manual_category_creation( $term, $taxonomy ) {
+		if ( 'wps-product-cat' === $taxonomy && Settings::g()->dolibarr_is_active() ) {
+			if ( isset( $_POST['action'] ) && 'add-tag' === $_POST['action'] ) {
+				return new \WP_Error( 'not_allowed', __( 'La création de catégories est pilotée par Dolibarr.', 'wpshop' ) );
+			}
+		}
+		return $term;
+	}
+
+	/**
 	 * Force les capacités de la taxonomie après son enregistrement (évite l'écrasement par le framework)
 	 *
 	 * @param array  $args     Les arguments de la taxonomie.
@@ -456,7 +557,7 @@ class Product_Filter {
 		if ( 'wps-product-cat' === $taxonomy && Settings::g()->dolibarr_is_active() ) {
 			$args['capabilities'] = array(
 				'manage_terms' => 'manage_categories', // Permet de voir la liste
-				'edit_terms'   => 'do_not_allow',      // Interdit modification et ajout
+				'edit_terms'   => 'manage_categories', // Rétabli pour modifier le slug
 				'delete_terms' => 'do_not_allow',      // Interdit suppression
 				'assign_terms' => 'edit_posts',        // Permet l'assignation
 			);
