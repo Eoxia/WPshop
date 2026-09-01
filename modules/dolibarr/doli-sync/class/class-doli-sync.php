@@ -551,6 +551,12 @@ class Doli_Sync extends Singleton_Util {
 				$term_id = $this->resolve_category_term_id( $doli_category, false );
 				if ( $term_id ) {
 					$doli_category_labels[] = $term_id;
+				} else {
+					// La catégorie existe dans Dolibarr mais pas dans WordPress.
+					// On ajoute un ID négatif fictif pour forcer l'échec de la comparaison
+					// avec $wp_category_labels, ce qui marquera correctement le statut 
+					// comme désynchronisé (point orange).
+					$doli_category_labels[] = -(int) $doli_category->id;
 				}
 			}
 		}
