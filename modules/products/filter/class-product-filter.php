@@ -337,7 +337,7 @@ class Product_Filter {
 
 		check_admin_referer( 'wps_tool_delete_empty_categories' );
 
-		$redirect_to = admin_url( 'admin-post.php?action=wps_load_settings_tab&tab=categories' );
+		$redirect_to = admin_url( 'admin.php?page=wps-settings&tab=categories' );
 
 		// RÃ©cupÃ©rer TOUTES les catÃ©gories de produits
 		$all_terms = get_terms( array(
