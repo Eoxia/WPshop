@@ -643,7 +643,7 @@ class Doli_Sync extends Singleton_Util {
 
 			if ( ! $data_ok || ! $cat_ok || ! $img_ok ) {
 				$status_message  = "<div style='display:flex; gap:10px; align-items:center; white-space:nowrap;'>";
-				$status_message .= "<strong>Synchronisation : <span style='color:#e9ad4f;'>Rond Orange</span></strong> <span style='color:#666;'>|</span> ";
+				$status_message .= "<strong>Synchronisation : <span style='display:inline-block; width:10px; height:10px; border-radius:50%; background-color:#e9ad4f; margin-left:4px;'></span></strong> <span style='color:#666;'>|</span> ";
 				$status_message .= "<span>Données produit : <strong style='color:" . ($data_ok ? "#47e58e" : "#e05353") . ";'>" . ($data_ok ? "OK" : "HS") . "</strong></span> <span style='color:#666;'>|</span> ";
 				$status_message .= "<span>Tags/catégorie : <strong style='color:" . ($cat_ok ? "#47e58e" : "#e05353") . ";'>" . ($cat_ok ? "OK" : "HS") . "</strong></span> <span style='color:#666;'>|</span> ";
 				$status_message .= "<span>Médias : <strong style='color:" . ($img_ok ? "#47e58e" : "#e05353") . ";'>" . ($img_ok ? "OK" : "HS") . "</strong></span>";
@@ -687,7 +687,7 @@ class Doli_Sync extends Singleton_Util {
 
 		if ( $type == 'wps-product' ) {
 			$status_message  = "<div style='display:flex; gap:10px; align-items:center; white-space:nowrap;'>";
-			$status_message .= "<strong>Synchronisation : <span style='color:#47e58e;'>Rond Vert</span></strong> <span style='color:#666;'>|</span> ";
+			$status_message .= "<strong>Synchronisation : <span style='display:inline-block; width:10px; height:10px; border-radius:50%; background-color:#47e58e; margin-left:4px;'></span></strong> <span style='color:#666;'>|</span> ";
 			$status_message .= "<span>Données produit : <strong style='color:#47e58e;'>OK</strong></span> <span style='color:#666;'>|</span> ";
 			$status_message .= "<span>Tags/catégorie : <strong style='color:#47e58e;'>OK</strong></span> <span style='color:#666;'>|</span> ";
 			$status_message .= "<span>Médias : <strong style='color:#47e58e;'>OK</strong></span>";
