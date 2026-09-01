@@ -37,10 +37,11 @@ defined( 'ABSPATH' ) || exit;
 	<table class="form-table">
 		<thead>
 			<tr>
-				<th>Id WP</th>
+				<th>ID WP</th>
 				<th>Nom</th>
-				<th>Id Dolibarr</th>
+				<th>ID Dolibarr</th>
 				<th>Nom Dolibarr</th>
+				<th>Nbre Produits</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -71,7 +72,9 @@ defined( 'ABSPATH' ) || exit;
 				?>
 				<tr>
 					<td>
-						<?php echo esc_html( $wp_cat->term_id ); ?>
+						<span style="display:inline-block; padding: 2px 6px; background: #0073aa; color: #fff; border-radius: 3px; font-size: 11px;">
+							<?php echo esc_html( $wp_cat->term_id ); ?>
+						</span>
 					</td>
 					<td>
 						<strong><?php echo esc_html( $wp_cat->name ); ?></strong>
@@ -81,19 +84,26 @@ defined( 'ABSPATH' ) || exit;
 					</td>
 					<td>
 						<?php if ( $dolibarr_url ) : ?>
-							<a href="<?php echo esc_url( $dolibarr_url . '/categories/viewcat.php?id=' . $external_id . '&type=product' ); ?>" target="_blank"><?php echo esc_html( $external_id ); ?></a>
+							<a href="<?php echo esc_url( $dolibarr_url . '/categories/viewcat.php?id=' . $external_id . '&type=product' ); ?>" target="_blank" style="display:inline-block; padding: 2px 6px; background: #855b8e; color: #fff; border-radius: 3px; font-size: 11px; text-decoration: none;">
+								<?php echo esc_html( $external_id ); ?>
+							</a>
 						<?php else : ?>
-							<?php echo esc_html( $external_id ); ?>
+							<span style="display:inline-block; padding: 2px 6px; background: #855b8e; color: #fff; border-radius: 3px; font-size: 11px;">
+								<?php echo esc_html( $external_id ); ?>
+							</span>
 						<?php endif; ?>
 					</td>
 					<td>
 						<?php echo esc_html( $doli_name ); ?>
 					</td>
+					<td>
+						<?php echo esc_html( $wp_cat->count ); ?>
+					</td>
 				</tr>
 				<?php endforeach; ?>
 			<?php else : ?>
 				<tr>
-					<td colspan="3"><?php esc_html_e( 'Aucune catégorie WordPress trouvée.', 'wpshop' ); ?></td>
+					<td colspan="5"><?php esc_html_e( 'Aucune catégorie WordPress trouvée.', 'wpshop' ); ?></td>
 				</tr>
 			<?php endif; ?>
 		</tbody>
