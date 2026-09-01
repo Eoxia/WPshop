@@ -44,6 +44,8 @@ class Product_Filter {
 		add_filter( 'wps-product-cat_row_actions', array( $this, 'custom_category_row_actions' ), 10, 2 );
 		add_action( 'admin_head-edit-tags.php', array( $this, 'hide_add_category_form' ) );
 		add_filter( 'pre_insert_term', array( $this, 'prevent_manual_category_creation' ), 10, 2 );
+		add_filter( 'manage_edit-wps-product-cat_columns', array( $this, 'add_ids_column' ) );
+		add_action( 'manage_wps-product-cat_custom_column', array( $this, 'render_ids_column' ), 10, 3 );
 
 		// AJAX action to update slugs inline
 		add_action( 'wp_ajax_wps_update_category_slug', array( $this, 'ajax_update_category_slug' ) );
@@ -604,6 +606,51 @@ class Product_Filter {
 	}
 
 	/**
+	 * Adds the IDs column to the categories table.
+	 */
+	public function add_ids_column( $columns ) {
+		// Insert before the 'posts' (Total) column if it exists
+		$new_columns = array();
+		foreach ( $columns as $key => $value ) {
+			if ( 'posts' === $key ) {
+				$new_columns['wps_doli_ids'] = __( 'IDs (WP / Doli)', 'wpshop' );
+			}
+			$new_columns[ $key ] = $value;
+		}
+		if ( ! isset( $new_columns['wps_doli_ids'] ) ) {
+			$new_columns['wps_doli_ids'] = __( 'IDs (WP / Doli)', 'wpshop' );
+		}
+		return $new_columns;
+	}
+
+	/**
+	 * Renders the IDs column content.
+	 */
+	public function render_ids_column( $content, $column_name, $term_id ) {
+		if ( 'wps_doli_ids' === $column_name ) {
+			$html = '<div style="display: flex; gap: 5px; flex-direction: column;">';
+			
+			// WPShop ID
+			$html .= sprintf( '<span style="display:inline-block; padding: 2px 6px; background: #0073aa; color: #fff; border-radius: 3px; font-size: 11px;">WP: %d</span>', $term_id );
+			
+			// Dolibarr ID
+			$external_id = get_term_meta( $term_id, '_external_id', true );
+			if ( ! empty( $external_id ) ) {
+				$wps_dolibarr = get_option( 'wps_dolibarr' );
+				$dolibarr_url = ! empty( $wps_dolibarr['dolibarr_url'] ) ? rtrim( $wps_dolibarr['dolibarr_url'], '/' ) : '';
+				if ( $dolibarr_url ) {
+					$doli_link = $dolibarr_url . '/categories/viewcat.php?id=' . $external_id . '&type=product';
+					$html .= sprintf( '<a href="%s" target="_blank" style="display:inline-block; padding: 2px 6px; background: #d63638; color: #fff; border-radius: 3px; font-size: 11px; text-decoration: none;">Doli: %s</a>', esc_url( $doli_link ), esc_html( $external_id ) );
+				} else {
+					$html .= sprintf( '<span style="display:inline-block; padding: 2px 6px; background: #d63638; color: #fff; border-radius: 3px; font-size: 11px;">Doli: %s</span>', esc_html( $external_id ) );
+				}
+			}
+			$html .= '</div>';
+			return $html;
+		}
+		return $content;
+	}
+
 	/**
 	 * Force les capacités de la taxonomie après son enregistrement (évite l'écrasement par le framework)
 	 *
