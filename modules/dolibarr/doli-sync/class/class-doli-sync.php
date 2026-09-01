@@ -290,6 +290,17 @@ class Doli_Sync extends Singleton_Util {
 //@todo à supprimer **********************************************************
 			case 'wps-product-cat':
 				$doli_category = Request_Util::get( 'categories/' . $entry_id );
+				if ( ! empty( $wp_id ) ) {
+					$term = get_term( $wp_id, 'wps-product-cat' );
+					if ( ! $term || is_wp_error( $term ) ) {
+						$wp_error->add( 'term_deleted', sprintf( __( "La catégorie id %d n'existe plus, elle a été supprimée.", 'wpshop' ), $wp_id ) );
+						return array(
+							'messages'  => $messages,
+							'wp_error'  => $wp_error,
+							'wp_object' => null,
+						);
+					}
+				}
 				if ( empty( $wp_id ) ) {
 					$wp_id = $this->resolve_category_term_id( $doli_category, false );
 				}
