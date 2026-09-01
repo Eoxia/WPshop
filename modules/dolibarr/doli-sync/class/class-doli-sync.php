@@ -354,7 +354,7 @@ class Doli_Sync extends Singleton_Util {
 			}
 		}
 
-		if ( ! $auto_sync && empty( $wps_id ) ) {
+		if ( ! $create && ! $auto_sync && empty( $wps_id ) ) {
 			return 0;
 		}
 
