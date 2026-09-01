@@ -58,6 +58,40 @@ class Settings_Action {
 	}
 
 	/**
+	 * Sauvegarde les réglages de personnalisation des couleurs de synchronisation.
+	 *
+	 * @since   2.4.0
+	 */
+	public function callback_update_sync_settings() {
+		check_admin_referer( 'callback_update_sync_settings' );
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die();
+		}
+
+		$tab = ! empty( $_POST['tab'] ) ? sanitize_text_field( $_POST['tab'] ) : 'sync';
+
+		$sync_settings = get_option( 'wps_sync_settings', array() );
+
+		if ( isset( $_POST['wps_sync_color_error'] ) ) {
+			$sync_settings['color_error'] = sanitize_hex_color( $_POST['wps_sync_color_error'] );
+		}
+		if ( isset( $_POST['wps_sync_color_orange'] ) ) {
+			$sync_settings['color_orange'] = sanitize_hex_color( $_POST['wps_sync_color_orange'] );
+		}
+		if ( isset( $_POST['wps_sync_color_ok'] ) ) {
+			$sync_settings['color_ok'] = sanitize_hex_color( $_POST['wps_sync_color_ok'] );
+		}
+
+		update_option( 'wps_sync_settings', $sync_settings );
+
+		set_transient( 'updated_wpshop_option_' . get_current_user_id(), __( 'Your settings have been saved.', 'wpshop' ), 30 );
+
+		wp_redirect( admin_url( 'admin.php?page=wps-settings&tab=' . $tab ) );
+		exit;
+	}
+
+	/**
 	 * Call notice activate erp view if dolibarr url and secret is empty.
 	 *
 	 * @since   2.0.0
