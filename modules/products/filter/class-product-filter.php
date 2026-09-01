@@ -606,47 +606,45 @@ class Product_Filter {
 	}
 
 	/**
-	 * Adds the IDs column to the categories table.
+	 * Adds the IDs columns to the categories table.
 	 */
 	public function add_ids_column( $columns ) {
 		// Insert before the 'posts' (Total) column if it exists
 		$new_columns = array();
 		foreach ( $columns as $key => $value ) {
 			if ( 'posts' === $key ) {
-				$new_columns['wps_doli_ids'] = __( 'IDs (WP / Doli)', 'wpshop' );
+				$new_columns['wps_wp_id']   = __( 'ID WP', 'wpshop' );
+				$new_columns['wps_doli_id'] = __( 'ID Dolibarr', 'wpshop' );
 			}
 			$new_columns[ $key ] = $value;
 		}
-		if ( ! isset( $new_columns['wps_doli_ids'] ) ) {
-			$new_columns['wps_doli_ids'] = __( 'IDs (WP / Doli)', 'wpshop' );
+		if ( ! isset( $new_columns['wps_wp_id'] ) ) {
+			$new_columns['wps_wp_id']   = __( 'ID WP', 'wpshop' );
+			$new_columns['wps_doli_id'] = __( 'ID Dolibarr', 'wpshop' );
 		}
 		return $new_columns;
 	}
 
 	/**
-	 * Renders the IDs column content.
+	 * Renders the IDs columns content.
 	 */
 	public function render_ids_column( $content, $column_name, $term_id ) {
-		if ( 'wps_doli_ids' === $column_name ) {
-			$html = '<div style="display: flex; gap: 5px; flex-direction: column;">';
-			
-			// WPShop ID
-			$html .= sprintf( '<span style="display:inline-block; padding: 2px 6px; background: #0073aa; color: #fff; border-radius: 3px; font-size: 11px;">WP: %d</span>', $term_id );
-			
-			// Dolibarr ID
+		if ( 'wps_wp_id' === $column_name ) {
+			return sprintf( '<span style="display:inline-block; padding: 2px 6px; background: #0073aa; color: #fff; border-radius: 3px; font-size: 11px;">%d</span>', $term_id );
+		}
+
+		if ( 'wps_doli_id' === $column_name ) {
 			$external_id = get_term_meta( $term_id, '_external_id', true );
 			if ( ! empty( $external_id ) ) {
 				$wps_dolibarr = get_option( 'wps_dolibarr' );
 				$dolibarr_url = ! empty( $wps_dolibarr['dolibarr_url'] ) ? rtrim( $wps_dolibarr['dolibarr_url'], '/' ) : '';
 				if ( $dolibarr_url ) {
 					$doli_link = $dolibarr_url . '/categories/viewcat.php?id=' . $external_id . '&type=product';
-					$html .= sprintf( '<a href="%s" target="_blank" style="display:inline-block; padding: 2px 6px; background: #d63638; color: #fff; border-radius: 3px; font-size: 11px; text-decoration: none;">Doli: %s</a>', esc_url( $doli_link ), esc_html( $external_id ) );
-				} else {
-					$html .= sprintf( '<span style="display:inline-block; padding: 2px 6px; background: #d63638; color: #fff; border-radius: 3px; font-size: 11px;">Doli: %s</span>', esc_html( $external_id ) );
+					return sprintf( '<a href="%s" target="_blank" style="display:inline-block; padding: 2px 6px; background: #d63638; color: #fff; border-radius: 3px; font-size: 11px; text-decoration: none;">%s</a>', esc_url( $doli_link ), esc_html( $external_id ) );
 				}
+				return sprintf( '<span style="display:inline-block; padding: 2px 6px; background: #d63638; color: #fff; border-radius: 3px; font-size: 11px;">%s</span>', esc_html( $external_id ) );
 			}
-			$html .= '</div>';
-			return $html;
+			return 'â€”'; // tiret
 		}
 		return $content;
 	}
