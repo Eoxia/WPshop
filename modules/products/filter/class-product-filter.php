@@ -27,6 +27,7 @@ class Product_Filter {
 	public function __construct() {
 		add_filter( 'eo_model_wps-product_register_post_type_args', array( $this, 'callback_register_post_type_args' ) );
 		add_filter( 'eo_model_wps-product_wps-product-cat', array( $this, 'callback_taxonomy' ) );
+		add_filter( 'register_taxonomy_args', array( $this, 'force_taxonomy_capabilities' ), 99, 2 );
 		add_filter( 'the_content', array( $this, 'display_content_grid_product' ) );
 		add_filter( 'the_content', array( $this, 'display_single_page_product' ) );
 
@@ -442,6 +443,25 @@ class Product_Filter {
 				)
 			);
 		}
+	}
+
+	/**
+	 * Force les capacités de la taxonomie après son enregistrement (évite l'écrasement par le framework)
+	 *
+	 * @param array  $args     Les arguments de la taxonomie.
+	 * @param string $taxonomy Le nom de la taxonomie.
+	 * @return array
+	 */
+	public function force_taxonomy_capabilities( $args, $taxonomy ) {
+		if ( 'wps-product-cat' === $taxonomy && Settings::g()->dolibarr_is_active() ) {
+			$args['capabilities'] = array(
+				'manage_terms' => 'manage_categories', // Permet de voir la liste
+				'edit_terms'   => 'do_not_allow',      // Interdit modification et ajout
+				'delete_terms' => 'do_not_allow',      // Interdit suppression
+				'assign_terms' => 'edit_posts',        // Permet l'assignation
+			);
+		}
+		return $args;
 	}
 }
 
