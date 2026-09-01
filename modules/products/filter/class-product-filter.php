@@ -480,7 +480,7 @@ class Product_Filter {
 			$dolibarr_url = ! empty( $wps_dolibarr['dolibarr_url'] ) ? rtrim( $wps_dolibarr['dolibarr_url'], '/' ) : '';
 			if ( $dolibarr_url ) {
 				$doli_link = $dolibarr_url . '/categories/viewcat.php?id=' . $external_id . '&type=product';
-				$new_actions['view_dolibarr'] = sprintf( '<a href="%s" target="_blank" style="color: #d63638;">%s</a>', esc_url( $doli_link ), __( 'Voir sur Dolibarr', 'wpshop' ) );
+				$new_actions['view_dolibarr'] = sprintf( '<a href="%s" target="_blank" style="color: #855b8e;">%s</a>', esc_url( $doli_link ), __( 'Voir sur Dolibarr', 'wpshop' ) );
 			}
 		}
 
@@ -644,9 +644,9 @@ class Product_Filter {
 				$dolibarr_url = ! empty( $wps_dolibarr['dolibarr_url'] ) ? rtrim( $wps_dolibarr['dolibarr_url'], '/' ) : '';
 				if ( $dolibarr_url ) {
 					$doli_link = $dolibarr_url . '/categories/viewcat.php?id=' . $external_id . '&type=product';
-					return sprintf( '<a href="%s" target="_blank" style="display:inline-block; padding: 2px 6px; background: #d63638; color: #fff; border-radius: 3px; font-size: 11px; text-decoration: none;">%s</a>', esc_url( $doli_link ), esc_html( $external_id ) );
+					return sprintf( '<a href="%s" target="_blank" style="display:inline-block; padding: 2px 6px; background: #855b8e; color: #fff; border-radius: 3px; font-size: 11px; text-decoration: none;">%s</a>', esc_url( $doli_link ), esc_html( $external_id ) );
 				}
-				return sprintf( '<span style="display:inline-block; padding: 2px 6px; background: #d63638; color: #fff; border-radius: 3px; font-size: 11px;">%s</span>', esc_html( $external_id ) );
+				return sprintf( '<span style="display:inline-block; padding: 2px 6px; background: #855b8e; color: #fff; border-radius: 3px; font-size: 11px;">%s</span>', esc_html( $external_id ) );
 			}
 			return 'â€”'; // tiret
 		}
