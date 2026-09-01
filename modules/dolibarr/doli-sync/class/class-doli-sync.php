@@ -642,10 +642,12 @@ class Doli_Sync extends Singleton_Util {
 			}
 
 			if ( ! $data_ok || ! $cat_ok || ! $img_ok ) {
-				$status_message  = "Statut de synchronisation : Échec\n";
-				$status_message .= ( $data_ok ? "✅" : "❌" ) . " Données produit : " . ( $data_ok ? "OK" : "HS" ) . "\n";
-				$status_message .= ( $cat_ok ? "✅" : "❌" ) . " Tags / Catégories : " . ( $cat_ok ? "OK" : "HS" ) . "\n";
-				$status_message .= ( $img_ok ? "✅" : "❌" ) . " Médias : " . ( $img_ok ? "OK" : "HS" );
+				$status_message  = "<div style='display:flex; gap:10px; align-items:center; white-space:nowrap;'>";
+				$status_message .= "<strong>Synchronisation : <span style='color:#e9ad4f;'>Rond Orange</span></strong> <span style='color:#666;'>|</span> ";
+				$status_message .= "<span>Données produit : <strong style='color:" . ($data_ok ? "#47e58e" : "#e05353") . ";'>" . ($data_ok ? "OK" : "HS") . "</strong></span> <span style='color:#666;'>|</span> ";
+				$status_message .= "<span>Tags/catégorie : <strong style='color:" . ($cat_ok ? "#47e58e" : "#e05353") . ";'>" . ($cat_ok ? "OK" : "HS") . "</strong></span> <span style='color:#666;'>|</span> ";
+				$status_message .= "<span>Médias : <strong style='color:" . ($img_ok ? "#47e58e" : "#e05353") . ";'>" . ($img_ok ? "OK" : "HS") . "</strong></span>";
+				$status_message .= "</div>";
 
 				$status_code = '0x3';
 				if ( $data_ok && ( ! $cat_ok || ! $img_ok ) ) {
@@ -684,10 +686,12 @@ class Doli_Sync extends Singleton_Util {
 		}
 
 		if ( $type == 'wps-product' ) {
-			$status_message  = "Statut de synchronisation : Succès\n";
-			$status_message .= "✅ Données produit : OK\n";
-			$status_message .= "✅ Tags / Catégories : OK\n";
-			$status_message .= "✅ Médias : OK";
+			$status_message  = "<div style='display:flex; gap:10px; align-items:center; white-space:nowrap;'>";
+			$status_message .= "<strong>Synchronisation : <span style='color:#47e58e;'>Rond Vert</span></strong> <span style='color:#666;'>|</span> ";
+			$status_message .= "<span>Données produit : <strong style='color:#47e58e;'>OK</strong></span> <span style='color:#666;'>|</span> ";
+			$status_message .= "<span>Tags/catégorie : <strong style='color:#47e58e;'>OK</strong></span> <span style='color:#666;'>|</span> ";
+			$status_message .= "<span>Médias : <strong style='color:#47e58e;'>OK</strong></span>";
+			$status_message .= "</div>";
 		} else {
 			$status_message = __('Sync OK', 'wpshop');
 		}
