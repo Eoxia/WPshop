@@ -266,15 +266,21 @@ class Doli_Sync extends Singleton_Util {
 				// et l'ensemble est remplacé d'un seul appel wp_set_object_terms (compteurs + caches à jour).
 				$doli_categories = Request_Util::get( 'categories/object/product/' . $entry_id . '?' );
 				$term_ids        = array();
+				$cat_names       = array();
 				if ( ! empty( $doli_categories ) ) {
 					foreach ( $doli_categories as $doli_category ) {
 						$term_id = $this->resolve_category_term_id( $doli_category, true );
 						if ( $term_id ) {
-							$term_ids[] = $term_id;
+							$term_ids[]  = $term_id;
+							$cat_names[] = $doli_category->label;
 						}
 					}
 				}
 				wp_set_object_terms( $wp_product->data['id'], $term_ids, 'wps-product-cat', false );
+
+				if ( ! empty( $cat_names ) ) {
+					$messages[] = sprintf( __( 'Synchronisation de %d catégories : %s', 'wpshop' ), count( $cat_names ), implode( ', ', $cat_names ) );
+				}
 
 				$wp_object = $wp_product;
 				break;

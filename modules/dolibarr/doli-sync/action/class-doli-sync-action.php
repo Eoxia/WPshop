@@ -205,6 +205,14 @@ class Doli_Sync_Action {
 		$status_check = Doli_Sync::g()->display_sync_status( $sync_status['wp_object'], $type, true );
 		$sync_view = ob_get_clean();
 
+		if ( ! empty( $sync_status['messages'] ) ) {
+			$sync_view .= '<div class="wps-sync-messages" style="margin-top: 4px; font-size: 11px; color: #46b450; line-height: 1.2; text-align: right;">';
+			foreach ( $sync_status['messages'] as $message ) {
+				$sync_view .= '<div>' . wp_kses_post( $message ) . '</div>';
+			}
+			$sync_view .= '</div>';
+		}
+
 		wp_send_json_success( array(
 			'id'               => $wp_id,
 			'namespace'        => 'wpshop',
