@@ -501,7 +501,7 @@ class Product_Filter {
 			</style>';
 			echo '<script>
 				jQuery(document).ready(function($) {
-					// Transform text slugs into input fields
+					// Transform text slugs into click-to-edit fields
 					$(".wp-list-table tbody tr").each(function() {
 						var $row = $(this);
 						var termId = $row.attr("id");
@@ -510,20 +510,40 @@ class Product_Filter {
 						var $slugCol = $row.find(".column-slug");
 						var slugText = $slugCol.text().trim();
 						if (slugText.length > 0 && slugText !== "-") {
-							$slugCol.html("<input type=\'text\' value=\'" + slugText + "\' class=\'wps-slug-input\' data-term-id=\'" + termId + "\'>");
+							$slugCol.html("<span class=\'wps-slug-display\' data-term-id=\'" + termId + "\' style=\'cursor:pointer; border-bottom:1px dashed #999; display:inline-block; padding:3px;\' title=\'Cliquez pour modifier\'>" + slugText + "</span><input type=\'text\' value=\'" + slugText + "\' class=\'wps-slug-input\' data-term-id=\'" + termId + "\' style=\'display:none; width:100%; box-sizing:border-box;\'>");
 						}
+					});
+
+					// Show input on click
+					$(document).on("click", ".wps-slug-display", function() {
+						var $display = $(this);
+						var $input = $display.next(".wps-slug-input");
+						$display.hide();
+						$input.show().focus();
 					});
 
 					// Handle inline save on blur or enter
 					$(document).on("blur keyup", ".wps-slug-input", function(e) {
-						if (e.type === "keyup" && e.keyCode !== 13) return; // Only trigger on Enter key
+						if (e.type === "keyup" && e.keyCode !== 13 && e.keyCode !== 27) return; // Enter or Esc
 
 						var $input = $(this);
+						var $display = $input.prev(".wps-slug-display");
 						var termId = $input.data("term-id");
 						var newSlug = $input.val().trim();
 						var oldSlug = $input.attr("data-old-slug") || $input.prop("defaultValue");
 
-						if (newSlug === oldSlug) return;
+						if (e.keyCode === 27) { // Esc key pressed
+							$input.val(oldSlug);
+							$input.hide();
+							$display.show();
+							return;
+						}
+
+						if (newSlug === oldSlug) {
+							$input.hide();
+							$display.show();
+							return;
+						}
 
 						$input.prop("disabled", true).css("opacity", "0.5");
 
@@ -537,19 +557,29 @@ class Product_Filter {
 							if (response.success) {
 								$input.val(response.data.slug);
 								$input.attr("data-old-slug", response.data.slug);
+								$display.text(response.data.slug);
+								
+								// Hide input, show display
+								$input.hide();
+								$display.show();
+								
 								// Flash green
-								$input.css({"transition": "border 0.3s", "border": "2px solid #46b450", "box-shadow": "0 0 5px #46b450"});
+								$display.css({"transition": "color 0.3s", "color": "#46b450"});
 								setTimeout(function() {
-									$input.css({"border": "", "box-shadow": ""});
+									$display.css({"color": ""});
 								}, 1500);
 							} else {
 								alert(response.data || "Erreur lors de la sauvegarde du slug.");
 								$input.val(oldSlug); // revert
+								$input.hide();
+								$display.show();
 							}
 						}).fail(function() {
 							$input.prop("disabled", false).css("opacity", "1");
 							alert("Erreur serveur lors de la sauvegarde.");
 							$input.val(oldSlug);
+							$input.hide();
+							$display.show();
 						});
 					});
 				});
@@ -635,6 +665,10 @@ class Product_Filter {
 	public function render_ids_column( $content, $column_name, $term_id ) {
 		if ( 'wps_wp_id' === $column_name ) {
 			$img_wp = PLUGIN_WPSHOP_URL . '/core/asset/image/logo-wordpress.jpg';
+			$view_link = get_term_link( (int) $term_id, 'wps-product-cat' );
+			if ( ! is_wp_error( $view_link ) ) {
+				return sprintf( '<div style="display:flex; align-items:center; gap:5px;"><img src="%s" style="width:18px; height:18px; border-radius:50%%;" /> <a href="%s" target="_blank" style="display:inline-block; padding: 2px 6px; background: #0073aa; color: #fff; border-radius: 3px; font-size: 11px; text-decoration: none;">#%d</a></div>', esc_url( $img_wp ), esc_url( $view_link ), $term_id );
+			}
 			return sprintf( '<div style="display:flex; align-items:center; gap:5px;"><img src="%s" style="width:18px; height:18px; border-radius:50%%;" /> <span style="display:inline-block; padding: 2px 6px; background: #0073aa; color: #fff; border-radius: 3px; font-size: 11px;">#%d</span></div>', esc_url( $img_wp ), $term_id );
 		}
 

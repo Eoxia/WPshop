@@ -74,7 +74,13 @@ defined( 'ABSPATH' ) || exit;
 					<td>
 						<div style="display:flex; align-items:center; gap:5px;">
 							<img src="<?php echo esc_url( PLUGIN_WPSHOP_URL . '/core/asset/image/logo-wordpress.jpg' ); ?>" style="width:18px; height:18px; border-radius:50%;" />
-							<span style="display:inline-block; padding: 2px 6px; background: #0073aa; color: #fff; border-radius: 3px; font-size: 11px;">#<?php echo esc_html( $wp_cat->term_id ); ?></span>
+							<?php
+							$view_link = get_term_link( (int) $wp_cat->term_id, 'wps-product-cat' );
+							if ( ! is_wp_error( $view_link ) ) : ?>
+								<a href="<?php echo esc_url( $view_link ); ?>" target="_blank" style="display:inline-block; padding: 2px 6px; background: #0073aa; color: #fff; border-radius: 3px; font-size: 11px; text-decoration: none;">#<?php echo esc_html( $wp_cat->term_id ); ?></a>
+							<?php else : ?>
+								<span style="display:inline-block; padding: 2px 6px; background: #0073aa; color: #fff; border-radius: 3px; font-size: 11px;">#<?php echo esc_html( $wp_cat->term_id ); ?></span>
+							<?php endif; ?>
 						</div>
 					</td>
 					<td>
