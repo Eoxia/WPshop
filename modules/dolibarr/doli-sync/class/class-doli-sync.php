@@ -247,8 +247,7 @@ class Doli_Sync extends Singleton_Util {
 
 				$wp_third_party = Doli_Third_Parties::g()->doli_to_wp( $doli_third_party, $wp_third_party );
 
-				// translators: Erase date for the third party <strong>Eoxia</strong> with the <strong>dolibarr</strong> data.
-				$messages[] = sprintf( __( 'Erase data for the third party <strong>%s</strong> with the <strong>dolibarr</strong> data', 'wpshop' ), $wp_third_party->data['title'] );
+				$messages[] = sprintf( __( 'Mise à jour du tiers <strong>%s</strong> avec les données de Dolibarr.', 'wpshop' ), $wp_third_party->data['title'] );
 
 				$wp_object = $wp_third_party;
 				break;
@@ -259,7 +258,7 @@ class Doli_Sync extends Singleton_Util {
 				$wp_product   = Doli_Products::g()->doli_to_wp( $doli_product, $wp_product );
 				Doli_Products::g()->update_post_image( $wp_product->data['id'], $entry_id );
 
-				$messages[] = sprintf( __( 'Erase data for the product <strong>%s</strong> with the <strong>dolibarr</strong> data', 'wpshop' ), $wp_product->data['title'] );
+				$messages[] = sprintf( __( 'Mise à jour du produit <strong>%s</strong> avec les données de Dolibarr.', 'wpshop' ), $wp_product->data['title'] );
 
 				// Rattachement des catégories par identifiant Dolibarr (_external_id) et non par nom :
 				// robuste aux accents/encodage et aux doublons. La catégorie absente est créée puis liée,
