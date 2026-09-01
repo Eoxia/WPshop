@@ -1,6 +1,6 @@
-<?php
+﻿<?php
 /**
- * La classe gérant les filtres des produits.
+ * La classe gÃ©rant les filtres des produits.
  *
  * @package   WPshop
  * @author    Eoxia <technique@eoxia.com>
@@ -67,14 +67,14 @@ class Product_Filter {
 	}
 
 	/**
-	 * Permet d'ajouter l'argument public à true pour le register_post_type de EOModel.
+	 * Permet d'ajouter l'argument public Ã  true pour le register_post_type de EOModel.
 	 *
 	 * @since   2.0.0
 	 * @version 2.0.0
 	 *
 	 * @param  array $args Les arguments pour le register_post_type.
 	 *
-	 * @return array       Les arguments pour le register_post_type avec public à true.
+	 * @return array       Les arguments pour le register_post_type avec public Ã  true.
 	 */
 	public function callback_register_post_type_args( $args ) {
 		$labels = array(
@@ -133,14 +133,14 @@ class Product_Filter {
 	}
 
 	/**
-	 * Entregistre la taxonomy catégorie de produit.
+	 * Entregistre la taxonomy catÃ©gorie de produit.
 	 *
 	 * @since   2.0.0
 	 * @version 2.0.0
 	 *
-	 * @param  array $args Les données à filtrer.
+	 * @param  array $args Les donnÃ©es Ã  filtrer.
 	 *
-	 * @return array       Les données filtrées.
+	 * @return array       Les donnÃ©es filtrÃ©es.
 	 */
 	public function callback_taxonomy( $args ) {
 		$labels = array(
@@ -183,7 +183,7 @@ class Product_Filter {
 	}
 
 	/**
-	 * Affiche la grille des produits sur les pages concernées.
+	 * Affiche la grille des produits sur les pages concernÃ©es.
 	 *
 	 * @since   2.0.0
 	 * @version 2.0.0
@@ -275,7 +275,7 @@ class Product_Filter {
 	 * @version 2.0.0
 	 *
 	 * @param  string  $attr    Attribut du bouton.
-	 * @param  Product $product Les données du produit.
+	 * @param  Product $product Les donnÃ©es du produit.
 	 *
 	 * @return string          Attribut du bouton.
 	 */
@@ -288,13 +288,13 @@ class Product_Filter {
 	}
 
 	/**
-	 * Rend le bouton "Ajouter au panier" grisé.
+	 * Rend le bouton "Ajouter au panier" grisÃ©.
 	 *
 	 * @since   2.0.0
 	 * @version 2.0.0
 	 *
 	 * @param  string  $class   Les classes du bouton.
-	 * @param  Product $product Les données du produit.
+	 * @param  Product $product Les donnÃ©es du produit.
 	 *
 	 * @return string          Les classes du bouton.
 	 */
@@ -313,9 +313,9 @@ class Product_Filter {
 	 * @version 2.0.0
 	 *
 	 * @param  string  $content Le contenu.
-	 * @param  Product $product Les données du produit.
+	 * @param  Product $product Les donnÃ©es du produit.
 	 *
-	 * @return string           Le contenu modifié.
+	 * @return string           Le contenu modifiÃ©.
 	 */
 	public function display_stock( $content, $product ) {
 		if ( $product->data['manage_stock'] ) {
@@ -328,7 +328,7 @@ class Product_Filter {
 	}
 
 	/**
-	 * Gère l'action de l'outil de suppression des catégories vides depuis les réglages.
+	 * GÃ¨re l'action de l'outil de suppression des catÃ©gories vides depuis les rÃ©glages.
 	 */
 	public function tool_delete_empty_categories() {
 		if ( ! current_user_can( 'manage_categories' ) ) {
@@ -339,7 +339,7 @@ class Product_Filter {
 
 		$redirect_to = admin_url( 'admin.php?page=wps-settings&tab=categories' );
 
-		// RÃ©cupÃ©rer TOUTES les catÃ©gories de produits
+		// Récupérer TOUTES les catégories de produits
 		$all_terms = get_terms( array(
 			'taxonomy'   => 'wps-product-cat',
 			'hide_empty' => false,
@@ -362,11 +362,11 @@ class Product_Filter {
 			exit;
 		}
 
-		// Affiche l'Ã©cran de confirmation
+		// Affiche l'écran de confirmation
 		$form_action = admin_url( 'admin-post.php' );
 		
 		$html  = '<h1>' . __( 'Confirmation de suppression', 'wpshop' ) . '</h1>';
-		$html .= '<p>' . __( 'Les catÃ©gories suivantes sont vides et vont Ãªtre supprimÃ©es dÃ©finitivement :', 'wpshop' ) . '</p>';
+		$html .= '<p>' . __( 'Les catégories suivantes sont vides et vont être supprimées définitivement :', 'wpshop' ) . '</p>';
 		$html .= '<ul>';
 		$term_ids_to_delete = array();
 		foreach ( $to_delete as $term ) {
@@ -428,7 +428,7 @@ class Product_Filter {
 				if ( $term_id > 0 ) {
 					$term = get_term( $term_id, 'wps-product-cat' );
 					if ( ! is_wp_error( $term ) ) {
-						error_log( 'WPShop: Catégorie vide supprimée - ID: ' . $term->term_id . ' Nom: ' . $term->name );
+						error_log( 'WPShop: CatÃ©gorie vide supprimÃ©e - ID: ' . $term->term_id . ' Nom: ' . $term->name );
 						wp_delete_term( $term_id, 'wps-product-cat' );
 						$deleted++;
 					}
@@ -441,7 +441,7 @@ class Product_Filter {
 	}
 
 	/**
-	 * Affiche une notice d'administration suite à la suppression des catégories vides.
+	 * Affiche une notice d'administration suite Ã  la suppression des catÃ©gories vides.
 	 */
 	public function admin_notice_delete_empty() {
 		if ( ! empty( $_REQUEST['bulk_empty_categories_deleted'] ) ) {
@@ -450,7 +450,7 @@ class Product_Filter {
 				'<div id="message" class="updated notice is-dismissible"><p>%s</p></div>',
 				sprintf(
 					/* translators: %s: Number of categories deleted */
-					_n( '%s catégorie vide supprimée.', '%s catégories vides supprimées.', $count, 'wpshop' ),
+					_n( '%s catÃ©gorie vide supprimÃ©e.', '%s catÃ©gories vides supprimÃ©es.', $count, 'wpshop' ),
 					$count
 				)
 			);
@@ -601,12 +601,12 @@ class Product_Filter {
 		$new_slug = isset( $_POST['slug'] ) ? sanitize_title( wp_unslash( $_POST['slug'] ) ) : '';
 
 		if ( $term_id <= 0 || empty( $new_slug ) ) {
-			wp_send_json_error( __( 'DonnÃ©es invalides.', 'wpshop' ) );
+			wp_send_json_error( __( 'Données invalides.', 'wpshop' ) );
 		}
 
 		$term = get_term( $term_id, 'wps-product-cat' );
 		if ( is_wp_error( $term ) || ! $term ) {
-			wp_send_json_error( __( 'CatÃ©gorie introuvable.', 'wpshop' ) );
+			wp_send_json_error( __( 'Catégorie introuvable.', 'wpshop' ) );
 		}
 
 		if ( $term->slug === $new_slug ) {
@@ -631,7 +631,7 @@ class Product_Filter {
 	public function prevent_manual_category_creation( $term, $taxonomy ) {
 		if ( 'wps-product-cat' === $taxonomy && Settings::g()->dolibarr_is_active() ) {
 			if ( isset( $_POST['action'] ) && 'add-tag' === $_POST['action'] ) {
-				return new \WP_Error( 'not_allowed', __( 'La crÃ©ation de catÃ©gories est pilotÃ©e par Dolibarr.', 'wpshop' ) );
+				return new \WP_Error( 'not_allowed', __( 'La création de catégories est pilotée par Dolibarr.', 'wpshop' ) );
 			}
 		}
 		return $term;
@@ -684,7 +684,7 @@ class Product_Filter {
 				}
 				return sprintf( '<div style="display:flex; align-items:center; gap:5px;"><img src="%s" style="width:18px; height:18px; border-radius:50%%;" /> <span style="display:inline-block; padding: 2px 6px; background: #855b8e; color: #fff; border-radius: 3px; font-size: 11px;">#%s</span></div>', esc_url( $img_doli ), esc_html( $external_id ) );
 			}
-			return 'â€”'; // tiret
+			return 'Ã¢â‚¬â€'; // tiret
 		}
 		return $content;
 	}
@@ -720,7 +720,7 @@ class Product_Filter {
 	}
 
 	/**
-	 * Force les capacités de la taxonomie après son enregistrement (évite l'écrasement par le framework)
+	 * Force les capacitÃ©s de la taxonomie aprÃ¨s son enregistrement (Ã©vite l'Ã©crasement par le framework)
 	 *
 	 * @param array  $args     Les arguments de la taxonomie.
 	 * @param string $taxonomy Le nom de la taxonomie.
@@ -730,7 +730,7 @@ class Product_Filter {
 		if ( 'wps-product-cat' === $taxonomy && Settings::g()->dolibarr_is_active() ) {
 			$args['capabilities'] = array(
 				'manage_terms' => 'manage_categories', // Permet de voir la liste
-				'edit_terms'   => 'manage_categories', // Rétabli pour modifier le slug
+				'edit_terms'   => 'manage_categories', // RÃ©tabli pour modifier le slug
 				'delete_terms' => 'do_not_allow',      // Interdit suppression
 				'assign_terms' => 'edit_posts',        // Permet l'assignation
 			);
@@ -740,3 +740,5 @@ class Product_Filter {
 }
 
 new Product_Filter();
+
+
