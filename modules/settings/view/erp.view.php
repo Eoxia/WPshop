@@ -41,7 +41,7 @@ defined( 'ABSPATH' ) || exit;
 				$sync_settings = get_option( 'wps_sync_settings', array() );
 				$color_ok      = ! empty( $sync_settings['color_ok'] ) ? $sync_settings['color_ok'] : '#47e58e';
 			?>
-				<span class="wpeo-tooltip-event" aria-label="<?php esc_attr_e( 'Connected to Dolibarr', 'wpshop' ); ?>" style="display:inline-block; width:10px; height:10px; border-radius:50%; background-color:<?php echo esc_attr( $color_ok ); ?>; margin-left:8px; vertical-align:middle; cursor:help;"></span>
+				<strong class="wpeo-tooltip-event" aria-label="<?php esc_attr_e( 'Connected to Dolibarr', 'wpshop' ); ?>" style="color:<?php echo esc_attr( $color_ok ); ?>; margin-left:8px; cursor:help;">OK</strong>
 				<?php 
 				$connected_user = get_transient( 'wps_connected_erp_user' );
 				if ( ! empty( $connected_user ) ) {
