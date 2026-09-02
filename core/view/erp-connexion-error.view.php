@@ -13,22 +13,27 @@ namespace wpshop;
 
 defined( 'ABSPATH' ) || exit; ?>
 
-<div class="wpeo-notification notification-active notification-red" style="opacity: 1; background: rgba(255,255,255,1);">
-	<div class="notification-title">
-		<?php esc_html_e( 'Connection failed with your ERP', 'wpshop' ); ?>
+<div class="notice notice-error is-dismissible">
+	<p>
+		<strong><?php esc_html_e( 'Connection failed with your ERP', 'wpshop' ); ?></strong>
+	</p>
+	<p>
+		<?php echo esc_html( Error_Util::get( 'WPS-ERP-002' ) ); ?>
+	</p>
+	<?php 
+	$detailed_error = get_transient( 'wps_request_error' );
+	if ( ! empty( $detailed_error ) ) : ?>
 		<p>
-			<?php echo esc_html( Error_Util::get( 'WPS-ERP-002' ) ); ?>
-			<?php 
-			$detailed_error = get_transient( 'wps_request_error' );
-			if ( ! empty( $detailed_error ) ) : ?>
-				<br><br><strong><?php _e( 'Details:', 'wpshop' ); ?></strong><br> <?php echo nl2br( esc_html( $detailed_error ) ); ?>
-			<?php endif; ?>
-			<br><br>
-			<a href="<?php echo esc_url( admin_url( 'admin.php?page=wps-settings&tab=erp' ) ); ?>" class="wpeo-button button-main" style="color: #fff; text-decoration: none;">
-				<?php _e( 'Configure ERP', 'wpshop' ); ?>
-			</a>
-			<a href="https://wpshop.fr/documentation/" target="_blank" style="margin-left: 10px;"><?php _e( 'Need help ? Follow this guide', 'wpshop' ); ?></a>
+			<strong><?php _e( 'Details:', 'wpshop' ); ?></strong><br> 
+			<?php echo nl2br( esc_html( $detailed_error ) ); ?>
 		</p>
-	</div>
-	<div class="notification-close"><i class="fas fa-times"></i></div>
+	<?php endif; ?>
+	<p>
+		<a href="<?php echo esc_url( admin_url( 'admin.php?page=wps-settings&tab=erp' ) ); ?>" class="button button-primary">
+			<?php _e( 'Configure ERP', 'wpshop' ); ?>
+		</a>
+		<a href="https://wpshop.fr/documentation/" target="_blank" style="margin-left: 10px;">
+			<?php _e( 'Need help ? Follow this guide', 'wpshop' ); ?>
+		</a>
+	</p>
 </div>

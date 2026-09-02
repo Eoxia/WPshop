@@ -234,28 +234,26 @@ class Settings_Action {
 			wp_die();
 		}
 
-		$tab                                 = ! empty( $_POST['tab'] ) ? sanitize_text_field( $_POST['tab'] ) : 'general';
-		$wps_page_shop_id                    = ! empty( $_POST['wps_page_shop_id'] ) ? (int) $_POST['wps_page_shop_id'] : 0;
-		$wps_page_cart_id                    = ! empty( $_POST['wps_page_cart_id'] ) ? (int) $_POST['wps_page_cart_id'] : 0;
-		$wps_page_checkout_id                = ! empty( $_POST['wps_page_checkout_id'] ) ? (int) $_POST['wps_page_checkout_id'] : 0;
-		$wps_page_my_account_id              = ! empty( $_POST['wps_page_my_account_id'] ) ? (int) $_POST['wps_page_my_account_id'] : 0;
-		$wps_page_general_conditions_of_sale = ! empty( $_POST['wps_page_general_conditions_of_sale'] ) ? (int) $_POST['wps_page_general_conditions_of_sale'] : 0;
-
+		$tab = ! empty( $_POST['tab'] ) ? sanitize_text_field( $_POST['tab'] ) : 'general';
+		
 		$page_ids_options = get_option( 'wps_page_ids', Pages::g()->default_options );
+		if ( ! is_array( $page_ids_options ) ) {
+			$page_ids_options = Pages::g()->default_options;
+		}
 
-		$page_ids_options = Pages::g()->default_options;
-
-		$page_ids_options['shop_id']                    = $wps_page_shop_id;
-		$page_ids_options['cart_id']                    = $wps_page_cart_id;
-		$page_ids_options['checkout_id']                = $wps_page_checkout_id;
-		$page_ids_options['my_account_id']              = $wps_page_my_account_id;
-		$page_ids_options['general_conditions_of_sale'] = $wps_page_general_conditions_of_sale;
+		foreach ( Pages::g()->page_state_titles as $key => $title ) {
+			$post_key = 'wps_page_' . $key;
+			if ( isset( $_POST[ $post_key ] ) ) {
+				$page_ids_options[ $key ] = (int) $_POST[ $post_key ];
+			}
+		}
 
 		update_option( 'wps_page_ids', $page_ids_options );
 
 		set_transient( 'updated_wpshop_option_' . get_current_user_id(), __( 'Your settings have been saved.', 'wpshop' ), 30 );
 
-		wp_redirect( admin_url( 'admin.php?page=wps-settings&tab= ' . $tab ) );
+		wp_redirect( admin_url( 'admin.php?page=wps-settings&tab=' . $tab ) );
+		exit;
 	}
 
 	/**
@@ -273,17 +271,26 @@ class Settings_Action {
 
 		$tab                 = ! empty( $_POST['tab'] ) ? sanitize_text_field( $_POST['tab'] ) : 'general';
 		$dolibarr_url        = ! empty( $_POST['dolibarr_url'] ) ? sanitize_text_field( $_POST['dolibarr_url'] ) : '';
-		$dolibarr_secret     = ! empty( $_POST['dolibarr_secret'] ) ? sanitize_text_field( $_POST['dolibarr_secret'] ) : '';
+		$dolibarr_secret_raw = ! empty( $_POST['dolibarr_secret'] ) ? sanitize_text_field( $_POST['dolibarr_secret'] ) : '';
 		$error               = '';
 
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
 
 		$dolibarr_option['dolibarr_url']        = $dolibarr_url;
-		$dolibarr_option['dolibarr_secret']     = $dolibarr_secret;
+		
+		$actual_secret = Settings::g()->decrypt_key( $dolibarr_option['dolibarr_secret'] );
+		
+		if ( ! empty( $dolibarr_secret_raw ) && $dolibarr_secret_raw !== '••••••••••••••••••••' ) {
+			$actual_secret = $dolibarr_secret_raw;
+			$dolibarr_option['dolibarr_secret'] = Settings::g()->encrypt_key( $actual_secret );
+		} elseif ( empty( $dolibarr_secret_raw ) ) {
+			$actual_secret = '';
+			$dolibarr_option['dolibarr_secret'] = '';
+		}
 
 		update_option( 'wps_dolibarr', $dolibarr_option );
 
-		$test_result = Request_Util::test_erp_connection( $dolibarr_url, $dolibarr_secret );
+		$test_result = Request_Util::test_erp_connection( $dolibarr_url, $actual_secret );
 		
 		if ( false === $test_result['statut'] ) {
 			$base_error = Error_Util::get( 'WPS-ERP-001' );

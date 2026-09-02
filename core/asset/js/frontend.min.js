@@ -52,7 +52,13 @@ window.eoxiaJS.wpshop.init = function() {
 
 	jQuery.post( ajaxurl, data, function( response ) {
 		if ( ! response.data.statut && response.data.view ) {
-			jQuery( 'body' ).append( response.data.view );
+			if ( jQuery( 'body' ).hasClass( 'wp-admin' ) ) {
+				if ( jQuery( '.wrap' ).length ) {
+					jQuery( '.wrap' ).first().before( response.data.view );
+				} else {
+					jQuery( '#wpbody-content' ).prepend( response.data.view );
+				}
+			}
 		}
 	} );
 };

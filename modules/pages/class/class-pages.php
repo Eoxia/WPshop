@@ -154,13 +154,20 @@ class Pages extends Singleton_Util {
 
 		if ( ! empty( $this->page_state_titles ) ) {
 			foreach ( $this->page_state_titles as $key => $page_title ) {
+				$existing_page_id = ! empty( $this->page_ids[ $key ] ) ? (int) $this->page_ids[ $key ] : 0;
+				$existing_post    = $existing_page_id ? get_post( $existing_page_id ) : false;
+
+				if ( $existing_post && $existing_post->post_status !== 'trash' ) {
+					continue;
+				}
+
 				$page_id = wp_insert_post( array(
 					'post_title'  => __( $page_title ),
 					'post_type'   => 'page',
 					'post_status' => 'publish',
 				) );
 
-				if ( ! empty( $page_id ) ) {
+				if ( ! empty( $page_id ) && ! is_wp_error( $page_id ) ) {
 					$this->page_ids[ $key ] = $page_id;
 
 					LOG_Util::log( sprintf( 'Create the page %s when activate plugin success', $page_title ), 'wpshop' );
@@ -174,6 +181,13 @@ class Pages extends Singleton_Util {
 
 		if ( ! empty( $this->page_state_titles_private ) ) {
 			foreach ( $this->page_state_titles_private as $key => $page_title ) {
+				$existing_page_id = ! empty( $this->page_ids[ $key ] ) ? (int) $this->page_ids[ $key ] : 0;
+				$existing_post    = $existing_page_id ? get_post( $existing_page_id ) : false;
+
+				if ( $existing_post && $existing_post->post_status !== 'trash' ) {
+					continue;
+				}
+
 				$page_id = wp_insert_post( array(
 					'post_title'  => __( $page_title ),
 					'post_type'   => 'page',
@@ -182,7 +196,7 @@ class Pages extends Singleton_Util {
 					'post_content' => __( $this->page_content_default[$key] ),
 				) );
 
-				if ( ! empty( $page_id ) ) {
+				if ( ! empty( $page_id ) && ! is_wp_error( $page_id ) ) {
 					$this->page_ids[ $key ] = $page_id;
 
 					LOG_Util::log( sprintf( 'Create the private page %s when activate plugin success', $page_title ), 'wpshop' );
@@ -196,6 +210,13 @@ class Pages extends Singleton_Util {
 	}
 
 	public function create_connection_page() {
+		$existing_page_id = ! empty( $this->page_ids['connection_id'] ) ? (int) $this->page_ids['connection_id'] : 0;
+		$existing_post    = $existing_page_id ? get_post( $existing_page_id ) : false;
+
+		if ( $existing_post && $existing_post->post_status !== 'trash' ) {
+			return;
+		}
+
 		$page_id = wp_insert_post( array(
 			'post_title'  => __( 'Connection' ),
 			'post_type'   => 'page',
@@ -203,13 +224,13 @@ class Pages extends Singleton_Util {
 			'post_status' => 'publish',
 			'post_content' => __( 'This page is used for connection.' ),
 		) );
-		if ( ! empty( $page_id ) ) {
+		if ( ! empty( $page_id ) && ! is_wp_error( $page_id ) ) {
 			$this->page_ids['connection_id'] = $page_id;
+			update_option( 'wps_page_ids', $this->page_ids );
 			LOG_Util::log( 'Create the connection page when activate plugin success', 'wpshop' );
 		} else {
 			LOG_Util::log( 'Error create the connection page when activate plugin', 'wpshop' );
 		}
-		update_option( 'wps_page_ids', $this->page_ids );
 	}
 
 	/**

@@ -37,8 +37,27 @@ defined( 'ABSPATH' ) || exit;
 		<span class="form-label">
 			<span class="wps-erp-label-text"><?php esc_html_e( 'Dolibarr Secret Key', 'wpshop' ); ?></span>
 			<span class="wpeo-tooltip-event wps-erp-tooltip-icon" aria-label="<?php esc_attr_e( 'Secret key used for sell with Dolibarr', 'wpshop' ); ?>">?</span>
-			<?php if (Settings::g()->dolibarr_is_active()): ?>
-				<span class="wpeo-tooltip-event wps-erp-status-icon wps-erp-status-icon--success" aria-label="<?php esc_attr_e( 'Connected to Dolibarr', 'wpshop' ); ?>">✔</span>
+		</span>
+		<label class="form-field-container">
+			<?php $is_secret_set = ! empty( $dolibarr_option['dolibarr_secret'] ); ?>
+			<input type="password" class="form-field" name="dolibarr_secret" placeholder="<?php echo $is_secret_set ? '••••••••••••••••••••' : ''; ?>" value="<?php echo $is_secret_set ? '••••••••••••••••••••' : ''; ?>" />
+		</label>
+	</div>
+
+	<div class="wps-erp-actions" style="display: flex; align-items: center; gap: 15px;">
+		<button type="submit" class="wpeo-button button-main">
+			<?php esc_html_e( 'Save Changes', 'wpshop' ); ?>
+		</button>
+		<button type="submit" name="test_connection" value="1" class="wpeo-button button-secondary">
+			<?php esc_html_e( 'Test Connection', 'wpshop' ); ?>
+		</button>
+
+		<?php if (Settings::g()->dolibarr_is_active()): 
+			$sync_settings = get_option( 'wps_sync_settings', array() );
+			$color_ok      = ! empty( $sync_settings['color_ok'] ) ? $sync_settings['color_ok'] : '#47e58e';
+		?>
+			<div style="display: flex; align-items: center;">
+				<strong class="wpeo-tooltip-event" aria-label="<?php esc_attr_e( 'Connected to Dolibarr', 'wpshop' ); ?>" style="color:<?php echo esc_attr( $color_ok ); ?>; cursor:help;">OK</strong>
 				<?php 
 				$connected_user = get_transient( 'wps_connected_erp_user' );
 				if ( ! empty( $connected_user ) ) {
@@ -47,19 +66,9 @@ defined( 'ABSPATH' ) || exit;
 					echo '<span style="margin-left: 10px; font-weight: normal; font-size: 13px;">Connecté en tant que : <a href="' . esc_url( $user_link ) . '" target="_blank"><strong>' . esc_html( $connected_user->name ) . '</strong></a> ('. esc_html($connected_user->login) .')</span>';
 				}
 				?>
-			<?php else: ?>
-				<span class="wpeo-tooltip-event wps-erp-status-icon wps-erp-status-icon--error" aria-label="<?php esc_attr_e( 'Connection to dolibarr failed', 'wpshop' ); ?>">✖</span>
-			<?php endif; ?>
-		</span>
-		<label class="form-field-container">
-			<input type="text" class="form-field" name="dolibarr_secret" value="<?php echo esc_attr( $dolibarr_option['dolibarr_secret'] ); ?>" />
-		</label>
-	</div>
-
-	<div class="wps-erp-actions">
-		<input type="submit" class="wpeo-button button-main" value="<?php esc_html_e( 'Save Changes', 'wpshop' ); ?>" />
-		<button type="submit" name="test_connection" value="1" class="wpeo-button button-secondary">
-			<?php esc_html_e( 'Test Connection', 'wpshop' ); ?>
-		</button>
+			</div>
+		<?php else: ?>
+			<span class="wpeo-tooltip-event wps-erp-status-icon wps-erp-status-icon--error" aria-label="<?php esc_attr_e( 'Connection to dolibarr failed', 'wpshop' ); ?>" style="color: #e05353;">✖</span>
+		<?php endif; ?>
 	</div>
 </form>

@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
  * La classe gÃ©rant les filtres des produits.
  *

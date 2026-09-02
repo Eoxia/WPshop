@@ -44,7 +44,7 @@ defined( 'ABSPATH' ) || exit;
 							foreach ( $pages as $page ) :
 								$selected = '';
 
-								if ( $page->ID === $page_ids_options[ $key ] ) :
+								if ( $page->ID === (int) $page_ids_options[ $key ] ) :
 									$selected = 'selected="selected"';
 								endif;
 								?>
@@ -55,6 +55,21 @@ defined( 'ABSPATH' ) || exit;
 						?>
 					</select>
 				</label>
+				<?php
+				$selected_page_id = ! empty( $page_ids_options[ $key ] ) ? (int) $page_ids_options[ $key ] : 0;
+				$selected_post    = $selected_page_id ? get_post( $selected_page_id ) : false;
+				if ( $selected_post ) :
+					$slug = $selected_post->post_name;
+					$url  = get_permalink( $selected_post->ID );
+					?>
+					<div style="margin-top: 8px; font-size: 13px; color: #666;">
+						Slug : <strong><?php echo esc_html( $slug ); ?></strong>
+						<span style="margin: 0 8px; color: #ccc;">|</span>
+						<a href="<?php echo esc_url( $url ); ?>" target="_blank" style="text-decoration: none; color: #2271b1;">
+							<i class="fas fa-external-link-alt" style="margin-right: 4px; font-size: 11px;"></i><?php echo esc_html( urldecode( $url ) ); ?>
+						</a>
+					</div>
+				<?php endif; ?>
 			</div>
 
 			<?php
