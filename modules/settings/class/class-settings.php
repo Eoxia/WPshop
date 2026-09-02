@@ -131,11 +131,14 @@ class Settings extends Singleton_Util {
 			) );
 		} else {
 			$page_ids_options = get_option( 'wps_page_ids', Pages::g()->default_options );
+			if ( ! is_array( $page_ids_options ) ) {
+				$page_ids_options = Pages::g()->default_options;
+			}
 			$emails = Emails::g()->emails;
 
 			if ( ! empty( $emails ) ) {
 				foreach ( $emails as $key => $email ) {
-					$email[$key] = $page_ids_options[$key];
+					$email[$key] = ! empty( $page_ids_options[$key] ) ? $page_ids_options[$key] : 0;
 					$emails[$key] = $email;
 				}
 			}
