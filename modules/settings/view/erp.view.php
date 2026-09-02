@@ -37,8 +37,11 @@ defined( 'ABSPATH' ) || exit;
 		<span class="form-label">
 			<span class="wps-erp-label-text"><?php esc_html_e( 'Dolibarr Secret Key', 'wpshop' ); ?></span>
 			<span class="wpeo-tooltip-event wps-erp-tooltip-icon" aria-label="<?php esc_attr_e( 'Secret key used for sell with Dolibarr', 'wpshop' ); ?>">?</span>
-			<?php if (Settings::g()->dolibarr_is_active()): ?>
-				<span class="wpeo-tooltip-event wps-erp-status-icon wps-erp-status-icon--success" aria-label="<?php esc_attr_e( 'Connected to Dolibarr', 'wpshop' ); ?>">✔</span>
+			<?php if (Settings::g()->dolibarr_is_active()): 
+				$sync_settings = get_option( 'wps_sync_settings', array() );
+				$color_ok      = ! empty( $sync_settings['color_ok'] ) ? $sync_settings['color_ok'] : '#47e58e';
+			?>
+				<span class="wpeo-tooltip-event" aria-label="<?php esc_attr_e( 'Connected to Dolibarr', 'wpshop' ); ?>" style="display:inline-block; width:10px; height:10px; border-radius:50%; background-color:<?php echo esc_attr( $color_ok ); ?>; margin-left:8px; vertical-align:middle; cursor:help;"></span>
 				<?php 
 				$connected_user = get_transient( 'wps_connected_erp_user' );
 				if ( ! empty( $connected_user ) ) {
