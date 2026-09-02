@@ -369,7 +369,9 @@ class WPshop_Action {
 				'connected' => false,
 			) );
 		}
-		$test_result = Request_Util::test_erp_connection( $dolibarr_option['dolibarr_url'], $dolibarr_option['dolibarr_secret'] );
+		
+		$actual_secret = \wpshop\Settings::g()->decrypt_key( $dolibarr_option['dolibarr_secret'] );
+		$test_result = Request_Util::test_erp_connection( $dolibarr_option['dolibarr_url'], $actual_secret );
 		$statut = $test_result['statut'];
 
 		if ( $statut ) {

@@ -56,7 +56,7 @@ class Request_Util extends Singleton_Util {
 			'blocking'  => true,
 			'headers'   => array(
 				'Content-type' => 'application/json',
-				'DOLAPIKEY'    => $dolibarr_option['dolibarr_secret'],
+				'DOLAPIKEY'    => \wpshop\Settings::g()->decrypt_key( $dolibarr_option['dolibarr_secret'] ),
 			),
 			//@todo: Grave selon moi.
 			'sslverify' => false,
@@ -109,7 +109,7 @@ class Request_Util extends Singleton_Util {
 		$request = wp_remote_get( $api_url, array(
 			'headers' => array(
 				'Content-type' => 'application/json',
-				'DOLAPIKEY'    => $dolibarr_option['dolibarr_secret'],
+				'DOLAPIKEY'    => \wpshop\Settings::g()->decrypt_key( $dolibarr_option['dolibarr_secret'] ),
 			),
 		) );
 
