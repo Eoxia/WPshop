@@ -215,11 +215,40 @@ class Settings extends Singleton_Util {
 	public function dolibarr_is_active() {
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
 
-		if ( ! empty( $dolibarr_option['dolibarr_url'] ) && ! empty( $dolibarr_option['dolibarr_secret'] ) && empty( $dolibarr_option['error'] ) ) {
-			return true;
-		}
+		return ( ! empty( $dolibarr_option['dolibarr_url'] ) && ! empty( $dolibarr_option['dolibarr_secret'] ) && empty( $dolibarr_option['error'] ) );
+	}
 
-		return false;
+	/**
+	 * Chiffre une chaîne de caractères en utilisant les clés de sécurité WordPress.
+	 *
+	 * @param string $string La chaîne à chiffrer.
+	 * @return string La chaîne chiffrée.
+	 */
+	public function encrypt_key( $string ) {
+		if ( empty( $string ) ) return $string;
+		$key = defined( 'AUTH_KEY' ) ? AUTH_KEY : 'wpshop-default-encryption-key';
+		$iv_length = openssl_cipher_iv_length( 'aes-256-cbc' );
+		$iv = openssl_random_pseudo_bytes( $iv_length );
+		$encrypted = openssl_encrypt( $string, 'aes-256-cbc', $key, 0, $iv );
+		return base64_encode( $encrypted . '::' . $iv );
+	}
+
+	/**
+	 * Déchiffre une chaîne de caractères chiffrée par encrypt_key().
+	 *
+	 * @param string $string La chaîne à déchiffrer.
+	 * @return string La chaîne déchiffrée, ou la chaîne originale si non chiffrée.
+	 */
+	public function decrypt_key( $string ) {
+		if ( empty( $string ) ) return $string;
+		$data = base64_decode( $string, true );
+		if ( false === $data || strpos( $data, '::' ) === false ) {
+			return $string; // Not encrypted or old plain text key
+		}
+		$key = defined( 'AUTH_KEY' ) ? AUTH_KEY : 'wpshop-default-encryption-key';
+		list( $encrypted_data, $iv ) = explode( '::', $data, 2 );
+		$decrypted = openssl_decrypt( $encrypted_data, 'aes-256-cbc', $key, 0, $iv );
+		return false !== $decrypted ? $decrypted : $string;
 	}
 }
 

@@ -39,7 +39,8 @@ defined( 'ABSPATH' ) || exit;
 			<span class="wpeo-tooltip-event wps-erp-tooltip-icon" aria-label="<?php esc_attr_e( 'Secret key used for sell with Dolibarr', 'wpshop' ); ?>">?</span>
 		</span>
 		<label class="form-field-container">
-			<input type="text" class="form-field" name="dolibarr_secret" value="<?php echo esc_attr( $dolibarr_option['dolibarr_secret'] ); ?>" />
+			<?php $is_secret_set = ! empty( $dolibarr_option['dolibarr_secret'] ); ?>
+			<input type="password" class="form-field" name="dolibarr_secret" placeholder="<?php echo $is_secret_set ? '••••••••••••••••••••' : ''; ?>" value="<?php echo $is_secret_set ? '••••••••••••••••••••' : ''; ?>" />
 		</label>
 	</div>
 

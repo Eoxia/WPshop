@@ -271,17 +271,26 @@ class Settings_Action {
 
 		$tab                 = ! empty( $_POST['tab'] ) ? sanitize_text_field( $_POST['tab'] ) : 'general';
 		$dolibarr_url        = ! empty( $_POST['dolibarr_url'] ) ? sanitize_text_field( $_POST['dolibarr_url'] ) : '';
-		$dolibarr_secret     = ! empty( $_POST['dolibarr_secret'] ) ? sanitize_text_field( $_POST['dolibarr_secret'] ) : '';
+		$dolibarr_secret_raw = ! empty( $_POST['dolibarr_secret'] ) ? sanitize_text_field( $_POST['dolibarr_secret'] ) : '';
 		$error               = '';
 
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );
 
 		$dolibarr_option['dolibarr_url']        = $dolibarr_url;
-		$dolibarr_option['dolibarr_secret']     = $dolibarr_secret;
+		
+		$actual_secret = Settings::g()->decrypt_key( $dolibarr_option['dolibarr_secret'] );
+		
+		if ( ! empty( $dolibarr_secret_raw ) && $dolibarr_secret_raw !== '••••••••••••••••••••' ) {
+			$actual_secret = $dolibarr_secret_raw;
+			$dolibarr_option['dolibarr_secret'] = Settings::g()->encrypt_key( $actual_secret );
+		} elseif ( empty( $dolibarr_secret_raw ) ) {
+			$actual_secret = '';
+			$dolibarr_option['dolibarr_secret'] = '';
+		}
 
 		update_option( 'wps_dolibarr', $dolibarr_option );
 
-		$test_result = Request_Util::test_erp_connection( $dolibarr_url, $dolibarr_secret );
+		$test_result = Request_Util::test_erp_connection( $dolibarr_url, $actual_secret );
 		
 		if ( false === $test_result['statut'] ) {
 			$base_error = Error_Util::get( 'WPS-ERP-001' );
