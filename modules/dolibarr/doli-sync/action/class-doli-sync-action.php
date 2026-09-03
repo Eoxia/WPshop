@@ -39,6 +39,9 @@ class Doli_Sync_Action {
 		add_action( 'wps_listing_table_end', array( $this, 'add_sync_item' ), 10, 2 );
 
 		add_action( 'wp_ajax_check_sync_status', array( $this, 'check_sync_status' ) );
+		
+		add_action( 'wp_ajax_wps_frontend_auto_sync', array( $this, 'frontend_auto_sync' ) );
+		add_action( 'wp_ajax_nopriv_wps_frontend_auto_sync', array( $this, 'frontend_auto_sync' ) );
 	}
 
 	/**

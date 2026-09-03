@@ -202,6 +202,42 @@ class Doli_Products extends Singleton_Util {
 	}
 
 	/**
+	 * Synchronisation légère (Prix et Stock uniquement).
+	 * Utile pour les requêtes asynchrones côté Front-end afin de préserver les performances.
+	 *
+	 * @since   2.4.0
+	 *
+	 * @param  Product  $wp_product   Les données du produit WordPress.
+	 * @param  \stdClass $doli_product L'objet produit brut de Dolibarr.
+	 *
+	 * @return Product                Le produit WordPress mis à jour.
+	 */
+	public function light_sync( $wp_product, $doli_product ) {
+		$wp_id = (int) $wp_product->data['id'];
+
+		// Mise à jour ciblée des méta-données cruciales (sans déclencher un full `Product::g()->update()`)
+		update_post_meta( $wp_id, '_price', $doli_product->price );
+		update_post_meta( $wp_id, '_price_ttc', $doli_product->price_ttc );
+		update_post_meta( $wp_id, '_tva_amount', $doli_product->price_ttc - $doli_product->price );
+		update_post_meta( $wp_id, '_tva_tx', $doli_product->tva_tx );
+		
+		$stock = isset( $doli_product->stock_reel ) ? (int) $doli_product->stock_reel : 0;
+		update_post_meta( $wp_id, '_stock', $stock );
+
+		// Met à jour la date de dernière synchronisation pour réinitialiser le TTL
+		update_post_meta( $wp_id, '_date_last_synchro', current_time( 'mysql' ) );
+
+		// Mise à jour de l'objet en mémoire pour la suite du flux
+		$wp_product->data['price']      = $doli_product->price;
+		$wp_product->data['price_ttc']  = $doli_product->price_ttc;
+		$wp_product->data['tva_amount'] = $doli_product->price_ttc - $doli_product->price;
+		$wp_product->data['tva_tx']     = $doli_product->tva_tx;
+		$wp_product->data['stock']      = $stock;
+
+		return $wp_product;
+	}
+
+	/**
 	 * Récupère l'id d'un produit WordPress selon l'id d'un produit de Dolibarr.
 	 *
 	 * @since   2.0.0

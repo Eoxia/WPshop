@@ -122,25 +122,75 @@ $auto_sync_shop = isset( $sync_settings['auto_sync_shop'] ) ? $sync_settings['au
 		</div>
 	</div>
 
+<?php
+$auto_sync_list = isset( $sync_settings['auto_sync_list'] ) ? $sync_settings['auto_sync_list'] : 1;
+$auto_sync_edit = isset( $sync_settings['auto_sync_edit'] ) ? $sync_settings['auto_sync_edit'] : 0;
+$auto_sync_shop = isset( $sync_settings['auto_sync_shop'] ) ? $sync_settings['auto_sync_shop'] : 0;
+$auto_sync_ttl  = isset( $sync_settings['auto_sync_ttl'] ) ? (int) $sync_settings['auto_sync_ttl'] : 4;
+?>
+
 	<div style="margin-top: 40px;">
 		<h3 style="margin-top: 0px; font-weight: 600; font-size: 16px; color: #1d2327; margin-bottom: 24px;"><?php esc_html_e( 'Déclenchements automatiques', 'wpshop' ); ?></h3>
         
-        <p class="description" style="margin-bottom: 15px;"><?php esc_html_e( 'Choisissez à quel moment le système doit lancer automatiquement la vérification de la synchronisation des produits.', 'wpshop' ); ?></p>
+        <p class="description" style="margin-bottom: 25px;"><?php esc_html_e( 'Choisissez à quel moment le système doit lancer automatiquement la vérification de la synchronisation des produits.', 'wpshop' ); ?></p>
 
-        <label style="display: block; margin-bottom: 10px;">
-            <input type="checkbox" name="wps_auto_sync_list" value="1" <?php checked( $auto_sync_list, 1 ); ?> />
-            <strong><?php esc_html_e( 'Liste des produits (Back-office)', 'wpshop' ); ?></strong> <span style="color: #646970;">(wp-admin/admin.php?page=wps-product)</span>
-        </label>
+		<style>
+		.wps-toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 15px; background: #fff; border: 1px solid #e2e4e7; border-radius: 6px; margin-bottom: 10px; }
+		.wps-toggle-text { font-size: 14px; }
+		.wps-toggle-desc { color: #646970; font-size: 13px; margin-left: 5px; }
+		.wps-toggle-switch { position: relative; display: inline-block; width: 40px; height: 22px; }
+		.wps-toggle-switch input { opacity: 0; width: 0; height: 0; }
+		.wps-toggle-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .3s; border-radius: 22px; }
+		.wps-toggle-slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%; box-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+		.wps-toggle-switch input:checked + .wps-toggle-slider { background-color: #2271b1; }
+		.wps-toggle-switch input:focus + .wps-toggle-slider { box-shadow: 0 0 1px #2271b1; }
+		.wps-toggle-switch input:checked + .wps-toggle-slider:before { transform: translateX(18px); }
+		</style>
 
-        <label style="display: block; margin-bottom: 10px;">
-            <input type="checkbox" name="wps_auto_sync_edit" value="1" <?php checked( $auto_sync_edit, 1 ); ?> />
-            <strong><?php esc_html_e( 'Édition d\'un produit unitaire (Back-office)', 'wpshop' ); ?></strong> <span style="color: #646970;">(wp-admin/post.php?post=X&action=edit)</span>
-        </label>
+		<div class="wps-toggle-row">
+			<div class="wps-toggle-text">
+				<strong><?php esc_html_e( 'Liste des produits (Back-office)', 'wpshop' ); ?></strong>
+				<span class="wps-toggle-desc">(wp-admin/admin.php?page=wps-product)</span>
+			</div>
+			<label class="wps-toggle-switch">
+				<input type="checkbox" name="wps_auto_sync_list" value="1" <?php checked( $auto_sync_list, 1 ); ?>>
+				<span class="wps-toggle-slider"></span>
+			</label>
+		</div>
 
-        <label style="display: block; margin-bottom: 10px;">
-            <input type="checkbox" name="wps_auto_sync_shop" value="1" <?php checked( $auto_sync_shop, 1 ); ?> />
-            <strong><?php esc_html_e( 'Boutique publique (Front-end)', 'wpshop' ); ?></strong> <span style="color: #d63638;">(Attention : les vérifications en arrière-plan peuvent légèrement ralentir l'affichage pour les visiteurs)</span>
-        </label>
+		<div class="wps-toggle-row">
+			<div class="wps-toggle-text">
+				<strong><?php esc_html_e( 'Édition d\'un produit unitaire (Back-office)', 'wpshop' ); ?></strong>
+				<span class="wps-toggle-desc">(wp-admin/post.php?post=X&action=edit)</span>
+			</div>
+			<label class="wps-toggle-switch">
+				<input type="checkbox" name="wps_auto_sync_edit" value="1" <?php checked( $auto_sync_edit, 1 ); ?>>
+				<span class="wps-toggle-slider"></span>
+			</label>
+		</div>
+
+		<div class="wps-toggle-row" style="border-left: 3px solid #d63638;">
+			<div class="wps-toggle-text">
+				<strong><?php esc_html_e( 'Boutique publique (Front-end)', 'wpshop' ); ?></strong>
+				<br><span class="wps-toggle-desc" style="color: #d63638; margin-left:0;"><?php esc_html_e( 'Attention : La synchronisation asynchrone affichera un "loader" à la place du prix pendant le chargement.', 'wpshop' ); ?></span>
+			</div>
+			<label class="wps-toggle-switch">
+				<input type="checkbox" name="wps_auto_sync_shop" value="1" <?php checked( $auto_sync_shop, 1 ); ?>>
+				<span class="wps-toggle-slider"></span>
+			</label>
+		</div>
+
+		<div class="wps-toggle-row" style="margin-top: 20px; background: #f6f7f7;">
+			<div class="wps-toggle-text">
+				<strong><?php esc_html_e( 'Fréquence de rafrachissement Front-end', 'wpshop' ); ?></strong>
+				<br><span class="wps-toggle-desc" style="margin-left:0;"><?php esc_html_e( 'Un produit ne sera pas resynchronisé si sa dernière mise à jour est plus récente que ce délai (Péremption).', 'wpshop' ); ?></span>
+			</div>
+			<div>
+				<input type="number" name="wps_auto_sync_ttl" value="<?php echo esc_attr( $auto_sync_ttl ); ?>" min="0" step="1" style="width: 70px;">
+				<span style="font-size: 14px; margin-left: 5px;">heures</span>
+			</div>
+		</div>
+
 	</div>
 
 	<div style="margin-top: 40px;">

@@ -91,6 +91,7 @@ class Settings_Action {
 			$sync_settings['auto_sync_list'] = isset( $_POST['wps_auto_sync_list'] ) ? 1 : 0;
 			$sync_settings['auto_sync_edit'] = isset( $_POST['wps_auto_sync_edit'] ) ? 1 : 0;
 			$sync_settings['auto_sync_shop'] = isset( $_POST['wps_auto_sync_shop'] ) ? 1 : 0;
+			$sync_settings['auto_sync_ttl']  = isset( $_POST['wps_auto_sync_ttl'] ) ? (int) $_POST['wps_auto_sync_ttl'] : 4;
 
 			update_option( 'wps_sync_settings', $sync_settings );
 
