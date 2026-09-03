@@ -96,9 +96,14 @@ $auto_sync_shop = isset( $sync_settings['auto_sync_shop'] ) ? $sync_settings['au
 				<span class="wps-sync-color-dot" style="background-color: <?php echo esc_attr( $color_error ); ?>;"></span>
 				<?php esc_html_e( 'Désynchronisation majeure (Données principales corrompues)', 'wpshop' ); ?>
 			</span>
-			<label style="margin: 0;">
-				<input type="color" class="wps-sync-color-input" name="wps_sync_color_error" value="<?php echo esc_attr( $color_error ); ?>" />
-			</label>
+			<div style="display: flex; align-items: center; gap: 10px;">
+				<button type="button" class="wpeo-button button-square-40 button-secondary" onclick="document.getElementById('wps_sync_color_error').value='#e05353'; document.getElementById('wps_sync_color_error').dispatchEvent(new Event('input'));" title="<?php esc_attr_e( 'Remettre par défaut', 'wpshop' ); ?>">
+					<i class="fas fa-undo"></i>
+				</button>
+				<label style="margin: 0;">
+					<input type="color" id="wps_sync_color_error" class="wps-sync-color-input" name="wps_sync_color_error" value="<?php echo esc_attr( $color_error ); ?>" oninput="this.closest('.wps-sync-color-row').querySelector('.wps-sync-color-dot').style.backgroundColor = this.value;" />
+				</label>
+			</div>
 		</div>
 
 		<div class="wps-sync-color-row">
@@ -106,9 +111,14 @@ $auto_sync_shop = isset( $sync_settings['auto_sync_shop'] ) ? $sync_settings['au
 				<span class="wps-sync-color-dot" style="background-color: <?php echo esc_attr( $color_orange ); ?>;"></span>
 				<?php esc_html_e( 'Désynchronisation mineure (Données OK, mais Tags/Catégories/Médias HS)', 'wpshop' ); ?>
 			</span>
-			<label style="margin: 0;">
-				<input type="color" class="wps-sync-color-input" name="wps_sync_color_orange" value="<?php echo esc_attr( $color_orange ); ?>" />
-			</label>
+			<div style="display: flex; align-items: center; gap: 10px;">
+				<button type="button" class="wpeo-button button-square-40 button-secondary" onclick="document.getElementById('wps_sync_color_orange').value='#e9ad4f'; document.getElementById('wps_sync_color_orange').dispatchEvent(new Event('input'));" title="<?php esc_attr_e( 'Remettre par défaut', 'wpshop' ); ?>">
+					<i class="fas fa-undo"></i>
+				</button>
+				<label style="margin: 0;">
+					<input type="color" id="wps_sync_color_orange" class="wps-sync-color-input" name="wps_sync_color_orange" value="<?php echo esc_attr( $color_orange ); ?>" oninput="this.closest('.wps-sync-color-row').querySelector('.wps-sync-color-dot').style.backgroundColor = this.value;" />
+				</label>
+			</div>
 		</div>
 
 		<div class="wps-sync-color-row">
@@ -116,9 +126,14 @@ $auto_sync_shop = isset( $sync_settings['auto_sync_shop'] ) ? $sync_settings['au
 				<span class="wps-sync-color-dot" style="background-color: <?php echo esc_attr( $color_ok ); ?>;"></span>
 				<?php esc_html_e( 'Tout est synchronisé (Données + Catégories + Médias)', 'wpshop' ); ?>
 			</span>
-			<label style="margin: 0;">
-				<input type="color" class="wps-sync-color-input" name="wps_sync_color_ok" value="<?php echo esc_attr( $color_ok ); ?>" />
-			</label>
+			<div style="display: flex; align-items: center; gap: 10px;">
+				<button type="button" class="wpeo-button button-square-40 button-secondary" onclick="document.getElementById('wps_sync_color_ok').value='#47e58e'; document.getElementById('wps_sync_color_ok').dispatchEvent(new Event('input'));" title="<?php esc_attr_e( 'Remettre par défaut', 'wpshop' ); ?>">
+					<i class="fas fa-undo"></i>
+				</button>
+				<label style="margin: 0;">
+					<input type="color" id="wps_sync_color_ok" class="wps-sync-color-input" name="wps_sync_color_ok" value="<?php echo esc_attr( $color_ok ); ?>" oninput="this.closest('.wps-sync-color-row').querySelector('.wps-sync-color-dot').style.backgroundColor = this.value;" />
+				</label>
+			</div>
 		</div>
 	</div>
 
@@ -191,46 +206,6 @@ $auto_sync_ttl  = isset( $sync_settings['auto_sync_ttl'] ) ? (int) $sync_setting
 			</div>
 		</div>
 
-	</div>
-
-	<div style="margin-top: 40px; padding: 20px; background: #fff; border: 1px solid #c3c4c7; border-left: 4px solid #00a0d2; border-radius: 4px;">
-		<h3 style="margin-top: 0px; font-weight: 600; font-size: 16px; color: #1d2327; margin-bottom: 15px;"><?php esc_html_e( 'Contrôle de l\'arborescence des catégories', 'wpshop' ); ?></h3>
-		<p class="description" style="margin-bottom: 20px;"><?php esc_html_e( 'Utilisez cet outil pour forcer la vérification et la reconstruction de l\'arborescence (catégories parentes/enfants) de toutes les catégories importées depuis Dolibarr.', 'wpshop' ); ?></p>
-		
-		<button type="button" id="wps-sync-category-tree-btn" class="wpeo-button button-secondary">
-			<i class="fas fa-sitemap" style="margin-right: 8px;"></i>
-			<?php esc_html_e( 'Reconstruire l\'arborescence', 'wpshop' ); ?>
-		</button>
-		<span id="wps-sync-category-tree-status" style="margin-left: 15px; font-weight: 600;"></span>
-
-		<script>
-		document.getElementById('wps-sync-category-tree-btn').addEventListener('click', function(e) {
-			e.preventDefault();
-			var btn = this;
-			var status = document.getElementById('wps-sync-category-tree-status');
-			
-			btn.disabled = true;
-			status.style.color = '#2271b1';
-			status.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Reconstruction en cours... cela peut prendre quelques minutes.';
-
-			jQuery.post(ajaxurl, {
-				action: 'wps_sync_category_tree'
-			}, function(response) {
-				btn.disabled = false;
-				if (response.success) {
-					status.style.color = '#00a32a';
-					status.innerHTML = '<i class="fas fa-check"></i> ' + response.data.message;
-				} else {
-					status.style.color = '#d63638';
-					status.innerHTML = '<i class="fas fa-times"></i> Erreur lors de la reconstruction.';
-				}
-			}).fail(function() {
-				btn.disabled = false;
-				status.style.color = '#d63638';
-				status.innerHTML = '<i class="fas fa-times"></i> Erreur serveur.';
-			});
-		});
-		</script>
 	</div>
 
 	<div style="margin-top: 40px;">
