@@ -182,7 +182,7 @@ $auto_sync_ttl  = isset( $sync_settings['auto_sync_ttl'] ) ? (int) $sync_setting
 
 		<div class="wps-toggle-row" style="margin-top: 20px; background: #f6f7f7;">
 			<div class="wps-toggle-text">
-				<strong><?php esc_html_e( 'Fréquence de rafrachissement Front-end', 'wpshop' ); ?></strong>
+				<strong><?php esc_html_e( 'Fréquence de rafraichissement Front-end', 'wpshop' ); ?></strong>
 				<br><span class="wps-toggle-desc" style="margin-left:0;"><?php esc_html_e( 'Un produit ne sera pas resynchronisé si sa dernière mise à jour est plus récente que ce délai (Péremption).', 'wpshop' ); ?></span>
 			</div>
 			<div>
@@ -191,6 +191,46 @@ $auto_sync_ttl  = isset( $sync_settings['auto_sync_ttl'] ) ? (int) $sync_setting
 			</div>
 		</div>
 
+	</div>
+
+	<div style="margin-top: 40px; padding: 20px; background: #fff; border: 1px solid #c3c4c7; border-left: 4px solid #00a0d2; border-radius: 4px;">
+		<h3 style="margin-top: 0px; font-weight: 600; font-size: 16px; color: #1d2327; margin-bottom: 15px;"><?php esc_html_e( 'Contrôle de l\'arborescence des catégories', 'wpshop' ); ?></h3>
+		<p class="description" style="margin-bottom: 20px;"><?php esc_html_e( 'Utilisez cet outil pour forcer la vérification et la reconstruction de l\'arborescence (catégories parentes/enfants) de toutes les catégories importées depuis Dolibarr.', 'wpshop' ); ?></p>
+		
+		<button type="button" id="wps-sync-category-tree-btn" class="wpeo-button button-secondary">
+			<i class="fas fa-sitemap" style="margin-right: 8px;"></i>
+			<?php esc_html_e( 'Reconstruire l\'arborescence', 'wpshop' ); ?>
+		</button>
+		<span id="wps-sync-category-tree-status" style="margin-left: 15px; font-weight: 600;"></span>
+
+		<script>
+		document.getElementById('wps-sync-category-tree-btn').addEventListener('click', function(e) {
+			e.preventDefault();
+			var btn = this;
+			var status = document.getElementById('wps-sync-category-tree-status');
+			
+			btn.disabled = true;
+			status.style.color = '#2271b1';
+			status.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Reconstruction en cours... cela peut prendre quelques minutes.';
+
+			jQuery.post(ajaxurl, {
+				action: 'wps_sync_category_tree'
+			}, function(response) {
+				btn.disabled = false;
+				if (response.success) {
+					status.style.color = '#00a32a';
+					status.innerHTML = '<i class="fas fa-check"></i> ' + response.data.message;
+				} else {
+					status.style.color = '#d63638';
+					status.innerHTML = '<i class="fas fa-times"></i> Erreur lors de la reconstruction.';
+				}
+			}).fail(function() {
+				btn.disabled = false;
+				status.style.color = '#d63638';
+				status.innerHTML = '<i class="fas fa-times"></i> Erreur serveur.';
+			});
+		});
+		</script>
 	</div>
 
 	<div style="margin-top: 40px;">

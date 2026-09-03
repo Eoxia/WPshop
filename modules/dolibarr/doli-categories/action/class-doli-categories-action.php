@@ -45,6 +45,8 @@ class Doli_Category_Action {
 		add_action( 'admin_menu', array( $this, 'callback_admin_menu' ), 20 );
 		add_action( 'wps_checkout_create_category', array( $this, 'create_category' ), 10, 1 );
 		add_action( 'admin_post_wps_download_category', array( $this, 'download_category' ) );
+		
+		add_action( 'wp_ajax_wps_sync_category_tree', array( $this, 'ajax_sync_category_tree' ) );
 
 		add_filter( 'parent_file', function( $parent_file ) {
 			global $current_screen;
@@ -224,6 +226,62 @@ class Doli_Category_Action {
 				'option'  => Doli_Category::g()->option_per_page,
 			)
 		);
+	}
+
+	/**
+	 * Force la resynchronisation de l'arborescence des catégories (parents/enfants).
+	 *
+	 * @return void
+	 */
+	public function ajax_sync_category_tree() {
+		$terms = get_terms( array(
+			'taxonomy'   => 'wps-product-cat',
+			'hide_empty' => false,
+			'meta_query' => array(
+				array(
+					'key'     => '_external_id',
+					'compare' => 'EXISTS',
+				),
+			),
+		) );
+		
+		$updated = 0;
+		
+		if ( ! is_wp_error( $terms ) && ! empty( $terms ) ) {
+			foreach ( $terms as $term ) {
+				$external_id = get_term_meta( $term->term_id, '_external_id', true );
+				if ( $external_id ) {
+					$doli_category = Request_Util::get( 'categories/' . $external_id );
+					if ( ! empty( $doli_category ) && isset( $doli_category->fk_parent ) ) {
+						if ( $doli_category->fk_parent > 0 ) {
+							$parent_terms = get_terms( array(
+								'taxonomy'   => 'wps-product-cat',
+								'hide_empty' => false,
+								'meta_query' => array(
+									array(
+										'key'   => '_external_id',
+										'value' => (int) $doli_category->fk_parent,
+									),
+								),
+							) );
+							if ( ! is_wp_error( $parent_terms ) && ! empty( $parent_terms ) ) {
+								wp_update_term( $term->term_id, 'wps-product-cat', array(
+									'parent' => $parent_terms[0]->term_id,
+								) );
+								$updated++;
+							}
+						} else {
+							wp_update_term( $term->term_id, 'wps-product-cat', array(
+								'parent' => 0,
+							) );
+							$updated++;
+						}
+					}
+				}
+			}
+		}
+		
+		wp_send_json_success( array( 'message' => sprintf( __( '%d catégories vérifiées et structurées.', 'wpshop' ), $updated ) ) );
 	}
 }
 
