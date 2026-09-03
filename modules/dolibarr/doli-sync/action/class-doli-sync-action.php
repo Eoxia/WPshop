@@ -39,6 +39,173 @@ class Doli_Sync_Action {
 		add_action( 'wps_listing_table_end', array( $this, 'add_sync_item' ), 10, 2 );
 
 		add_action( 'wp_ajax_check_sync_status', array( $this, 'check_sync_status' ) );
+		
+		add_action( 'wp_ajax_wps_frontend_auto_sync', array( $this, 'frontend_auto_sync' ) );
+		add_action( 'wp_ajax_nopriv_wps_frontend_auto_sync', array( $this, 'frontend_auto_sync' ) );
+
+		add_action( 'wp_footer', array( $this, 'frontend_auto_sync_script' ), 100 );
+		add_action( 'admin_head', array( $this, 'admin_auto_sync_script' ) );
+	}
+
+	/**
+	 * Injecte les variables JS pour le comportement des synchronisations automatiques dans l'admin.
+	 */
+	public function admin_auto_sync_script() {
+		$sync_settings  = get_option( 'wps_sync_settings', array() );
+		$auto_sync_list = isset( $sync_settings['auto_sync_list'] ) ? (int) $sync_settings['auto_sync_list'] : 1;
+		$auto_sync_edit = isset( $sync_settings['auto_sync_edit'] ) ? (int) $sync_settings['auto_sync_edit'] : 0;
+		echo '<script>var wps_auto_sync_list = ' . $auto_sync_list . ';</script>';
+
+		// Si on est sur la page d'édition d'un produit unitaire et que l'option est activée
+		global $pagenow, $post;
+		if ( $pagenow === 'post.php' && isset( $_GET['action'] ) && $_GET['action'] === 'edit' && $auto_sync_edit === 1 ) {
+			if ( $post && $post->post_type === 'wps-product' ) {
+				?>
+				<script>
+				jQuery(document).ready(function($) {
+					// Déclenche un clic sur le bouton de synchronisation unitaire existant s'il y en a un
+					setTimeout(function() {
+						var syncBtn = $('.wps-sync .button-synchro[data-wp-id="<?php echo (int) $post->ID; ?>"]');
+						if ( syncBtn.length ) {
+							var container = syncBtn.closest('.wps-sync');
+							var data = {
+								action: 'check_sync_status',
+								wp_id: syncBtn.data('wp-id'),
+								type: syncBtn.data('type')
+							};
+
+							window.eoxiaJS.loader.display( container );
+
+							$.post( ajaxurl, data, function( response ) {
+								window.eoxiaJS.loader.remove(container);
+								container.replaceWith( response.data.view );
+							}).fail(function() {
+								window.eoxiaJS.loader.remove(container);
+								container.find(".statut").addClass('statut-red');
+							});
+						}
+					}, 500);
+				});
+				</script>
+				<?php
+			}
+		}
+	}
+
+	/**
+	 * Injecte le script asynchrone sur le front-end pour la synchronisation automatique des produits affichés.
+	 *
+	 * @since   2.4.0
+	 */
+	public function frontend_auto_sync_script() {
+		// Vérifie si on est sur l'administration ou si l'option front-end est désactivée
+		if ( is_admin() ) {
+			return;
+		}
+
+		$sync_settings  = get_option( 'wps_sync_settings', array() );
+		$auto_sync_shop = isset( $sync_settings['auto_sync_shop'] ) ? $sync_settings['auto_sync_shop'] : 0;
+
+		if ( empty( $auto_sync_shop ) ) {
+			return;
+		}
+		?>
+		<style>
+		/* Loader CSS pour la synchronisation */
+		.wps-sync-loader {
+			display: inline-block;
+			width: 20px;
+			height: 20px;
+			border: 3px solid rgba(0,0,0,0.1);
+			border-radius: 50%;
+			border-top-color: #2271b1;
+			animation: wps-sync-spin 1s ease-in-out infinite;
+			vertical-align: middle;
+		}
+		@keyframes wps-sync-spin {
+			to { transform: rotate(360deg); }
+		}
+		.wps-product-price.wps-sync-loading {
+			opacity: 0.5;
+			position: relative;
+		}
+		.wps-product-price.wps-sync-loading:after {
+			content: '';
+			display: inline-block;
+			width: 14px;
+			height: 14px;
+			border: 2px solid rgba(0,0,0,0.1);
+			border-radius: 50%;
+			border-top-color: #2271b1;
+			animation: wps-sync-spin 1s ease-in-out infinite;
+			margin-left: 10px;
+			vertical-align: middle;
+		}
+		</style>
+		<script>
+		jQuery(document).ready(function($) {
+			// Récupère tous les IDs des produits présents sur la page (en utilisant le bouton d'ajout au panier qui possède l'ID)
+			var product_ids = [];
+			var product_elements = {};
+
+			$('.wps-product').each(function() {
+				var container = $(this);
+				var btn = container.find('.wps-product-buy[data-id]');
+				if ( btn.length ) {
+					var id = btn.data('id');
+					if ( id && product_ids.indexOf(id) === -1 ) {
+						product_ids.push(id);
+						product_elements[id] = container;
+						// Affiche le loader sur le prix
+						container.find('.wps-product-price').addClass('wps-sync-loading');
+					}
+				}
+			});
+
+			if ( product_ids.length > 0 ) {
+				$.post(
+					'<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>',
+					{
+						action: 'wps_frontend_auto_sync',
+						product_ids: product_ids
+					},
+					function( response ) {
+						if ( response.success && response.data.products ) {
+							$.each( response.data.products, function( id, data ) {
+								if ( product_elements[id] ) {
+									var container = product_elements[id];
+									
+									// Retire le loader
+									container.find('.wps-product-price').removeClass('wps-sync-loading');
+									
+									// Met à jour le prix
+									if ( data.price_display ) {
+										var priceContainer = container.find('.wps-product-price');
+										if (priceContainer.length) {
+											var currency = priceContainer.find('span[itemprop="priceCurrency"]').prop('outerHTML') || '<span>€</span>';
+											priceContainer.html('<span itemprop="price" content="'+data.price_ttc+'">' + data.price_display + '</span> ' + currency);
+										}
+									}
+
+									// Gérer l'état du bouton si le stock est 0 (optionnel, selon le fonctionnement WPShop)
+									if ( data.stock <= 0 ) {
+										// container.find('.wps-product-buy').removeClass('wps-product-add-to-cart').addClass('out-of-stock');
+									}
+								}
+							});
+						}
+						
+						// Nettoyage de secours au cas où la réponse n'inclut pas tous les produits (ex: pas d'external_id)
+						$('.wps-product-price.wps-sync-loading').removeClass('wps-sync-loading');
+					}
+				).fail(function() {
+					// En cas d'erreur de requête, on retire les loaders pour ne pas bloquer l'affichage
+					$('.wps-product-price.wps-sync-loading').removeClass('wps-sync-loading');
+				});
+			}
+		});
+		</script>
+		<?php
 	}
 
 	/**
@@ -322,6 +489,66 @@ class Doli_Sync_Action {
 			'id'     => $wp_id,
 			'status' => $status,
 		) );
+	}
+	/**
+	 * Déclenche une synchronisation légère (Prix/Stock) pour le front-end avec prise en charge du TTL.
+	 *
+	 * @since   2.4.0
+	 */
+	public function frontend_auto_sync() {
+		// Vérification du nonce (facultatif pour du front-end public, mais recommandé si on le passe)
+		// On va s'en passer car c'est une action publique en lecture/mise à jour légère.
+		
+		$product_ids = ! empty( $_POST['product_ids'] ) ? array_map( 'intval', (array) $_POST['product_ids'] ) : array();
+		if ( empty( $product_ids ) ) {
+			wp_send_json_error( array( 'message' => 'No products' ) );
+		}
+
+		// Limite stricte pour préserver Dolibarr
+		$product_ids = array_slice( $product_ids, 0, 10 );
+
+		$sync_settings = get_option( 'wps_sync_settings', array() );
+		$ttl_hours     = isset( $sync_settings['auto_sync_ttl'] ) ? (int) $sync_settings['auto_sync_ttl'] : 4;
+		$ttl_seconds   = $ttl_hours * 3600;
+
+		$results = array();
+
+		foreach ( $product_ids as $wp_id ) {
+			if ( empty( $wp_id ) ) continue;
+
+			$product = Product::g()->get( array( 'id' => $wp_id ), true );
+			if ( empty( $product->data['external_id'] ) ) {
+				continue;
+			}
+
+			// Vérification du TTL (Péremption)
+			$last_sync_date = get_post_meta( $wp_id, '_date_last_synchro', true );
+			$needs_sync     = true;
+
+			if ( ! empty( $last_sync_date ) ) {
+				$last_time = strtotime( $last_sync_date );
+				if ( ( time() - $last_time ) < $ttl_seconds ) {
+					$needs_sync = false;
+				}
+			}
+
+			if ( $needs_sync ) {
+				// Interrogation de Dolibarr pour ce produit
+				$doli_product = Request_Util::get( 'products/' . $product->data['external_id'] );
+				if ( ! is_wp_error( $doli_product ) && ! empty( $doli_product->id ) ) {
+					$product = Doli_Products::g()->light_sync( $product, $doli_product );
+				}
+			}
+
+			// Renvoi des données nécessaires pour mettre à jour l'affichage
+			$results[ $wp_id ] = array(
+				'price_ttc'     => number_format( $product->data['price_ttc'], 2, '.', '' ),
+				'price_display' => number_format( $product->data['price_ttc'], 2, ',', '' ),
+				'stock'         => (int) $product->data['stock'],
+			);
+		}
+
+		wp_send_json_success( array( 'products' => $results ) );
 	}
 }
 

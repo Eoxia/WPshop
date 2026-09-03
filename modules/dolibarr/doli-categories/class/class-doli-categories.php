@@ -223,12 +223,35 @@ class Doli_Category extends Term_Class {
 			$wp_category->data['description'] = $doli_category->description;
 		}
 
+		if ( ! empty($doli_category->fk_parent) ) {
+			$parent_terms = get_terms( array(
+				'taxonomy'   => 'wps-product-cat',
+				'hide_empty' => false,
+				'meta_query' => array(
+					array(
+						'key'   => '_external_id',
+						'value' => (int) $doli_category->fk_parent,
+					),
+				),
+			) );
+			if ( ! is_wp_error( $parent_terms ) && ! empty( $parent_terms ) ) {
+				$wp_category->data['parent'] = $parent_terms[0]->term_id;
+			}
+		} else {
+			$wp_category->data['parent'] = 0;
+		}
+
 		$wp_category = Doli_Category::g()->update( $wp_category->data );
 
-		if ( isset($doli_category->description) && ! empty($wp_category->data['id']) ) {
-			wp_update_term( $wp_category->data['id'], 'wps-product-cat', array(
-				'description' => $doli_category->description,
-			) );
+		$term_update_args = array();
+		if ( isset($doli_category->description) ) {
+			$term_update_args['description'] = $doli_category->description;
+		}
+		if ( isset($wp_category->data['parent']) ) {
+			$term_update_args['parent'] = $wp_category->data['parent'];
+		}
+		if ( ! empty($wp_category->data['id']) && ! empty($term_update_args) ) {
+			wp_update_term( $wp_category->data['id'], 'wps-product-cat', $term_update_args );
 		}
 
 		if ( $save ) {
