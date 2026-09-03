@@ -206,7 +206,6 @@ class Doli_Sync_Action {
 		});
 		</script>
 		<?php
->>>>>>> Stashed changes
 	}
 
 	/**
