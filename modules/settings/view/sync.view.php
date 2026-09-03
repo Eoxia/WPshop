@@ -17,6 +17,10 @@ $sync_settings = get_option( 'wps_sync_settings', array() );
 $color_ok     = ! empty( $sync_settings['color_ok'] ) ? $sync_settings['color_ok'] : '#47e58e';
 $color_error  = ! empty( $sync_settings['color_error'] ) ? $sync_settings['color_error'] : '#e05353';
 $color_orange = ! empty( $sync_settings['color_orange'] ) ? $sync_settings['color_orange'] : '#e9ad4f';
+
+$auto_sync_list = isset( $sync_settings['auto_sync_list'] ) ? $sync_settings['auto_sync_list'] : 1;
+$auto_sync_edit = isset( $sync_settings['auto_sync_edit'] ) ? $sync_settings['auto_sync_edit'] : 0;
+$auto_sync_shop = isset( $sync_settings['auto_sync_shop'] ) ? $sync_settings['auto_sync_shop'] : 0;
 ?>
 
 <style>
@@ -118,14 +122,35 @@ $color_orange = ! empty( $sync_settings['color_orange'] ) ? $sync_settings['colo
 		</div>
 	</div>
 
-	<div style="margin-top: 30px;">
+	<div style="margin-top: 40px;">
+		<h3 style="margin-top: 0px; font-weight: 600; font-size: 16px; color: #1d2327; margin-bottom: 24px;"><?php esc_html_e( 'Déclenchements automatiques', 'wpshop' ); ?></h3>
+        
+        <p class="description" style="margin-bottom: 15px;"><?php esc_html_e( 'Choisissez à quel moment le système doit lancer automatiquement la vérification de la synchronisation des produits.', 'wpshop' ); ?></p>
+
+        <label style="display: block; margin-bottom: 10px;">
+            <input type="checkbox" name="wps_auto_sync_list" value="1" <?php checked( $auto_sync_list, 1 ); ?> />
+            <strong><?php esc_html_e( 'Liste des produits (Back-office)', 'wpshop' ); ?></strong> <span style="color: #646970;">(wp-admin/admin.php?page=wps-product)</span>
+        </label>
+
+        <label style="display: block; margin-bottom: 10px;">
+            <input type="checkbox" name="wps_auto_sync_edit" value="1" <?php checked( $auto_sync_edit, 1 ); ?> />
+            <strong><?php esc_html_e( 'Édition d\'un produit unitaire (Back-office)', 'wpshop' ); ?></strong> <span style="color: #646970;">(wp-admin/post.php?post=X&action=edit)</span>
+        </label>
+
+        <label style="display: block; margin-bottom: 10px;">
+            <input type="checkbox" name="wps_auto_sync_shop" value="1" <?php checked( $auto_sync_shop, 1 ); ?> />
+            <strong><?php esc_html_e( 'Boutique publique (Front-end)', 'wpshop' ); ?></strong> <span style="color: #d63638;">(Attention : les vérifications en arrière-plan peuvent légèrement ralentir l'affichage pour les visiteurs)</span>
+        </label>
+	</div>
+
+	<div style="margin-top: 40px;">
 		<button type="submit" class="wpeo-button button-main button-right">
 			<i class="fas fa-save" style="margin-right: 8px;"></i>
 			<?php esc_html_e( 'Enregistrer les changements', 'wpshop' ); ?>
 		</button>
 		<button type="submit" name="wps_sync_reset" value="1" class="wpeo-button button-secondary button-right" style="margin-right: 15px;" onclick="return confirm('<?php esc_attr_e( 'Êtes-vous sûr de vouloir réinitialiser les couleurs ?', 'wpshop' ); ?>');">
 			<i class="fas fa-undo" style="margin-right: 8px;"></i>
-			<?php esc_html_e( 'Remettre les couleurs par défaut', 'wpshop' ); ?>
+			<?php esc_html_e( 'Remettre par défaut', 'wpshop' ); ?>
 		</button>
 	</div>
 </form>
