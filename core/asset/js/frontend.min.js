@@ -16,7 +16,7 @@ window.eoxiaJS.wpshopFrontend = {};
 window.eoxiaJS.wpshop.init = function() {
 	window.eoxiaJS.wpshop.event();
 
-	if ( jQuery( '.wps-sync' ).length ) {
+	if ( jQuery( '.wps-sync' ).length && ( typeof wps_auto_sync_list === 'undefined' || wps_auto_sync_list === 1 ) ) {
 		jQuery( '.wps-sync' ).each( function() {
 			var data = {
 				action: 'check_sync_status',
