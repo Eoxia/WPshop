@@ -53,7 +53,43 @@ class Doli_Sync_Action {
 	public function admin_auto_sync_script() {
 		$sync_settings  = get_option( 'wps_sync_settings', array() );
 		$auto_sync_list = isset( $sync_settings['auto_sync_list'] ) ? (int) $sync_settings['auto_sync_list'] : 1;
+		$auto_sync_edit = isset( $sync_settings['auto_sync_edit'] ) ? (int) $sync_settings['auto_sync_edit'] : 0;
 		echo '<script>var wps_auto_sync_list = ' . $auto_sync_list . ';</script>';
+
+		// Si on est sur la page d'édition d'un produit unitaire et que l'option est activée
+		global $pagenow, $post;
+		if ( $pagenow === 'post.php' && isset( $_GET['action'] ) && $_GET['action'] === 'edit' && $auto_sync_edit === 1 ) {
+			if ( $post && $post->post_type === 'wps-product' ) {
+				?>
+				<script>
+				jQuery(document).ready(function($) {
+					// Déclenche un clic sur le bouton de synchronisation unitaire existant s'il y en a un
+					setTimeout(function() {
+						var syncBtn = $('.wps-sync .button-synchro[data-wp-id="<?php echo (int) $post->ID; ?>"]');
+						if ( syncBtn.length ) {
+							var container = syncBtn.closest('.wps-sync');
+							var data = {
+								action: 'check_sync_status',
+								wp_id: syncBtn.data('wp-id'),
+								type: syncBtn.data('type')
+							};
+
+							window.eoxiaJS.loader.display( container );
+
+							$.post( ajaxurl, data, function( response ) {
+								window.eoxiaJS.loader.remove(container);
+								container.replaceWith( response.data.view );
+							}).fail(function() {
+								window.eoxiaJS.loader.remove(container);
+								container.find(".statut").addClass('statut-red');
+							});
+						}
+					}, 500);
+				});
+				</script>
+				<?php
+			}
+		}
 	}
 
 	/**
