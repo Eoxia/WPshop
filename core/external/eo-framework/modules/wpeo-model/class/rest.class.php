@@ -25,7 +25,11 @@ if ( ! class_exists( '\eoxia\Rest_Class' ) ) {
 		 * [construct description]
 		 */
 		protected function construct() {
-			add_action( 'rest_api_init', array( $this, 'register_routes' ), 20 );
+			// register_routes() n'est plus definie ici (#216) : seules les classes qui la declarent ont des routes.
+			// Sans ce test, PHP 8 leve une TypeError sur le callback et toute l'API REST de WordPress tombe.
+			if ( method_exists( $this, 'register_routes' ) ) {
+				add_action( 'rest_api_init', array( $this, 'register_routes' ), 20 );
+			}
 		}
 
 		/**
