@@ -5,7 +5,7 @@ Donate link: https://www.wpshop.fr/
 Requires at least: 4.4
 Tested up to: 6.8
 Requires PHP: 7.4.33
-Stable tag: 2.6.1
+Stable tag: 2.6.2
 License: GPLv3 or later
 License URI: https://spdx.org/licenses/GPL-3.0-or-later.html
 
@@ -64,6 +64,10 @@ Il n'est pas possible de migrer les données vers la version WPShop 2.X.X.
 9. Check-Out
 
 == Changelog ==
+
+= Version 2.6.2 =
+
+* Fix - REST API returning HTTP 500 under PHP 8: register_routes was hooked on classes that do not define it.
 
 = Version 2.6.1 =
 
