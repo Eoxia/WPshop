@@ -70,7 +70,12 @@ class Mcp_Ability_Get_Product extends Mcp_Ability {
 		if ( $doli_id ) {
 			$doli_product = Mcp_Catalog::doli_get( 'products/' . $doli_id );
 		} elseif ( ! empty( $input['ref'] ) ) {
-			$doli_product = Mcp_Catalog::doli_get( 'products/ref/' . rawurlencode( sanitize_text_field( $input['ref'] ) ) );
+			$ref          = sanitize_text_field( $input['ref'] );
+			$doli_product = Mcp_Catalog::find_doli_product_by_ref( $ref );
+			if ( null === $doli_product ) {
+				/* translators: %s: product ref. */
+				return new \WP_Error( 'wpshop_not_found', sprintf( __( 'No product or service has the ref %s in Dolibarr.', 'wpshop' ), $ref ) );
+			}
 		} else {
 			return new \WP_Error( 'wpshop_missing_id', __( 'Give doli_id, wp_id or ref.', 'wpshop' ) );
 		}

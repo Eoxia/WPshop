@@ -128,6 +128,36 @@ class Mcp_Catalog {
 	}
 
 	/**
+	 * Dolibarr product or service by its ref.
+	 *
+	 * Searches the product list rather than GET products/ref/{ref}: a ref containing a slash
+	 * never reaches Dolibarr in a URL path (the web server answers 404).
+	 *
+	 * @param string $ref Ref.
+	 *
+	 * @return object|null|\WP_Error Product, null if none has this ref.
+	 */
+	public static function find_doli_product_by_ref( $ref ) {
+		$value = self::sqlfilter_value( $ref );
+
+		if ( null === $value ) {
+			$product = self::doli_get( 'products/ref/' . rawurlencode( $ref ) );
+			if ( is_wp_error( $product ) && false !== stripos( $product->get_error_message(), 'not found' ) ) {
+				return null;
+			}
+
+			return $product;
+		}
+
+		$found = self::doli_list( 'products?' . http_build_query( array( 'sqlfilters' => "(t.ref:=:'" . $value . "')", 'limit' => 1 ) ) );
+		if ( is_wp_error( $found ) ) {
+			return $found;
+		}
+
+		return empty( $found ) ? null : self::doli_get( 'products/' . (int) $found[0]->id );
+	}
+
+	/**
 	 * Escapes a value for a Dolibarr "sqlfilters" criterion, or returns null if it cannot be used safely.
 	 *
 	 * @param string $value Value.

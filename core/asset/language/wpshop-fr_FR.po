@@ -2685,3 +2685,7 @@ msgstr "Catégorie parente n° %d inconnue dans Dolibarr."
 
 msgid "Nothing is created yet: ask the user to validate the proposals in EO Tools > MCP > À valider."
 msgstr "Rien n'est encore créé : demandez à l'utilisateur de valider les propositions dans EO Tools > MCP > À valider."
+
+#. translators: %s: product ref.
+msgid "No product or service has the ref %s in Dolibarr."
+msgstr "Aucun produit ni service n'a la référence %s dans Dolibarr."

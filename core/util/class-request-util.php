@@ -133,7 +133,8 @@ class Request_Util extends Singleton_Util {
 				} elseif ( 403 === $request['response']['code'] ) {
 					// The key is valid: Dolibarr refuses because its user lacks rights.
 					$error_msg = self::format_missing_rights( $error_msg );
-				} elseif ( 404 === $request['response']['code'] ) {
+				} elseif ( 404 === $request['response']['code'] && ! preg_match( '/^Not Found: .+/', $error_msg ) ) {
+					// "Not Found: Product not found" means the route exists and the object does not: keep Dolibarr's message.
 					$error_msg = __( 'REST API route not found. Make sure the DoliWPshop module is activated in Dolibarr.', 'wpshop' );
 				}
 				set_transient( 'wps_request_error', $error_msg, 60 );
