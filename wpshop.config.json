@@ -38,6 +38,8 @@
         "modules/dolibarr/doli-sync/doli-sync.config.json",
         "modules/dolibarr/doli-associate/doli-associate.config.json",
         "modules/dolibarr/doli-documents/doli-documents.config.json",
+
+        "modules/mcp/mcp.config.json",
         "modules/dolibarr/doli-contacts/doli-contacts.config.json",
 
         "modules/gravityforms/gravityforms.config.json"

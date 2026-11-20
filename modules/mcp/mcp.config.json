@@ -1,0 +1,15 @@
+{
+	"name": "MCP",
+	"slug": "mcp",
+	"since": "2.7.0",
+	"version": "2.7.0",
+	"description": "Abilities (WordPress Abilities API) to manage the shop and its Dolibarr catalogue from an AI connected through EO Tools",
+	"path": "modules/mcp/",
+	"dependencies": {
+		"class": {
+			"priority": [
+				"class-mcp-ability.php"
+			]
+		}
+	}
+}

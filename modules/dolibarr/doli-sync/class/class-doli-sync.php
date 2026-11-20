@@ -336,10 +336,11 @@ class Doli_Sync extends Singleton_Util {
 	 *
 	 * @param  stdClass $doli_category Catégorie Dolibarr (au moins ->id et ->label).
 	 * @param  boolean  $create        Crée le terme s'il est introuvable.
+	 * @param  boolean  $read_only     N'écrit rien : un terme du même nom est renvoyé sans être lié.
 	 *
 	 * @return integer                 L'ID du terme WP, ou 0 si introuvable et non créé.
 	 */
-	private function resolve_category_term_id( $doli_category, $create = false ) {
+	private function resolve_category_term_id( $doli_category, $create = false, $read_only = false ) {
 		if ( empty( $doli_category->id ) ) {
 			return 0;
 		}
@@ -378,11 +379,13 @@ class Doli_Sync extends Singleton_Util {
 		// Repli : un terme du même nom existe déjà mais sans lien -> on le réutilise et on le lie.
 		$by_name = ! empty( $doli_category->label ) ? get_term_by( 'name', $doli_category->label, 'wps-product-cat' ) : false;
 		if ( $by_name ) {
-			update_term_meta( $by_name->term_id, '_external_id', (int) $doli_category->id );
+			if ( ! $read_only ) {
+				update_term_meta( $by_name->term_id, '_external_id', (int) $doli_category->id );
+			}
 			return (int) $by_name->term_id;
 		}
 
-		if ( ! $create ) {
+		if ( ! $create || $read_only ) {
 			return 0;
 		}
 
@@ -455,12 +458,15 @@ class Doli_Sync extends Singleton_Util {
 	 * @since   2.0.0
 	 * @version 2.3.1
 	 *
-	 * @param   integer $id   L'id de l'entité WordPress.
-	 * @param   string  $type Le type de l'entité.
+	 * @param   integer $id        L'id de l'entité WordPress.
+	 * @param   string  $type      Le type de l'entité.
+	 * @param   boolean $read_only Vérifie sans rien écrire, ni dans WordPress ni dans Dolibarr : le lien
+	 *                             retour absent côté Dolibarr est signalé (debug « dolibarr_link_missing »)
+	 *                             au lieu d'être réparé. Utilisé par les abilities MCP en lecture.
 	 *
 	 * @return array          Le statut de la synchronisation.
 	 */
-	public function check_status( $id, $type ) {
+	public function check_status( $id, $type, $read_only = false ) {
 		$external_id = 0;
 		$sha_256 = 0;
 		global $wpdb;
@@ -517,7 +523,10 @@ class Doli_Sync extends Singleton_Util {
 
 		// Le lien retour _wps_id côté Dolibarr ne pointe pas vers ce post WP.
 		if ( $doli_wps_id != $id ) {
-			if ( empty( $doli_wps_id ) ) {
+			if ( empty( $doli_wps_id ) && $read_only ) {
+				// Lecture seule : le lien retour manquant est signalé, la vérification continue.
+				$debug['dolibarr_link_missing'] = true;
+			} elseif ( empty( $doli_wps_id ) ) {
 				// Cas normal après un import Doli -> WP : _wps_id n'a jamais été renseigné côté Dolibarr.
 				// On RÉPARE le lien (au lieu de détruire _external_id, ce qui générait des doublons).
 				if ( $type == 'wps-product' ) {
@@ -553,7 +562,7 @@ class Doli_Sync extends Singleton_Util {
 		$doli_category_labels = array();
 		if ( ! empty( $doli_categories ) ) {
 			foreach ( $doli_categories as $doli_category ) {
-				$term_id = $this->resolve_category_term_id( $doli_category, false );
+				$term_id = $this->resolve_category_term_id( $doli_category, false, $read_only );
 				if ( $term_id ) {
 					$doli_category_labels[] = $term_id;
 				} else {
