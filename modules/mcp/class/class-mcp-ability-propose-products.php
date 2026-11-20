@@ -37,7 +37,7 @@ class Mcp_Ability_Propose_Products extends Mcp_Ability {
 			. 'Before proposing, check that the product does not exist yet (wpshop/get-product with the ref, wpshop/list-sync-status). Proposals whose ref already exists in Dolibarr, or is already proposed, are refused; possible duplicates (same label, same barcode) are shown to the human. '
 			. 'category_ids are Dolibarr category IDs (wpshop/list-sync-status with object "category"); a category that does not exist yet must be proposed with wpshop/propose-categories and validated first. '
 			. 'shop_status "draft" (default) keeps the product hidden on the shop; publish it later with wpshop/set-publication-status. '
-			. 'Image (optional, one per product): image_id is an image of the WordPress media library (jpg, png, gif or webp). Before adding an image, ALWAYS ask the user which source they want, as for posts and pages: openly licensed photos from Openverse (eo-tools/search-images, free), or images you generate yourself or with another connected tool (may use credits), or an image already in the media library. Import it with eo-tools/import-image (always with "alt") and give the returned media ID. On validation, the image goes into the documents of the Dolibarr product, then the sync makes it the shop image. '
+			. 'Image (one per product): a shop product needs an image. Unless the user said they want no image, plan one for EVERY product before calling this tool: do not propose products without image by default. image_id is an image of the WordPress media library (jpg, png, gif or webp). Before adding images, ALWAYS ask the user which source they want, as for posts and pages: openly licensed photos from Openverse (eo-tools/search-images, free), or images you generate yourself or with another connected tool (may use credits), or an image already in the media library. Import it with eo-tools/import-image (always with "alt") and give the returned media ID. On validation, the image goes into the documents of the Dolibarr product, then the sync makes it the shop image. '
 			. 'Stock is not handled here: it is managed in Dolibarr. At most ' . self::MAX . ' products per call.';
 	}
 
@@ -134,6 +134,7 @@ class Mcp_Ability_Propose_Products extends Mcp_Ability {
 			$pending_refs[ strtoupper( $proposal['data']['ref'] ) ] = true;
 		}
 
+		$without_image    = array();
 		$known_categories = array();
 		$proposed         = array();
 		$refused          = array();
@@ -199,14 +200,26 @@ class Mcp_Ability_Propose_Products extends Mcp_Ability {
 				'ref'         => $product['ref'],
 				'warnings'    => $duplicates['warnings'],
 			);
+			if ( empty( $product['image_id'] ) ) {
+				$without_image[] = $product['ref'];
+			}
 		}
 
-		return array(
+		$result = array(
 			'proposed'   => $proposed,
 			'refused'    => $refused,
 			'validation' => admin_url( 'admin.php?page=eo-tools-mcp&tab=proposals' ),
 			'note'       => __( 'Nothing is created yet: ask the user to validate the proposals in EO Tools > MCP > À valider.', 'wpshop' ),
 		);
+
+		if ( $without_image ) {
+			$result['without_image'] = array(
+				'refs' => $without_image,
+				'note' => 'These products have no image. Unless the user said they want none, tell the user, ask for the image source, and add the images after validation with wpshop/add-product-image.',
+			);
+		}
+
+		return $result;
 	}
 
 	/**
