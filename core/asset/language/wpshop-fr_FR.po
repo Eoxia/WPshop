@@ -651,7 +651,7 @@ msgstr ""
 #: modules/dolibarr/doli-sync/class/class-doli-sync.php:84
 #: modules/products/view/list.view.php:33
 msgid "Categories"
-msgstr ""
+msgstr "Catégories"
 
 #: modules/dolibarr/doli-categories/class/class-doli-categories.php:224
 #: modules/dolibarr/doli-products/class/class-doli-products.php:87
@@ -2437,3 +2437,49 @@ msgstr "Devis n�"
 msgid "Amount"
 msgstr "Montant"
 
+
+msgid "Invalid API key."
+msgstr "Clé API invalide."
+
+#. translators: %s: status icon.
+msgid "Dolibarr URL: %s"
+msgstr "URL Dolibarr : %s"
+
+#. translators: %s: status icon.
+msgid "DoliWPshop module (REST): %s"
+msgstr "Module DoliWPshop (REST) : %s"
+
+#. translators: %s: status icon.
+msgid "API key: %s"
+msgstr "Clé API : %s"
+
+#. translators: %s: status icon.
+msgid "Rights of the API user: %s"
+msgstr "Droits de l'utilisateur API : %s"
+
+msgid "Customer orders"
+msgstr "Commandes clients"
+
+msgid "Customer invoices"
+msgstr "Factures clients"
+
+msgid "Commercial proposals"
+msgstr "Propositions commerciales"
+
+msgid "Contacts"
+msgstr "Contacts"
+
+msgid "read"
+msgstr "lire"
+
+msgid "create/modify"
+msgstr "créer/modifier"
+
+msgid "Access denied by Dolibarr."
+msgstr "Accès refusé par Dolibarr."
+
+msgid "The API key is valid, but its Dolibarr user is missing these rights:"
+msgstr "La clé API est valide, mais il manque ces droits à son utilisateur Dolibarr :"
+
+msgid "Grant them in Dolibarr: DoliWPshop module setup, \"Users/rights\" tab, \"Grant the rights\" button (or on the user card, \"Permissions\" tab)."
+msgstr "Attribuez-les dans Dolibarr : configuration du module DoliWPshop, onglet « Utilisateurs/droits », bouton « Appliquer les droits » (ou sur la fiche de l'utilisateur, onglet « Permissions »)."
