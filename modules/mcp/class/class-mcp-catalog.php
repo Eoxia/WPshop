@@ -30,6 +30,11 @@ class Mcp_Catalog {
 	const DOLI_TYPE_PRODUCT = 0;
 	const DOLI_TYPE_SERVICE = 1;
 
+	/**
+	 * Largest product image sent to Dolibarr (base64 in a JSON body).
+	 */
+	const IMAGE_MAX_BYTES = 5242880;
+
 	/* ---------------------------------------------------------------------
 	 * Dolibarr requests
 	 * ------------------------------------------------------------------ */
@@ -720,6 +725,16 @@ class Mcp_Catalog {
 			}
 		}
 
+		// The image goes into the documents of the Dolibarr product; the sync then makes it the shop image.
+		if ( ! empty( $product['image_id'] ) ) {
+			$uploaded = self::upload_product_image( $product['ref'], $product['image_id'] );
+			if ( is_wp_error( $uploaded ) ) {
+				$uploaded->add_data( array( 'doli_id' => $doli_id ) );
+
+				return $uploaded;
+			}
+		}
+
 		$synced = self::sync( self::OBJECT_PRODUCT, $doli_id );
 		if ( is_wp_error( $synced ) ) {
 			$synced->add_data( array( 'doli_id' => $doli_id ) );
@@ -731,6 +746,86 @@ class Mcp_Catalog {
 			'doli_id' => $doli_id,
 			'wp_id'   => $synced['wp_id'],
 		);
+	}
+
+	/**
+	 * File of a media library image that can become a product image.
+	 *
+	 * The shop sync only takes jpg, png, gif and webp images from Dolibarr.
+	 *
+	 * @param int $attachment_id Media library ID.
+	 *
+	 * @return string|\WP_Error Absolute path.
+	 */
+	public static function get_product_image_file( $attachment_id ) {
+		$attachment_id = (int) $attachment_id;
+		$file          = $attachment_id && wp_attachment_is_image( $attachment_id ) ? get_attached_file( $attachment_id ) : '';
+
+		if ( ! $file || ! file_exists( $file ) ) {
+			/* translators: %d: media ID. */
+			return new \WP_Error( 'wpshop_invalid_image', sprintf( __( 'Image #%d not found in the media library.', 'wpshop' ), $attachment_id ) );
+		}
+
+		if ( ! preg_match( '/\.(jpe?g|png|gif|webp)$/i', $file ) ) {
+			return new \WP_Error( 'wpshop_invalid_image', __( 'The product image must be a jpg, png, gif or webp file.', 'wpshop' ) );
+		}
+
+		// A very large original goes through the "large" size, lighter to send to Dolibarr.
+		if ( filesize( $file ) > self::IMAGE_MAX_BYTES ) {
+			$large = image_get_intermediate_size( $attachment_id, 'large' );
+			if ( $large && ! empty( $large['path'] ) ) {
+				$uploads = wp_get_upload_dir();
+				$path    = trailingslashit( $uploads['basedir'] ) . $large['path'];
+				if ( file_exists( $path ) && filesize( $path ) <= self::IMAGE_MAX_BYTES ) {
+					return $path;
+				}
+			}
+
+			return new \WP_Error( 'wpshop_invalid_image', __( 'The product image is too large (5 MB at most).', 'wpshop' ) );
+		}
+
+		return $file;
+	}
+
+	/**
+	 * Sends a media library image into the documents of a Dolibarr product.
+	 *
+	 * Sending it again replaces the file, so a retried validation does not duplicate it.
+	 *
+	 * @param string $ref           Dolibarr product ref.
+	 * @param int    $attachment_id Media library ID.
+	 *
+	 * @return true|\WP_Error
+	 */
+	public static function upload_product_image( $ref, $attachment_id ) {
+		$file = self::get_product_image_file( $attachment_id );
+		if ( is_wp_error( $file ) ) {
+			return $file;
+		}
+
+		$timeout = function () {
+			return 60;
+		};
+		add_filter( 'http_request_timeout', $timeout );
+		$result = self::doli_send(
+			'documents/upload',
+			array(
+				'filename'          => sanitize_file_name( wp_basename( $file ) ),
+				'modulepart'        => 'product',
+				'ref'               => $ref,
+				'filecontent'       => base64_encode( file_get_contents( $file ) ), // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents, WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
+				'fileencoding'      => 'base64',
+				'overwriteifexists' => 1,
+			)
+		);
+		remove_filter( 'http_request_timeout', $timeout );
+
+		if ( is_wp_error( $result ) ) {
+			/* translators: %s: error message. */
+			return new \WP_Error( $result->get_error_code(), sprintf( __( 'Image not sent to Dolibarr: %s', 'wpshop' ), $result->get_error_message() ), $result->get_error_data() );
+		}
+
+		return true;
 	}
 
 	/**

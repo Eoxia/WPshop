@@ -263,7 +263,16 @@ class Mcp_Proposals {
 			__( 'Description', 'wpshop' )    => wp_trim_words( wp_strip_all_tags( $data['description'] ), 30 ),
 		);
 
-		return self::rows_html( $rows );
+		$image = '';
+		if ( ! empty( $data['image_id'] ) ) {
+			$image = wp_get_attachment_image( (int) $data['image_id'], 'thumbnail', false, array( 'style' => 'max-width:120px;height:auto;' ) );
+			if ( ! $image ) {
+				/* translators: %d: media ID. */
+				$rows[ __( 'Image', 'wpshop' ) ] = sprintf( __( 'Image #%d not found in the media library.', 'wpshop' ), (int) $data['image_id'] );
+			}
+		}
+
+		return ( $image ? '<p>' . $image . '</p>' : '' ) . self::rows_html( $rows );
 	}
 
 	/**

@@ -36,7 +36,9 @@ class Mcp_Ability_Propose_Products extends Mcp_Ability {
 		return 'Proposes products or services to create. Dolibarr is the only source of the catalogue: they are created in Dolibarr, never on the shop directly. Nothing is created now: each proposal waits for a human in "EO Tools > MCP > À valider". On validation, the product is created in Dolibarr, put in its categories, then synchronized to the shop with its publication status. '
 			. 'Before proposing, check that the product does not exist yet (wpshop/get-product with the ref, wpshop/list-sync-status). Proposals whose ref already exists in Dolibarr, or is already proposed, are refused; possible duplicates (same label, same barcode) are shown to the human. '
 			. 'category_ids are Dolibarr category IDs (wpshop/list-sync-status with object "category"); a category that does not exist yet must be proposed with wpshop/propose-categories and validated first. '
-			. 'shop_status "draft" (default) keeps the product hidden on the shop; publish it later with wpshop/set-publication-status. Stock and images are not handled here: they are managed in Dolibarr. At most ' . self::MAX . ' products per call.';
+			. 'shop_status "draft" (default) keeps the product hidden on the shop; publish it later with wpshop/set-publication-status. '
+			. 'Image (optional, one per product): image_id is an image of the WordPress media library (jpg, png, gif or webp). Before adding an image, ALWAYS ask the user which source they want, as for posts and pages: openly licensed photos from Openverse (eo-tools/search-images, free), or images you generate yourself or with another connected tool (may use credits), or an image already in the media library. Import it with eo-tools/import-image (always with "alt") and give the returned media ID. On validation, the image goes into the documents of the Dolibarr product, then the sync makes it the shop image. '
+			. 'Stock is not handled here: it is managed in Dolibarr. At most ' . self::MAX . ' products per call.';
 	}
 
 	public function get_risk() {
@@ -109,6 +111,11 @@ class Mcp_Ability_Propose_Products extends Mcp_Ability {
 								'type'    => 'string',
 								'enum'    => array( 'draft', 'publish' ),
 								'default' => 'draft',
+							),
+							'image_id'        => array(
+								'type'        => 'integer',
+								'minimum'     => 1,
+								'description' => 'Media library ID of the product image (eo-tools/import-image). Ask the user for the image source first.',
 							),
 						),
 						'additionalProperties' => false,
@@ -235,6 +242,14 @@ class Mcp_Ability_Propose_Products extends Mcp_Ability {
 			return new \WP_Error( 'wpshop_invalid_barcode', __( 'Invalid barcode.', 'wpshop' ) );
 		}
 
+		$image_id = isset( $raw['image_id'] ) ? absint( $raw['image_id'] ) : 0;
+		if ( $image_id ) {
+			$image_file = Mcp_Catalog::get_product_image_file( $image_id );
+			if ( is_wp_error( $image_file ) ) {
+				return $image_file;
+			}
+		}
+
 		return array(
 			'kind'            => Mcp_Abilities::enum_input( $raw, 'kind', array( 'product', 'service' ), 'product' ),
 			'ref'             => $ref,
@@ -246,6 +261,7 @@ class Mcp_Ability_Propose_Products extends Mcp_Ability {
 			'barcode'         => $barcode,
 			'category_ids'    => Mcp_Abilities::ids_input( $raw, 'category_ids' ),
 			'shop_status'     => Mcp_Abilities::enum_input( $raw, 'shop_status', array( 'draft', 'publish' ), 'draft' ),
+			'image_id'        => $image_id,
 		);
 	}
 }

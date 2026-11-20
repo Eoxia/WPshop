@@ -2689,3 +2689,20 @@ msgstr "Rien n'est encore créé : demandez à l'utilisateur de valider les prop
 #. translators: %s: product ref.
 msgid "No product or service has the ref %s in Dolibarr."
 msgstr "Aucun produit ni service n'a la référence %s dans Dolibarr."
+
+#. translators: %d: media ID.
+msgid "Image #%d not found in the media library."
+msgstr "Image n° %d introuvable dans la médiathèque."
+
+msgid "The product image must be a jpg, png, gif or webp file."
+msgstr "L'image du produit doit être un fichier jpg, png, gif ou webp."
+
+msgid "The product image is too large (5 MB at most)."
+msgstr "L'image du produit est trop lourde (5 Mo au plus)."
+
+#. translators: %s: error message.
+msgid "Image not sent to Dolibarr: %s"
+msgstr "Image non envoyée à Dolibarr : %s"
+
+msgid "Image"
+msgstr "Image"
