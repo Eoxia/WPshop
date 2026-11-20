@@ -28,8 +28,8 @@ class Product_List_Table extends \WP_List_Table {
 	 */
 	public function __construct() {
 		parent::__construct( array(
-			'singular' => __( 'Product', 'wpshop' ),
-			'plural'   => __( 'Products', 'wpshop' ),
+			'singular' => 'wps-product',
+			'plural'   => 'wps-products', // Not translated: it names the bulk nonce (bulk-wps-products).
 			'ajax'     => false,
 		) );
 	}
@@ -120,6 +120,9 @@ class Product_List_Table extends \WP_List_Table {
 			'total_pages' => ceil( $total_items / $per_page ),
 		) );
 		
+		// One Dolibarr request for the whole page, used by the "delete_post" checks (checkbox, Delete link).
+		Doli_Products::g()->prefetch_existence( wp_list_pluck( $products, 'external_id' ) );
+
 		$this->items = $products;
 	}
 
@@ -130,6 +133,11 @@ class Product_List_Table extends \WP_List_Table {
 	 * @return string
 	 */
 	public function column_cb( $item ) {
+		// Only the products that are not (or no longer) in Dolibarr can be deleted, see Doli_Products_Action::map_delete_post_cap().
+		if ( ! current_user_can( 'delete_post', $item->ID ) ) {
+			return '';
+		}
+
 		return sprintf(
 			'<input type="checkbox" name="product[]" value="%s" />',
 			$item->ID
@@ -165,13 +173,17 @@ class Product_List_Table extends \WP_List_Table {
 		$actions = array(
 			'edit'   => sprintf( '<a href="%s">%s</a>', $edit_url, __( 'Edit', 'wpshop' ) ),
 			'view'   => sprintf( '<a href="%s">%s</a>', $view_url, __( 'View', 'wpshop' ) ),
-			'delete' => sprintf( 
-				'<a href="%s" class="submitdelete" onclick="return confirm(\'%s\');">%s</a>', 
-				get_delete_post_link( $item->ID, '', true ), 
-				__( 'Are you sure you want to delete this product?', 'wpshop' ), 
-				__( 'Delete', 'wpshop' ) 
-			),
 		);
+
+		// Only when the product is not (or no longer) in Dolibarr, see Doli_Products_Action::map_delete_post_cap().
+		if ( current_user_can( 'delete_post', $item->ID ) ) {
+			$actions['delete'] = sprintf(
+				'<a href="%s" class="submitdelete" onclick="return confirm(\'%s\');">%s</a>',
+				esc_url( get_delete_post_link( $item->ID, '', true ) ),
+				esc_js( __( 'Are you sure you want to delete this product?', 'wpshop' ) ),
+				__( 'Delete', 'wpshop' )
+			);
+		}
 		
 		return sprintf( 
 			'<a href="%1$s"><strong>%2$s</strong></a> %3$s',

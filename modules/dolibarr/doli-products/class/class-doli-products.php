@@ -255,6 +255,73 @@ class Doli_Products extends Singleton_Util {
 
 		return $product->data['id'];
 	}
+
+	/**
+	 * Existence of Dolibarr products, cached for the request: Dolibarr ID => true (exists) | false (gone) | null (Dolibarr did not answer).
+	 *
+	 * @var array
+	 */
+	private $doli_exists = array();
+
+	/**
+	 * Asks Dolibarr which of these products still exist, in batches (one request per 100 products).
+	 *
+	 * @param int[] $doli_ids Dolibarr product IDs.
+	 */
+	public function prefetch_existence( $doli_ids ) {
+		$doli_ids = array_diff( array_unique( array_filter( array_map( 'intval', (array) $doli_ids ) ) ), array_keys( $this->doli_exists ) );
+
+		foreach ( array_chunk( $doli_ids, 100 ) as $chunk ) {
+			$response = Request_Util::get( 'products?ids_only=1&limit=0&sqlfilters=' . rawurlencode( '(t.rowid:in:' . implode( ',', $chunk ) . ')' ) );
+			$found    = is_array( $response ) ? array_map( 'intval', $response ) : null;
+
+			foreach ( $chunk as $doli_id ) {
+				$this->doli_exists[ $doli_id ] = null === $found ? null : in_array( $doli_id, $found, true );
+			}
+		}
+	}
+
+	/**
+	 * Link state of a shop product with Dolibarr.
+	 *
+	 * @param int $post_id Product post ID.
+	 *
+	 * @return string not_linked (no Dolibarr product), linked (exists in Dolibarr), missing (deleted from Dolibarr) or unknown (Dolibarr did not answer).
+	 */
+	public function get_dolibarr_state( $post_id ) {
+		$doli_id = (int) get_post_meta( (int) $post_id, '_external_id', true );
+
+		if ( empty( $doli_id ) ) {
+			return 'not_linked';
+		}
+
+		$this->prefetch_existence( array( $doli_id ) );
+
+		if ( null === $this->doli_exists[ $doli_id ] ) {
+			return 'unknown';
+		}
+
+		return $this->doli_exists[ $doli_id ] ? 'linked' : 'missing';
+	}
+
+	/**
+	 * Whether a product can be deleted on the WordPress side: only when it is not (or no longer) in Dolibarr,
+	 * otherwise it would come back at the next sync.
+	 *
+	 * @param int $post_id Product post ID.
+	 *
+	 * @return bool
+	 */
+	public function is_deletable( $post_id ) {
+		return in_array( $this->get_dolibarr_state( $post_id ), array( 'not_linked', 'missing' ), true );
+	}
+
+	/**
+	 * Forgets the cached answers (tests, or after a change in Dolibarr).
+	 */
+	public function reset_existence_cache() {
+		$this->doli_exists = array();
+	}
 }
 
 Doli_Products::g();

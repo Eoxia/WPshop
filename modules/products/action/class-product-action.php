@@ -29,6 +29,10 @@ class Product_Action {
 	 */
 	public function __construct() {
 		add_action( 'admin_menu', array( $this, 'callback_admin_menu' ), 10 );
+		add_action( 'admin_init', array( $this, 'handle_bulk_delete' ) );
+		add_filter( 'removable_query_args', function ( $args ) {
+			return array_merge( $args, array( 'wps_deleted', 'wps_skipped' ) );
+		} );
 		add_action( 'save_post', array( $this, 'callback_save_post' ), 10, 2 );
 
 		add_action( 'template_redirect', array( $this, 'init_product_archive_page' ) );
@@ -78,15 +82,88 @@ class Product_Action {
 		
 		echo '<div class="wrap wpeo-wrap">';
 		echo '<h1>' . esc_html__('Products', 'wpshop') . ' <a href="' . esc_url($dolibarr_url . '/product/card.php?&action=create') . '" target="_blank" class="page-title-action">' . esc_html__('Add', 'wpshop') . '</a></h1>';
-		
-		// Display search box
-		echo '<form method="post">';
+
+		$this->display_delete_notices();
+
+		// One GET form for the search, the bulk actions and the checkboxes (the search stays in the pagination links).
+		echo '<form id="wps-products-filter" method="get">';
+		echo '<input type="hidden" name="page" value="wps-product" />';
 		$product_list_table->search_box(__('Search Products', 'wpshop'), 'product-search');
-		echo '</form>';
-		
-		// Display the table
 		$product_list_table->display();
+		echo '</form>';
 		echo '</div>';
+		?>
+		<script>
+			document.getElementById( 'wps-products-filter' ).addEventListener( 'submit', function ( e ) {
+				var form = this;
+				// A search (button or Enter in the search field) must never run the selected bulk action.
+				if ( ! e.submitter || ( 'bulk_action' !== e.submitter.name && 'doaction' !== e.submitter.id && 'doaction2' !== e.submitter.id ) ) {
+					form.querySelectorAll( 'select[name="action"], select[name="action2"]' ).forEach( function ( select ) { select.value = '-1'; } );
+					return;
+				}
+				var isDelete = 'delete' ===form.querySelector( '#bulk-action-selector-' + ( 'doaction2' === e.submitter.id ? 'bottom' : 'top' ) ).value;
+				if ( isDelete && form.querySelectorAll( 'input[name="product[]"]:checked' ).length && ! window.confirm( <?php echo wp_json_encode( __( 'Les produits sélectionnés vont être supprimés définitivement. Continuer ?', 'wpshop' ) ); ?> ) ) {
+					e.preventDefault();
+				}
+			} );
+		</script>
+		<?php
+	}
+
+	/**
+	 * Bulk deletion from the product list (admin.php?page=wps-product).
+	 *
+	 * Only the products that are not (or no longer) in Dolibarr are deleted (see Doli_Products_Action::map_delete_post_cap()),
+	 * the others are counted as skipped.
+	 */
+	public function handle_bulk_delete() {
+		if ( ! isset( $_GET['page'] ) || 'wps-product' !== $_GET['page'] || empty( $_GET['product'] ) ) {
+			return;
+		}
+
+		$action = isset( $_GET['action'] ) && '-1' !== $_GET['action'] ? sanitize_key( $_GET['action'] ) : ( isset( $_GET['action2'] ) ? sanitize_key( $_GET['action2'] ) : '' );
+		if ( 'delete' !== $action ) {
+			return;
+		}
+
+		check_admin_referer( 'bulk-wps-products' );
+
+		$ids = array_filter( array_map( 'intval', (array) $_GET['product'] ) );
+		Doli_Products::g()->prefetch_existence( array_map( function ( $id ) {
+			return get_post_meta( $id, '_external_id', true );
+		}, $ids ) );
+
+		$deleted = 0;
+		$skipped = 0;
+		foreach ( $ids as $id ) {
+			if ( 'wps-product' === get_post_type( $id ) && current_user_can( 'delete_post', $id ) && wp_delete_post( $id, true ) ) {
+				$deleted++;
+			} else {
+				$skipped++;
+			}
+		}
+
+		$redirect = remove_query_arg( array( 'action', 'action2', 'product', '_wpnonce', '_wp_http_referer', 'bulk_action', 'wps_deleted', 'wps_skipped', 'deleted' ), wp_unslash( $_SERVER['REQUEST_URI'] ) );
+		wp_safe_redirect( add_query_arg( array( 'wps_deleted' => $deleted, 'wps_skipped' => $skipped ), $redirect ) );
+		exit;
+	}
+
+	/**
+	 * Notices after a deletion (bulk, or the "Delete" link of a row which comes back with "deleted").
+	 */
+	private function display_delete_notices() {
+		$deleted = isset( $_GET['wps_deleted'] ) ? (int) $_GET['wps_deleted'] : ( isset( $_GET['deleted'] ) ? (int) $_GET['deleted'] : 0 );
+		$skipped = isset( $_GET['wps_skipped'] ) ? (int) $_GET['wps_skipped'] : 0;
+
+		if ( $deleted > 0 ) {
+			/* translators: %d: Number of products deleted. */
+			printf( '<div class="notice notice-success is-dismissible"><p>%s</p></div>', esc_html( sprintf( _n( '%d produit supprimé.', '%d produits supprimés.', $deleted, 'wpshop' ), $deleted ) ) );
+		}
+
+		if ( $skipped > 0 ) {
+			/* translators: %d: Number of products not deleted. */
+			printf( '<div class="notice notice-warning is-dismissible"><p>%s</p></div>', esc_html( sprintf( _n( '%d produit n\'a pas été supprimé : il existe encore dans Dolibarr (ou Dolibarr n\'a pas répondu). Supprimez-le d\'abord dans Dolibarr, ou passez-le en brouillon pour le retirer de la boutique.', '%d produits n\'ont pas été supprimés : ils existent encore dans Dolibarr (ou Dolibarr n\'a pas répondu). Supprimez-les d\'abord dans Dolibarr, ou passez-les en brouillon pour les retirer de la boutique.', $skipped, 'wpshop' ), $skipped ) ) );
+		}
 	}
 
 	/**
