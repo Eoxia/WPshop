@@ -330,28 +330,35 @@ class Doli_Category extends Term_Class {
 	}
 
 	/**
+	 * Dolibarr product category IDs cached for the request (false = not fetched yet, null = Dolibarr did not answer).
+	 *
+	 * @var int[]|null|false
+	 */
+	private $dolibarr_ids = false;
+
+	/**
 	 * IDs of the Dolibarr product categories, fetched once per request.
+	 *
+	 * @param bool $refresh True to ask Dolibarr again.
 	 *
 	 * @return int[]|null The IDs, or null when Dolibarr did not answer (nothing can be decided then).
 	 */
-	public function get_dolibarr_ids() {
-		static $ids = false;
-
-		if ( false === $ids ) {
-			$response = Request_Util::get( 'categories?type=product&limit=0&properties=id' );
-			$ids      = null;
+	public function get_dolibarr_ids( $refresh = false ) {
+		if ( false === $this->dolibarr_ids || $refresh ) {
+			$response           = Request_Util::get( 'categories?type=product&limit=0&properties=id' );
+			$this->dolibarr_ids = null;
 
 			if ( is_array( $response ) ) {
-				$ids = array();
+				$this->dolibarr_ids = array();
 				foreach ( $response as $doli_category ) {
 					if ( isset( $doli_category->id ) ) {
-						$ids[] = (int) $doli_category->id;
+						$this->dolibarr_ids[] = (int) $doli_category->id;
 					}
 				}
 			}
 		}
 
-		return $ids;
+		return $this->dolibarr_ids;
 	}
 
 	/**
