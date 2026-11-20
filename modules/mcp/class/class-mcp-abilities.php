@@ -33,6 +33,7 @@ class Mcp_Abilities {
 			Mcp_Ability_Propose_Products::class,
 			Mcp_Ability_Propose_Categories::class,
 			Mcp_Ability_Set_Publication_Status::class,
+			Mcp_Ability_Add_Product_Image::class,
 		);
 
 		$abilities = array();

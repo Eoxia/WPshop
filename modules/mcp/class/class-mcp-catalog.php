@@ -829,6 +829,80 @@ class Mcp_Catalog {
 	}
 
 	/**
+	 * Image files in the documents of a Dolibarr product (those the shop sync can take).
+	 *
+	 * @param int $doli_id Dolibarr product ID.
+	 *
+	 * @return string[]|\WP_Error File names.
+	 */
+	public static function get_doli_product_images( $doli_id ) {
+		$files = self::doli_list( 'documents?modulepart=product&id=' . (int) $doli_id );
+		if ( is_wp_error( $files ) ) {
+			return $files;
+		}
+
+		$images = array();
+		foreach ( (array) $files as $file ) {
+			$name = is_array( $file ) ? ( $file['name'] ?? '' ) : ( $file->name ?? '' );
+			if ( preg_match( '/\.(jpe?g|png|gif|webp)$/i', (string) $name ) ) {
+				$images[] = (string) $name;
+			}
+		}
+
+		return $images;
+	}
+
+	/**
+	 * Gives an image to an existing Dolibarr product that has none, then synchronizes it to the shop.
+	 *
+	 * A product that already has an image is refused: the shop takes the first image Dolibarr lists,
+	 * in no guaranteed order, so a second image would not reliably become the shop image.
+	 *
+	 * @param int $doli_id       Dolibarr product ID.
+	 * @param int $attachment_id Media library ID.
+	 *
+	 * @return array|\WP_Error doli_id, ref, wp_id, image (shop image ID), state.
+	 */
+	public static function add_product_image( $doli_id, $attachment_id ) {
+		$file = self::get_product_image_file( $attachment_id );
+		if ( is_wp_error( $file ) ) {
+			return $file;
+		}
+
+		$doli_product = self::doli_get( 'products/' . (int) $doli_id );
+		if ( is_wp_error( $doli_product ) ) {
+			return $doli_product;
+		}
+
+		$images = self::get_doli_product_images( $doli_id );
+		if ( is_wp_error( $images ) ) {
+			return $images;
+		}
+		if ( $images ) {
+			/* translators: %s: file names. */
+			return new \WP_Error( 'wpshop_has_image', sprintf( __( 'This product already has an image in Dolibarr (%s): change it in Dolibarr.', 'wpshop' ), implode( ', ', $images ) ) );
+		}
+
+		$uploaded = self::upload_product_image( $doli_product->ref, $attachment_id );
+		if ( is_wp_error( $uploaded ) ) {
+			return $uploaded;
+		}
+
+		$synced = self::sync( self::OBJECT_PRODUCT, $doli_id );
+		if ( is_wp_error( $synced ) ) {
+			return $synced;
+		}
+
+		return array(
+			'doli_id' => (int) $doli_id,
+			'ref'     => (string) $doli_product->ref,
+			'wp_id'   => $synced['wp_id'],
+			'image'   => (int) get_post_thumbnail_id( $synced['wp_id'] ),
+			'state'   => $synced['state'],
+		);
+	}
+
+	/**
 	 * Creates a product category in Dolibarr, then synchronizes it to the shop.
 	 *
 	 * @param array $category Validated category fields.

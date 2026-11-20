@@ -2706,3 +2706,16 @@ msgstr "Image non envoyée à Dolibarr : %s"
 
 msgid "Image"
 msgstr "Image"
+
+msgid "Add an image to products"
+msgstr "Ajouter une image à des produits"
+
+msgid "Adds an image to products that have none, when you ask for it. The image goes into the Dolibarr product, then is synchronized to the shop."
+msgstr "Ajoute une image aux produits qui n'en ont pas, quand vous le demandez. L'image est placée dans le produit Dolibarr, puis synchronisée sur la boutique."
+
+msgid "Give doli_id or wp_id."
+msgstr "Indiquez doli_id ou wp_id."
+
+#. translators: %s: file names.
+msgid "This product already has an image in Dolibarr (%s): change it in Dolibarr."
+msgstr "Ce produit a déjà une image dans Dolibarr (%s) : changez-la dans Dolibarr."
