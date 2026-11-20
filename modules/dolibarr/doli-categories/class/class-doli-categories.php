@@ -326,7 +326,73 @@ class Doli_Category extends Term_Class {
 	}
 
 	public function register_routes() {
-		
+
+	}
+
+	/**
+	 * Dolibarr product category IDs cached for the request (false = not fetched yet, null = Dolibarr did not answer).
+	 *
+	 * @var int[]|null|false
+	 */
+	private $dolibarr_ids = false;
+
+	/**
+	 * IDs of the Dolibarr product categories, fetched once per request.
+	 *
+	 * @param bool $refresh True to ask Dolibarr again.
+	 *
+	 * @return int[]|null The IDs, or null when Dolibarr did not answer (nothing can be decided then).
+	 */
+	public function get_dolibarr_ids( $refresh = false ) {
+		if ( false === $this->dolibarr_ids || $refresh ) {
+			$response           = Request_Util::get( 'categories?type=product&limit=0&properties=id' );
+			$this->dolibarr_ids = null;
+
+			if ( is_array( $response ) ) {
+				$this->dolibarr_ids = array();
+				foreach ( $response as $doli_category ) {
+					if ( isset( $doli_category->id ) ) {
+						$this->dolibarr_ids[] = (int) $doli_category->id;
+					}
+				}
+			}
+		}
+
+		return $this->dolibarr_ids;
+	}
+
+	/**
+	 * Link state of a category with Dolibarr.
+	 *
+	 * @param int $term_id Category term ID.
+	 *
+	 * @return string not_linked (no Dolibarr category), linked (exists in Dolibarr), missing (deleted from Dolibarr) or unknown (Dolibarr did not answer).
+	 */
+	public function get_dolibarr_state( $term_id ) {
+		$external_id = (int) get_term_meta( (int) $term_id, '_external_id', true );
+
+		if ( empty( $external_id ) ) {
+			return 'not_linked';
+		}
+
+		$ids = $this->get_dolibarr_ids();
+
+		if ( null === $ids ) {
+			return 'unknown';
+		}
+
+		return in_array( $external_id, $ids, true ) ? 'linked' : 'missing';
+	}
+
+	/**
+	 * Whether a category can be deleted on the WordPress side: only when it is not (or no longer) in Dolibarr.
+	 *
+	 * @param int $term_id Category term ID.
+	 *
+	 * @return bool
+	 */
+	public function is_deletable( $term_id ) {
+		return in_array( $this->get_dolibarr_state( $term_id ), array( 'not_linked', 'missing' ), true );
 	}
 }
 
