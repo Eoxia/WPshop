@@ -173,7 +173,7 @@ class Product_Filter {
 			$args['capabilities'] = array(
 				'manage_terms' => 'manage_categories', // Allow seeing the list
 				'edit_terms'   => 'manage_categories', // Allow editing the slug
-				'delete_terms' => 'do_not_allow',      // Prevent deleting
+				'delete_terms' => 'manage_categories', // Per category: only when gone from Dolibarr (Doli_Category_Action::map_delete_term_cap).
 				'assign_terms' => 'edit_posts',        // Allow assigning to products
 			);
 		}
@@ -484,6 +484,18 @@ class Product_Filter {
 			}
 		}
 
+		// "Supprimer": only for categories that are not (or no longer) in Dolibarr, see Doli_Category_Action::map_delete_term_cap().
+		if ( current_user_can( 'delete_term', $tag->term_id ) ) {
+			$delete_link = wp_nonce_url( 'edit-tags.php?action=delete&taxonomy=wps-product-cat&tag_ID=' . $tag->term_id, 'delete-tag_' . $tag->term_id );
+			$new_actions['delete'] = sprintf(
+				'<a href="%s" class="delete-tag aria-button-if-js" aria-label="%s">%s</a>',
+				esc_url( $delete_link ),
+				/* translators: %s: Category name. */
+				esc_attr( sprintf( __( 'Supprimer « %s »', 'wpshop' ), $tag->name ) ),
+				__( 'Supprimer', 'wpshop' )
+			);
+		}
+
 		return $new_actions;
 	}
 
@@ -674,6 +686,9 @@ class Product_Filter {
 
 		if ( 'wps_doli_id' === $column_name ) {
 			$external_id = get_term_meta( $term_id, '_external_id', true );
+			if ( ! empty( $external_id ) && 'missing' === Doli_Category::g()->get_dolibarr_state( $term_id ) ) {
+				return sprintf( '<span style="display:inline-block; padding: 2px 6px; background: #d63638; color: #fff; border-radius: 3px; font-size: 11px;" title="%s">#%s %s</span>', esc_attr__( 'Cette catégorie a été supprimée de Dolibarr : vous pouvez la supprimer.', 'wpshop' ), esc_html( $external_id ), esc_html__( 'introuvable dans Dolibarr', 'wpshop' ) );
+			}
 			if ( ! empty( $external_id ) ) {
 				$img_doli = PLUGIN_WPSHOP_URL . '/core/asset/image/logo-dolibarr.jpg';
 				$wps_dolibarr = get_option( 'wps_dolibarr' );
@@ -731,7 +746,7 @@ class Product_Filter {
 			$args['capabilities'] = array(
 				'manage_terms' => 'manage_categories', // Permet de voir la liste
 				'edit_terms'   => 'manage_categories', // RÃ©tabli pour modifier le slug
-				'delete_terms' => 'do_not_allow',      // Interdit suppression
+				'delete_terms' => 'manage_categories', // Par catégorie : seulement si absente de Dolibarr (Doli_Category_Action::map_delete_term_cap).
 				'assign_terms' => 'edit_posts',        // Permet l'assignation
 			);
 		}

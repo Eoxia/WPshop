@@ -66,6 +66,120 @@ class Doli_Category_Action {
 
 		add_action( 'wps-product-cat_edit_form_fields', array( $this, 'add_dolibarr_info_field' ), 10, 2 );
 		add_action( 'edited_wps-product-cat', array( $this, 'save_dolibarr_info_field' ), 10, 2 );
+
+		// Deleting a category on the WordPress side: only when it is not (or no longer) in Dolibarr.
+		add_filter( 'map_meta_cap', array( $this, 'map_delete_term_cap' ), 10, 4 );
+		add_action( 'load-edit-tags.php', array( $this, 'filter_bulk_delete' ) );
+		add_filter( 'redirect_term_location', array( $this, 'add_bulk_delete_skipped_arg' ), 10, 2 );
+		add_action( 'admin_notices', array( $this, 'admin_notice_bulk_delete_skipped' ) );
+		add_filter( 'removable_query_args', function ( $args ) {
+			$args[] = 'wps_cat_delete_skipped';
+			return $args;
+		} );
+	}
+
+	/**
+	 * Number of categories removed from a bulk deletion because they still exist in Dolibarr.
+	 *
+	 * @var int
+	 */
+	private $bulk_delete_skipped = 0;
+
+	/**
+	 * "delete_term" on a product category: refused while the category exists in Dolibarr
+	 * (it would come back at the next sync) or when Dolibarr does not answer.
+	 *
+	 * @param string[] $caps    Primitive capabilities.
+	 * @param string   $cap     Capability being checked.
+	 * @param int      $user_id User ID.
+	 * @param array    $args    Arguments, $args[0] = term ID.
+	 *
+	 * @return string[]
+	 */
+	public function map_delete_term_cap( $caps, $cap, $user_id, $args ) {
+		if ( 'delete_term' !== $cap || empty( $args[0] ) || ! Settings::g()->dolibarr_is_active() ) {
+			return $caps;
+		}
+
+		$term = get_term( (int) $args[0] );
+		if ( ! $term || is_wp_error( $term ) || 'wps-product-cat' !== $term->taxonomy ) {
+			return $caps;
+		}
+
+		if ( ! Doli_Category::g()->is_deletable( $term->term_id ) ) {
+			$caps[] = 'do_not_allow';
+		}
+
+		return $caps;
+	}
+
+	/**
+	 * Bulk deletion: WordPress only checks "delete_terms", so the categories that still exist
+	 * in Dolibarr are removed from the selection here.
+	 */
+	public function filter_bulk_delete() {
+		if ( empty( $_REQUEST['taxonomy'] ) || 'wps-product-cat' !== $_REQUEST['taxonomy'] || empty( $_REQUEST['delete_tags'] ) || ! Settings::g()->dolibarr_is_active() ) {
+			return;
+		}
+
+		$action = isset( $_REQUEST['action'] ) && '-1' !== $_REQUEST['action'] ? $_REQUEST['action'] : ( isset( $_REQUEST['action2'] ) ? $_REQUEST['action2'] : '' );
+		if ( 'delete' !== $action && 'bulk-delete' !== $action ) {
+			return;
+		}
+
+		$allowed = array();
+		foreach ( (array) $_REQUEST['delete_tags'] as $term_id ) {
+			if ( current_user_can( 'delete_term', (int) $term_id ) ) {
+				$allowed[] = (int) $term_id;
+			}
+		}
+
+		$this->bulk_delete_skipped = count( (array) $_REQUEST['delete_tags'] ) - count( $allowed );
+		$_REQUEST['delete_tags']   = $allowed;
+		$_POST['delete_tags']      = $allowed;
+		$_GET['delete_tags']       = $allowed;
+	}
+
+	/**
+	 * Adds the number of skipped categories to the redirection after a bulk deletion.
+	 *
+	 * @param string       $location Redirection URL.
+	 * @param \WP_Taxonomy $tax      Taxonomy.
+	 *
+	 * @return string
+	 */
+	public function add_bulk_delete_skipped_arg( $location, $tax ) {
+		if ( $this->bulk_delete_skipped > 0 && isset( $tax->name ) && 'wps-product-cat' === $tax->name ) {
+			$location = add_query_arg( 'wps_cat_delete_skipped', $this->bulk_delete_skipped, $location );
+		}
+
+		return $location;
+	}
+
+	/**
+	 * Notice after a bulk deletion where some categories were kept.
+	 */
+	public function admin_notice_bulk_delete_skipped() {
+		if ( empty( $_GET['wps_cat_delete_skipped'] ) ) {
+			return;
+		}
+
+		$count = (int) $_GET['wps_cat_delete_skipped'];
+		printf(
+			'<div class="notice notice-warning is-dismissible"><p>%s</p></div>',
+			esc_html(
+				sprintf(
+					/* translators: %d: Number of categories not deleted. */
+					_n(
+						'%d catégorie n\'a pas été supprimée : elle existe encore dans Dolibarr (ou Dolibarr n\'a pas répondu). Supprimez-la d\'abord dans Dolibarr.',
+						'%d catégories n\'ont pas été supprimées : elles existent encore dans Dolibarr (ou Dolibarr n\'a pas répondu). Supprimez-les d\'abord dans Dolibarr.',
+						$count,
+						'wpshop'
+					),
+					$count
+				)
+			)
+		);
 	}
 
 	/**
