@@ -206,7 +206,7 @@ class Settings_Action {
 			
 			if ( ! empty( $errorMessage ) ) {
 				$error = __('Error') . ' : ' . $errorMessage;
-				$dolibarr_option['error'] = $base_error . '<br><strong>' . __( 'Details:', 'wpshop' ) . '</strong> ' . $errorMessage;
+				$dolibarr_option['error'] = $base_error . '<br><strong>' . __( 'Details:', 'wpshop' ) . '</strong><br>' . nl2br( esc_html( $errorMessage ) );
 			} else {
 				$dolibarr_option['error'] = $base_error;
 			}
