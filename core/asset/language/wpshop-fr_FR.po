@@ -2483,3 +2483,239 @@ msgstr "La clé API est valide, mais il manque ces droits à son utilisateur Dol
 
 msgid "Grant them in Dolibarr: DoliWPshop module setup, \"Users/rights\" tab, \"Grant the rights\" button (or on the user card, \"Permissions\" tab)."
 msgstr "Attribuez-les dans Dolibarr : configuration du module DoliWPshop, onglet « Utilisateurs/droits », bouton « Appliquer les droits » (ou sur la fiche de l'utilisateur, onglet « Permissions »)."
+
+#. MCP module (abilities relayed by EO Tools).
+msgid "Shop (WPshop)"
+msgstr "Boutique (WPshop)"
+
+msgid "Shop catalogue: sync with Dolibarr, products and categories to create in Dolibarr, publication on the shop."
+msgstr "Catalogue de la boutique : synchro avec Dolibarr, produits et catégories à créer dans Dolibarr, publication sur la boutique."
+
+msgid "Sync status of the catalogue"
+msgstr "État des synchros du catalogue"
+
+msgid "Lists the products, services and categories of the shop with their sync status with Dolibarr, or the Dolibarr ones missing on the shop."
+msgstr "Liste les produits, services et catégories de la boutique avec leur état de synchro avec Dolibarr, ou ceux de Dolibarr absents de la boutique."
+
+msgid "Read a product (Dolibarr and shop)"
+msgstr "Lire un produit (Dolibarr et boutique)"
+
+msgid "Reads a product or service in Dolibarr and on the shop, and compares them."
+msgstr "Lit un produit ou un service dans Dolibarr et sur la boutique, et les compare."
+
+msgid "Synchronize from Dolibarr"
+msgstr "Synchroniser depuis Dolibarr"
+
+msgid "Synchronizes products, services or categories from Dolibarr to the shop, like the WPshop sync screen."
+msgstr "Synchronise des produits, services ou catégories de Dolibarr vers la boutique, comme l'écran de synchro de WPshop."
+
+msgid "Propose products to create in Dolibarr"
+msgstr "Proposer des produits à créer dans Dolibarr"
+
+msgid "Proposes products or services to create in Dolibarr. Nothing is created until you validate them in EO Tools > MCP > À valider."
+msgstr "Propose des produits ou services à créer dans Dolibarr. Rien n'est créé tant que vous ne les validez pas dans EO Tools > MCP > À valider."
+
+msgid "Propose categories to create in Dolibarr"
+msgstr "Proposer des catégories à créer dans Dolibarr"
+
+msgid "Proposes product categories to create in Dolibarr. Nothing is created until you validate them in EO Tools > MCP > À valider."
+msgstr "Propose des catégories de produits à créer dans Dolibarr. Rien n'est créé tant que vous ne les validez pas dans EO Tools > MCP > À valider."
+
+msgid "Publish or hide products"
+msgstr "Publier ou masquer des produits"
+
+msgid "Publishes products on the shop, or puts them back in draft, when you ask for it. The status is changed in Dolibarr, then synchronized."
+msgstr "Publie des produits sur la boutique, ou les remet en brouillon, quand vous le demandez. Le statut est changé dans Dolibarr, puis synchronisé."
+
+msgid "Products and services to create in Dolibarr"
+msgstr "Produits et services à créer dans Dolibarr"
+
+msgid "Proposed by the AI. Validating creates them in Dolibarr, puts them in their categories, then synchronizes them to the shop with their publication status. Rejecting creates nothing."
+msgstr "Proposés par l'IA. Valider les crée dans Dolibarr, les range dans leurs catégories, puis les synchronise sur la boutique avec leur statut de publication. Rejeter ne crée rien."
+
+msgid "Product categories to create in Dolibarr"
+msgstr "Catégories de produits à créer dans Dolibarr"
+
+msgid "Proposed by the AI. Validating creates them in Dolibarr, then synchronizes them to the shop. Rejecting creates nothing."
+msgstr "Proposées par l'IA. Valider les crée dans Dolibarr, puis les synchronise sur la boutique. Rejeter ne crée rien."
+
+msgid "Service"
+msgstr "Service"
+
+msgid "Price"
+msgstr "Prix"
+
+#. translators: 1: price, 2: HT or TTC.
+msgid "%1$s € %2$s"
+msgstr "%1$s € %2$s"
+
+msgid "Barcode"
+msgstr "Code-barres"
+
+msgid "On the shop"
+msgstr "Sur la boutique"
+
+msgid "Published"
+msgstr "Publié"
+
+msgid "Parent category"
+msgstr "Catégorie parente"
+
+msgid "None (top level)"
+msgstr "Aucune (premier niveau)"
+
+#. translators: %d: Dolibarr ID.
+msgid "Already created in Dolibarr (#%d), sync to finish."
+msgstr "Déjà créé dans Dolibarr (n° %d), synchro à terminer."
+
+#. translators: 1: error message, 2: Dolibarr ID.
+msgid "%1$s Already created in Dolibarr (#%2$d): validating again only finishes the sync."
+msgstr "%1$s Déjà créé dans Dolibarr (n° %2$d) : valider à nouveau termine seulement la synchro."
+
+#. translators: %d: maximum number of proposals.
+msgid "%d proposals are already waiting for validation. Ask the user to validate or reject them first."
+msgstr "%d propositions attendent déjà une validation. Demandez d'abord à l'utilisateur de les valider ou de les rejeter."
+
+msgid "This proposal no longer exists."
+msgstr "Cette proposition n'existe plus."
+
+msgid "WPshop is not connected to Dolibarr."
+msgstr "WPshop n'est pas connecté à Dolibarr."
+
+msgid "WPshop is not connected to Dolibarr. An administrator must set the Dolibarr URL and API key in WPshop > Settings > ERP."
+msgstr "WPshop n'est pas connecté à Dolibarr. Un administrateur doit renseigner l'URL et la clé API de Dolibarr dans WPshop > Réglages > ERP."
+
+msgid "Dolibarr did not answer."
+msgstr "Dolibarr n'a pas répondu."
+
+msgid "Dolibarr refused the request."
+msgstr "Dolibarr a refusé la demande."
+
+msgid "Dolibarr did not return the ID of the new product."
+msgstr "Dolibarr n'a pas renvoyé l'identifiant du nouveau produit."
+
+msgid "Dolibarr did not return the ID of the new category."
+msgstr "Dolibarr n'a pas renvoyé l'identifiant de la nouvelle catégorie."
+
+msgid "The sync did not create nor update anything on the shop."
+msgstr "La synchro n'a rien créé ni mis à jour sur la boutique."
+
+#. translators: 1: product ref, 2: Dolibarr ID.
+msgid "The ref %1$s already exists in Dolibarr (#%2$d)."
+msgstr "La référence %1$s existe déjà dans Dolibarr (n° %2$d)."
+
+#. translators: 1: barcode, 2: product ref.
+msgid "Barcode %1$s already used by %2$s in Dolibarr."
+msgstr "Code-barres %1$s déjà utilisé par %2$s dans Dolibarr."
+
+#. translators: 1: product label, 2: product refs.
+msgid "Same label as %2$s in Dolibarr."
+msgstr "Même libellé que %2$s dans Dolibarr."
+
+#. translators: %d: WordPress ID.
+msgid "A shop product already has this title (#%d)."
+msgstr "Un produit de la boutique a déjà ce titre (n° %d)."
+
+#. translators: 1: category label, 2: Dolibarr ID.
+msgid "The category %1$s already exists at this place in Dolibarr (#%2$d)."
+msgstr "La catégorie %1$s existe déjà à cet endroit dans Dolibarr (n° %2$d)."
+
+msgid "Not linked to Dolibarr: this object was created on the WordPress side. Dolibarr is the only source of the catalogue."
+msgstr "Pas lié à Dolibarr : cet élément a été créé côté WordPress. Dolibarr est la seule source du catalogue."
+
+msgid "The link back (_wps_id) is missing in Dolibarr: a sync repairs it."
+msgstr "Le lien retour (_wps_id) manque dans Dolibarr : une synchro le répare."
+
+msgid "Dolibarr object not found, or Dolibarr did not answer. The link is kept."
+msgstr "Élément introuvable dans Dolibarr, ou Dolibarr n'a pas répondu. Le lien est conservé."
+
+#. translators: %d: WordPress ID.
+msgid "In Dolibarr, this object is linked to another shop object (#%d)."
+msgstr "Dans Dolibarr, cet élément est lié à un autre élément de la boutique (n° %d)."
+
+msgid "Not on the shop yet: wpshop/sync creates it there."
+msgstr "Pas encore sur la boutique : wpshop/sync l'y crée."
+
+msgid "This shop product is not linked to Dolibarr."
+msgstr "Ce produit de la boutique n'est pas lié à Dolibarr."
+
+msgid "Give doli_id, wp_id or ref."
+msgstr "Indiquez doli_id, wp_id ou ref."
+
+msgid "Give doli_ids or wp_ids."
+msgstr "Indiquez doli_ids ou wp_ids."
+
+msgid "The status must be \"publish\" or \"draft\"."
+msgstr "Le statut doit être « publish » ou « draft »."
+
+msgid "Not a shop product linked to Dolibarr."
+msgstr "Ce n'est pas un produit de la boutique lié à Dolibarr."
+
+msgid "Invalid product."
+msgstr "Produit invalide."
+
+msgid "Invalid ref: letters, digits, dot, dash and underscore only."
+msgstr "Référence invalide : lettres, chiffres, point, tiret et tiret bas uniquement."
+
+msgid "The label is required."
+msgstr "Le libellé est obligatoire."
+
+msgid "Invalid price."
+msgstr "Prix invalide."
+
+msgid "Invalid VAT rate."
+msgstr "Taux de TVA invalide."
+
+msgid "Invalid barcode."
+msgstr "Code-barres invalide."
+
+msgid "A proposal with this ref is already waiting for validation."
+msgstr "Une proposition avec cette référence attend déjà une validation."
+
+#. translators: %s: Dolibarr category IDs.
+msgid "Unknown Dolibarr categories: %s."
+msgstr "Catégories Dolibarr inconnues : %s."
+
+msgid "This category is already waiting for validation."
+msgstr "Cette catégorie attend déjà une validation."
+
+#. translators: %d: Dolibarr category ID.
+msgid "Unknown parent category #%d in Dolibarr."
+msgstr "Catégorie parente n° %d inconnue dans Dolibarr."
+
+msgid "Nothing is created yet: ask the user to validate the proposals in EO Tools > MCP > À valider."
+msgstr "Rien n'est encore créé : demandez à l'utilisateur de valider les propositions dans EO Tools > MCP > À valider."
+
+#. translators: %s: product ref.
+msgid "No product or service has the ref %s in Dolibarr."
+msgstr "Aucun produit ni service n'a la référence %s dans Dolibarr."
+
+#. translators: %d: media ID.
+msgid "Image #%d not found in the media library."
+msgstr "Image n° %d introuvable dans la médiathèque."
+
+msgid "The product image must be a jpg, png, gif or webp file."
+msgstr "L'image du produit doit être un fichier jpg, png, gif ou webp."
+
+msgid "The product image is too large (5 MB at most)."
+msgstr "L'image du produit est trop lourde (5 Mo au plus)."
+
+#. translators: %s: error message.
+msgid "Image not sent to Dolibarr: %s"
+msgstr "Image non envoyée à Dolibarr : %s"
+
+msgid "Image"
+msgstr "Image"
+
+msgid "Add an image to products"
+msgstr "Ajouter une image à des produits"
+
+msgid "Adds an image to products that have none, when you ask for it. The image goes into the Dolibarr product, then is synchronized to the shop."
+msgstr "Ajoute une image aux produits qui n'en ont pas, quand vous le demandez. L'image est placée dans le produit Dolibarr, puis synchronisée sur la boutique."
+
+msgid "Give doli_id or wp_id."
+msgstr "Indiquez doli_id ou wp_id."
+
+#. translators: %s: file names.
+msgid "This product already has an image in Dolibarr (%s): change it in Dolibarr."
+msgstr "Ce produit a déjà une image dans Dolibarr (%s) : changez-la dans Dolibarr."
