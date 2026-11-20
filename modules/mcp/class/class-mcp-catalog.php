@@ -527,8 +527,10 @@ class Mcp_Catalog {
 		$new_wp_id = (int) $result['wp_object']->data['id'];
 
 		// The category sync does not write the link back in Dolibarr: write it, as for products.
-		if ( self::OBJECT_CATEGORY === $object ) {
-			Request_Util::get( 'doliwpshop/associatecategory?wp_id=' . $new_wp_id . '&doli_id=' . $doli_id );
+		// Through the core API: the doliwpshop route "associatecategory" calls Categorie::update() with
+		// the wrong arguments and always fails.
+		if ( self::OBJECT_CATEGORY === $object && (int) self::doli_extrafield( $exists, 'options__wps_id' ) !== $new_wp_id ) {
+			self::doli_send( 'categories/' . $doli_id, array( 'array_options' => array( 'options__wps_id' => $new_wp_id ) ), 'PUT' );
 		}
 
 		return array(
