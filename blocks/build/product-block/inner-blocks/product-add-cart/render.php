@@ -1,7 +1,8 @@
 <?php
 namespace wpshop;
 
-$product = Product::g()->get( array( 'id' => get_the_ID() ), true );
+$product_id = ! empty( $block->context['postId'] ) ? (int) $block->context['postId'] : get_the_ID();
+$product    = Product::g()->get( array( 'id' => $product_id ), true );
 $cartUrl = Pages::g()->get_cart_link();
 
 ?>

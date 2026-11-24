@@ -9,9 +9,10 @@
 	"description": "Image of the product.",
 	"example": {},
 	"supports": {
-		"html": false,
-		"inserter": false
+		"html": false
 	},
+	"ancestor": [ "wpshop/product-block", "core/post-template" ],
+	"usesContext": [ "postId", "queryId" ],
 	"textdomain": "wpshop",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",

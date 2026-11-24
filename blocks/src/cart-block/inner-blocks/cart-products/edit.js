@@ -12,6 +12,7 @@ import { __ } from '@wordpress/i18n';
  * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops
  */
 import { useBlockProps } from '@wordpress/block-editor';
+import { formatPrice, formatAmount } from '../../../utils';
 
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
@@ -66,7 +67,7 @@ export default function Edit() {
                     <div class="wps-product-content">
                         <div itemprop="name" class="wps-product-title">{ product.title }</div>
                         <ul class="wps-product-attributes">
-                            <li class="wps-product-attributes-item">{ __( 'Unit price:', 'wpshop' ) } {product.price_ttc} €</li>
+                            <li class="wps-product-attributes-item">{ __( 'Unit price:', 'wpshop' ) } {formatPrice(product.price_ttc)}</li>
                         </ul>
                         <div class="wps-product-footer">
                             <div class="wps-product-quantity" style={{ fontSize: '1.4em' }}>
@@ -76,7 +77,7 @@ export default function Edit() {
                             </div>
 
 							<div itemprop="offers" itemscope itemtype="https://schema.org/Offer" class="wps-product-price">
-								<span itemprop="price">{(product.price_ttc * product.qty).toFixed(2)}</span>
+								<span itemprop="price" content={(product.price_ttc * product.qty).toFixed(2)}>{formatAmount(product.price_ttc * product.qty)}</span>{" "}
 								<span itemprop="priceCurrency" content="EUR">€</span>
 							</div>
                         </div>

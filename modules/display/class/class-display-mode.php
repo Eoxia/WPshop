@@ -63,6 +63,20 @@ class Display_Mode extends Singleton_Util {
 	const PRODUCT_TEMPLATE = 'single-wps-product';
 
 	/**
+	 * Slug of the product category block template.
+	 *
+	 * @var string
+	 */
+	const CATEGORY_TEMPLATE = 'taxonomy-wps-product-cat';
+
+	/**
+	 * Namespace of the Query Loop variation displaying the product catalogue.
+	 *
+	 * @var string
+	 */
+	const CATALOGUE_NAMESPACE = 'wpshop/product-query';
+
+	/**
 	 * Constructor.
 	 */
 	protected function construct() {}
@@ -129,6 +143,12 @@ class Display_Mode extends Singleton_Util {
 	 */
 	public function get_page_templates() {
 		$templates = array(
+			'shop_id'       => array(
+				'slug'        => 'wps-shop',
+				'title'       => __( 'Shop (WPshop)', 'wpshop' ),
+				'description' => __( 'Displays the WPshop product catalogue below the page content.', 'wpshop' ),
+				'block'       => 'core/query',
+			),
 			'cart_id'       => array(
 				'slug'        => 'wps-cart',
 				'title'       => __( 'Cart (WPshop)', 'wpshop' ),
@@ -208,6 +228,9 @@ class Display_Mode extends Singleton_Util {
 	 */
 	public function get_page_blocks( $page_key ) {
 		switch ( $page_key ) {
+			case 'shop_id':
+				$markup = $this->get_catalogue_blocks();
+				break;
 			case 'cart_id':
 				$markup = '<!-- wp:wpshop/cart-block -->'
 					. $this->columns(
@@ -287,6 +310,231 @@ class Display_Mode extends Singleton_Util {
 	}
 
 	/**
+	 * Product catalogue: a core Query Loop on the WPshop products (same structure as the
+	 * "Catalogue de produits (WPshop)" variation).
+	 *
+	 * @param bool $inherit True to display the main query (category archive), false for a
+	 *                      custom query (shop page).
+	 * @param int  $term_id Product category to display (custom query only).
+	 *
+	 * @return string Serialized blocks.
+	 */
+	public function get_catalogue_blocks( $inherit = false, $term_id = 0 ) {
+		$attributes            = $this->get_catalogue_attributes();
+		$attributes['queryId'] = 0;
+		$attributes['query']['inherit'] = (bool) $inherit;
+
+		if ( ! $inherit && $term_id ) {
+			$attributes['query']['taxQuery'] = array( 'wps-product-cat' => array( (int) $term_id ) );
+		}
+
+		$markup = '<!-- wp:query ' . serialize_block_attributes( $attributes ) . ' -->' . "\n"
+			. '<div class="wp-block-query alignwide">'
+			. '<!-- wp:post-template {"layout":{"type":"grid","columnCount":4}} -->' . "\n"
+			. '<!-- wp:wpshop/product-image /-->' . "\n\n"
+			. '<!-- wp:post-title {"level":3,"isLink":true} /-->' . "\n\n"
+			. '<!-- wp:wpshop/product-price /-->' . "\n\n"
+			. '<!-- wp:wpshop/product-button /-->' . "\n"
+			. '<!-- /wp:post-template -->' . "\n\n"
+			. '<!-- wp:query-pagination {"layout":{"type":"flex","justifyContent":"center"}} -->' . "\n"
+			. '<!-- wp:query-pagination-previous /-->' . "\n\n"
+			. '<!-- wp:query-pagination-numbers /-->' . "\n\n"
+			. '<!-- wp:query-pagination-next /-->' . "\n"
+			. '<!-- /wp:query-pagination -->' . "\n\n"
+			. '<!-- wp:query-no-results -->' . "\n"
+			. '<!-- wp:paragraph -->' . "\n" . '<p>' . esc_html__( 'No products found.', 'wpshop' ) . '</p>' . "\n" . '<!-- /wp:paragraph -->' . "\n"
+			. '<!-- /wp:query-no-results --></div>' . "\n"
+			. '<!-- /wp:query -->';
+
+		/**
+		 * Filters the blocks of the product catalogue.
+		 *
+		 * @param string $markup  Serialized blocks.
+		 * @param bool   $inherit Whether the catalogue displays the main query.
+		 * @param int    $term_id Product category (custom query only).
+		 */
+		return apply_filters( 'wps_catalogue_blocks', $markup, $inherit, $term_id );
+	}
+
+	/**
+	 * Attributes of the catalogue Query Loop (variation and templates).
+	 *
+	 * @return array
+	 */
+	public function get_catalogue_attributes() {
+		return array(
+			'namespace' => self::CATALOGUE_NAMESPACE,
+			'query'     => array(
+				'perPage'  => 12,
+				'pages'    => 0,
+				'offset'   => 0,
+				'postType' => Product::g()->get_type(),
+				'order'    => 'desc',
+				'orderBy'  => 'date',
+				'author'   => '',
+				'search'   => '',
+				'exclude'  => array(),
+				'sticky'   => '',
+				'inherit'  => false,
+			),
+			'align'     => 'wide',
+		);
+	}
+
+	/**
+	 * Renders the catalogue of a product category (classic themes, category archive).
+	 *
+	 * @param int $term_id Product category.
+	 *
+	 * @return string HTML.
+	 */
+	public function render_category_catalogue( $term_id ) {
+		return '<div class="wps-page-blocks">' . do_blocks( $this->get_catalogue_blocks( false, $term_id ) ) . '</div>';
+	}
+
+	/**
+	 * Content of the product category block template.
+	 *
+	 * @return string
+	 */
+	public function get_category_block_template_content() {
+		return $this->wrap_block_template(
+			'<!-- wp:query-title {"type":"archive","showPrefix":false,"align":"wide"} /-->' . "\n\n"
+			. '<!-- wp:term-description {"align":"wide"} /-->' . "\n\n"
+			. $this->get_catalogue_blocks( true )
+		);
+	}
+
+	/**
+	 * Whether the content of a page already displays what the WPshop template of this page
+	 * would add (the WPshop block, or a catalogue Query Loop for the shop page).
+	 *
+	 * @param string       $page_key WPshop page key.
+	 * @param int|\WP_Post $post     The page.
+	 *
+	 * @return bool
+	 */
+	public function content_has_page_block( $page_key, $post ) {
+		$post      = get_post( $post );
+		$templates = $this->get_page_templates();
+
+		if ( ! $post || ! isset( $templates[ $page_key ] ) || ! has_block( $templates[ $page_key ]['block'], $post ) ) {
+			return false;
+		}
+
+		if ( 'shop_id' !== $page_key ) {
+			return true;
+		}
+
+		return $this->blocks_have_catalogue( parse_blocks( $post->post_content ) );
+	}
+
+	/**
+	 * Applies the shop rules to a products query: parent products only, linked to Dolibarr
+	 * when the ERP is connected, shipping product excluded.
+	 *
+	 * @param array $vars WP_Query arguments.
+	 *
+	 * @return array
+	 */
+	public function apply_catalogue_rules( $vars ) {
+		$vars['post_parent'] = 0;
+
+		$shipping = get_option( 'wps_shipping_cost', array() );
+		if ( ! empty( $shipping['shipping_product_id'] ) ) {
+			$vars['post__not_in']   = isset( $vars['post__not_in'] ) ? (array) $vars['post__not_in'] : array();
+			$vars['post__not_in'][] = (int) $shipping['shipping_product_id'];
+		}
+
+		if ( Settings::g()->dolibarr_is_active() ) {
+			$vars['meta_query']   = isset( $vars['meta_query'] ) ? (array) $vars['meta_query'] : array();
+			$vars['meta_query'][] = array(
+				'key'     => '_external_id',
+				'value'   => 0,
+				'compare' => '!=',
+			);
+		}
+
+		/**
+		 * Filters the arguments of the WPshop catalogue queries.
+		 *
+		 * @param array $vars WP_Query arguments.
+		 */
+		return apply_filters( 'wps_catalogue_query_vars', $vars );
+	}
+
+	/**
+	 * Query Loop variation "Catalogue de produits (WPshop)".
+	 *
+	 * @return array Variation, as expected by the "get_block_type_variations" filter.
+	 */
+	public function get_catalogue_variation() {
+		$no_attributes = new \stdClass();
+
+		return array(
+			'name'            => self::CATALOGUE_NAMESPACE,
+			'title'           => __( 'Product catalogue (WPshop)', 'wpshop' ),
+			'description'     => __( 'Displays the WPshop products with their image, title, price and add to cart button.', 'wpshop' ),
+			'category'        => 'wpshop',
+			'icon'            => 'store',
+			'keywords'        => array( 'wpshop', 'shop', 'products', 'catalogue' ),
+			'attributes'      => $this->get_catalogue_attributes(),
+			'isActive'        => array( 'namespace' ),
+			'scope'           => array( 'inserter' ),
+			'allowedControls' => array( 'inherit', 'order', 'taxQuery', 'search' ),
+			'innerBlocks'     => array(
+				array(
+					'core/post-template',
+					array( 'layout' => array( 'type' => 'grid', 'columnCount' => 4 ) ),
+					array(
+						array( 'wpshop/product-image', $no_attributes ),
+						array( 'core/post-title', array( 'level' => 3, 'isLink' => true ) ),
+						array( 'wpshop/product-price', $no_attributes ),
+						array( 'wpshop/product-button', $no_attributes ),
+					),
+				),
+				array(
+					'core/query-pagination',
+					array( 'layout' => array( 'type' => 'flex', 'justifyContent' => 'center' ) ),
+					array(
+						array( 'core/query-pagination-previous', $no_attributes ),
+						array( 'core/query-pagination-numbers', $no_attributes ),
+						array( 'core/query-pagination-next', $no_attributes ),
+					),
+				),
+				array(
+					'core/query-no-results',
+					$no_attributes,
+					array(
+						array( 'core/paragraph', array( 'content' => __( 'No products found.', 'wpshop' ) ) ),
+					),
+				),
+			),
+		);
+	}
+
+	/**
+	 * Whether parsed blocks contain a catalogue Query Loop.
+	 *
+	 * @param array $blocks Parsed blocks.
+	 *
+	 * @return bool
+	 */
+	private function blocks_have_catalogue( $blocks ) {
+		foreach ( $blocks as $block ) {
+			if ( 'core/query' === $block['blockName'] && isset( $block['attrs']['namespace'] ) && self::CATALOGUE_NAMESPACE === $block['attrs']['namespace'] ) {
+				return true;
+			}
+
+			if ( ! empty( $block['innerBlocks'] ) && $this->blocks_have_catalogue( $block['innerBlocks'] ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
 	 * Content of a page block template (header, title, page content, WPshop blocks, footer).
 	 *
 	 * @param string $page_key WPshop page key.
@@ -354,7 +602,7 @@ class Display_Mode extends Singleton_Util {
 				$status = 'already';
 			} elseif ( '' !== $current && 'default' !== $current && ! $this->is_wpshop_template( $current ) ) {
 				$status = 'custom';
-			} elseif ( has_block( $template['block'], $page ) ) {
+			} elseif ( $this->content_has_page_block( $key, $page ) ) {
 				$status = 'has_block';
 			} else {
 				update_post_meta( $page->ID, '_wp_page_template', $template['slug'] );

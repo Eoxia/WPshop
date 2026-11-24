@@ -303,6 +303,11 @@ class Product_Action {
 			return;
 		}
 
+		// Mode "Nouveaux modèles" with a block theme: the category block template displays the archive.
+		if ( Display_Mode::g()->is_templates_mode() && Display_Mode::g()->has_block_templates() ) {
+			return;
+		}
+
 		// Récupère la Description de la catégorie.
 		if ( ! empty( $queried_object->description ) ) {
 			$archive_description = '<div class="wps-archive-description">' . $queried_object->description . '</div>';
@@ -322,7 +327,8 @@ class Product_Action {
 			'post_date_gmt'         => $shop_page->post_date_gmt,
 			'post_modified'         => $shop_page->post_modified,
 			'post_modified_gmt'     => $shop_page->post_modified_gmt,
-			'post_content'          => $archive_description . $this->generate_archive_page_content(),
+			// Mode "Nouveaux modèles" with a classic theme: catalogue Query Loop of the category.
+			'post_content'          => $archive_description . ( Display_Mode::g()->is_templates_mode() ? Display_Mode::g()->render_category_catalogue( $queried_object->term_id ) : $this->generate_archive_page_content() ),
 			'post_title'            => $queried_object->name,
 			'post_excerpt'          => '',
 			'post_content_filtered' => '',

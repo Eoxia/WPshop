@@ -65,6 +65,16 @@ class WPshop extends Singleton_Util {
 			$db_version = '1.0.2';
 			update_option( 'wpshop2_database_version', $db_version );
 		}
+
+		if ( version_compare( $db_version, '1.0.3', '<' ) ) {
+			// Shop page template (product catalogue) added: assign it on sites already in "Nouveaux modèles".
+			if ( Display_Mode::g()->is_templates_mode() ) {
+				Display_Mode::g()->apply_page_templates();
+			}
+
+			$db_version = '1.0.3';
+			update_option( 'wpshop2_database_version', $db_version );
+		}
 	}
 }
 
