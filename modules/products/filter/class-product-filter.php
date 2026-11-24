@@ -255,6 +255,16 @@ class Product_Filter {
 		global $post;
 		global $wp_query;
 
+		if ( is_singular( Product::g()->get_type() ) && Display_Mode::g()->is_templates_mode() ) {
+			// Block theme: the "single-wps-product" template displays the product blocks.
+			if ( Display_Mode::g()->has_block_templates() || (int) get_the_ID() !== (int) get_queried_object_id() ) {
+				return $content;
+			}
+
+			// Classic theme: the theme already prints the title.
+			return do_blocks( Display_Mode::g()->get_product_blocks( false ) );
+		}
+
 		if ( is_singular( Product::g()->get_type() ) ) {
 			$product = Product::g()->get( array( 'id' => get_the_ID() ), true );
 

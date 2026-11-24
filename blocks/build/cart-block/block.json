@@ -6,7 +6,7 @@
   "title": "Cart",
   "category": "wpshop",
   "icon": "cart",
-  "description": "Cart Block",
+  "description": "Displays the customer cart.",
   "example": {},
   "supports": {
     "html": false

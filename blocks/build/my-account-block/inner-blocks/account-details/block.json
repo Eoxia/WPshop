@@ -6,7 +6,7 @@
   "title": "Account Details",
   "category": "wpshop",
   "icon": "smiley",
-  "description": "Example block scaffolded with Create Block tool.",
+  "description": "Customer details in the account.",
   "example": {},
   "supports": {
     "html": false,

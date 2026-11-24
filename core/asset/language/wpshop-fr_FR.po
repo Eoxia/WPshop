@@ -1338,7 +1338,7 @@ msgstr "Tunnel de vente"
 
 #: modules/pages/class/class-pages.php:93
 msgid "General conditions of sale"
-msgstr "Condition générales de vente"
+msgstr "Conditions générales de vente"
 
 #: modules/pages/class/class-pages.php:110
 msgid "Current order"
@@ -2719,3 +2719,260 @@ msgstr "Indiquez doli_id ou wp_id."
 #. translators: %s: file names.
 msgid "This product already has an image in Dolibarr (%s): change it in Dolibarr."
 msgstr "Ce produit a déjà une image dans Dolibarr (%s) : changez-la dans Dolibarr."
+
+#: modules/pages/class/class-pages.php
+msgid "Connection"
+msgstr "Connexion"
+
+#: modules/display/class/class-display-mode.php
+msgid "Classic"
+msgstr "Classique"
+
+msgid "The shop is displayed by the historical WPshop views, injected in the content of the WPshop pages. Nothing changes on your site."
+msgstr "La boutique est affichée par les vues historiques de WPshop, injectées dans le contenu des pages WPshop. Rien ne change sur votre site."
+
+msgid "New templates"
+msgstr "Nouveaux modèles"
+
+msgid "The WPshop pages use a WPshop template that contains the shop blocks (cart, checkout, my account, connection, single product). Works with every theme; with a block theme, the templates can be customised in the Site Editor."
+msgstr "Les pages WPshop utilisent un modèle WPshop qui contient les blocs de la boutique (panier, tunnel de vente, mon compte, connexion, fiche produit). Fonctionne avec tous les thèmes ; avec un thème à blocs, les modèles se personnalisent dans l’éditeur de site."
+
+msgid "Cart (WPshop)"
+msgstr "Panier (WPshop)"
+
+msgid "Displays the WPshop cart below the page content."
+msgstr "Affiche le panier WPshop sous le contenu de la page."
+
+msgid "Checkout (WPshop)"
+msgstr "Tunnel de vente (WPshop)"
+
+msgid "Displays the WPshop checkout below the page content."
+msgstr "Affiche le tunnel de vente WPshop sous le contenu de la page."
+
+msgid "My account (WPshop)"
+msgstr "Mon compte (WPshop)"
+
+msgid "Displays the WPshop customer account below the page content."
+msgstr "Affiche le compte client WPshop sous le contenu de la page."
+
+msgid "Connection (WPshop)"
+msgstr "Connexion (WPshop)"
+
+msgid "Displays the WPshop login and registration forms below the page content."
+msgstr "Affiche les formulaires de connexion et d’inscription WPshop sous le contenu de la page."
+
+#: modules/display/action/class-display-action.php
+msgid "Single product (WPshop)"
+msgstr "Fiche produit (WPshop)"
+
+msgid "Displays a WPshop product with its image, price and add to cart button."
+msgstr "Affiche un produit WPshop avec son image, son prix et le bouton d’ajout au panier."
+
+msgid "Display mode \"New templates\" enabled."
+msgstr "Mode d’affichage « Nouveaux modèles » activé."
+
+msgid "Display mode \"Classic\" enabled: the WPshop pages are back to their default template."
+msgstr "Mode d’affichage « Classique » activé : les pages WPshop sont revenues à leur modèle par défaut."
+
+#. translators: %s: list of page titles.
+msgid "Left untouched (other template or block already in the content): %s."
+msgstr "Pages laissées telles quelles (autre modèle ou bloc déjà présent dans le contenu) : %s."
+
+#: modules/pages/filter/class-pages-filter.php
+#. translators: %s: WPshop page name, e.g. "Cart".
+msgid "WPshop %s page"
+msgstr "Page WPshop : %s"
+
+#: modules/settings/view/pages.view.php
+msgid "Display mode"
+msgstr "Mode d’affichage"
+
+msgid "Your theme is not a block theme (or WordPress is older than 6.7): the WPshop blocks are added below the content of the pages, inside your theme layout."
+msgstr "Votre thème n’est pas un thème à blocs (ou WordPress est antérieur à la 6.7) : les blocs WPshop sont ajoutés sous le contenu des pages, dans la mise en page de votre thème."
+
+msgid "Apply the display mode"
+msgstr "Appliquer le mode d’affichage"
+
+#. translators: %s: template name.
+msgid "Template: %s"
+msgstr "Modèle : %s"
+
+msgid "WPshop template not applied (other template or block already in the content)"
+msgstr "Modèle WPshop non appliqué (autre modèle ou bloc déjà présent dans le contenu)"
+
+#: blocks/build/*/block.json
+msgctxt "block title"
+msgid "Auth Status Block"
+msgstr "Statut de connexion"
+
+msgctxt "block title"
+msgid "Cart"
+msgstr "Panier"
+
+msgctxt "block title"
+msgid "Cart Checkout Button"
+msgstr "Bouton vers le tunnel de vente"
+
+msgctxt "block title"
+msgid "Cart Empty"
+msgstr "Panier vide"
+
+msgctxt "block title"
+msgid "Cart Products"
+msgstr "Produits du panier"
+
+msgctxt "block title"
+msgid "Cart Summary"
+msgstr "Totaux du panier"
+
+msgctxt "block title"
+msgid "Checkout"
+msgstr "Tunnel de vente"
+
+msgctxt "block title"
+msgid "Checkout Acceptance Block"
+msgstr "Acceptation des CGV"
+
+msgctxt "block title"
+msgid "Checkout Button Block"
+msgstr "Bouton de validation de commande"
+
+msgctxt "block title"
+msgid "Checkout Form Block"
+msgstr "Formulaire client"
+
+msgctxt "block title"
+msgid "Checkout Order Details Block"
+msgstr "Récapitulatif de commande"
+
+msgctxt "block title"
+msgid "Connection Block"
+msgstr "Connexion"
+
+msgctxt "block title"
+msgid "My Account"
+msgstr "Mon compte"
+
+msgctxt "block title"
+msgid "Account Details"
+msgstr "Informations du compte"
+
+msgctxt "block title"
+msgid "Account Navigation"
+msgstr "Navigation du compte"
+
+msgctxt "block title"
+msgid "Account Orders"
+msgstr "Commandes du compte"
+
+msgctxt "block title"
+msgid "Single Product"
+msgstr "Fiche produit"
+
+msgctxt "block title"
+msgid "Product Add Cart"
+msgstr "Ajout au panier"
+
+msgctxt "block title"
+msgid "Product Description"
+msgstr "Description du produit"
+
+msgctxt "block title"
+msgid "Product Image"
+msgstr "Image du produit"
+
+msgctxt "block title"
+msgid "Product Price"
+msgstr "Prix du produit"
+
+msgctxt "block title"
+msgid "Product Title"
+msgstr "Titre du produit"
+
+msgctxt "block description"
+msgid "A block to display the authentication status of a user."
+msgstr "Affiche le statut de connexion du visiteur (accès au compte ou à la connexion)."
+
+msgctxt "block description"
+msgid "Displays the customer cart."
+msgstr "Affiche le panier du client."
+
+msgctxt "block description"
+msgid "Button leading from the cart to the checkout."
+msgstr "Bouton qui mène du panier au tunnel de vente."
+
+msgctxt "block description"
+msgid "Content displayed when the cart is empty."
+msgstr "Contenu affiché quand le panier est vide."
+
+msgctxt "block description"
+msgid "List of the products in the cart."
+msgstr "Liste des produits du panier."
+
+msgctxt "block description"
+msgid "Totals of the cart."
+msgstr "Totaux du panier."
+
+msgctxt "block description"
+msgid "Displays the checkout: customer details, order summary and confirmation."
+msgstr "Affiche le tunnel de vente : informations client, récapitulatif et validation de la commande."
+
+msgctxt "block description"
+msgid "Acceptance of the general conditions of sale."
+msgstr "Acceptation des conditions générales de vente."
+
+msgctxt "block description"
+msgid "Button confirming the order."
+msgstr "Bouton de validation de la commande."
+
+msgctxt "block description"
+msgid "Customer details form of the checkout."
+msgstr "Formulaire des informations client du tunnel de vente."
+
+msgctxt "block description"
+msgid "Summary of the order in the checkout."
+msgstr "Récapitulatif de la commande dans le tunnel de vente."
+
+msgctxt "block description"
+msgid "A block for user login and registration"
+msgstr "Formulaires de connexion et d’inscription."
+
+msgctxt "block description"
+msgid "Displays the customer account: details and orders."
+msgstr "Affiche le compte client : informations et commandes."
+
+msgctxt "block description"
+msgid "Customer details in the account."
+msgstr "Informations du client dans son compte."
+
+msgctxt "block description"
+msgid "Navigation menu of the customer account."
+msgstr "Menu de navigation du compte client."
+
+msgctxt "block description"
+msgid "Orders of the customer."
+msgstr "Commandes du client."
+
+msgctxt "block description"
+msgid "Displays a product with its title, description, image, price and add to cart button."
+msgstr "Affiche un produit avec son titre, sa description, son image, son prix et le bouton d’ajout au panier."
+
+msgctxt "block description"
+msgid "Quantity selector and add to cart button of the product."
+msgstr "Sélecteur de quantité et bouton d’ajout au panier du produit."
+
+msgctxt "block description"
+msgid "A block to display the product description."
+msgstr "Affiche la description du produit."
+
+msgctxt "block description"
+msgid "Image of the product."
+msgstr "Image du produit."
+
+msgctxt "block description"
+msgid "Price of the product, all taxes included."
+msgstr "Prix TTC du produit."
+
+msgctxt "block description"
+msgid "Title of the product."
+msgstr "Titre du produit."

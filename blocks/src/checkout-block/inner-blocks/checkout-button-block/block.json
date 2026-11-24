@@ -6,7 +6,7 @@
 	"title": "Checkout Button Block",
 	"category": "wpshop",
 	"icon": "smiley",
-	"description": "Example block scaffolded with Create Block tool.",
+	"description": "Button confirming the order.",
 	"example": {},
 	"supports": {
 		"html": false,

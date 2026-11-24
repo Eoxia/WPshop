@@ -6,7 +6,7 @@
   "title": "My Account",
   "category": "wpshop",
   "icon": "id",
-  "description": "Example block scaffolded with Create Block tool.",
+  "description": "Displays the customer account: details and orders.",
   "example": {},
   "supports": {
     "html": false

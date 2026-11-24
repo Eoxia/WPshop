@@ -40,11 +40,30 @@ class WPshop extends Singleton_Util {
 		if ( ! $db_version ) {
 			Pages::g()->create_default_page();
 
-			update_option( 'wpshop2_database_version', '1.0.0' );
-		} elseif ( version_compare( $db_version, '1.0.1', '<' ) ) {
+			// New install: the shop uses the page templates ("Nouveaux modèles").
+			add_option( Display_Mode::OPTION, Display_Mode::TEMPLATES );
+
+			$db_version = '1.0.0';
+			update_option( 'wpshop2_database_version', $db_version );
+		}
+
+		if ( version_compare( $db_version, '1.0.1', '<' ) ) {
 			Pages::g()->create_connection_page();
-			
-			update_option( 'wpshop2_database_version', '1.0.1' );
+
+			$db_version = '1.0.1';
+			update_option( 'wpshop2_database_version', $db_version );
+		}
+
+		if ( version_compare( $db_version, '1.0.2', '<' ) ) {
+			// Existing site: keep the legacy display until the admin switches (no-op on new installs).
+			add_option( Display_Mode::OPTION, Display_Mode::CLASSIC );
+
+			if ( Display_Mode::g()->is_templates_mode() ) {
+				Display_Mode::g()->apply_page_templates();
+			}
+
+			$db_version = '1.0.2';
+			update_option( 'wpshop2_database_version', $db_version );
 		}
 	}
 }

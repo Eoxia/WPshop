@@ -26,6 +26,33 @@ defined( 'ABSPATH' ) || exit;
  */
 ?>
 
+<?php
+$display_mode   = Display_Mode::g()->get_mode();
+$page_templates = Display_Mode::g()->get_page_templates();
+?>
+<form class="wpeo-form wps-display-mode" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="POST" style="margin-bottom: 2em;">
+	<input type="hidden" name="action" value="wps_update_display_mode" />
+	<?php wp_nonce_field( 'callback_update_display_mode' ); ?>
+
+	<div class="form-element">
+		<span class="form-label"><?php esc_html_e( 'Display mode', 'wpshop' ); ?></span>
+		<?php foreach ( Display_Mode::g()->get_modes() as $mode_key => $mode ) : ?>
+			<div class="wps-display-mode-option" style="margin: 10px 0;">
+				<input type="radio" class="form-field" id="wps-display-mode-<?php echo esc_attr( $mode_key ); ?>" name="display_mode" value="<?php echo esc_attr( $mode_key ); ?>" <?php checked( $display_mode, $mode_key ); ?> />
+				<label for="wps-display-mode-<?php echo esc_attr( $mode_key ); ?>"><strong><?php echo esc_html( $mode['label'] ); ?></strong></label>
+				<p style="margin: 4px 0 0 24px; color: #666;"><?php echo esc_html( $mode['description'] ); ?></p>
+			</div>
+		<?php endforeach; ?>
+		<?php if ( Display_Mode::TEMPLATES === $display_mode && ! Display_Mode::g()->has_block_templates() ) : ?>
+			<p style="color: #666;"><?php esc_html_e( 'Your theme is not a block theme (or WordPress is older than 6.7): the WPshop blocks are added below the content of the pages, inside your theme layout.', 'wpshop' ); ?></p>
+		<?php endif; ?>
+	</div>
+
+	<div>
+		<input type="submit" class="wpeo-button button-main" value="<?php esc_attr_e( 'Apply the display mode', 'wpshop' ); ?>" />
+	</div>
+</form>
+
 <form class="wpeo-form" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="POST">
 	<input type="hidden" name="action" value="<?php echo esc_attr( 'wps_update_pages_settings' ); ?>" />
 	<input type="hidden" name="tab" value="pages" />
@@ -36,7 +63,8 @@ defined( 'ABSPATH' ) || exit;
 		foreach ( Pages::g()->page_state_titles as $key => $page_option ) :
 			?>
 			<div class="form-element">
-				<span class="form-label"><?php echo esc_html__( $page_option ); ?></span>
+				<?php $page_labels = Pages::g()->get_page_labels(); ?>
+				<span class="form-label"><?php echo esc_html( isset( $page_labels[ $key ] ) ? $page_labels[ $key ] : $page_option ); ?></span>
 				<label class="form-field-container">
 					<select id="" class="form-field" name="wps_page_<?php echo esc_attr( $key ); ?>">
 						<?php
@@ -68,6 +96,15 @@ defined( 'ABSPATH' ) || exit;
 						<a href="<?php echo esc_url( $url ); ?>" target="_blank" style="text-decoration: none; color: #2271b1;">
 							<i class="fas fa-external-link-alt" style="margin-right: 4px; font-size: 11px;"></i><?php echo esc_html( urldecode( $url ) ); ?>
 						</a>
+						<?php if ( Display_Mode::TEMPLATES === $display_mode && isset( $page_templates[ $key ] ) ) : ?>
+							<span style="margin: 0 8px; color: #ccc;">|</span>
+							<?php if ( $page_templates[ $key ]['slug'] === get_page_template_slug( $selected_post ) ) : ?>
+								<?php /* translators: %s: template name. */ ?>
+								<?php echo esc_html( sprintf( __( 'Template: %s', 'wpshop' ), $page_templates[ $key ]['title'] ) ); ?>
+							<?php else : ?>
+								<?php esc_html_e( 'WPshop template not applied (other template or block already in the content)', 'wpshop' ); ?>
+							<?php endif; ?>
+						<?php endif; ?>
 					</div>
 				<?php endif; ?>
 			</div>

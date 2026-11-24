@@ -6,7 +6,7 @@
   "title": "Product Price",
   "category": "wpshop",
   "icon": "smiley",
-  "description": "Example block scaffolded with Create Block tool.",
+  "description": "Price of the product, all taxes included.",
   "example": {},
   "supports": {
     "html": false,

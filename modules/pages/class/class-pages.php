@@ -144,6 +144,24 @@ class Pages extends Singleton_Util {
 	}
 
 	/**
+	 * Translated names of the WPshop pages, keyed like $default_options.
+	 *
+	 * @since 2.7.0
+	 *
+	 * @return array
+	 */
+	public function get_page_labels() {
+		return array(
+			'shop_id'                    => __( 'Shop', 'wpshop' ),
+			'cart_id'                    => __( 'Cart', 'wpshop' ),
+			'checkout_id'                => __( 'Checkout', 'wpshop' ),
+			'my_account_id'              => __( 'My account', 'wpshop' ),
+			'general_conditions_of_sale' => __( 'General conditions of sale', 'wpshop' ),
+			'connection_id'              => __( 'Connection', 'wpshop' ),
+		);
+	}
+
+	/**
 	 * Créer et associer les pages par défaut nécessaires pour le fonctionnement de WPShop.
 	 *
 	 * @since   2.0.0
@@ -151,6 +169,9 @@ class Pages extends Singleton_Util {
 	 */
 	public function create_default_page() {
 		load_plugin_textdomain( 'wpshop', false, PLUGIN_WPSHOP_DIR . '/core/asset/language/' );
+
+		// Translated titles (and slugs) for the pages created on a new install.
+		$labels = $this->get_page_labels();
 
 		if ( ! empty( $this->page_state_titles ) ) {
 			foreach ( $this->page_state_titles as $key => $page_title ) {
@@ -162,7 +183,7 @@ class Pages extends Singleton_Util {
 				}
 
 				$page_id = wp_insert_post( array(
-					'post_title'  => __( $page_title ),
+					'post_title'  => isset( $labels[ $key ] ) ? $labels[ $key ] : __( $page_title, 'wpshop' ),
 					'post_type'   => 'page',
 					'post_status' => 'publish',
 				) );
@@ -189,7 +210,7 @@ class Pages extends Singleton_Util {
 				}
 
 				$page_id = wp_insert_post( array(
-					'post_title'  => __( $page_title ),
+					'post_title'  => __( $page_title, 'wpshop' ),
 					'post_type'   => 'page',
 					'post_name'   => $key,
 					'post_status' => 'private',
@@ -218,7 +239,7 @@ class Pages extends Singleton_Util {
 		}
 
 		$page_id = wp_insert_post( array(
-			'post_title'  => __( 'Connection' ),
+			'post_title'  => __( 'Connection', 'wpshop' ),
 			'post_type'   => 'page',
 			'post_name'   => 'connection',
 			'post_status' => 'publish',

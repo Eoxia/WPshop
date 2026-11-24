@@ -44,3 +44,26 @@ function price2num( $amount ) {
 
 	return $amount;
 }
+
+/**
+ * Formats an amount for display on the front (e.g. "12,50 € TTC").
+ *
+ * Same output as the former inline number_format() calls; filterable through
+ * "wps_format_price" to change the currency or the format.
+ *
+ * @since 2.7.0
+ *
+ * @param float|string $amount The amount.
+ * @param string       $suffix Text after the currency, e.g. "HT" or "TTC". Optional.
+ *
+ * @return string The formatted amount, not escaped.
+ */
+function format_price( $amount, $suffix = '' ) {
+	$formatted = number_format( (float) $amount, 2, ',', '' ) . ' €';
+
+	if ( '' !== $suffix ) {
+		$formatted .= ' ' . $suffix;
+	}
+
+	return apply_filters( 'wps_format_price', $formatted, $amount, $suffix );
+}
