@@ -924,7 +924,7 @@ msgstr "Parent Commandes:"
 #: modules/dolibarr/doli-order/filter/class-doli-order-filter.php:59
 #: modules/products/filter/class-product-filter.php:75
 msgid "No products found."
-msgstr "Aucun produits trouvés."
+msgstr "Aucun produit trouvé."
 
 #: modules/dolibarr/doli-order/filter/class-doli-order-filter.php:60
 #: modules/products/filter/class-product-filter.php:76
@@ -2976,3 +2976,32 @@ msgstr "Prix TTC du produit."
 msgctxt "block description"
 msgid "Title of the product."
 msgstr "Titre du produit."
+
+#: modules/display/class/class-display-mode.php
+msgid "Shop (WPshop)"
+msgstr "Boutique (WPshop)"
+
+msgid "Displays the WPshop product catalogue below the page content."
+msgstr "Affiche le catalogue de produits WPshop sous le contenu de la page."
+
+msgid "Product catalogue (WPshop)"
+msgstr "Catalogue de produits (WPshop)"
+
+msgid "Displays the WPshop products with their image, title, price and add to cart button."
+msgstr "Affiche les produits WPshop avec leur image, leur titre, leur prix et le bouton d’ajout au panier."
+
+#: modules/display/action/class-display-action.php
+msgid "Product category (WPshop)"
+msgstr "Catégorie de produits (WPshop)"
+
+msgid "Displays the products of a WPshop category with a Query Loop."
+msgstr "Affiche les produits d’une catégorie WPshop avec une boucle de requête."
+
+#: blocks/build/product-block/inner-blocks/product-button/block.json
+msgctxt "block title"
+msgid "Add to Cart Button"
+msgstr "Bouton d’ajout au panier"
+
+msgctxt "block description"
+msgid "One click add to cart button, for product catalogues."
+msgstr "Bouton d’ajout au panier en un clic, pour les catalogues de produits."

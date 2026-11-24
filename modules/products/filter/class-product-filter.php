@@ -200,6 +200,11 @@ class Product_Filter {
 
 			$page_ids_options     = get_option( 'wps_page_ids', Pages::g()->default_options );
 
+			// The shop page uses the WPshop template, or already contains a catalogue Query Loop.
+			if ( is_object( $post ) && ( Display_Mode::g()->page_uses_template( $post ) || Display_Mode::g()->content_has_page_block( 'shop_id', $post ) ) ) {
+				return $content;
+			}
+
 			if ( is_object( $post ) && $post->ID === $page_ids_options['shop_id'] ) {
 				$args = array(
 					'post_type'   => 'wps-product',

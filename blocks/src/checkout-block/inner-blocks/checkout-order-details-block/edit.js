@@ -12,6 +12,7 @@ import { __ } from '@wordpress/i18n';
  * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops
  */
 import { useBlockProps } from '@wordpress/block-editor';
+import { formatPrice, formatAmount } from '../../../utils';
 
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
@@ -66,7 +67,7 @@ export default function Edit() {
 								<div class="wps-product-footer">
 									<div class="wps-product-quantity">{product.qty}</div>
 									<div itemprop="offers" itemscope itemtype="https://schema.org/Offer" class="wps-product-price">
-										<span itemprop="price" content={product.price_ttc * product.qty}>{product.price_ttc * product.qty}</span>
+										<span itemprop="price" content={product.price_ttc * product.qty}>{formatAmount(product.price_ttc * product.qty)}</span>{" "}
 										<span itemprop="priceCurrency" content="EUR">€</span>
 									</div>
 								</div>
@@ -78,16 +79,16 @@ export default function Edit() {
 
 			<li class="wps-resume-line">
 				<span class="wps-line-content">{ __('Subtotal', 'wpshop') }</span>
-				<span class="wps-line-value">25 €</span>
+				<span class="wps-line-value">{ formatPrice( 25 ) }</span>
 			</li>
 			<li class="wps-resume-line">
 				<span class="wps-line-content">{ __( 'Taxes', 'wpshop' ) }</span>
-				<span class="wps-line-value">5 €</span>
+				<span class="wps-line-value">{ formatPrice( 5 ) }</span>
 			</li>
 
 			<li class="wps-resume-line featured">
 				<span class="wps-line-content">{ __( 'Total TTC', 'wpshop' ) }</span>
-				<span class="wps-line-value">30 €</span>
+				<span class="wps-line-value">{ formatPrice( 30 ) }</span>
 			</li>
 		</div>
 		</>

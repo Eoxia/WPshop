@@ -33,6 +33,14 @@ class Display_Action {
 		add_filter( 'theme_page_templates', array( $this, 'add_page_templates' ), 10, 1 );
 		add_filter( 'the_content', array( $this, 'append_page_blocks' ), 20 );
 
+		add_action( 'pre_get_posts', array( $this, 'category_main_query' ) );
+
+		// Product catalogue (Query Loop), both modes.
+		add_action( 'init', array( $this, 'register_catalogue_style' ) );
+		add_filter( 'get_block_type_variations', array( $this, 'add_catalogue_variation' ), 10, 2 );
+		add_filter( 'query_loop_block_query_vars', array( $this, 'catalogue_query_vars' ), 10, 1 );
+		add_filter( 'rest_wps-product_query', array( $this, 'catalogue_rest_query' ), 10, 1 );
+
 		// Both modes.
 		add_filter( 'render_block_wpshop/checkout-block', array( $this, 'checkout_legacy_steps' ), 10, 1 );
 		add_action( 'template_redirect', array( $this, 'redirect_guest_from_my_account' ) );
@@ -63,6 +71,95 @@ class Display_Action {
 			'description' => __( 'Displays a WPshop product with its image, price and add to cart button.', 'wpshop' ),
 			'content'     => Display_Mode::g()->get_product_block_template_content(),
 		) );
+
+		register_block_template( Display_Mode::TEMPLATE_NAMESPACE . '//' . Display_Mode::CATEGORY_TEMPLATE, array(
+			'title'       => __( 'Product category (WPshop)', 'wpshop' ),
+			'description' => __( 'Displays the products of a WPshop category with a Query Loop.', 'wpshop' ),
+			'content'     => Display_Mode::g()->get_category_block_template_content(),
+		) );
+	}
+
+	/**
+	 * Category archive of a block theme (mode "Nouveaux modèles"): the main query feeds the
+	 * catalogue Query Loop of the template, so it gets the shop rules.
+	 *
+	 * @param \WP_Query $query The query.
+	 */
+	public function category_main_query( $query ) {
+		if ( is_admin() || ! $query->is_main_query() || ! $query->is_tax( 'wps-product-cat' ) ) {
+			return;
+		}
+
+		if ( ! Display_Mode::g()->is_templates_mode() || ! Display_Mode::g()->has_block_templates() ) {
+			return;
+		}
+
+		$query->set( 'post_type', Product::g()->get_type() );
+		$query->set( 'posts_per_page', 12 );
+
+		foreach ( Display_Mode::g()->apply_catalogue_rules( array() ) as $var => $value ) {
+			$query->set( $var, $value );
+		}
+	}
+
+	/**
+	 * Catalogue card styles, loaded with the core Query Loop block (front and editor) and
+	 * scoped to its "wps-catalogue" class.
+	 */
+	public function register_catalogue_style() {
+		if ( ! function_exists( 'wp_enqueue_block_style' ) ) {
+			return;
+		}
+
+		wp_enqueue_block_style( 'core/query', array(
+			'handle' => 'wpshop-catalogue',
+			'src'    => PLUGIN_WPSHOP_URL . 'modules/display/asset/css/catalogue.css',
+			'path'   => PLUGIN_WPSHOP_PATH . 'modules/display/asset/css/catalogue.css',
+			'ver'    => (string) filemtime( PLUGIN_WPSHOP_PATH . 'modules/display/asset/css/catalogue.css' ),
+		) );
+	}
+
+	/**
+	 * Adds the "Catalogue de produits (WPshop)" variation to the core Query Loop block.
+	 *
+	 * @param array          $variations Block variations.
+	 * @param \WP_Block_Type $block_type Block type.
+	 *
+	 * @return array
+	 */
+	public function add_catalogue_variation( $variations, $block_type ) {
+		if ( 'core/query' === $block_type->name ) {
+			$variations[] = Display_Mode::g()->get_catalogue_variation();
+		}
+
+		return $variations;
+	}
+
+	/**
+	 * Shop rules on every Query Loop displaying WPshop products (custom queries; loops
+	 * inheriting the main query are handled by category_main_query()).
+	 *
+	 * @param array $query WP_Query arguments built from the Query Loop block.
+	 *
+	 * @return array
+	 */
+	public function catalogue_query_vars( $query ) {
+		if ( isset( $query['post_type'] ) && Product::g()->get_type() === $query['post_type'] ) {
+			$query = Display_Mode::g()->apply_catalogue_rules( $query );
+		}
+
+		return $query;
+	}
+
+	/**
+	 * Same rules for the Query Loop preview in the editor (REST API).
+	 *
+	 * @param array $args WP_Query arguments of the REST request.
+	 *
+	 * @return array
+	 */
+	public function catalogue_rest_query( $args ) {
+		return Display_Mode::g()->apply_catalogue_rules( $args );
 	}
 
 	/**
@@ -106,10 +203,9 @@ class Display_Action {
 			return $content;
 		}
 
-		$key       = Display_Mode::g()->get_page_key_by_template( $post );
-		$templates = Display_Mode::g()->get_page_templates();
+		$key = Display_Mode::g()->get_page_key_by_template( $post );
 
-		if ( has_block( $templates[ $key ]['block'], $post ) ) {
+		if ( Display_Mode::g()->content_has_page_block( $key, $post ) ) {
 			return $content;
 		}
 

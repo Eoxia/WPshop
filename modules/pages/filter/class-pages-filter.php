@@ -105,8 +105,7 @@ class Pages_Filter extends Singleton_Util {
 				}
 
 				// The page content already contains the WPshop block: do not display the shop twice.
-				$page_templates = Display_Mode::g()->get_page_templates();
-				if ( false !== $key && isset( $page_templates[ $key ] ) && has_block( $page_templates[ $key ]['block'], $GLOBALS['post'] ) ) {
+				if ( false !== $key && Display_Mode::g()->content_has_page_block( $key, $GLOBALS['post'] ) ) {
 					$key = false;
 				}
 

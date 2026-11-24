@@ -12,6 +12,7 @@ import { __ } from '@wordpress/i18n';
  * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops
  */
 import { useBlockProps } from '@wordpress/block-editor';
+import { formatPrice } from '../../../utils';
 
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
@@ -41,16 +42,16 @@ export default function Edit() {
 		<ul class="wps-cart-resume">
 			<li class="wps-resume-line">
 				<span class="wps-line-content">{ __( 'Subtotal', 'wpshop' ) }</span>
-				<span class="wps-line-value">{ products.total.toFixed(2) }€</span>
+				<span class="wps-line-value">{ formatPrice(products.total) }</span>
 			</li>
 			<li class="wps-resume-line">
 				<span class="wps-line-content">{ __( 'Taxes', 'wpshop' ) }</span>
-				<span class="wps-line-value">{ products.taxes.toFixed(2) }€</span>
+				<span class="wps-line-value">{ formatPrice(products.taxes) }</span>
 			</li>
 
 			<li class="wps-resume-line featured">
 				<span class="wps-line-content">{ __( 'Total TTC', 'wpshop' ) }</span>
-				<span class="wps-line-value">{ products.total_ttc.toFixed(2) }€</span>
+				<span class="wps-line-value">{ formatPrice(products.total_ttc) }</span>
 			</li>
 
 		</ul>

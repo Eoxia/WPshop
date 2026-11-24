@@ -12,6 +12,9 @@
     "html": false,
     "inserter": false
   },
+  "usesContext": [
+    "postId"
+  ],
   "textdomain": "wpshop",
   "editorScript": "file:./index.js",
   "editorStyle": "file:./index.css",

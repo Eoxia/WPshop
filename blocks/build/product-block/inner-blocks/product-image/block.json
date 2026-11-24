@@ -5,13 +5,26 @@
   "version": "0.1.0",
   "title": "Product Image",
   "category": "wpshop",
-  "icon": "smiley",
+  "icon": "format-image",
   "description": "Image of the product.",
   "example": {},
-  "supports": {
-    "html": false,
-    "inserter": false
+  "attributes": {
+    "isLink": {
+      "type": "boolean",
+      "default": true
+    }
   },
+  "supports": {
+    "html": false
+  },
+  "ancestor": [
+    "wpshop/product-block",
+    "core/post-template"
+  ],
+  "usesContext": [
+    "postId",
+    "queryId"
+  ],
   "textdomain": "wpshop",
   "editorScript": "file:./index.js",
   "editorStyle": "file:./index.css",

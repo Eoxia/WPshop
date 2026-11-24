@@ -1,0 +1,11 @@
+.wp-block-wpshop-product-button {
+	.wps-button-add-to-cart {
+		cursor: pointer;
+
+		&.button-load,
+		&:disabled {
+			opacity: 0.6;
+			cursor: default;
+		}
+	}
+}

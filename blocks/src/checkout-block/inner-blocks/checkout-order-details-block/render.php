@@ -42,7 +42,7 @@ $tva_amount = $total_price_ttc - $total_price_no_shipping;
                             <div class="wps-product-quantity"><?php echo esc_html( $product['qty'] ); ?></div>
                             <?php if ( ! empty( $product['price_ttc'] ) ) : ?>
                                 <div itemprop="offers" itemscope itemtype="https://schema.org/Offer" class="wps-product-price">
-                                    <span itemprop="price" content="<?php echo esc_html( number_format( $product['price_ttc'] * $product['qty'], 2, '.', '' ) ); ?>"><?php echo esc_html( number_format( $product['price_ttc'] * $product['qty'], 2, '.', '' ) ); ?></span>
+                                    <span itemprop="price" content="<?php echo esc_html( number_format( $product['price_ttc'] * $product['qty'], 2, '.', '' ) ); ?>"><?php echo esc_html( number_format( $product['price_ttc'] * $product['qty'], 2, ',', '' ) ); ?></span>
                                     <span itemprop="priceCurrency" content="EUR"><?php echo esc_html( '€', 'wpshop' ); ?></span>
                                 </div>
                             <?php endif; ?>
@@ -55,15 +55,15 @@ $tva_amount = $total_price_ttc - $total_price_no_shipping;
 
     <li class="wps-resume-line">
         <span class="wps-line-content"><?php echo esc_html__( 'Subtotal', 'wpshop' ); ?></span>
-        <span class="wps-line-value"><?php echo esc_html( number_format( $total_price_no_shipping, 2, '.', '' ) ); ?>€</span>
+        <span class="wps-line-value"><?php echo esc_html( \wpshop\format_price( $total_price_no_shipping ) ); ?></span>
     </li>
     <li class="wps-resume-line">
         <span class="wps-line-content"><?php echo esc_html__( 'Taxes', 'wpshop' ); ?></span>
-        <span class="wps-line-value"><?php echo esc_html( number_format( $tva_amount, 2, '.', '' ) ); ?>€</span>
+        <span class="wps-line-value"><?php echo esc_html( \wpshop\format_price( $tva_amount ) ); ?></span>
     </li>
 
     <li class="wps-resume-line featured">
         <span class="wps-line-content"><?php esc_html_e( 'Total TTC', 'wpshop' ); ?></span>
-        <span class="wps-line-value"><?php echo esc_html( number_format( $total_price_ttc, 2, '.', '' ) ); ?>€</span>
+        <span class="wps-line-value"><?php echo esc_html( \wpshop\format_price( $total_price_ttc ) ); ?></span>
     </li>
 </div>

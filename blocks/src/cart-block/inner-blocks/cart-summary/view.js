@@ -1,4 +1,4 @@
-import { render } from '../../../utils';
+import { render, formatPrice } from '../../../utils';
 import { __ } from '@wordpress/i18n';
 import { useEffect, useState } from '@wordpress/element';
 
@@ -25,16 +25,16 @@ const CartProductsList = () => {
         <ul class="wps-cart-resume">
             <li class="wps-resume-line">
                 <span class="wps-line-content">{ __( 'Subtotal', 'wpshop' ) }</span>
-                <span class="wps-line-value">{ products.total.toFixed(2) }€</span>
+                <span class="wps-line-value">{ formatPrice(products.total) }</span>
             </li>
             <li class="wps-resume-line">
                 <span class="wps-line-content">{ __( 'Taxes', 'wpshop' ) }</span>
-                <span class="wps-line-value">{ products.taxes.toFixed(2) }€</span>
+                <span class="wps-line-value">{ formatPrice(products.taxes) }</span>
             </li>
 
             <li class="wps-resume-line featured">
                 <span class="wps-line-content">{ __( 'Total TTC', 'wpshop' ) }</span>
-                <span class="wps-line-value">{ products.total_ttc.toFixed(2) }€</span>
+                <span class="wps-line-value">{ formatPrice(products.total_ttc) }</span>
             </li>
 
         </ul>

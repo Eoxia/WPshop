@@ -12,6 +12,7 @@ import { __ } from '@wordpress/i18n';
  * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops
  */
 import { useBlockProps } from '@wordpress/block-editor';
+import { formatPrice, formatAmount } from '../../../utils';
 
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
@@ -76,7 +77,7 @@ export default function Edit() {
                                 </div>
                                 <div class="wps-box-secondary">
                                     <div class="wps-box-status"><span class="wps-box-status-dot"></span> { order.data.status.class.text }</div>
-                                    <div class="wps-box-price">{ parseFloat(order.data.total_ttc).toFixed(2) }€</div>
+                                    <div class="wps-box-price">{ formatPrice(order.data.total_ttc) }</div>
                                 </div>
                                 <div class="wps-box-action">
                                     <a target="_blank"
@@ -96,7 +97,7 @@ export default function Edit() {
                                         <div class="wps-product-content">
                                             <div itemprop="name" class="wps-product-title">{ product.libelle }</div>
                                             <ul class="wps-product-attributes">
-                                                <li class="wps-product-attributes-item">{ __( 'Unit price:', 'wpshop' ) } {product.subprice} €</li>
+                                                <li class="wps-product-attributes-item">{ __( 'Unit price:', 'wpshop' ) } {formatPrice(product.subprice)}</li>
                                             </ul>
                                             <div class="wps-product-footer">
                                                 <div class="wps-product-quantity">
@@ -105,7 +106,7 @@ export default function Edit() {
                     
                                                 {product.subprice && (
                                                     <div itemprop="offers" itemscope itemtype="https://schema.org/Offer" class="wps-product-price">
-                                                        <span itemprop="price">{(product.subprice * product.qty).toFixed(2)}</span>
+                                                        <span itemprop="price" content={(product.subprice * product.qty).toFixed(2)}>{formatAmount(product.subprice * product.qty)}</span>{" "}
                                                         <span itemprop="priceCurrency" content="EUR">€</span>
                                                     </div>
                                                 )}
