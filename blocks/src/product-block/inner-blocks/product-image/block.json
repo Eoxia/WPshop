@@ -5,9 +5,15 @@
 	"version": "0.1.0",
 	"title": "Product Image",
 	"category": "wpshop",
-	"icon": "smiley",
+	"icon": "format-image",
 	"description": "Image of the product.",
 	"example": {},
+	"attributes": {
+		"isLink": {
+			"type": "boolean",
+			"default": true
+		}
+	},
 	"supports": {
 		"html": false
 	},

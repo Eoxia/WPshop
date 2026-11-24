@@ -2,7 +2,8 @@
 /**
  * Product Image Block Template.
  *
- * Inside a Query Loop (catalogue), the image links to the product.
+ * The image links to the product ("isLink" attribute, enabled by default), except on the
+ * page of the product itself.
  *
  * @package wpshop
  */
@@ -13,7 +14,8 @@ defined( 'ABSPATH' ) || exit;
 
 $product_id = ! empty( $block->context['postId'] ) ? (int) $block->context['postId'] : get_the_ID();
 $product    = Product::g()->get( array( 'id' => $product_id ), true );
-$in_loop    = isset( $block->context['queryId'] );
+$is_current = is_singular() && (int) get_queried_object_id() === (int) $product_id;
+$with_link  = ( ! isset( $attributes['isLink'] ) || $attributes['isLink'] ) && ! $is_current;
 
 $thumbnail = wp_get_attachment_image_src( $product->data['thumbnail_id'], 'wps-product-thumbnail' );
 
@@ -28,11 +30,11 @@ if ( empty( $thumbnail ) ) {
 <div <?php echo wp_kses_data( get_block_wrapper_attributes() ); ?>>
 	<div class="wps-product-image">
 		<div class="wps-product-image-container">
-			<?php if ( $in_loop ) : ?>
+			<?php if ( $with_link ) : ?>
 				<a href="<?php echo esc_url( get_permalink( $product_id ) ); ?>">
 			<?php endif; ?>
 			<img src="<?php echo esc_url( $thumbnail ); ?>" class="attachment-wps-product-thumbnail" itemprop="image" alt="<?php echo esc_attr( get_the_title( $product_id ) ); ?>">
-			<?php if ( $in_loop ) : ?>
+			<?php if ( $with_link ) : ?>
 				</a>
 			<?php endif; ?>
 		</div>
