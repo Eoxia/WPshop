@@ -1,5 +1,5 @@
 {
-    "translation-revision-date": "2026-11-24T16:24:21+00:00",
+    "translation-revision-date": "2026-03-19T10:31:46+00:00",
     "generator": "WPshop",
     "source": "blocks\/build\/product-block\/inner-blocks\/product-image\/index.js",
     "domain": "messages",
@@ -9,19 +9,7 @@
                 "domain": "messages",
                 "lang": "fr",
                 "plural-forms": "nplurals=2; plural=(n > 1);"
-            },
-            "Settings": [
-                "Réglages"
-            ],
-            "Link to the product": [
-                "Lien vers le produit"
-            ],
-            "Clicking the image opens the product page (not on the product page itself).": [
-                "Un clic sur l’image ouvre la page du produit (sauf sur la page du produit elle-même)."
-            ],
-            "Product image": [
-                "Image du produit"
-            ]
+            }
         }
     }
 }
