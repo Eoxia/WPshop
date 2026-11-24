@@ -1338,7 +1338,7 @@ msgstr "Tunnel de vente"
 
 #: modules/pages/class/class-pages.php:93
 msgid "General conditions of sale"
-msgstr "Condition générales de vente"
+msgstr "Conditions générales de vente"
 
 #: modules/pages/class/class-pages.php:110
 msgid "Current order"

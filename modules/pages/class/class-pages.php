@@ -170,6 +170,9 @@ class Pages extends Singleton_Util {
 	public function create_default_page() {
 		load_plugin_textdomain( 'wpshop', false, PLUGIN_WPSHOP_DIR . '/core/asset/language/' );
 
+		// Translated titles (and slugs) for the pages created on a new install.
+		$labels = $this->get_page_labels();
+
 		if ( ! empty( $this->page_state_titles ) ) {
 			foreach ( $this->page_state_titles as $key => $page_title ) {
 				$existing_page_id = ! empty( $this->page_ids[ $key ] ) ? (int) $this->page_ids[ $key ] : 0;
@@ -180,7 +183,7 @@ class Pages extends Singleton_Util {
 				}
 
 				$page_id = wp_insert_post( array(
-					'post_title'  => __( $page_title ),
+					'post_title'  => isset( $labels[ $key ] ) ? $labels[ $key ] : __( $page_title, 'wpshop' ),
 					'post_type'   => 'page',
 					'post_status' => 'publish',
 				) );
@@ -207,7 +210,7 @@ class Pages extends Singleton_Util {
 				}
 
 				$page_id = wp_insert_post( array(
-					'post_title'  => __( $page_title ),
+					'post_title'  => __( $page_title, 'wpshop' ),
 					'post_type'   => 'page',
 					'post_name'   => $key,
 					'post_status' => 'private',
@@ -236,7 +239,7 @@ class Pages extends Singleton_Util {
 		}
 
 		$page_id = wp_insert_post( array(
-			'post_title'  => __( 'Connection' ),
+			'post_title'  => __( 'Connection', 'wpshop' ),
 			'post_type'   => 'page',
 			'post_name'   => 'connection',
 			'post_status' => 'publish',
