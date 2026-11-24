@@ -6,7 +6,7 @@
 	"title": "Checkout",
 	"category": "wpshop",
 	"icon": "cart",
-	"description": "Example block scaffolded with Create Block tool.",
+	"description": "Displays the checkout: customer details, order summary and confirmation.",
 	"example": {},
 	"supports": {
 		"html": false

@@ -251,6 +251,11 @@ class Settings_Action {
 
 		update_option( 'wps_page_ids', $page_ids_options );
 
+		// Mode "Nouveaux modèles": the newly selected pages get their WPshop template.
+		if ( Display_Mode::g()->is_templates_mode() ) {
+			Display_Mode::g()->apply_page_templates();
+		}
+
 		set_transient( 'updated_wpshop_option_' . get_current_user_id(), __( 'Your settings have been saved.', 'wpshop' ), 30 );
 
 		wp_redirect( admin_url( 'admin.php?page=wps-settings&tab=' . $tab ) );

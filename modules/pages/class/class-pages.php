@@ -144,6 +144,24 @@ class Pages extends Singleton_Util {
 	}
 
 	/**
+	 * Translated names of the WPshop pages, keyed like $default_options.
+	 *
+	 * @since 2.7.0
+	 *
+	 * @return array
+	 */
+	public function get_page_labels() {
+		return array(
+			'shop_id'                    => __( 'Shop', 'wpshop' ),
+			'cart_id'                    => __( 'Cart', 'wpshop' ),
+			'checkout_id'                => __( 'Checkout', 'wpshop' ),
+			'my_account_id'              => __( 'My account', 'wpshop' ),
+			'general_conditions_of_sale' => __( 'General conditions of sale', 'wpshop' ),
+			'connection_id'              => __( 'Connection', 'wpshop' ),
+		);
+	}
+
+	/**
 	 * Créer et associer les pages par défaut nécessaires pour le fonctionnement de WPShop.
 	 *
 	 * @since   2.0.0

@@ -1,0 +1,13 @@
+{
+	"name": "Display",
+	"slug": "display",
+	"since": "2.7.0",
+	"version": "2.7.0",
+	"description": "Le module gérant le mode d'affichage du front (Classique ou Nouveaux modèles)",
+	"path": "modules/display",
+	"dependencies": {
+		"class": {},
+		"shortcode": {},
+		"action": {}
+	}
+}

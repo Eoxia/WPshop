@@ -6,7 +6,7 @@
   "title": "Cart Summary",
   "category": "wpshop",
   "icon": "cart",
-  "description": "Example block scaffolded with Create Block tool.",
+  "description": "Totals of the cart.",
   "example": {},
   "supports": {
     "html": false,

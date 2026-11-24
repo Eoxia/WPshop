@@ -6,7 +6,7 @@
 	"title": "Cart Checkout Button",
 	"category": "wpshop",
 	"icon": "cart",
-	"description": "Example block scaffolded with Create Block tool.",
+	"description": "Button leading from the cart to the checkout.",
 	"example": {},
 	"supports": {
 		"html": false,

@@ -6,7 +6,7 @@
   "title": "Checkout Form Block",
   "category": "wpshop",
   "icon": "smiley",
-  "description": "Example block scaffolded with Create Block tool.",
+  "description": "Customer details form of the checkout.",
   "example": {},
   "supports": {
     "html": false,

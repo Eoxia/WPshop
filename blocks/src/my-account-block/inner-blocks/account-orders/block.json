@@ -6,7 +6,7 @@
 	"title": "Account Orders",
 	"category": "wpshop",
 	"icon": "smiley",
-	"description": "Example block scaffolded with Create Block tool.",
+	"description": "Orders of the customer.",
 	"example": {},
 	"supports": {
 		"html": false,

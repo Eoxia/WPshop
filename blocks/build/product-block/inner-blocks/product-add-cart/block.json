@@ -6,7 +6,7 @@
   "title": "Product Add Cart",
   "category": "wpshop",
   "icon": "smiley",
-  "description": "Example block scaffolded with Create Block tool.",
+  "description": "Quantity selector and add to cart button of the product.",
   "example": {},
   "supports": {
     "html": false,

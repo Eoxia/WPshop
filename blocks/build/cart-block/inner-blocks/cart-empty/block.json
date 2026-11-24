@@ -6,7 +6,7 @@
   "title": "Cart Empty",
   "category": "wpshop",
   "icon": "cart",
-  "description": "Example block scaffolded with Create Block tool.",
+  "description": "Content displayed when the cart is empty.",
   "example": {},
   "supports": {
     "html": false,

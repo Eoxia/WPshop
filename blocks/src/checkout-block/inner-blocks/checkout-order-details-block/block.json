@@ -6,7 +6,7 @@
 	"title": "Checkout Order Details Block",
 	"category": "wpshop",
 	"icon": "smiley",
-	"description": "Example block scaffolded with Create Block tool.",
+	"description": "Summary of the order in the checkout.",
 	"example": {},
 	"supports": {
 		"html": false,

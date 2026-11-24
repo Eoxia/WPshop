@@ -6,7 +6,7 @@
 	"title": "Single Product",
 	"category": "wpshop",
 	"icon": "archive",
-	"description": "Example block scaffolded with Create Block tool.",
+	"description": "Displays a product with its title, description, image, price and add to cart button.",
 	"example": {},
 	"supports": {
 		"html": false

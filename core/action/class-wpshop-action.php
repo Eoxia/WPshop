@@ -98,129 +98,63 @@ class WPshop_Action {
 	 * @version 2.0.0
 	 */
 	public function callback_init_block() {
-		$block_build_dir = PLUGIN_WPSHOP_PATH . '/blocks/build/';
-		
-		// Vérifier si le répertoire existe
-		if (!file_exists($block_build_dir) || !is_dir($block_build_dir)) {
-			// Log pour débogage
-			error_log('WPShop: Le répertoire des blocs n\'existe pas: ' . $block_build_dir);
+		$block_build_dir = PLUGIN_WPSHOP_PATH . 'blocks/build/';
+
+		if ( ! is_dir( $block_build_dir ) ) {
+			error_log( 'WPShop: Le répertoire des blocs n\'existe pas: ' . $block_build_dir );
 			return;
 		}
-		
-		// Enregistrer les traductions pour les scripts JavaScript avant d'enregistrer les blocs
-		wp_set_script_translations('wpshop-blocks', 'wpshop', PLUGIN_WPSHOP_PATH . 'core/asset/language');
-		
-		$block_dir_urls = scandir($block_build_dir);
 
-		foreach ($block_dir_urls as $url) {
-			// Skip directory navigation entries
-			if ($url === '.' || $url === '..') {
-				continue;
-			}
-			
-			$block_dir = $block_build_dir . $url;
-			$block_json_path = $block_dir . '/block.json';
-		
-			if (file_exists($block_json_path)) {
-				// Read block.json to get the block name
-				$block_json = json_decode(file_get_contents($block_json_path), true);
+		// Enregistrer les traductions pour les scripts JavaScript avant d'enregistrer les blocs.
+		wp_set_script_translations( 'wpshop-blocks', 'wpshop', PLUGIN_WPSHOP_PATH . 'core/asset/language' );
 
-				if (!empty($block_json['name'])) {
-					// Check if block is already registered
-					if (!\WP_Block_Type_Registry::get_instance()->is_registered($block_json['name'])) {
-						$block_type = register_block_type($block_dir);
+		foreach ( array_diff( scandir( $block_build_dir ), array( '.', '..' ) ) as $block ) {
+			$block_dir = $block_build_dir . $block;
 
-						// Set translations for all block scripts
-						if ($block_type) {
-							$lang_path = PLUGIN_WPSHOP_PATH . 'core/asset/language';
-							foreach ( $block_type->editor_script_handles as $handle ) {
-								wp_set_script_translations( $handle, 'wpshop', $lang_path );
-							}
-							foreach ( $block_type->view_script_handles as $handle ) {
-								wp_set_script_translations( $handle, 'wpshop', $lang_path );
-							}
-							foreach ( $block_type->script_handles as $handle ) {
-								wp_set_script_translations( $handle, 'wpshop', $lang_path );
-							}
-						}
-					} else {
-						error_log('WPShop: Block already registered: ' . $block_json['name']);
-					}
-				} else {
-					$block_type = register_block_type($block_dir);
-					if ($block_type) {
-						$lang_path = PLUGIN_WPSHOP_PATH . 'core/asset/language';
-						foreach ( $block_type->editor_script_handles as $handle ) {
-							wp_set_script_translations( $handle, 'wpshop', $lang_path );
-						}
-						foreach ( $block_type->view_script_handles as $handle ) {
-							wp_set_script_translations( $handle, 'wpshop', $lang_path );
-						}
-						foreach ( $block_type->script_handles as $handle ) {
-							wp_set_script_translations( $handle, 'wpshop', $lang_path );
-						}
-					}
-				}
-			} else {
-				error_log('WPShop: Fichier block.json non trouvé dans: ' . $block_dir);
-			}
-		
-			if (file_exists($block_dir . '/inner-blocks')) {
-				$inner_block_dir = $block_dir . '/inner-blocks/';
-				$inner_block_dir_urls = scandir($inner_block_dir);
-		
-				foreach ($inner_block_dir_urls as $inner_url) {
-					// Skip directory navigation entries
-					if ($inner_url === '.' || $inner_url === '..') {
-						continue;
-					}
-					
-					$inner_block_path = $inner_block_dir . $inner_url;
-					$inner_block_json_path = $inner_block_path . '/block.json';
-		
-					if (file_exists($inner_block_json_path)) {
-						// Read block.json to get the block name
-						$inner_block_json = json_decode(file_get_contents($inner_block_json_path), true);
-						
-						if (!empty($inner_block_json['name'])) {
-							// Check if block is already registered
-							if (!\WP_Block_Type_Registry::get_instance()->is_registered($inner_block_json['name'])) {
-								$inner_block_type = register_block_type($inner_block_path);
-								if ($inner_block_type) {
-									$lang_path = PLUGIN_WPSHOP_PATH . 'core/asset/language';
-									foreach ( $inner_block_type->editor_script_handles as $handle ) {
-										wp_set_script_translations( $handle, 'wpshop', $lang_path );
-									}
-									foreach ( $inner_block_type->view_script_handles as $handle ) {
-										wp_set_script_translations( $handle, 'wpshop', $lang_path );
-									}
-									foreach ( $inner_block_type->script_handles as $handle ) {
-										wp_set_script_translations( $handle, 'wpshop', $lang_path );
-									}
-								}
-							} else {
-								error_log('WPShop: Inner block already registered: ' . $inner_block_json['name']);
-							}
-						} else {
-							$inner_block_type = register_block_type($inner_block_path);
-							if ($inner_block_type) {
-								$lang_path = PLUGIN_WPSHOP_PATH . 'core/asset/language';
-								foreach ( $inner_block_type->editor_script_handles as $handle ) {
-									wp_set_script_translations( $handle, 'wpshop', $lang_path );
-								}
-								foreach ( $inner_block_type->view_script_handles as $handle ) {
-									wp_set_script_translations( $handle, 'wpshop', $lang_path );
-								}
-								foreach ( $inner_block_type->script_handles as $handle ) {
-									wp_set_script_translations( $handle, 'wpshop', $lang_path );
-								}
-							}
-						}
-					} else {
-						error_log('WPShop: Fichier block.json non trouvé dans: ' . $inner_block_path);
-					}
+			$this->register_block_dir( $block_dir );
+
+			// Inner blocks (cart, checkout, my account and product blocks).
+			if ( is_dir( $block_dir . '/inner-blocks' ) ) {
+				foreach ( array_diff( scandir( $block_dir . '/inner-blocks' ), array( '.', '..' ) ) as $inner_block ) {
+					$this->register_block_dir( $block_dir . '/inner-blocks/' . $inner_block );
 				}
 			}
+		}
+	}
+
+	/**
+	 * Enregistre un block à partir de son dossier (block.json) et ses traductions JavaScript.
+	 *
+	 * @since 2.7.0
+	 *
+	 * @param string $block_dir Dossier du block compilé.
+	 */
+	private function register_block_dir( $block_dir ) {
+		$block_json_path = $block_dir . '/block.json';
+
+		if ( ! file_exists( $block_json_path ) ) {
+			error_log( 'WPShop: Fichier block.json non trouvé dans: ' . $block_dir );
+			return;
+		}
+
+		$block_json = json_decode( file_get_contents( $block_json_path ), true );
+
+		if ( ! empty( $block_json['name'] ) && \WP_Block_Type_Registry::get_instance()->is_registered( $block_json['name'] ) ) {
+			error_log( 'WPShop: Block already registered: ' . $block_json['name'] );
+			return;
+		}
+
+		$block_type = register_block_type( $block_dir );
+
+		if ( ! $block_type ) {
+			return;
+		}
+
+		$lang_path = PLUGIN_WPSHOP_PATH . 'core/asset/language';
+		$handles   = array_merge( $block_type->editor_script_handles, $block_type->view_script_handles, $block_type->script_handles );
+
+		foreach ( $handles as $handle ) {
+			wp_set_script_translations( $handle, 'wpshop', $lang_path );
 		}
 	}
 

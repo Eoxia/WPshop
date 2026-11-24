@@ -6,7 +6,7 @@
 	"title": "Checkout Acceptance Block",
 	"category": "wpshop",
 	"icon": "smiley",
-	"description": "Example block scaffolded with Create Block tool.",
+	"description": "Acceptance of the general conditions of sale.",
 	"example": {},
 	"supports": {
 		"html": false,

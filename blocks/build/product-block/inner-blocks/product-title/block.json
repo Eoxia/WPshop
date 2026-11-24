@@ -6,7 +6,7 @@
   "title": "Product Title",
   "category": "wpshop",
   "icon": "smiley",
-  "description": "Example block scaffolded with Create Block tool.",
+  "description": "Title of the product.",
   "example": {},
   "supports": {
     "html": false,

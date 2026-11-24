@@ -23,6 +23,7 @@
 
         "modules/my-account/my-account.config.json",
         "modules/pages/pages.config.json",
+        "modules/display/display.config.json",
         "modules/emails/emails.config.json",
     
         "modules/dashboard/dashboard.config.json",

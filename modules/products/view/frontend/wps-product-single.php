@@ -24,10 +24,10 @@ defined( 'ABSPATH' ) || exit;
 <div class="wps-product-content">
 	<div class="wps-product-price">
 		<div class="wps-product-price-ht">
-			<?php echo ! empty( $product->data['price_ht'] ) ? esc_html( number_format( $product->data['price_ht'], 2, ',', '' ) ) . ' € HT' : ''; ?>
+			<?php echo ! empty( $product->data['price_ht'] ) ? esc_html( format_price( $product->data['price_ht'], 'HT' ) ) : ''; ?>
 		</div>
 		<div class="wps-product-price-ttc">
-			<?php echo ! empty( $product->data['price_ttc'] ) ? esc_html( number_format( $product->data['price_ttc'], 2, ',', '' ) ) . ' € TTC' : ''; ?>
+			<?php echo ! empty( $product->data['price_ttc'] ) ? esc_html( format_price( $product->data['price_ttc'], 'TTC' ) ) : ''; ?>
 		</div>
 	</div>
 	<div class="wps-product-description"><?php echo apply_filters( 'wps_product_single', $post->post_content, $product ); ?></div>

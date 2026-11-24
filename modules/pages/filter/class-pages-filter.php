@@ -67,10 +67,13 @@ class Pages_Filter extends Singleton_Util {
 	public function add_states_post( $post_states, $post ) {
 		$page_ids_options = get_option( 'wps_page_ids', Pages::g()->default_options );
 
-		$key = array_search( $post->ID, $page_ids_options, true );
+		$labels = Pages::g()->get_page_labels();
 
-		if ( false !== $key ) {
-			//$post_states[] = Pages::g()->page_state_titles[ $key ];
+		foreach ( (array) $page_ids_options as $key => $page_id ) {
+			if ( (int) $page_id === (int) $post->ID && isset( $labels[ $key ] ) ) {
+				/* translators: %s: WPshop page name, e.g. "Cart". */
+				$post_states[ 'wpshop_' . $key ] = sprintf( __( 'WPshop %s page', 'wpshop' ), $labels[ $key ] );
+			}
 		}
 
 		return $post_states;
@@ -96,6 +99,17 @@ class Pages_Filter extends Singleton_Util {
 				$shortcode = '';
 				$params    = array();
 
+				// Mode "Nouveaux modèles": the page template displays the blocks.
+				if ( Display_Mode::g()->page_uses_template( $GLOBALS['post'] ) ) {
+					$key = false;
+				}
+
+				// The page content already contains the WPshop block: do not display the shop twice.
+				$page_templates = Display_Mode::g()->get_page_templates();
+				if ( false !== $key && isset( $page_templates[ $key ] ) && has_block( $page_templates[ $key ]['block'], $GLOBALS['post'] ) ) {
+					$key = false;
+				}
+
 				if ( false !== $key ) {
 					switch ( $key ) {
 						case 'checkout_id':
@@ -107,6 +121,9 @@ class Pages_Filter extends Singleton_Util {
 							break;
 						case 'my_account_id':
 							$shortcode = 'account';
+							break;
+						case 'connection_id':
+							$shortcode = 'connection';
 							break;
 						default:
 							break;
@@ -122,9 +139,10 @@ class Pages_Filter extends Singleton_Util {
 							$shortcode_attr .= $key . '=' . $value . ' ';
 						}
 					}
+					// Legacy shortcodes echo their output, newer ones return it: keep both.
 					ob_start();
-					do_shortcode( '[wps_' . $shortcode . ' ' . $shortcode_attr . ']' );
-					$content  = ob_get_clean();
+					$returned = do_shortcode( '[wps_' . $shortcode . ' ' . $shortcode_attr . ']' );
+					$content  = ob_get_clean() . ( shortcode_exists( 'wps_' . $shortcode ) ? $returned : '' );
 					$content .= $tmp_content;
 				}
 			}

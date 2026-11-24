@@ -6,7 +6,7 @@
 	"title": "Account Navigation",
 	"category": "wpshop",
 	"icon": "smiley",
-	"description": "Example block scaffolded with Create Block tool.",
+	"description": "Navigation menu of the customer account.",
 	"example": {},
 	"supports": {
 		"html": false,
