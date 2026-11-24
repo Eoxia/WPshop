@@ -329,8 +329,8 @@ class Display_Mode extends Singleton_Util {
 		}
 
 		$markup = '<!-- wp:query ' . serialize_block_attributes( $attributes ) . ' -->' . "\n"
-			. '<div class="wp-block-query alignwide">'
-			. '<!-- wp:post-template {"layout":{"type":"grid","columnCount":4}} -->' . "\n"
+			. '<div class="wp-block-query alignwide wps-catalogue">'
+			. '<!-- wp:post-template {"layout":{"type":"grid","columnCount":4,"minimumColumnWidth":"14rem"}} -->' . "\n"
 			. '<!-- wp:wpshop/product-image /-->' . "\n\n"
 			. '<!-- wp:post-title {"level":3,"isLink":true} /-->' . "\n\n"
 			. '<!-- wp:wpshop/product-price /-->' . "\n\n"
@@ -378,6 +378,7 @@ class Display_Mode extends Singleton_Util {
 				'inherit'  => false,
 			),
 			'align'     => 'wide',
+			'className' => 'wps-catalogue',
 		);
 	}
 
@@ -485,7 +486,7 @@ class Display_Mode extends Singleton_Util {
 			'innerBlocks'     => array(
 				array(
 					'core/post-template',
-					array( 'layout' => array( 'type' => 'grid', 'columnCount' => 4 ) ),
+					array( 'layout' => array( 'type' => 'grid', 'columnCount' => 4, 'minimumColumnWidth' => '14rem' ) ),
 					array(
 						array( 'wpshop/product-image', $no_attributes ),
 						array( 'core/post-title', array( 'level' => 3, 'isLink' => true ) ),

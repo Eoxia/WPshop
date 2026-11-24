@@ -36,6 +36,7 @@ class Display_Action {
 		add_action( 'pre_get_posts', array( $this, 'category_main_query' ) );
 
 		// Product catalogue (Query Loop), both modes.
+		add_action( 'init', array( $this, 'register_catalogue_style' ) );
 		add_filter( 'get_block_type_variations', array( $this, 'add_catalogue_variation' ), 10, 2 );
 		add_filter( 'query_loop_block_query_vars', array( $this, 'catalogue_query_vars' ), 10, 1 );
 		add_filter( 'rest_wps-product_query', array( $this, 'catalogue_rest_query' ), 10, 1 );
@@ -99,6 +100,23 @@ class Display_Action {
 		foreach ( Display_Mode::g()->apply_catalogue_rules( array() ) as $var => $value ) {
 			$query->set( $var, $value );
 		}
+	}
+
+	/**
+	 * Catalogue card styles, loaded with the core Query Loop block (front and editor) and
+	 * scoped to its "wps-catalogue" class.
+	 */
+	public function register_catalogue_style() {
+		if ( ! function_exists( 'wp_enqueue_block_style' ) ) {
+			return;
+		}
+
+		wp_enqueue_block_style( 'core/query', array(
+			'handle' => 'wpshop-catalogue',
+			'src'    => PLUGIN_WPSHOP_URL . 'modules/display/asset/css/catalogue.css',
+			'path'   => PLUGIN_WPSHOP_PATH . 'modules/display/asset/css/catalogue.css',
+			'ver'    => (string) filemtime( PLUGIN_WPSHOP_PATH . 'modules/display/asset/css/catalogue.css' ),
+		) );
 	}
 
 	/**

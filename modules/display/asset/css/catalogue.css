@@ -1,0 +1,144 @@
+/**
+ * WPshop product catalogue: Query Loop variation "Catalogue de produits (WPshop)".
+ *
+ * Cards with a square image, a two-line title, the price and a full width add to cart
+ * button aligned at the bottom. Colours come from the theme when it defines them.
+ * Override the custom properties below in your theme to adapt the look.
+ */
+.wps-catalogue {
+	--wps-catalogue-gap: clamp(1rem, 2.5vw, 2rem);
+	--wps-catalogue-radius: 12px;
+	--wps-catalogue-padding: 1rem;
+	--wps-catalogue-accent: var(--wp--preset--color--primary, #2271b1);
+	--wps-catalogue-accent-text: #fff;
+	--wps-catalogue-border: color-mix(in srgb, currentColor 12%, transparent);
+	--wps-catalogue-image-bg: color-mix(in srgb, currentColor 5%, transparent);
+}
+
+/* Grid */
+.wps-catalogue .wp-block-post-template {
+	gap: var(--wps-catalogue-gap);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+/* Card */
+.wps-catalogue .wp-block-post-template > li {
+	display: flex;
+	flex-direction: column;
+	margin: 0;
+	border: 1px solid var(--wps-catalogue-border);
+	border-radius: var(--wps-catalogue-radius);
+	overflow: hidden;
+	transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.wps-catalogue .wp-block-post-template > li:hover {
+	box-shadow: 0 12px 32px -14px rgba(0, 0, 0, 0.3);
+	transform: translateY(-3px);
+}
+
+.wps-catalogue .wp-block-post-template > li > * {
+	margin-block: 0;
+}
+
+/* Image */
+.wps-catalogue .wp-block-wpshop-product-image .wps-product-image-container {
+	aspect-ratio: 1;
+	overflow: hidden;
+	background: var(--wps-catalogue-image-bg);
+}
+
+.wps-catalogue .wp-block-wpshop-product-image a {
+	display: block;
+	height: 100%;
+}
+
+.wps-catalogue .wp-block-wpshop-product-image img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	max-width: none;
+	object-fit: cover;
+	transition: transform 0.4s ease;
+}
+
+.wps-catalogue .wp-block-post-template > li:hover .wp-block-wpshop-product-image img {
+	transform: scale(1.05);
+}
+
+/* Title */
+.wps-catalogue .wp-block-post-template > li > .wp-block-post-title {
+	margin: var(--wps-catalogue-padding) var(--wps-catalogue-padding) 0.35rem;
+	font-size: var(--wp--preset--font-size--medium, 1.05rem);
+	font-weight: 600;
+	line-height: 1.35;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+.wps-catalogue .wp-block-post-title a {
+	color: inherit;
+	text-decoration: none;
+}
+
+.wps-catalogue .wp-block-post-title a:hover,
+.wps-catalogue .wp-block-post-title a:focus-visible {
+	color: var(--wps-catalogue-accent);
+}
+
+/* Price */
+.wps-catalogue .wp-block-post-template > li > .wp-block-wpshop-product-price {
+	margin: 0 var(--wps-catalogue-padding);
+}
+
+.wps-catalogue .wp-block-wpshop-product-price .wps-product-price-ttc {
+	margin: 0;
+	font-size: 1.15rem;
+	font-weight: 700;
+	line-height: 1.4;
+}
+
+/* Add to cart button, aligned at the bottom of the card */
+.wps-catalogue .wp-block-post-template > li > .wp-block-wpshop-product-button {
+	margin-block-start: auto;
+	padding: var(--wps-catalogue-padding);
+}
+
+.wps-catalogue .wp-block-wpshop-product-button .wps-button-add-to-cart {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5em;
+	width: 100%;
+	padding: 0.75em 1em;
+	border: 0;
+	border-radius: calc(var(--wps-catalogue-radius) - 4px);
+	background: var(--wps-catalogue-accent);
+	color: var(--wps-catalogue-accent-text);
+	font: inherit;
+	font-size: 0.95rem;
+	font-weight: 600;
+	line-height: 1.2;
+	cursor: pointer;
+	transition: filter 0.2s ease;
+}
+
+.wps-catalogue .wp-block-wpshop-product-button .wps-button-add-to-cart:hover,
+.wps-catalogue .wp-block-wpshop-product-button .wps-button-add-to-cart:focus-visible {
+	filter: brightness(0.9);
+}
+
+.wps-catalogue .wp-block-wpshop-product-button .wps-button-add-to-cart:disabled {
+	opacity: 0.6;
+	cursor: default;
+}
+
+/* Pagination */
+.wps-catalogue .wp-block-query-pagination {
+	margin-top: var(--wps-catalogue-gap);
+	gap: 0.5rem;
+}
