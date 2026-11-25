@@ -795,6 +795,64 @@
 	background: var(--wps-success);
 }
 
+/* Customer status colours (Doli_Statut::get_customer_order_status()). */
+:is(.wp-block-wpshop-account-orders, #wps-front) .wps-box-status[data-tone] {
+	--wps-status-color: var(--wps-success);
+	background: color-mix(in srgb, var(--wps-status-color) 12%, transparent);
+	color: color-mix(in srgb, var(--wps-status-color) 75%, currentColor);
+}
+
+:is(.wp-block-wpshop-account-orders, #wps-front) .wps-box-status[data-tone] .wps-box-status-dot {
+	background: var(--wps-status-color);
+}
+
+:is(.wp-block-wpshop-account-orders, #wps-front) .wps-box-status[data-tone="orange"] {
+	--wps-status-color: var(--wps-warning, #dba617);
+	color: color-mix(in srgb, var(--wps-status-color) 55%, currentColor);
+}
+
+:is(.wp-block-wpshop-account-orders, #wps-front) .wps-box-status[data-tone="blue"] {
+	--wps-status-color: var(--wps-info, #2271b1);
+}
+
+:is(.wp-block-wpshop-account-orders, #wps-front) .wps-box-status[data-tone="red"] {
+	--wps-status-color: var(--wps-danger);
+}
+
+:is(.wp-block-wpshop-account-orders, #wps-front) .wps-box-status[data-tone="grey"] {
+	--wps-status-color: var(--wps-muted);
+	color: inherit;
+}
+
+:is(.wp-block-wpshop-account-orders, #wps-front) .wps-box-action {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 0.5rem;
+}
+
+/* "Pay" button: the main action of an unpaid order. */
+:is(.wp-block-wpshop-account-orders, #wps-front) .wps-box-action .wpeo-button.wps-order-pay {
+	gap: 0.5rem;
+	width: auto;
+	padding: 0 1.25rem;
+	border-color: var(--wps-accent);
+	border-radius: 999px;
+	background: var(--wps-accent);
+	color: var(--wps-accent-text);
+	font-weight: 600;
+	white-space: nowrap;
+}
+
+:is(.wp-block-wpshop-account-orders, #wps-front) .wps-box-action .wpeo-button.wps-order-pay:hover {
+	filter: brightness(1.08);
+}
+
+:is(.wp-block-wpshop-account-orders, #wps-front) .wps-box-action .wpeo-button.wps-order-pay .button-icon {
+	margin: 0;
+}
+
 :is(.wp-block-wpshop-account-orders, #wps-front) .wps-box-price {
 	color: inherit;
 	font-size: 1.25rem;
@@ -902,12 +960,26 @@
 }
 
 @media (max-width: 600px) {
+	/* One column: date and reference, then status + total, then the buttons. */
 	:is(.wp-block-wpshop-account-orders, #wps-front) .wps-box-resume {
-		grid-template-columns: minmax(0, 1fr) auto;
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	:is(.wp-block-wpshop-account-orders, #wps-front) .wps-box-secondary {
+		flex-direction: row;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		text-align: left;
 	}
 
 	:is(.wp-block-wpshop-account-orders, #wps-front) .wps-box-action {
 		grid-column: 1 / -1;
+		justify-content: flex-start;
+	}
+
+	:is(.wp-block-wpshop-account-orders, #wps-front) .wps-box-action .wpeo-button.wps-order-pay {
+		flex: 1;
 	}
 }
 

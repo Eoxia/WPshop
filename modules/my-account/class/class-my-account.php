@@ -246,7 +246,31 @@ class My_Account extends Singleton_Util {
 			$orders      = Doli_Order::g()->convert_to_wp_order_format( $doli_orders );
 			foreach ( $orders as $key => $order ) {
 				$orders[ $key ]->data['download'] = admin_url( 'admin-post.php?action=wps_download_order&_wpnonce=' . wp_create_nonce( 'download_order' ) . '&order_id=' . $order->data['external_id'] );
-				$orders[ $key ]->data['status']   = Doli_Statut::g()->get_status( $order );
+
+				// Status as the customer understands it ("Awaiting payment" rather than Dolibarr "Validated").
+				// Same shape as Doli_Statut::get_status() (status.class.text) for the existing templates.
+				// Both read the Dolibarr-based status: compute them before it is replaced below.
+				$customer_status = Doli_Statut::g()->get_customer_order_status( $order );
+				$can_be_paid     = Doli_Statut::g()->order_can_be_paid( $order );
+
+				$orders[ $key ]->data['status'] = array(
+					'key'   => $customer_status['key'],
+					'text'  => $customer_status['text'],
+					'tone'  => $customer_status['tone'],
+					'class' => array(
+						'text'  => $customer_status['text'],
+						'class' => 'status-' . $customer_status['tone'],
+					),
+				);
+
+				// The online payment URL is asked to Dolibarr on click (one request, not one per order).
+				$orders[ $key ]->data['pay_url'] = $can_be_paid
+					? admin_url( 'admin-post.php?action=wps_pay_order_online&_wpnonce=' . wp_create_nonce( 'pay_order' ) . '&order_id=' . $order->data['external_id'] )
+					: '';
+
+				$orders[ $key ]->data['invoice_download'] = $customer_status['paid']
+					? admin_url( 'admin-post.php?action=wps_download_order_invoice&_wpnonce=' . wp_create_nonce( 'download_order_invoice' ) . '&order_id=' . $order->data['external_id'] )
+					: '';
 				foreach ( (array) $order->data['lines'] as $idx => $line ) {
 					// Image of the WordPress product linked to the Dolibarr product of the line.
 					if ( empty( $line['thumbnail_id'] ) && ! empty( $line['fk_product'] ) ) {

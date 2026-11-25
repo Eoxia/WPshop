@@ -168,6 +168,77 @@ class Doli_Statut extends Singleton_Util {
 	}
 
 	/**
+	 * Status of an order as the customer understands it (my account block).
+	 *
+	 * Dolibarr "Validated" only means the order is recorded: what matters to the customer
+	 * is whether it is paid. An order is paid when Dolibarr classified it as billed (online
+	 * payment creates the invoice and does it, or the shop does it by hand).
+	 * The statuses stored on the WordPress orders (admin) are not changed.
+	 *
+	 * @since 2.7.0
+	 *
+	 * @param Doli_Order $order Order converted by Doli_Order::doli_to_wp().
+	 *
+	 * @return array {
+	 *     @type string $key  canceled, draft, awaiting-payment, paid, shipping or delivered.
+	 *     @type string $text Translated label.
+	 *     @type string $tone grey, orange, green, blue or red.
+	 *     @type bool   $paid Whether the order is paid.
+	 * }
+	 */
+	public function get_customer_order_status( $order ) {
+		$paid = ! empty( $order->data['billed'] );
+
+		switch ( $order->data['status'] ) {
+			case 'wps-canceled':
+				$status = array( 'canceled', __( 'Canceled', 'wpshop' ), 'red' );
+				break;
+			case 'draft':
+				$status = array( 'draft', __( 'Being recorded', 'wpshop' ), 'grey' );
+				break;
+			case 'wps-shipmentprocess':
+				$status = array( 'shipping', __( 'Being delivered', 'wpshop' ), 'blue' );
+				break;
+			case 'wps-delivered':
+			case 'wps-billed':
+				$status = array( 'delivered', __( 'Delivered', 'wpshop' ), 'green' );
+				break;
+			default:
+				$status = $paid
+					? array( 'paid', __( 'Paid, being prepared', 'wpshop' ), 'green' )
+					: array( 'awaiting-payment', __( 'Awaiting payment', 'wpshop' ), 'orange' );
+		}
+
+		$status = array(
+			'key'  => $status[0],
+			'text' => $status[1],
+			'tone' => $status[2],
+			'paid' => $paid,
+		);
+
+		/**
+		 * Filters the status of an order displayed to the customer.
+		 *
+		 * @param array      $status Status (key, text, tone, paid).
+		 * @param Doli_Order $order  Order.
+		 */
+		return apply_filters( 'wps_customer_order_status', $status, $order );
+	}
+
+	/**
+	 * Whether the customer can still pay the order online.
+	 *
+	 * @since 2.7.0
+	 *
+	 * @param Doli_Order $order Order converted by Doli_Order::doli_to_wp().
+	 *
+	 * @return bool
+	 */
+	public function order_can_be_paid( $order ) {
+		return empty( $order->data['billed'] ) && ! in_array( $order->data['status'], array( 'draft', 'wps-canceled' ), true ) && (float) $order->data['total_ttc'] > 0;
+	}
+
+	/**
 	 * Ajoute une classe dans la balise du statut.
 	 *
 	 * @since   2.0.0
