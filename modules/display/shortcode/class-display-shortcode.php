@@ -35,6 +35,35 @@ class Display_Shortcode extends Singleton_Util {
 	public function register() {
 		add_shortcode( 'wps_account', array( $this, 'callback_account' ) );
 		add_shortcode( 'wps_connection', array( $this, 'callback_connection' ) );
+		add_shortcode( 'wps_mini_cart', array( $this, 'callback_mini_cart' ) );
+	}
+
+	/**
+	 * [wps_mini_cart show_total="1" open_on_add="1" side="right"]: header cart icon and side panel
+	 * (mini cart block), for classic theme headers, widgets and menus.
+	 *
+	 * @param array|string $atts Shortcode attributes.
+	 *
+	 * @return string
+	 */
+	public function callback_mini_cart( $atts ) {
+		if ( is_admin() ) {
+			return '';
+		}
+
+		$atts = shortcode_atts( array(
+			'show_total'  => '0',
+			'open_on_add' => '1',
+			'side'        => 'right',
+		), $atts, 'wps_mini_cart' );
+
+		$attributes = array(
+			'showTotal' => rest_sanitize_boolean( $atts['show_total'] ),
+			'openOnAdd' => rest_sanitize_boolean( $atts['open_on_add'] ),
+			'side'      => 'left' === $atts['side'] ? 'left' : 'right',
+		);
+
+		return do_blocks( '<!-- wp:wpshop/mini-cart ' . wp_json_encode( $attributes ) . ' /-->' );
 	}
 
 	/**

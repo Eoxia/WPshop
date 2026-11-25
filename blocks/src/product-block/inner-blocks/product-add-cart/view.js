@@ -80,8 +80,15 @@ const ProductAddCart = (props) => {
                     document.querySelector('.wp-block-wpshop-product-title').textContent.trim() : 
                     __('Product', 'wpshop');
                 
-                // Show notification
-                showAddToCartNotification(productTitle, qty);
+                // The mini cart (if any) opens and cancels the event: no notification then.
+                const added = new CustomEvent('wpshop:product-added', {
+                    cancelable: true,
+                    detail: { cart: response, title: productTitle },
+                });
+
+                if (document.dispatchEvent(added)) {
+                    showAddToCartNotification(productTitle, qty);
+                }
                 
                 setQty(1);
             } else {

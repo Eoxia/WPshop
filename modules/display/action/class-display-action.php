@@ -34,6 +34,7 @@ class Display_Action {
 		add_filter( 'the_content', array( $this, 'append_page_blocks' ), 20 );
 
 		add_action( 'pre_get_posts', array( $this, 'category_main_query' ) );
+		add_filter( 'hooked_block_types', array( $this, 'hook_mini_cart_in_header' ), 10, 4 );
 
 		// Product catalogue (Query Loop), both modes.
 		add_action( 'init', array( $this, 'register_catalogue_style' ) );
@@ -118,6 +119,37 @@ class Display_Action {
 			'path'   => PLUGIN_WPSHOP_PATH . 'modules/display/asset/css/catalogue.css',
 			'ver'    => (string) filemtime( PLUGIN_WPSHOP_PATH . 'modules/display/asset/css/catalogue.css' ),
 		) );
+	}
+
+	/**
+	 * Block hooks: adds the mini cart after the navigation of the theme header
+	 * (block themes, "Nouveaux modèles" mode). Once the admin removes or moves it in the
+	 * site editor, WordPress remembers it and stops inserting it.
+	 *
+	 * @param string[]                        $hooked_blocks Hooked block names.
+	 * @param string                          $position      before, after, first_child or last_child.
+	 * @param string                          $anchor_block  Anchor block name.
+	 * @param \WP_Block_Template|\WP_Post|array $context     Template, template part, pattern or navigation.
+	 *
+	 * @return string[]
+	 */
+	public function hook_mini_cart_in_header( $hooked_blocks, $position, $anchor_block, $context ) {
+		if ( 'after' !== $position || 'core/navigation' !== $anchor_block || ! Display_Mode::g()->is_templates_mode() ) {
+			return $hooked_blocks;
+		}
+
+		if ( ! $context instanceof \WP_Block_Template || 'wp_template_part' !== $context->type || 'header' !== $context->area ) {
+			return $hooked_blocks;
+		}
+
+		// Already placed by hand in this header.
+		if ( false !== strpos( (string) $context->content, 'wp:wpshop/mini-cart' ) || ! Cart::g()->can_add_product() ) {
+			return $hooked_blocks;
+		}
+
+		$hooked_blocks[] = 'wpshop/mini-cart';
+
+		return $hooked_blocks;
 	}
 
 	/**

@@ -1,0 +1,47 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "wpshop/mini-cart",
+	"version": "0.1.0",
+	"title": "Mini Cart",
+	"category": "wpshop",
+	"icon": "cart",
+	"description": "Cart icon for the header: shows the number of items and opens the cart in a side panel.",
+	"keywords": [ "cart", "basket", "header" ],
+	"example": {},
+	"attributes": {
+		"showTotal": {
+			"type": "boolean",
+			"default": false
+		},
+		"openOnAdd": {
+			"type": "boolean",
+			"default": true
+		},
+		"side": {
+			"type": "string",
+			"enum": [ "right", "left" ],
+			"default": "right"
+		}
+	},
+	"supports": {
+		"html": false,
+		"multiple": true,
+		"color": {
+			"text": true,
+			"background": false
+		},
+		"typography": {
+			"fontSize": true
+		},
+		"spacing": {
+			"margin": true,
+			"padding": true
+		}
+	},
+	"textdomain": "wpshop",
+	"editorScript": "file:./index.js",
+	"style": "file:./style-index.css",
+	"viewScript": "file:./view.js",
+	"render": "file:./render.php"
+}
