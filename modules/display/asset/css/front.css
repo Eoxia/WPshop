@@ -768,14 +768,6 @@
 	cursor: pointer;
 }
 
-:is(.wp-block-wpshop-account-orders, #wps-front) .wps-box-display-more .wps-box-display-more-icon {
-	transition: transform 0.2s ease;
-}
-
-:is(.wp-block-wpshop-account-orders, #wps-front) .wps-box-display-more.active .wps-box-display-more-icon {
-	transform: rotate(90deg);
-}
-
 :is(.wp-block-wpshop-account-orders, #wps-front) .wps-box-secondary {
 	display: flex;
 	flex-direction: column;
