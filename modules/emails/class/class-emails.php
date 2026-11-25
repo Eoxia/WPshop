@@ -21,6 +21,13 @@ defined( 'ABSPATH' ) || exit;
 class Emails extends Singleton_Util {
 
 	/**
+	 * Post type of the email templates (private pages before database version 1.0.4).
+	 *
+	 * @since 2.7.0
+	 */
+	const POST_TYPE = 'wps-email';
+
+	/**
 	 * Tableau contenant les mails par défaut.
 	 *
 	 * @since   2.0.0
@@ -185,9 +192,57 @@ class Emails extends Singleton_Util {
 				$email['title']   = $email_page->post_title;
 				$email['content'] = $email_page->post_content;
 			}
-
-			return $email;
 		}
+
+		// Keep the default title and content when no template post is set.
+		return $email;
+	}
+
+	/**
+	 * IDs of the email template posts, keyed like Pages::$page_state_titles_private.
+	 *
+	 * @since 2.7.0
+	 *
+	 * @return int[]
+	 */
+	public function get_email_post_ids() {
+		$page_ids = get_option( 'wps_page_ids', array() );
+		$ids      = array();
+
+		foreach ( array_keys( (array) Pages::g()->page_state_titles_private ) as $key ) {
+			if ( ! empty( $page_ids[ $key ] ) ) {
+				$ids[ $key ] = (int) $page_ids[ $key ];
+			}
+		}
+
+		return $ids;
+	}
+
+	/**
+	 * Moves the email templates out of the pages. Same posts, IDs and content:
+	 * only the post type changes, so the settings links and the sending keep working.
+	 *
+	 * @since 2.7.0
+	 */
+	public function migrate_email_posts() {
+		foreach ( $this->get_email_post_ids() as $post_id ) {
+			$post = get_post( $post_id );
+
+			if ( $post && 'page' === $post->post_type ) {
+				set_post_type( $post_id, self::POST_TYPE );
+			}
+		}
+	}
+
+	/**
+	 * URL of the "E-mails" tab of the WPshop settings.
+	 *
+	 * @since 2.7.0
+	 *
+	 * @return string
+	 */
+	public function get_settings_url() {
+		return admin_url( 'admin.php?page=wps-settings&tab=emails' );
 	}
 }
 

@@ -211,7 +211,8 @@ class Pages extends Singleton_Util {
 
 				$page_id = wp_insert_post( array(
 					'post_title'  => __( $page_title, 'wpshop' ),
-					'post_type'   => 'page',
+					// Email templates: own post type, kept out of the Pages list.
+					'post_type'   => Emails::POST_TYPE,
 					'post_name'   => $key,
 					'post_status' => 'private',
 					'post_content' => __( $this->page_content_default[$key] ),

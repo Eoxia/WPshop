@@ -75,6 +75,14 @@ class WPshop extends Singleton_Util {
 			$db_version = '1.0.3';
 			update_option( 'wpshop2_database_version', $db_version );
 		}
+
+		if ( version_compare( $db_version, '1.0.4', '<' ) ) {
+			// Email templates were private pages: move them to their own post type (same IDs and content).
+			Emails::g()->migrate_email_posts();
+
+			$db_version = '1.0.4';
+			update_option( 'wpshop2_database_version', $db_version );
+		}
 	}
 }
 
