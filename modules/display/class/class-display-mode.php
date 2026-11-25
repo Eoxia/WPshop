@@ -720,8 +720,8 @@ class Display_Mode extends Singleton_Util {
 	 */
 	private function wrap_block_template( $inner ) {
 		return '<!-- wp:template-part {"slug":"header","tagName":"header"} /-->' . "\n\n"
-			. '<!-- wp:group {"tagName":"main","layout":{"type":"constrained"}} -->' . "\n"
-			. '<main class="wp-block-group">' . $inner . '</main>' . "\n"
+			. '<!-- wp:group {"tagName":"main","className":"wps-main","layout":{"type":"constrained"}} -->' . "\n"
+			. '<main class="wp-block-group wps-main">' . $inner . '</main>' . "\n"
 			. '<!-- /wp:group -->' . "\n\n"
 			. '<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->';
 	}

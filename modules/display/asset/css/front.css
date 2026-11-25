@@ -639,3 +639,17 @@
 	background: transparent;
 	color: inherit;
 }
+
+/* -------------------------------------------------------------------------
+ * Page templates
+ * ---------------------------------------------------------------------- */
+
+/* Space between the shop and the footer (WPshop block templates). */
+.wps-main:is(.wp-block-group, #wps-front) {
+	padding-bottom: clamp(2.5rem, 6vw, 5rem);
+}
+
+/* Step numbers of the checkout ("01.", "02.") in the accent colour. */
+:is(.wp-block-column, .wp-block-wpshop-my-account-block, #wps-front) .wps-checkout-subtitle::before {
+	color: var(--wps-accent);
+}
