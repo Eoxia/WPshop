@@ -249,7 +249,9 @@ class My_Account extends Singleton_Util {
 
 				// Status as the customer understands it ("Awaiting payment" rather than Dolibarr "Validated").
 				// Same shape as Doli_Statut::get_status() (status.class.text) for the existing templates.
+				// Both read the Dolibarr-based status: compute them before it is replaced below.
 				$customer_status = Doli_Statut::g()->get_customer_order_status( $order );
+				$can_be_paid     = Doli_Statut::g()->order_can_be_paid( $order );
 
 				$orders[ $key ]->data['status'] = array(
 					'key'   => $customer_status['key'],
@@ -262,7 +264,7 @@ class My_Account extends Singleton_Util {
 				);
 
 				// The online payment URL is asked to Dolibarr on click (one request, not one per order).
-				$orders[ $key ]->data['pay_url'] = Doli_Statut::g()->order_can_be_paid( $order )
+				$orders[ $key ]->data['pay_url'] = $can_be_paid
 					? admin_url( 'admin-post.php?action=wps_pay_order_online&_wpnonce=' . wp_create_nonce( 'pay_order' ) . '&order_id=' . $order->data['external_id'] )
 					: '';
 
