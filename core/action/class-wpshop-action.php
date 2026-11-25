@@ -30,7 +30,9 @@ class WPshop_Action {
 	 */
 	public function __construct() {
 		add_action( 'init', array( $this, 'callback_register_session' ), 1 );
-		add_action( 'init', array( $this, 'callback_language' ) );
+		// First on init: a wpshop string translated before this (e.g. post type labels at init 5)
+		// would leave the domain untranslated for the whole request (WordPress 6.7+).
+		add_action( 'init', array( $this, 'callback_language' ), 0 );
 		add_action( 'init', array( $this, 'callback_install_default' ) );
 
 		add_action( 'init', array( $this, 'callback_init_block' ) );

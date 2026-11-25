@@ -3005,3 +3005,18 @@ msgstr "Bouton d’ajout au panier"
 msgctxt "block description"
 msgid "One click add to cart button, for product catalogues."
 msgstr "Bouton d’ajout au panier en un clic, pour les catalogues de produits."
+
+msgid "E-mails"
+msgstr "E-mails"
+
+msgid "Edit the e-mail"
+msgstr "Modifier l’e-mail"
+
+msgid "View the e-mail"
+msgstr "Voir l’e-mail"
+
+msgid "E-mail updated."
+msgstr "E-mail mis à jour."
+
+msgid "No e-mail found."
+msgstr "Aucun e-mail trouvé."
