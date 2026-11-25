@@ -960,12 +960,26 @@
 }
 
 @media (max-width: 600px) {
+	/* One column: date and reference, then status + total, then the buttons. */
 	:is(.wp-block-wpshop-account-orders, #wps-front) .wps-box-resume {
-		grid-template-columns: minmax(0, 1fr) auto;
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	:is(.wp-block-wpshop-account-orders, #wps-front) .wps-box-secondary {
+		flex-direction: row;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		text-align: left;
 	}
 
 	:is(.wp-block-wpshop-account-orders, #wps-front) .wps-box-action {
 		grid-column: 1 / -1;
+		justify-content: flex-start;
+	}
+
+	:is(.wp-block-wpshop-account-orders, #wps-front) .wps-box-action .wpeo-button.wps-order-pay {
+		flex: 1;
 	}
 }
 
