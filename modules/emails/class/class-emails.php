@@ -76,19 +76,18 @@ class Emails extends Singleton_Util {
 			'title'   => 'New order',
 			'content' => 'Hello <br> This email confirms that your payment for your recent order has just been validated. <br> See you soon on our shop.',
 		);
-/*
-		$this->emails['customer_completed_order'] = array(
-			'title'             => __( 'Completed order', 'wpshop' ),
-		);
-
-		$this->emails['customer_delivered_order'] = array(
-			'title'             => __( 'Delivered order', 'wpshop' ),
-		);
-*/
 		$this->emails['customer_invoice'] = array(
 			'title'   => 'Send invoice',
 			'content' => 'Hello <br> You can access your invoices by logging in to your account.',
 		);
+
+		// Sent by "Mark as delivered" on an order (Doli_Order_Action::mark_as_delivery()).
+		$this->emails['customer_delivered_order'] = array(
+			'title'   => 'Delivered order',
+			'content' => 'Hello <br> Your order has been shipped. <br> See you soon on our shop.',
+		);
+
+		// "customer_completed_order" has a template post but is never sent: not listed in the settings.
 
 		foreach ( $this->emails as $key => $email ) {
 			// Définit le contenu des emails en fonction des pages.

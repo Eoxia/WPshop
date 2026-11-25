@@ -573,8 +573,7 @@ class Doli_Order_Action {
 			'contact'     => $contact,
 		) );
 
-		// // translators: Send the invoice 000001 to the email contact text@eoxia.com.
-		LOG_Util::log( sprintf( 'Send the invoice %s to the email contact %s', $wp_invoice->data['title'], $contact->data['email'] ), 'wpshop2' );
+		LOG_Util::log( sprintf( 'Send the delivered order email for %s to the email contact %s', $order->data['title'], $contact->data['email'] ), 'wpshop2' );
 
 		ob_start();
 		View_Util::exec( 'wpshop', 'doli-order', 'metabox-shipment-tracking', array(
