@@ -3067,3 +3067,9 @@ msgstr "En cours d’enregistrement"
 
 msgid "Paid, being prepared"
 msgstr "Payée, en préparation"
+
+msgid "The invoice of this order is not available yet. Please contact us if you need it."
+msgstr "La facture de cette commande n’est pas encore disponible. Contactez-nous si vous en avez besoin."
+
+msgid "Back to my account"
+msgstr "Retour à mon compte"

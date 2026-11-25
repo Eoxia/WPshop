@@ -621,7 +621,7 @@ class Doli_Order_Action {
 		$result = $this->get_customer_order( ! empty( $_GET['order_id'] ) ? (int) $_GET['order_id'] : 0 );
 
 		if ( ! $result ) {
-			wp_die( esc_html__( 'Invoice not found', 'wpshop' ), '', array( 'response' => 404 ) );
+			$this->invoice_not_available();
 		}
 
 		$invoice_ids = ! empty( $result[0]->linkedObjectsIds->facture ) ? array_map( 'intval', array_values( (array) $result[0]->linkedObjectsIds->facture ) ) : array();
@@ -641,7 +641,7 @@ class Doli_Order_Action {
 		$invoice_file = $invoice ? Request_Util::get( 'documents/download?modulepart=facture&original_file=' . rawurlencode( $invoice->ref . '/' . $invoice->ref . '.pdf' ) ) : null;
 
 		if ( empty( $invoice_file->content ) ) {
-			wp_die( esc_html__( 'Invoice not found', 'wpshop' ), '', array( 'response' => 404 ) );
+			$this->invoice_not_available();
 		}
 
 		$content = base64_decode( $invoice_file->content ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode
@@ -653,6 +653,19 @@ class Doli_Order_Action {
 
 		echo $content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		exit;
+	}
+
+	/**
+	 * The order has no invoice PDF yet (e.g. classified billed by hand in Dolibarr):
+	 * explain it and link back to the account.
+	 *
+	 * @since 2.7.0
+	 */
+	private function invoice_not_available() {
+		$message = '<p>' . esc_html__( 'The invoice of this order is not available yet. Please contact us if you need it.', 'wpshop' ) . '</p>'
+			. '<p><a href="' . esc_url( Pages::g()->get_account_link() ) . '">' . esc_html__( 'Back to my account', 'wpshop' ) . '</a></p>';
+
+		wp_die( wp_kses_post( $message ), esc_html__( 'Invoice not found', 'wpshop' ), array( 'response' => 404 ) );
 	}
 
 	/**
