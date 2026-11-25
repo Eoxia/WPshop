@@ -3025,3 +3025,19 @@ msgstr "mini-panier"
 msgctxt "block keyword"
 msgid "header"
 msgstr "en-tête"
+
+msgctxt "block title"
+msgid "Account Link"
+msgstr "Lien vers Mon compte"
+
+msgctxt "block description"
+msgid "User icon for the header, linking to the customer account page."
+msgstr "Icône utilisateur pour l’en-tête, qui renvoie vers la page Mon compte."
+
+msgctxt "block keyword"
+msgid "account"
+msgstr "compte"
+
+msgctxt "block keyword"
+msgid "login"
+msgstr "connexion"

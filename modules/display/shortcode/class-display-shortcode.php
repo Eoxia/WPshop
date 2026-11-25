@@ -36,6 +36,24 @@ class Display_Shortcode extends Singleton_Util {
 		add_shortcode( 'wps_account', array( $this, 'callback_account' ) );
 		add_shortcode( 'wps_connection', array( $this, 'callback_connection' ) );
 		add_shortcode( 'wps_mini_cart', array( $this, 'callback_mini_cart' ) );
+		add_shortcode( 'wps_account_link', array( $this, 'callback_account_link' ) );
+	}
+
+	/**
+	 * [wps_account_link show_label="1"]: user icon linking to the account page (account link block).
+	 *
+	 * @param array|string $atts Shortcode attributes.
+	 *
+	 * @return string
+	 */
+	public function callback_account_link( $atts ) {
+		if ( is_admin() ) {
+			return '';
+		}
+
+		$atts = shortcode_atts( array( 'show_label' => '0' ), $atts, 'wps_account_link' );
+
+		return do_blocks( '<!-- wp:wpshop/account-link ' . wp_json_encode( array( 'showLabel' => rest_sanitize_boolean( $atts['show_label'] ) ) ) . ' /-->' );
 	}
 
 	/**
