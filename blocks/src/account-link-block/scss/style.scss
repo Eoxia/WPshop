@@ -1,0 +1,37 @@
+// Account link: same look as the mini cart toggle, so both icons sit well side by side.
+
+.wp-block-wpshop-account-link {
+	display: inline-flex;
+	align-items: center;
+
+	.wps-account-link__link {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5em;
+		padding: 0.4em;
+		border-radius: 999px;
+		color: inherit;
+		line-height: 1;
+		text-decoration: none;
+
+		&:hover {
+			background: color-mix(in srgb, currentColor 8%, transparent);
+		}
+
+		&:focus-visible {
+			outline: 2px solid var(--wps-accent, currentColor);
+			outline-offset: 2px;
+		}
+	}
+
+	.wps-account-link__icon {
+		width: 1.5em;
+		height: 1.5em;
+		flex-shrink: 0;
+	}
+
+	.wps-account-link__label {
+		font-weight: 600;
+		white-space: nowrap;
+	}
+}

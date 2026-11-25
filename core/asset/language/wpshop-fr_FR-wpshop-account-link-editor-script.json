@@ -1,0 +1,24 @@
+{
+    "translation-revision-date": "2026-11-25T12:00:00+00:00",
+    "generator": "WPshop",
+    "source": "blocks/build/account-link-block/index.js",
+    "domain": "messages",
+    "locale_data": {
+        "messages": {
+            "": {
+                "domain": "messages",
+                "lang": "fr",
+                "plural-forms": "nplurals=2; plural=(n > 1);"
+            },
+            "Settings": [
+                "Réglages"
+            ],
+            "Show the label": [
+                "Afficher le libellé"
+            ],
+            "My account": [
+                "Mon compte"
+            ]
+        }
+    }
+}

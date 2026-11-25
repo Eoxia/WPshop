@@ -118,6 +118,7 @@ class Cart extends Singleton_Util {
 				'price'         => $product['price'],
 				'price_ttc'     => $product['price_ttc'],
 				'thumbnail_url' => $product['thumbnail_url'],
+				'url'           => get_permalink( $product['id'] ),
 			);
 		}
 

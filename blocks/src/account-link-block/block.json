@@ -1,0 +1,36 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "wpshop/account-link",
+	"version": "0.1.0",
+	"title": "Account Link",
+	"category": "wpshop",
+	"icon": "admin-users",
+	"description": "User icon for the header, linking to the customer account page.",
+	"keywords": [ "account", "login", "header" ],
+	"example": {},
+	"attributes": {
+		"showLabel": {
+			"type": "boolean",
+			"default": false
+		}
+	},
+	"supports": {
+		"html": false,
+		"color": {
+			"text": true,
+			"background": false
+		},
+		"typography": {
+			"fontSize": true
+		},
+		"spacing": {
+			"margin": true,
+			"padding": true
+		}
+	},
+	"textdomain": "wpshop",
+	"editorScript": "file:./index.js",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php"
+}

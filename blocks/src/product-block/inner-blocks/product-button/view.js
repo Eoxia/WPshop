@@ -51,7 +51,17 @@ document.addEventListener( 'click', ( event ) => {
 		method: 'POST',
 		data: { qty: 1 },
 	} )
-		.then( () => showNotification( button.dataset.productTitle, button.dataset.cartUrl ) )
+		.then( ( cart ) => {
+			// The mini cart (if any) opens and cancels the event: no notification then.
+			const added = new CustomEvent( 'wpshop:product-added', {
+				cancelable: true,
+				detail: { cart, title: button.dataset.productTitle, trigger: button },
+			} );
+
+			if ( document.dispatchEvent( added ) ) {
+				showNotification( button.dataset.productTitle, button.dataset.cartUrl );
+			}
+		} )
 		.catch( ( error ) => console.error( 'WPshop: add to cart failed', error ) ) // eslint-disable-line no-console
 		.finally( () => {
 			button.disabled = false;

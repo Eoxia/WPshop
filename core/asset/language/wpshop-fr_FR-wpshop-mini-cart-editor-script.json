@@ -1,0 +1,33 @@
+{
+    "translation-revision-date": "2026-11-25T13:58:26+00:00",
+    "generator": "WPshop",
+    "source": "blocks/build/mini-cart-block/index.js",
+    "domain": "messages",
+    "locale_data": {
+        "messages": {
+            "": {
+                "domain": "messages",
+                "lang": "fr",
+                "plural-forms": "nplurals=2; plural=(n > 1);"
+            },
+            "Settings": [
+                "Réglages"
+            ],
+            "Show the cart total": [
+                "Afficher le total du panier"
+            ],
+            "Open the panel when a product is added": [
+                "Ouvrir le panneau à l’ajout d’un produit"
+            ],
+            "Panel side": [
+                "Côté du panneau"
+            ],
+            "Right": [
+                "Droite"
+            ],
+            "Left": [
+                "Gauche"
+            ]
+        }
+    }
+}

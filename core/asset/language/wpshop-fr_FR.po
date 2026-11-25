@@ -3006,6 +3006,41 @@ msgctxt "block description"
 msgid "One click add to cart button, for product catalogues."
 msgstr "Bouton d’ajout au panier en un clic, pour les catalogues de produits."
 
+msgctxt "block title"
+msgid "Mini Cart"
+msgstr "Mini-panier"
+
+msgctxt "block description"
+msgid "Cart icon for the header: shows the number of items and opens the cart in a side panel."
+msgstr "Icône panier pour l’en-tête : affiche le nombre d’articles et ouvre le panier dans un panneau latéral."
+
+msgctxt "block keyword"
+msgid "cart"
+msgstr "panier"
+
+msgctxt "block keyword"
+msgid "basket"
+msgstr "mini-panier"
+
+msgctxt "block keyword"
+msgid "header"
+msgstr "en-tête"
+
+msgctxt "block title"
+msgid "Account Link"
+msgstr "Lien vers Mon compte"
+
+msgctxt "block description"
+msgid "User icon for the header, linking to the customer account page."
+msgstr "Icône utilisateur pour l’en-tête, qui renvoie vers la page Mon compte."
+
+msgctxt "block keyword"
+msgid "account"
+msgstr "compte"
+
+msgctxt "block keyword"
+msgid "login"
+msgstr "connexion"
 msgid "E-mails"
 msgstr "E-mails"
 

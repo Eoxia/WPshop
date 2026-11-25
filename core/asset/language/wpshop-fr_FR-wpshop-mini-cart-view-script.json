@@ -1,0 +1,52 @@
+{
+    "translation-revision-date": "2026-11-25T13:58:26+00:00",
+    "generator": "WPshop",
+    "source": "blocks/build/mini-cart-block/view.js",
+    "domain": "messages",
+    "locale_data": {
+        "messages": {
+            "": {
+                "domain": "messages",
+                "lang": "fr",
+                "plural-forms": "nplurals=2; plural=(n > 1);"
+            },
+            "Cart": [
+                "Panier"
+            ],
+            "Close the cart": [
+                "Fermer le panier"
+            ],
+            "Cart, %d item": [
+                "Panier, %d article",
+                "Panier, %d articles"
+            ],
+            "Your cart is empty.": [
+                "Votre panier est vide."
+            ],
+            "Browse the shop": [
+                "Voir la boutique"
+            ],
+            "Decrease the quantity of %s": [
+                "Diminuer la quantité de %s"
+            ],
+            "Increase the quantity of %s": [
+                "Augmenter la quantité de %s"
+            ],
+            "Remove %s from the cart": [
+                "Retirer %s du panier"
+            ],
+            "Loading…": [
+                "Chargement…"
+            ],
+            "Subtotal": [
+                "Sous-total"
+            ],
+            "View cart": [
+                "Voir le panier"
+            ],
+            "Checkout": [
+                "Commander"
+            ]
+        }
+    }
+}

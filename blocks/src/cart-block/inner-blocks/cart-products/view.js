@@ -8,6 +8,16 @@ import { storeName } from '../../../store/cart-products-store';
 
 import apiFetch from '@wordpress/api-fetch';
 
+const CART_SOURCE = 'cart';
+
+// Cart changes made here: tell the other blocks of the page (mini cart).
+const cartFetch = (options) => apiFetch(options).then((response) => {
+    if (response) {
+        document.dispatchEvent(new CustomEvent('wpshop:cart-updated', { detail: { cart: response, source: CART_SOURCE } }));
+    }
+    return response;
+});
+
 const CartProductsList = () => {
 
     const [loader, setLoader] = useState([]);
@@ -35,13 +45,28 @@ const CartProductsList = () => {
                 console.error('Erreur lors de la récupération des produits:', response);
             }
         });
+
+        // Cart changed elsewhere on the page (mini cart panel).
+        const onCartUpdated = (event) => {
+            if (event.detail?.source === CART_SOURCE || !event.detail) {
+                return;
+            }
+            if (!event.detail.cart?.products?.length) {
+                window.location.reload();
+            } else {
+                setValue(event.detail.cart);
+            }
+        };
+        document.addEventListener('wpshop:cart-updated', onCartUpdated);
+
+        return () => document.removeEventListener('wpshop:cart-updated', onCartUpdated);
     }, []);
 
     const suppressProduct = (productId) => {
 
         setLoader((prev) => [...prev, productId]);
 
-        apiFetch({
+        cartFetch({
             path: `/wp-shop/v1/cart/${productId}`,
             method: 'DELETE'
         }).then((response) => {
@@ -85,7 +110,7 @@ const CartProductsList = () => {
         setValue(updatedProducts);
         
         // Then make the API call
-        apiFetch({
+        cartFetch({
             path: `/wp-shop/v1/cart/${productId}/increment`,
             method: 'POST',
             data: {
@@ -114,7 +139,7 @@ const CartProductsList = () => {
         // If qty will be 0, handle differently (potential removal)
         if (currentProduct.qty <= 1) {
             // For qty=1, we'll let the API handle it as normal (may need to refresh)
-            apiFetch({
+            cartFetch({
                 path: `/wp-shop/v1/cart/${productId}/decrement`,
                 method: 'POST'
             }).then((response) => {
@@ -155,7 +180,7 @@ const CartProductsList = () => {
         setValue(updatedProducts);
         
         // Then make the API call
-        apiFetch({
+        cartFetch({
             path: `/wp-shop/v1/cart/${productId}/decrement`,
             method: 'POST'
         }).then((response) => {
