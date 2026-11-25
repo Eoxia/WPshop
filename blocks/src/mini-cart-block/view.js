@@ -198,7 +198,7 @@ if ( roots.length ) {
 							'data-action': 'decrement',
 							/* translators: %s: product title. */
 							'aria-label': sprintf( __( 'Decrease the quantity of %s', 'wpshop' ), product.title ),
-							disabled: busy.has( id ),
+							'aria-disabled': busy.has( id ) ? 'true' : false,
 							onClick: () => update( id, 'decrement' ),
 						},
 						svg( ICON_MINUS, 'wps-mini-cart-item__quantity-icon' )
@@ -211,7 +211,7 @@ if ( roots.length ) {
 							'data-action': 'increment',
 							/* translators: %s: product title. */
 							'aria-label': sprintf( __( 'Increase the quantity of %s', 'wpshop' ), product.title ),
-							disabled: busy.has( id ),
+							'aria-disabled': busy.has( id ) ? 'true' : false,
 							onClick: () => update( id, 'increment' ),
 						},
 						svg( ICON_PLUS, 'wps-mini-cart-item__quantity-icon' )
@@ -230,7 +230,7 @@ if ( roots.length ) {
 						'data-action': 'remove',
 						/* translators: %s: product title. */
 						'aria-label': sprintf( __( 'Remove %s from the cart', 'wpshop' ), product.title ),
-						disabled: busy.has( id ),
+						'aria-disabled': busy.has( id ) ? 'true' : false,
 						onClick: () => update( id, 'remove' ),
 					},
 					svg( ICON_TRASH, 'wps-mini-cart-item__remove-icon' )
@@ -332,7 +332,9 @@ if ( roots.length ) {
 	};
 
 	const openPanel = ( toggle = null ) => {
-		lastToggle = toggle || document.activeElement;
+		const active = document.activeElement;
+		const visibleToggle = roots.map( ( root ) => root.querySelector( '.wps-mini-cart__toggle' ) ).find( ( button ) => button.offsetParent !== null );
+		lastToggle = toggle || ( active && active !== document.body ? active : visibleToggle );
 
 		if ( panel.open ) {
 			return;
@@ -402,7 +404,7 @@ if ( roots.length ) {
 
 		if ( config.openOnAdd ) {
 			event.preventDefault();
-			openPanel();
+			openPanel( event.detail?.trigger );
 		}
 	} );
 

@@ -55,7 +55,7 @@ document.addEventListener( 'click', ( event ) => {
 			// The mini cart (if any) opens and cancels the event: no notification then.
 			const added = new CustomEvent( 'wpshop:product-added', {
 				cancelable: true,
-				detail: { cart, title: button.dataset.productTitle },
+				detail: { cart, title: button.dataset.productTitle, trigger: button },
 			} );
 
 			if ( document.dispatchEvent( added ) ) {

@@ -176,7 +176,8 @@ html.wps-mini-cart-is-open {
 			outline-offset: 2px;
 		}
 
-		&:disabled {
+		&:disabled,
+		&[aria-disabled="true"] {
 			opacity: 0.4;
 			cursor: default;
 		}
