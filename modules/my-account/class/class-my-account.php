@@ -263,7 +263,7 @@ class My_Account extends Singleton_Util {
 
 				// The online payment URL is asked to Dolibarr on click (one request, not one per order).
 				$orders[ $key ]->data['pay_url'] = Doli_Statut::g()->order_can_be_paid( $order )
-					? admin_url( 'admin-post.php?action=wps_pay_order&_wpnonce=' . wp_create_nonce( 'pay_order' ) . '&order_id=' . $order->data['external_id'] )
+					? admin_url( 'admin-post.php?action=wps_pay_order_online&_wpnonce=' . wp_create_nonce( 'pay_order' ) . '&order_id=' . $order->data['external_id'] )
 					: '';
 
 				$orders[ $key ]->data['invoice_download'] = $customer_status['paid']

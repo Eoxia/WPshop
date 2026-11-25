@@ -51,7 +51,7 @@ class Doli_Order_Action {
 		add_action( 'wps_payment_failed', array( $this, 'set_to_failed' ), 30, 1 );
 
 		add_action( 'admin_post_wps_download_order', array( $this, 'download_order' ) );
-		add_action( 'admin_post_wps_pay_order', array( $this, 'pay_order' ) );
+		add_action( 'admin_post_wps_pay_order_online', array( $this, 'pay_order' ) );
 		add_action( 'admin_post_wps_download_order_invoice', array( $this, 'download_order_invoice' ) );
 		add_action( 'admin_post_wps_synchronize_orders', array( $this, 'callback_synchronize_orders' ) );
 
