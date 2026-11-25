@@ -21,7 +21,7 @@
  */
  
 import { render, formatPrice, formatAmount, formatDate } from '../../../utils';
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import { useEffect, useState } from '@wordpress/element';
 
 import { useSelect, useDispatch, use } from '@wordpress/data';
@@ -103,14 +103,31 @@ const AccountOrders = () => {
                                     </div>
                                 </div>
                                 <div class="wps-box-secondary">
-                                    <div class="wps-box-status"><span class="wps-box-status-dot"></span> { order.data.status.class.text }</div>
+                                    <div class="wps-box-status" data-status={ order.data.status.key } data-tone={ order.data.status.tone }><span class="wps-box-status-dot"></span> { order.data.status.class.text }</div>
                                     <div class="wps-box-price">{ formatPrice(order.data.total_ttc) }</div>
                                 </div>
                                 <div class="wps-box-action">
-                                    <a target="_blank"
+                                    { order.data.pay_url && (
+                                        <a href={ order.data.pay_url } class="wpeo-button button-primary wps-order-pay">
+                                            <i class="button-icon fas fa-credit-card" aria-hidden="true"></i>
+                                            <span>{ __( 'Pay', 'wpshop' ) }</span>
+                                        </a>
+                                    ) }
+                                    { order.data.invoice_download && (
+                                        <a target="_blank" rel="noopener"
+                                            href={ order.data.invoice_download }
+                                            title={ __( 'Download the invoice', 'wpshop' ) }
+                                            aria-label={ sprintf( __( 'Download the invoice of the order %s', 'wpshop' ), order.data.title ) }
+                                            class="wpeo-button button-primary button-square-50 button-rounded wps-order-invoice">
+                                            <i class="button-icon fas fa-file-invoice" aria-hidden="true"></i>
+                                        </a>
+                                    ) }
+                                    <a target="_blank" rel="noopener"
                                         href={ order.data.download }
+                                        title={ __( 'Download the order', 'wpshop' ) }
+                                        aria-label={ sprintf( __( 'Download the order %s', 'wpshop' ), order.data.title ) }
                                         class="wpeo-button button-primary button-square-50 button-rounded">
-                                        <i class="button-icon fas fa-file-download"></i>
+                                        <i class="button-icon fas fa-file-download" aria-hidden="true"></i>
                                     </a>
                                 </div>
                             </div>

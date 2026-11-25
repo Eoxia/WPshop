@@ -51,6 +51,8 @@ class Doli_Order_Action {
 		add_action( 'wps_payment_failed', array( $this, 'set_to_failed' ), 30, 1 );
 
 		add_action( 'admin_post_wps_download_order', array( $this, 'download_order' ) );
+		add_action( 'admin_post_wps_pay_order', array( $this, 'pay_order' ) );
+		add_action( 'admin_post_wps_download_order_invoice', array( $this, 'download_order_invoice' ) );
 		add_action( 'admin_post_wps_synchronize_orders', array( $this, 'callback_synchronize_orders' ) );
 
 		add_action( 'wp_ajax_mark_as_delivery', array( $this, 'mark_as_delivery' ) );
@@ -538,6 +540,118 @@ class Doli_Order_Action {
 		header( 'Content-Length: ' . strlen( $content ) );
 
 		echo $content;
+		exit;
+	}
+
+	/**
+	 * Dolibarr order of the current customer (my account), or false.
+	 *
+	 * @since 2.7.0
+	 *
+	 * @param int $doli_order_id Dolibarr order ID.
+	 *
+	 * @return array|false array( stdClass $doli_order, Doli_Order $order ).
+	 */
+	private function get_customer_order( $doli_order_id ) {
+		if ( ! $doli_order_id || ! is_user_logged_in() ) {
+			return false;
+		}
+
+		// Single order: Dolibarr also returns the linked objects (invoices).
+		$doli_order = Request_Util::get( 'orders/' . (int) $doli_order_id );
+
+		if ( empty( $doli_order ) || empty( $doli_order->id ) ) {
+			return false;
+		}
+
+		if ( ! current_user_can( 'administrator' ) ) {
+			$contact     = User::g()->get( array( 'id' => get_current_user_id() ), true );
+			$third_party = ! empty( $contact->data['third_party_id'] ) ? Third_Party::g()->get( array( 'id' => $contact->data['third_party_id'] ), true ) : null;
+
+			if ( empty( $third_party->data['external_id'] ) || (int) $doli_order->socid !== (int) $third_party->data['external_id'] ) {
+				return false;
+			}
+		}
+
+		$order = Doli_Order::g()->doli_to_wp( $doli_order, Doli_Order::g()->get( array( 'schema' => true ), true ), true );
+
+		return array( $doli_order, $order );
+	}
+
+	/**
+	 * "Pay" button of the my account orders: sends the customer to the Dolibarr online
+	 * payment page of an unpaid order.
+	 *
+	 * @since 2.7.0
+	 */
+	public function pay_order() {
+		check_admin_referer( 'pay_order' );
+
+		$account_url = Pages::g()->get_account_link();
+		$result      = $this->get_customer_order( ! empty( $_GET['order_id'] ) ? (int) $_GET['order_id'] : 0 );
+
+		if ( ! $result || ! Doli_Statut::g()->order_can_be_paid( $result[1] ) ) {
+			wp_safe_redirect( $account_url );
+			exit;
+		}
+
+		$payment_url = Request_Util::g()->get( 'doliwpshop/getOnlinePaymentUrl?doli_id=' . (int) $result[0]->id );
+
+		if ( ! is_string( $payment_url ) || ! wp_http_validate_url( $payment_url ) ) {
+			LOG_Util::log( sprintf( 'No online payment URL for the order %s', $result[0]->ref ), 'wpshop2' );
+			wp_safe_redirect( $account_url );
+			exit;
+		}
+
+		LOG_Util::log( sprintf( 'Pay the order %s online', $result[0]->ref ), 'wpshop2' );
+
+		// Dolibarr payment page (other host): URL returned by the shop's own Dolibarr API.
+		wp_redirect( $payment_url ); // phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect
+		exit;
+	}
+
+	/**
+	 * "Invoice" button of the my account orders: PDF of the invoice of a paid order.
+	 *
+	 * @since 2.7.0
+	 */
+	public function download_order_invoice() {
+		check_admin_referer( 'download_order_invoice' );
+
+		$result = $this->get_customer_order( ! empty( $_GET['order_id'] ) ? (int) $_GET['order_id'] : 0 );
+
+		if ( ! $result ) {
+			wp_die( esc_html__( 'Invoice not found', 'wpshop' ), '', array( 'response' => 404 ) );
+		}
+
+		$invoice_ids = ! empty( $result[0]->linkedObjectsIds->facture ) ? array_map( 'intval', array_values( (array) $result[0]->linkedObjectsIds->facture ) ) : array();
+		$invoice     = null;
+
+		// Most recent validated invoice of the order (skip drafts and credit notes).
+		rsort( $invoice_ids );
+		foreach ( $invoice_ids as $invoice_id ) {
+			$candidate = Request_Util::get( 'invoices/' . $invoice_id );
+
+			if ( ! empty( $candidate->ref ) && (int) $candidate->statut > 0 && (int) $candidate->type !== 2 && (int) $candidate->socid === (int) $result[0]->socid ) {
+				$invoice = $candidate;
+				break;
+			}
+		}
+
+		$invoice_file = $invoice ? Request_Util::get( 'documents/download?modulepart=facture&original_file=' . rawurlencode( $invoice->ref . '/' . $invoice->ref . '.pdf' ) ) : null;
+
+		if ( empty( $invoice_file->content ) ) {
+			wp_die( esc_html__( 'Invoice not found', 'wpshop' ), '', array( 'response' => 404 ) );
+		}
+
+		$content = base64_decode( $invoice_file->content ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode
+
+		header( 'Cache-Control: no-cache' );
+		header( 'Content-Type: application/pdf' );
+		header( 'Content-Disposition: inline; filename="' . sanitize_file_name( $invoice->ref ) . '.pdf"' );
+		header( 'Content-Length: ' . strlen( $content ) );
+
+		echo $content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		exit;
 	}
 

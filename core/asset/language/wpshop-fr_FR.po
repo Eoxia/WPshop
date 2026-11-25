@@ -718,7 +718,7 @@ msgstr "Factures"
 
 #: modules/dolibarr/doli-invoice/action/class-doli-invoice-action.php:364
 msgid "Invoice not found"
-msgstr "Facture n°n trouvée"
+msgstr "Facture introuvable"
 
 #: modules/dolibarr/doli-invoice/filter/class-doli-invoice-filter.php:74
 #: modules/dolibarr/doli-order/filter/class-doli-order-filter.php:51
@@ -3055,3 +3055,15 @@ msgstr "E-mail mis à jour."
 
 msgid "No e-mail found."
 msgstr "Aucun e-mail trouvé."
+
+msgid "Awaiting payment"
+msgstr "En attente de paiement"
+
+msgid "Being delivered"
+msgstr "En cours de livraison"
+
+msgid "Being recorded"
+msgstr "En cours d’enregistrement"
+
+msgid "Paid, being prepared"
+msgstr "Payée, en préparation"
