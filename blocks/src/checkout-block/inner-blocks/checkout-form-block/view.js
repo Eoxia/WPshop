@@ -30,6 +30,18 @@ import { storeName } from '../../../store/checkout-form-store';
 import apiFetch from '@wordpress/api-fetch';
 
 
+/**
+ * Form field with a visible label (required fields get the form-element-required class).
+ */
+const Field = ( { name, label, type = 'text', className = '', required = false, autoComplete, values, onChange } ) => (
+    <div className={ `form-element ${ className }${ required ? ' form-element-required' : '' }` }>
+        <label class="form-field-container">
+            <span class="form-label">{ label }</span>
+            <input type={ type } class="form-field" name={ name } autoComplete={ autoComplete } required={ required } value={ values[ name ] || '' } onChange={ onChange } />
+        </label>
+    </div>
+);
+
 const CheckoutForm = () => {
 
     const [ countries, setCountries ] = useState([]);
@@ -99,62 +111,28 @@ const CheckoutForm = () => {
         <div className="wpeo-form">
         <div class="wps-checkout-subtitle wps-checkout-subtitle-step-1">{ __( 'Personnal and shipping informations', 'wpshop' ) } </div>
 
-        <div class="wpeo-gridlayout grid-6">
-            <div class="form-element contact-firstname gridw-3">
-                <label class="form-field-container">
-                    <input type="text" class="form-field" name="firstname" placeholder={ __( 'First name', 'wpshop' ) } value={values.firstname} onChange={handleChange} />
-                </label>
-            </div>
-
-            <div class="form-element contact-lastname gridw-3">
-                <label class="form-field-container">
-                    <input type="text" class="form-field" name="lastname" placeholder={ __( 'Last name/Company Name', 'wpshop' )}  value={values.lastname} onChange={handleChange} />
-                </label>
-            </div>
-
-            <div class={`form-element contact-email form-element-required gridw-3${emailError ? ' form-element-error' : ''}`}>
-                <label class="form-field-container">
-                    <input type="text" class="form-field" name="email" placeholder={__( 'Email', 'wpshop' )} value={values.email} onChange={handleChange} />
-                </label>
-            </div>
-
-            <div class="form-element contact-phone gridw-3">
-                <label class="form-field-container">
-                    <input type="text" class="form-field" name="phone" placeholder={__( 'Phone number', 'wpshop' )} value={values.phone} onChange={handleChange} />
-                </label>
-            </div>
-
-            <div class="form-element third_party-address form-element-required gridw-6">
-                <label class="form-field-container">
-                    <input type="text" class="form-field" name="address" placeholder={__( 'Street address', 'wpshop' )} value={values.address} onChange={handleChange} />
-                </label>
-            </div>
+        <div class="wpeo-gridlayout grid-6 wps-checkout-fields">
+            <Field name="firstname" className="contact-firstname gridw-3" label={ __( 'First name', 'wpshop' ) } autoComplete="given-name" values={ values } onChange={ handleChange } />
+            <Field name="lastname" className="contact-lastname gridw-3" label={ __( 'Last name/Company Name', 'wpshop' ) } autoComplete="family-name" values={ values } onChange={ handleChange } />
+            <Field name="email" type="email" className={ `contact-email gridw-3${ emailError ? ' form-element-error' : '' }` } required label={ __( 'Email', 'wpshop' ) } autoComplete="email" values={ values } onChange={ handleChange } />
+            <Field name="phone" type="tel" className="contact-phone gridw-3" label={ __( 'Phone number', 'wpshop' ) } autoComplete="tel" values={ values } onChange={ handleChange } />
+            <Field name="address" className="third_party-address gridw-6" required label={ __( 'Street address', 'wpshop' ) } autoComplete="street-address" values={ values } onChange={ handleChange } />
 
             <div class="form-element third_party-country_id form-element-required gridw-2">
                 <label class="form-field-container">
-                    <select id="monselect" class="form-field" name="country_id" onChange={handleChange}>
-                        {countries.map((country) => (
-                            <option value={country.id} selected={values.country_id === parseInt(country.id)}>
-                                {country.label}
+                    <span class="form-label">{ __( 'Country', 'wpshop' ) }</span>
+                    <select id="monselect" class="form-field" name="country_id" autoComplete="country" value={ String( values.country_id || 0 ) } onChange={ handleChange }>
+                        { countries.map( ( country ) => (
+                            <option key={ country.id } value={ String( country.id ) }>
+                                { country.label }
                             </option>
-                        ))}
+                        ) ) }
                     </select>
                 </label>
             </div>
 
-            <div class="form-element third_party-town form-element-required gridw-2">
-                <label class="form-field-container">
-                    <input type="text" class="form-field" name="town" placeholder={__( 'Town / City', 'wpshop' )} value={values.town} onChange={handleChange} />
-                </label>
-            </div>
-
-            <div class="form-element third_party-zip form-element-required gridw-2">
-                <label class="form-field-container">
-                    <input type="text" class="form-field" name="zip" placeholder={__( 'Postcode / ZIP', 'wpshop' )} value={values.zip} onChange={handleChange} />
-                </label>
-            </div>
-
-
+            <Field name="town" className="third_party-town gridw-2" required label={ __( 'Town / City', 'wpshop' ) } autoComplete="address-level2" values={ values } onChange={ handleChange } />
+            <Field name="zip" className="third_party-zip gridw-2" required label={ __( 'Postcode / ZIP', 'wpshop' ) } autoComplete="postal-code" values={ values } onChange={ handleChange } />
         </div>
         {error &&
             <div class="wps-checkout-error" dangerouslySetInnerHTML={{ __html: error }}></div>

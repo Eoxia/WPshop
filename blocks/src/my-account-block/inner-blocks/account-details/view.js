@@ -68,7 +68,7 @@ const AccountDetails = (props) => {
             <div class="form-element form-element-disable">
                 <span class="form-label">{ __( 'Login', 'wpshop' ) }</span>
                 <label class="form-field-container">
-                    <input type="text" class={`form-field ${isLoading ? 'animate-pulse' : ''}`} name="email" value={contact?.login} readonly/>
+                    <input type="text" class={`form-field ${isLoading ? 'animate-pulse' : ''}`} name="email" value={contact?.login} readOnly/>
                 </label>
             </div>
 
@@ -76,14 +76,14 @@ const AccountDetails = (props) => {
                 <div class="form-element form-element-disable">
                     <span class="form-label">{ __( 'Firstname', 'wpshop' ) }</span>
                     <label class="form-field-container">
-                        <input type="text" class={`form-field ${isLoading ? 'animate-pulse' : ''}`} name="email" value={contact?.firstname} readonly/>
+                        <input type="text" class={`form-field ${isLoading ? 'animate-pulse' : ''}`} name="email" value={contact?.firstname} readOnly/>
                     </label>
                 </div>
 
                 <div class="form-element form-element-disable">
                     <span class="form-label">{ __( 'Lastname', 'wpshop' ) }</span>
                     <label class="form-field-container">
-                        <input type="text" class={`form-field ${isLoading ? 'animate-pulse' : ''}`} name="email" value={contact?.lastname} readonly/>
+                        <input type="text" class={`form-field ${isLoading ? 'animate-pulse' : ''}`} name="email" value={contact?.lastname} readOnly/>
                     </label>
                 </div>
             </div>
@@ -92,14 +92,14 @@ const AccountDetails = (props) => {
                 <div class="form-element form-element-disable">
                     <span class="form-label">{ __( 'Email', 'wpshop' ) }</span>
                     <label class="form-field-container">
-                        <input type="text" class={`form-field ${isLoading ? 'animate-pulse' : ''}`} name="email" value={contact?.email} readonly/>
+                        <input type="text" class={`form-field ${isLoading ? 'animate-pulse' : ''}`} name="email" value={contact?.email} readOnly/>
                     </label>
                 </div>
 
                 <div class="form-element form-element-disable">
                     <span class="form-label">{ __( 'Phone', 'wpshop' ) }</span>
                     <label class="form-field-container">
-                        <input type="text" class={`form-field ${isLoading ? 'animate-pulse' : ''}`} name="email" value={contact?.phone} readonly/>
+                        <input type="text" class={`form-field ${isLoading ? 'animate-pulse' : ''}`} name="email" value={contact?.phone} readOnly/>
                     </label>
                 </div>
             </div>
@@ -107,7 +107,7 @@ const AccountDetails = (props) => {
             <div class="form-element form-element-disable">
                 <span class="form-label">{ __( 'Address', 'wpshop' ) }</span>
                 <label class="form-field-container">
-                    <input type="text" class={`form-field ${isLoading ? 'animate-pulse' : ''}`} name="email" value={third_party?.address} readonly/>
+                    <input type="text" class={`form-field ${isLoading ? 'animate-pulse' : ''}`} name="email" value={third_party?.address} readOnly/>
                 </label>
             </div>
 
@@ -115,14 +115,14 @@ const AccountDetails = (props) => {
                 <div class="form-element form-element-disable">
                     <span class="form-label">{ __( 'Zip', 'wpshop' ) }</span>
                     <label class="form-field-container">
-                        <input type="text" class={`form-field ${isLoading ? 'animate-pulse' : ''}`} name="email" value={third_party?.zip} readonly/>
+                        <input type="text" class={`form-field ${isLoading ? 'animate-pulse' : ''}`} name="email" value={third_party?.zip} readOnly/>
                     </label>
                 </div>
 
                 <div class="form-element form-element-disable">
                     <span class="form-label">{ __( 'Town', 'wpshop' ) }</span>
                     <label class="form-field-container">
-                        <input type="text" class={`form-field ${isLoading ? 'animate-pulse' : ''}`} name="email" value={third_party?.town} readonly/>
+                        <input type="text" class={`form-field ${isLoading ? 'animate-pulse' : ''}`} name="email" value={third_party?.town} readOnly/>
                     </label>
                 </div>
 
@@ -130,8 +130,8 @@ const AccountDetails = (props) => {
                     <span class="form-label">{ __( 'Country', 'wpshop' ) }</span>
                     <label class="form-field-container">
                         <input type="text" class={`form-field ${isLoading ? 'animate-pulse' : ''}`} name="email" value={countries.find(
-                            (country) => country.id === (third_party ? third_party.country : 0)
-                        )?.label} readonly/>
+                            ( country ) => String( country.id ) === String( third_party?.country_id ?? third_party?.country ?? 0 )
+                        )?.label} readOnly/>
                     </label>
                 </div>
             </div>

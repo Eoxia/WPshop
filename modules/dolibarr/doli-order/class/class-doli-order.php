@@ -225,7 +225,7 @@ class Doli_Order extends Post_Class {
 						'total_ttc'   => $line->total_ttc,
 						'libelle'     => ! empty( $line->libelle ) ? $line->libelle : $line->desc,
 						'tva_tx'      => $line->tva_tx,
-						'subprice'    => $line->price,
+						'subprice'    => isset( $line->subprice ) ? $line->subprice : ( isset( $line->price ) ? $line->price : 0 ), // "price" is deprecated in Dolibarr.
 						'rowid'       => $line->rowid,
 					);
 

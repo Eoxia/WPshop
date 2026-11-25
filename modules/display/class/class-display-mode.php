@@ -283,21 +283,23 @@ class Display_Mode extends Singleton_Util {
 	 * @return string Serialized blocks.
 	 */
 	public function get_product_blocks( $with_title = true ) {
-		$inner = array();
+		// Two columns: image on the left, information and add to cart on the right (stacked on mobile).
+		$information = array();
 
 		if ( $with_title ) {
-			$inner[] = '<!-- wp:wpshop/product-title /-->';
+			$information[] = '<!-- wp:wpshop/product-title /-->';
 		}
 
-		$inner[] = '<!-- wp:wpshop/product-description /-->';
-		$inner[] = '<!-- wp:wpshop/product-image /-->';
-		$inner[] = '<!-- wp:wpshop/product-price /-->';
-		$inner[] = '<!-- wp:wpshop/product-add-cart /-->';
+		$information[] = '<!-- wp:wpshop/product-price /-->';
+		$information[] = '<!-- wp:wpshop/product-add-cart /-->';
+		$information[] = '<!-- wp:wpshop/product-description /-->';
 
 		$markup = '<!-- wp:wpshop/product-block -->'
-			. '<!-- wp:group {"align":"wide","layout":{"type":"constrained"}} -->' . "\n"
-			. '<div class="wp-block-group alignwide">' . implode( "\n\n", $inner ) . '</div>' . "\n"
-			. '<!-- /wp:group -->'
+			. $this->columns_with_class(
+				'wps-product-layout',
+				array( '50%', '<!-- wp:wpshop/product-image /-->' ),
+				array( '50%', implode( "\n\n", $information ) )
+			)
 			. '<!-- /wp:wpshop/product-block -->';
 
 		/**
@@ -544,7 +546,7 @@ class Display_Mode extends Singleton_Util {
 	 */
 	public function get_page_block_template_content( $page_key ) {
 		return $this->wrap_block_template(
-			'<!-- wp:post-title {"level":1} /-->' . "\n\n"
+			'<!-- wp:post-title {"level":1,"align":"wide"} /-->' . "\n\n"
 			. '<!-- wp:post-content {"layout":{"type":"constrained"}} /-->' . "\n\n"
 			. '<!-- wp:group {"align":"wide","layout":{"type":"default"}} -->' . "\n"
 			. '<div class="wp-block-group alignwide">' . $this->get_page_blocks( $page_key ) . '</div>' . "\n"
@@ -689,6 +691,27 @@ class Display_Mode extends Singleton_Util {
 	}
 
 	/**
+	 * Wide core columns block with a class name (as saved by the block editor).
+	 *
+	 * @param string $class_name Class added to the columns block.
+	 * @param array  ...$columns Each column: array( width, inner blocks markup ).
+	 *
+	 * @return string
+	 */
+	private function columns_with_class( $class_name, ...$columns ) {
+		$markup = '<!-- wp:columns {"align":"wide","className":"' . esc_attr( $class_name ) . '"} -->' . "\n"
+			. '<div class="wp-block-columns alignwide ' . esc_attr( $class_name ) . '">';
+
+		foreach ( $columns as $column ) {
+			$markup .= '<!-- wp:column {"width":"' . $column[0] . '"} -->' . "\n"
+				. '<div class="wp-block-column" style="flex-basis:' . $column[0] . '">' . $column[1] . '</div>' . "\n"
+				. '<!-- /wp:column -->' . "\n\n";
+		}
+
+		return rtrim( $markup ) . '</div>' . "\n" . '<!-- /wp:columns -->';
+	}
+
+	/**
 	 * Wraps blocks with the theme header and footer template parts.
 	 *
 	 * @param string $inner Blocks of the main area.
@@ -697,8 +720,8 @@ class Display_Mode extends Singleton_Util {
 	 */
 	private function wrap_block_template( $inner ) {
 		return '<!-- wp:template-part {"slug":"header","tagName":"header"} /-->' . "\n\n"
-			. '<!-- wp:group {"tagName":"main","layout":{"type":"constrained"}} -->' . "\n"
-			. '<main class="wp-block-group">' . $inner . '</main>' . "\n"
+			. '<!-- wp:group {"tagName":"main","className":"wps-main","layout":{"type":"constrained"}} -->' . "\n"
+			. '<main class="wp-block-group wps-main">' . $inner . '</main>' . "\n"
 			. '<!-- /wp:group -->' . "\n\n"
 			. '<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->';
 	}

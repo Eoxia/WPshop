@@ -881,7 +881,7 @@ msgstr "Livrée"
 #: modules/dolibarr/doli-statut/class/class-doli-statut.php:78
 #: modules/dolibarr/doli-statut/class/class-doli-statut.php:112
 msgid "Canceled"
-msgstr "Anulée"
+msgstr "Annulée"
 
 #: modules/dolibarr/doli-order/action/class-doli-order-action.php:141
 #: modules/dolibarr/doli-order/action/class-doli-order-action.php:237
@@ -1099,7 +1099,7 @@ msgstr "Payée"
 
 #: modules/dolibarr/doli-statut/class/class-doli-statut.php:108
 msgid "Abandoned"
-msgstr "Abondonée"
+msgstr "Abandonnée"
 
 #: modules/dolibarr/doli-sync/class/class-doli-sync.php:54
 #: modules/third-parties/action/class-third-party-action.php:163

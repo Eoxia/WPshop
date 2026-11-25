@@ -156,9 +156,12 @@ class Doli_Statut extends Singleton_Util {
 		}
 
 		if ( $status ) {
+			// Labels are defined before the translations are loaded: translate them here.
+			$status['text'] = __( $status['text'], 'wpshop' );
+
 			return [
-				'text'  => __( $status['text'] ),
-				'class' => $status
+				'text'  => $status['text'],
+				'class' => $status,
 			];
 		}
 		return '';

@@ -247,8 +247,14 @@ class My_Account extends Singleton_Util {
 			foreach ( $orders as $key => $order ) {
 				$orders[ $key ]->data['download'] = admin_url( 'admin-post.php?action=wps_download_order&_wpnonce=' . wp_create_nonce( 'download_order' ) . '&order_id=' . $order->data['external_id'] );
 				$orders[ $key ]->data['status']   = Doli_Statut::g()->get_status( $order );
-				foreach ($order->data['lines'] as $idx => $line) {
-					if ($line['thumbnail_id']) {
+				foreach ( (array) $order->data['lines'] as $idx => $line ) {
+					// Image of the WordPress product linked to the Dolibarr product of the line.
+					if ( empty( $line['thumbnail_id'] ) && ! empty( $line['fk_product'] ) ) {
+						$wp_product_id        = Doli_Products::g()->get_wp_id_by_doli_id( $line['fk_product'] );
+						$line['thumbnail_id'] = $wp_product_id ? get_post_thumbnail_id( $wp_product_id ) : 0;
+					}
+
+					if ( ! empty( $line['thumbnail_id'] ) ) {
 						$orders[ $key ]->data['lines'][ $idx ]['thumbnail'] = wp_get_attachment_image( $line['thumbnail_id'], 'thumbnail', '', array(
 							'class'    => 'attachment-wps-product-thumbnail',
 							'itemprop' => 'image',
