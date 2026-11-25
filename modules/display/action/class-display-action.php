@@ -37,6 +37,7 @@ class Display_Action {
 
 		// Product catalogue (Query Loop), both modes.
 		add_action( 'init', array( $this, 'register_catalogue_style' ) );
+		add_action( 'init', array( $this, 'register_front_style' ), 20 );
 		add_filter( 'get_block_type_variations', array( $this, 'add_catalogue_variation' ), 10, 2 );
 		add_filter( 'query_loop_block_query_vars', array( $this, 'catalogue_query_vars' ), 10, 1 );
 		add_filter( 'rest_wps-product_query', array( $this, 'catalogue_rest_query' ), 10, 1 );
@@ -117,6 +118,32 @@ class Display_Action {
 			'path'   => PLUGIN_WPSHOP_PATH . 'modules/display/asset/css/catalogue.css',
 			'ver'    => (string) filemtime( PLUGIN_WPSHOP_PATH . 'modules/display/asset/css/catalogue.css' ),
 		) );
+	}
+
+	/**
+	 * Shared front styles of the WPshop blocks (design tokens, buttons, fields, cart,
+	 * checkout, account, connection, single product), loaded with every WPshop block, on
+	 * the front and in the editor. Registered after the blocks (init, priority 20).
+	 */
+	public function register_front_style() {
+		if ( ! function_exists( 'wp_enqueue_block_style' ) ) {
+			return;
+		}
+
+		$path = PLUGIN_WPSHOP_PATH . 'modules/display/asset/css/front.css';
+
+		foreach ( array_keys( \WP_Block_Type_Registry::get_instance()->get_all_registered() ) as $block_name ) {
+			if ( 0 !== strpos( $block_name, 'wpshop/' ) ) {
+				continue;
+			}
+
+			wp_enqueue_block_style( $block_name, array(
+				'handle' => 'wpshop-front',
+				'src'    => PLUGIN_WPSHOP_URL . 'modules/display/asset/css/front.css',
+				'path'   => $path,
+				'ver'    => (string) filemtime( $path ),
+			) );
+		}
 	}
 
 	/**

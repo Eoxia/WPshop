@@ -1,0 +1,641 @@
+/**
+ * WPshop front: shared design of the WPshop blocks (single product, cart, checkout,
+ * connection, customer account). Loaded with the WPshop blocks, on the front and in the
+ * editor (see Display_Action::register_front_style()).
+ *
+ * - Colours, fonts and spacing come from the theme presets when they exist, with neutral
+ *   fallbacks: adapt the look by overriding the --wps-* custom properties in your theme.
+ * - Every section is scoped with :is( <WPshop block>, #wps-front ): the fake id gives the
+ *   rules an id specificity, so they win over the historical WPshop styles (classic mode
+ *   views share the same class names) without !important. Nothing has the "wps-front" id.
+ */
+
+:root {
+	--wps-accent: var(--wp--preset--color--primary, #2271b1);
+	--wps-accent-text: #fff;
+	--wps-muted: color-mix(in srgb, currentColor 62%, transparent);
+	--wps-border: color-mix(in srgb, currentColor 14%, transparent);
+	--wps-border-strong: color-mix(in srgb, currentColor 26%, transparent);
+	--wps-surface: color-mix(in srgb, currentColor 4%, transparent);
+	--wps-field-bg: transparent;
+	--wps-danger: #d63638;
+	--wps-success: #00a32a;
+	--wps-radius: 12px;
+	--wps-radius-small: 8px;
+	--wps-gap: clamp(1rem, 2.5vw, 2rem);
+	--wps-shadow: 0 12px 32px -14px rgba(0, 0, 0, 0.3);
+	--wps-focus: 0 0 0 3px color-mix(in srgb, var(--wps-accent) 30%, transparent);
+}
+
+/* -------------------------------------------------------------------------
+ * Buttons
+ * ---------------------------------------------------------------------- */
+
+:is(.wp-block-wpshop-product-add-cart, .wp-block-wpshop-cart-checkout-button, .wp-block-wpshop-checkout-button-block, .wp-block-wpshop-connection-block, .wp-block-wpshop-my-account-block, #wps-front) :is(.wpeo-button, .submit-button, .wps-button-add-to-cart) {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5em;
+	min-height: 3rem;
+	padding: 0.75em 1.5em;
+	border: 0;
+	border-radius: var(--wps-radius-small);
+	background: var(--wps-accent);
+	color: var(--wps-accent-text);
+	font: inherit;
+	font-size: 1rem;
+	font-weight: 600;
+	line-height: 1.2;
+	text-align: center;
+	text-decoration: none;
+	box-shadow: none;
+	cursor: pointer;
+	transition: filter 0.2s ease, transform 0.1s ease;
+}
+
+:is(.wp-block-wpshop-product-add-cart, .wp-block-wpshop-cart-checkout-button, .wp-block-wpshop-checkout-button-block, .wp-block-wpshop-connection-block, .wp-block-wpshop-my-account-block, #wps-front) :is(.wpeo-button, .submit-button, .wps-button-add-to-cart):hover {
+	filter: brightness(0.9);
+	color: var(--wps-accent-text);
+}
+
+:is(.wp-block-wpshop-product-add-cart, .wp-block-wpshop-cart-checkout-button, .wp-block-wpshop-checkout-button-block, .wp-block-wpshop-connection-block, .wp-block-wpshop-my-account-block, #wps-front) :is(.wpeo-button, .submit-button, .wps-button-add-to-cart):focus-visible {
+	outline: none;
+	box-shadow: var(--wps-focus);
+}
+
+:is(.wp-block-wpshop-product-add-cart, .wp-block-wpshop-cart-checkout-button, .wp-block-wpshop-checkout-button-block, .wp-block-wpshop-connection-block, .wp-block-wpshop-my-account-block, #wps-front) :is(.wpeo-button, .submit-button, .wps-button-add-to-cart):active {
+	transform: translateY(1px);
+}
+
+:is(.wp-block-wpshop-product-add-cart, .wp-block-wpshop-cart-checkout-button, .wp-block-wpshop-checkout-button-block, .wp-block-wpshop-connection-block, .wp-block-wpshop-my-account-block, #wps-front) :is(.wpeo-button, .submit-button, .wps-button-add-to-cart):disabled {
+	opacity: 0.6;
+	cursor: default;
+	filter: none;
+}
+
+/* -------------------------------------------------------------------------
+ * Form fields (checkout, connection, account)
+ * ---------------------------------------------------------------------- */
+
+:is(.wp-block-wpshop-checkout-form-block, .wp-block-wpshop-connection-block, .wp-block-wpshop-my-account-block, #wps-front) :is(input[type="text"], input[type="email"], input[type="tel"], input[type="password"], input[type="number"], select, textarea) {
+	box-sizing: border-box;
+	width: 100%;
+	min-height: 3rem;
+	margin: 0;
+	padding: 0.7em 0.9em;
+	border: 1px solid var(--wps-border-strong);
+	border-radius: var(--wps-radius-small);
+	background: var(--wps-field-bg);
+	color: inherit;
+	font: inherit;
+	font-size: 1rem;
+	line-height: 1.4;
+	box-shadow: none;
+	transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+:is(.wp-block-wpshop-checkout-form-block, .wp-block-wpshop-connection-block, .wp-block-wpshop-my-account-block, #wps-front) :is(input, select, textarea):hover {
+	border-color: color-mix(in srgb, currentColor 40%, transparent);
+	box-shadow: none;
+}
+
+:is(.wp-block-wpshop-checkout-form-block, .wp-block-wpshop-connection-block, .wp-block-wpshop-my-account-block, #wps-front) :is(input, select, textarea):focus {
+	border-color: var(--wps-accent);
+	box-shadow: var(--wps-focus);
+	outline: none;
+}
+
+:is(.wp-block-wpshop-checkout-form-block, .wp-block-wpshop-checkout-acceptance-block, .wp-block-wpshop-connection-block, .wp-block-wpshop-my-account-block, #wps-front) input[type="checkbox"] {
+	width: 1.15em;
+	height: 1.15em;
+	margin: 0;
+	flex: none;
+	accent-color: var(--wps-accent);
+	cursor: pointer;
+}
+
+:is(.wp-block-wpshop-checkout-form-block, .wp-block-wpshop-connection-block, .wp-block-wpshop-my-account-block, #wps-front) :is(.form-label, .form-group > label) {
+	display: block;
+	margin: 0 0 0.4em;
+	color: inherit;
+	font-size: 0.875rem;
+	font-weight: 600;
+	letter-spacing: normal;
+	text-transform: none;
+}
+
+/* -------------------------------------------------------------------------
+ * Quantity selector (single product, cart)
+ * ---------------------------------------------------------------------- */
+
+:is(.wp-block-wpshop-product-add-cart, .wp-block-wpshop-cart-products, #wps-front) .wps-product-quantity {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.25rem;
+	padding: 0.25rem;
+	border: 1px solid var(--wps-border-strong);
+	border-radius: 999px;
+	font-size: 1rem !important; /* The cart sets an inline font size. */
+	font-weight: 600;
+	line-height: 1;
+}
+
+:is(.wp-block-wpshop-product-add-cart, .wp-block-wpshop-cart-products, #wps-front) .wps-product-quantity .qty {
+	min-width: 2ch;
+	text-align: center;
+}
+
+:is(.wp-block-wpshop-product-add-cart, .wp-block-wpshop-cart-products, #wps-front) .wps-product-quantity :is(.wps-quantity-minus, .wps-quantity-plus) {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 2.25rem;
+	height: 2.25rem;
+	border-radius: 50%;
+	color: inherit;
+	font-size: 1.35rem;
+	opacity: 0.75;
+	cursor: pointer;
+	transition: background-color 0.2s ease, opacity 0.2s ease;
+}
+
+:is(.wp-block-wpshop-product-add-cart, .wp-block-wpshop-cart-products, #wps-front) .wps-product-quantity :is(.wps-quantity-minus, .wps-quantity-plus):hover {
+	background: var(--wps-surface);
+	opacity: 1;
+}
+
+/* -------------------------------------------------------------------------
+ * Summary box (cart, checkout)
+ * ---------------------------------------------------------------------- */
+
+:is(.wp-block-wpshop-cart-summary, .wp-block-wpshop-checkout-order-details-block, #wps-front) .wps-resume-line,
+:is(.wp-block-wpshop-cart-summary, #wps-front) .wps-cart-resume,
+.wp-block-wpshop-checkout-order-details-block:is(.wps-cart-resume, #wps-front) {
+	list-style: none;
+}
+
+:is(.wp-block-wpshop-cart-summary, #wps-front) .wps-cart-resume,
+.wp-block-wpshop-checkout-order-details-block:is(.wps-cart-resume, #wps-front) {
+	display: block;
+	margin: 0;
+	padding: 1.5rem;
+	border: 1px solid var(--wps-border);
+	border-radius: var(--wps-radius);
+	background: var(--wps-surface);
+}
+
+:is(.wp-block-wpshop-cart-summary, .wp-block-wpshop-checkout-order-details-block, #wps-front) .wps-resume-line {
+	display: flex;
+	justify-content: space-between;
+	gap: 1rem;
+	margin: 0;
+	padding: 0.35rem 0;
+	font-size: 1rem;
+	font-weight: 400;
+}
+
+:is(.wp-block-wpshop-cart-summary, .wp-block-wpshop-checkout-order-details-block, #wps-front) .wps-resume-line .wps-line-content {
+	color: var(--wps-muted);
+}
+
+:is(.wp-block-wpshop-cart-summary, .wp-block-wpshop-checkout-order-details-block, #wps-front) .wps-resume-line .wps-line-value {
+	margin-left: auto;
+	font-weight: 600;
+	text-align: right;
+	white-space: nowrap;
+}
+
+:is(.wp-block-wpshop-cart-summary, .wp-block-wpshop-checkout-order-details-block, #wps-front) .wps-resume-line.featured {
+	margin-top: 0.75rem;
+	padding-top: 1rem;
+	border-top: 1px solid var(--wps-border);
+	font-size: 1.25rem;
+	font-weight: 700;
+}
+
+:is(.wp-block-wpshop-cart-summary, .wp-block-wpshop-checkout-order-details-block, #wps-front) .wps-resume-line.featured .wps-line-content {
+	color: inherit;
+}
+
+/* -------------------------------------------------------------------------
+ * Product lines (cart, checkout summary)
+ * ---------------------------------------------------------------------- */
+
+:is(.wp-block-wpshop-cart-products, .wp-block-wpshop-checkout-order-details-block, #wps-front) .wps-list-product {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+	margin: 0;
+}
+
+:is(.wp-block-wpshop-cart-products, .wp-block-wpshop-checkout-order-details-block, #wps-front) .wps-list-product .wps-product {
+	position: relative;
+	display: grid;
+	grid-template-columns: 6rem 1fr;
+	align-items: center;
+	gap: 1rem;
+	margin: 0;
+	padding: 1rem;
+	border: 1px solid var(--wps-border);
+	border-radius: var(--wps-radius);
+	background: transparent;
+}
+
+:is(.wp-block-wpshop-cart-products, .wp-block-wpshop-checkout-order-details-block, #wps-front) .wps-list-product .wps-product .wps-product-thumbnail {
+	width: 100%;
+	min-width: 0;
+	margin: 0;
+	aspect-ratio: 1;
+	overflow: hidden;
+	border-radius: var(--wps-radius-small);
+	background: var(--wps-surface);
+}
+
+:is(.wp-block-wpshop-cart-products, .wp-block-wpshop-checkout-order-details-block, #wps-front) .wps-list-product .wps-product .wps-product-thumbnail img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+:is(.wp-block-wpshop-cart-products, .wp-block-wpshop-checkout-order-details-block, #wps-front) .wps-list-product .wps-product .wps-product-content {
+	min-width: 0;
+	margin: 0;
+	padding-right: 2rem;
+	line-height: 1.35;
+}
+
+:is(.wp-block-wpshop-cart-products, .wp-block-wpshop-checkout-order-details-block, #wps-front) .wps-list-product .wps-product .wps-product-title {
+	color: inherit;
+	font-size: 1.05rem;
+	font-weight: 600;
+	line-height: 1.3;
+}
+
+:is(.wp-block-wpshop-cart-products, .wp-block-wpshop-checkout-order-details-block, #wps-front) .wps-list-product .wps-product .wps-product-attributes {
+	display: flex;
+	margin: 0.25rem 0 0;
+	padding: 0;
+}
+
+:is(.wp-block-wpshop-cart-products, .wp-block-wpshop-checkout-order-details-block, #wps-front) .wps-list-product .wps-product .wps-product-attributes-item {
+	margin: 0;
+	color: var(--wps-muted);
+	font-size: 0.875rem;
+	list-style: none;
+}
+
+:is(.wp-block-wpshop-cart-products, .wp-block-wpshop-checkout-order-details-block, #wps-front) .wps-list-product .wps-product .wps-product-footer {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 0.75rem;
+	margin-top: 0.75rem;
+}
+
+:is(.wp-block-wpshop-cart-products, .wp-block-wpshop-checkout-order-details-block, #wps-front) .wps-list-product .wps-product .wps-product-price {
+	margin-left: auto;
+	color: inherit;
+	font-size: 1.05rem;
+	font-weight: 700;
+	white-space: nowrap;
+}
+
+:is(.wp-block-wpshop-cart-products, #wps-front) .wps-list-product .wps-product .wps-delete-product {
+	position: absolute;
+	top: 0.75rem;
+	right: 0.75rem;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 2rem;
+	height: 2rem;
+	border-radius: 50%;
+	color: var(--wps-muted);
+	font-size: 1.1rem;
+	cursor: pointer;
+	transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+:is(.wp-block-wpshop-cart-products, #wps-front) .wps-list-product .wps-product .wps-delete-product:hover {
+	background: color-mix(in srgb, var(--wps-danger) 12%, transparent);
+	color: var(--wps-danger);
+}
+
+/* Lighter lines inside the checkout summary box. */
+.wp-block-wpshop-checkout-order-details-block:is(.wps-cart-resume, #wps-front) .wps-list-product {
+	margin-bottom: 1rem;
+	padding-bottom: 1rem;
+	border-bottom: 1px solid var(--wps-border);
+}
+
+.wp-block-wpshop-checkout-order-details-block:is(.wps-cart-resume, #wps-front) .wps-list-product .wps-product {
+	grid-template-columns: 3.5rem 1fr;
+	padding: 0;
+	border: 0;
+}
+
+.wp-block-wpshop-checkout-order-details-block:is(.wps-cart-resume, #wps-front) .wps-list-product .wps-product .wps-product-content {
+	padding-right: 0;
+}
+
+.wp-block-wpshop-checkout-order-details-block:is(.wps-cart-resume, #wps-front) .wps-list-product .wps-product .wps-product-title {
+	font-size: 0.95rem;
+}
+
+.wp-block-wpshop-checkout-order-details-block:is(.wps-cart-resume, #wps-front) .wps-list-product .wps-product .wps-product-footer {
+	margin-top: 0.25rem;
+}
+
+.wp-block-wpshop-checkout-order-details-block:is(.wps-cart-resume, #wps-front) .wps-list-product .wps-product .wps-product-quantity {
+	color: var(--wps-muted);
+	font-size: 0.875rem;
+	font-weight: 400;
+}
+
+.wp-block-wpshop-checkout-order-details-block:is(.wps-cart-resume, #wps-front) .wps-list-product .wps-product .wps-product-quantity::before {
+	content: "× ";
+}
+
+.wp-block-wpshop-checkout-order-details-block:is(.wps-cart-resume, #wps-front) .wps-list-product .wps-product .wps-product-price {
+	font-size: 0.95rem;
+}
+
+/* -------------------------------------------------------------------------
+ * Cart
+ * ---------------------------------------------------------------------- */
+
+.wp-block-wpshop-cart-block:is(*, #wps-front) > .wp-block-columns {
+	gap: var(--wps-gap);
+	align-items: flex-start;
+}
+
+:is(.wp-block-wpshop-cart-checkout-button, #wps-front) .wps-process-checkout-button {
+	display: flex;
+	float: none;
+	width: 100%;
+	margin: 1rem 0 0;
+}
+
+:is(.wp-block-wpshop-cart-empty, #wps-front) {
+	padding: 3rem 1.5rem;
+	border: 1px dashed var(--wps-border-strong);
+	border-radius: var(--wps-radius);
+	color: var(--wps-muted);
+	font-size: 1.1rem;
+	text-align: center;
+}
+
+:is(.wp-block-wpshop-cart-empty, #wps-front) p {
+	margin: 0;
+}
+
+/* -------------------------------------------------------------------------
+ * Checkout
+ * ---------------------------------------------------------------------- */
+
+.wp-block-wpshop-checkout-block:is(*, #wps-front) > .wp-block-columns,
+.wp-block-group:is(*, #wps-front) > .wp-block-columns:has(.wp-block-wpshop-checkout-form-block) {
+	gap: var(--wps-gap);
+	align-items: flex-start;
+}
+
+:is(.wp-block-wpshop-checkout-form-block, .wp-block-column, #wps-front) .wps-checkout-subtitle {
+	margin: 0 0 1.25rem;
+	color: inherit;
+	font-size: 1.25rem;
+	font-weight: 700;
+	line-height: 1.3;
+}
+
+:is(.wp-block-wpshop-checkout-form-block, #wps-front) .wpeo-gridlayout {
+	display: grid;
+	grid-template-columns: repeat(6, minmax(0, 1fr));
+	gap: 1rem;
+	margin: 0;
+}
+
+:is(.wp-block-wpshop-checkout-form-block, #wps-front) .wpeo-gridlayout > .form-element {
+	width: auto;
+	margin: 0;
+	padding: 0;
+}
+
+:is(.wp-block-wpshop-checkout-form-block, #wps-front) .wpeo-gridlayout > .gridw-2 { grid-column: span 2; }
+:is(.wp-block-wpshop-checkout-form-block, #wps-front) .wpeo-gridlayout > .gridw-3 { grid-column: span 3; }
+:is(.wp-block-wpshop-checkout-form-block, #wps-front) .wpeo-gridlayout > .gridw-6 { grid-column: span 6; }
+
+:is(.wp-block-wpshop-checkout-form-block, #wps-front) .form-element .form-field-container {
+	display: block;
+	background: none;
+	box-shadow: none;
+}
+
+:is(.wp-block-wpshop-checkout-form-block, #wps-front) .form-element-required .form-label::after {
+	content: " *";
+	color: var(--wps-danger);
+}
+
+:is(.wp-block-wpshop-checkout-form-block, #wps-front) .form-element-error .form-field {
+	border-color: var(--wps-danger);
+}
+
+:is(.wp-block-wpshop-checkout-form-block, #wps-front) .wps-checkout-error {
+	margin-top: 1.25rem;
+	padding: 0.9rem 1rem;
+	border: 1px solid color-mix(in srgb, var(--wps-danger) 40%, transparent);
+	border-radius: var(--wps-radius-small);
+	background: color-mix(in srgb, var(--wps-danger) 8%, transparent);
+	color: var(--wps-danger);
+}
+
+.wp-block-wpshop-checkout-acceptance-block:is(*, #wps-front) > .wp-block-wpshop-checkout-acceptance-block {
+	display: flex;
+	align-items: flex-start;
+	gap: 0.6rem;
+	margin: 1.25rem 0 0;
+	font-size: 0.9rem;
+	line-height: 1.5;
+}
+
+.wp-block-wpshop-checkout-acceptance-block:is(*, #wps-front) input[type="checkbox"] {
+	margin-top: 0.2em;
+}
+
+:is(.wp-block-wpshop-checkout-acceptance-block, #wps-front) a {
+	color: var(--wps-accent);
+}
+
+:is(.wp-block-wpshop-checkout-button-block, #wps-front) .wps-process-checkout-button {
+	display: flex;
+	width: 100%;
+	margin: 1.25rem 0 0;
+}
+
+@media (max-width: 600px) {
+	:is(.wp-block-wpshop-checkout-form-block, #wps-front) .wpeo-gridlayout > :is(.gridw-2, .gridw-3) {
+		grid-column: span 6;
+	}
+}
+
+/* -------------------------------------------------------------------------
+ * Single product
+ * ---------------------------------------------------------------------- */
+
+.wps-product-layout:is(.wp-block-columns, #wps-front) {
+	gap: clamp(1.5rem, 4vw, 4rem);
+	align-items: flex-start;
+}
+
+.wps-product-layout:is(.wp-block-columns, #wps-front) > .wp-block-column > * {
+	margin-block: 0;
+}
+
+:is(.wp-block-wpshop-product-block, .wps-product-layout, #wps-front) .wp-block-wpshop-product-image .wps-product-image-container {
+	overflow: hidden;
+	border-radius: var(--wps-radius);
+	background: var(--wps-surface);
+}
+
+:is(.wp-block-wpshop-product-block, .wps-product-layout, #wps-front) .wp-block-wpshop-product-image img {
+	display: block;
+	width: 100%;
+	height: auto;
+	max-width: none;
+}
+
+:is(.wp-block-wpshop-product-title, #wps-front) .wps-product-title-name {
+	margin: 0 0 0.75rem;
+	font-size: clamp(1.75rem, 3vw, 2.5rem);
+	line-height: 1.15;
+}
+
+:is(.wp-block-wpshop-product-block, .wps-product-layout, #wps-front) .wp-block-wpshop-product-price .wps-product-price-ttc {
+	margin: 0 0 1.5rem;
+	color: inherit;
+	font-size: clamp(1.4rem, 2.2vw, 1.75rem);
+	font-weight: 700;
+	line-height: 1.2;
+}
+
+/* The add to cart block wraps the React root in a second div with the same class. */
+.wp-block-wpshop-product-add-cart:is(*, #wps-front) .wp-block-wpshop-product-add-cart {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.75rem;
+}
+
+.wp-block-wpshop-product-add-cart:is(*, #wps-front) .wps-button-add-to-cart {
+	flex: 1 1 14rem;
+	max-width: 22rem;
+}
+
+:is(.wp-block-wpshop-product-description, #wps-front) {
+	margin-top: 2rem !important; /* Over the layout block gap. */
+	padding-top: 1.5rem;
+	border-top: 1px solid var(--wps-border);
+	line-height: 1.7;
+}
+
+:is(.wp-block-wpshop-product-description, #wps-front) .wps-product-description > :first-child {
+	margin-top: 0;
+}
+
+/* -------------------------------------------------------------------------
+ * Connection (login, registration, forgotten password)
+ * ---------------------------------------------------------------------- */
+
+:is(.wp-block-wpshop-connection-block, #wps-front) .connection-container {
+	max-width: 30rem;
+	margin: 0 auto;
+	overflow: hidden;
+	border: 1px solid var(--wps-border);
+	border-radius: var(--wps-radius);
+	background: var(--wp--preset--color--base, #fff);
+	color: inherit;
+	box-shadow: var(--wps-shadow);
+}
+
+:is(.wp-block-wpshop-connection-block, #wps-front) .connection-header {
+	margin: 0;
+	border-bottom: 1px solid var(--wps-border);
+	background: var(--wps-surface);
+}
+
+:is(.wp-block-wpshop-connection-block, #wps-front) .connection-tab {
+	padding: 1rem;
+	border: 0;
+	border-bottom: 2px solid transparent;
+	background: transparent;
+	color: var(--wps-muted);
+	font: inherit;
+	font-weight: 600;
+	cursor: pointer;
+}
+
+:is(.wp-block-wpshop-connection-block, #wps-front) .connection-tab.active {
+	border-bottom-color: var(--wps-accent);
+	background: var(--wp--preset--color--base, #fff);
+	color: inherit;
+}
+
+:is(.wp-block-wpshop-connection-block, #wps-front) .connection-content {
+	padding: 1.75rem;
+}
+
+:is(.wp-block-wpshop-connection-block, #wps-front) .form-group {
+	margin-bottom: 1.1rem;
+}
+
+:is(.wp-block-wpshop-connection-block, #wps-front) .checkbox-group {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+:is(.wp-block-wpshop-connection-block, #wps-front) .checkbox-group label {
+	margin: 0;
+	font-weight: 400;
+}
+
+:is(.wp-block-wpshop-connection-block, #wps-front) .form-actions {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	margin-top: 1.5rem;
+}
+
+:is(.wp-block-wpshop-connection-block, #wps-front) .forgot-password,
+:is(.wp-block-wpshop-connection-block, #wps-front) .connection-content a {
+	color: var(--wps-accent);
+	font-size: 0.9rem;
+}
+
+:is(.wp-block-wpshop-connection-block, #wps-front) :is(.connection-error, .connection-success) {
+	margin-bottom: 1rem;
+	padding: 0.9rem 1rem;
+	border-radius: var(--wps-radius-small);
+}
+
+:is(.wp-block-wpshop-connection-block, #wps-front) .connection-error {
+	border: 1px solid color-mix(in srgb, var(--wps-danger) 40%, transparent);
+	background: color-mix(in srgb, var(--wps-danger) 8%, transparent);
+	color: var(--wps-danger);
+}
+
+:is(.wp-block-wpshop-connection-block, #wps-front) .connection-success {
+	border: 1px solid color-mix(in srgb, var(--wps-success) 40%, transparent);
+	background: color-mix(in srgb, var(--wps-success) 8%, transparent);
+	color: var(--wps-success);
+}
+
+:is(.wp-block-wpshop-connection-block, #wps-front) .back-to-login {
+	border: 1px solid var(--wps-border-strong);
+	border-radius: var(--wps-radius-small);
+	background: transparent;
+	color: inherit;
+}

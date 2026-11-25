@@ -35,12 +35,16 @@ export default function Edit() {
 		<div { ...useBlockProps() }>
 			<InnerBlocks 
 				template={[
-					[ 'core/group', { align: 'wide', layout: {type: 'constrained'}}, [
-						[ 'wpshop/product-title', {} ],
-						[ 'wpshop/product-description', {} ],
-						[ 'wpshop/product-image', {} ],
-						[ 'wpshop/product-price', {} ],
-						[ 'wpshop/product-add-cart', {} ]
+					[ 'core/columns', { align: 'wide', className: 'wps-product-layout' }, [
+						[ 'core/column', { width: '50%' }, [
+							[ 'wpshop/product-image', {} ]
+						] ],
+						[ 'core/column', { width: '50%' }, [
+							[ 'wpshop/product-title', {} ],
+							[ 'wpshop/product-price', {} ],
+							[ 'wpshop/product-add-cart', {} ],
+							[ 'wpshop/product-description', {} ]
+						] ]
 					] ],
 				]}
 			/>

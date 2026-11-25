@@ -9,8 +9,8 @@
 	--wps-catalogue-gap: clamp(1rem, 2.5vw, 2rem);
 	--wps-catalogue-radius: 12px;
 	--wps-catalogue-padding: 1rem;
-	--wps-catalogue-accent: var(--wp--preset--color--primary, #2271b1);
-	--wps-catalogue-accent-text: #fff;
+	--wps-catalogue-accent: var(--wps-accent, var(--wp--preset--color--primary, #2271b1));
+	--wps-catalogue-accent-text: var(--wps-accent-text, #fff);
 	--wps-catalogue-border: color-mix(in srgb, currentColor 12%, transparent);
 	--wps-catalogue-image-bg: color-mix(in srgb, currentColor 5%, transparent);
 }

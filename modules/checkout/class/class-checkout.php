@@ -322,9 +322,11 @@ class Checkout extends Singleton_Util {
 
 		$fields = $this->get_checkout_fields();
 
+		$country_id = ! empty( $third_party->data['country_id'] ) ? $third_party->data['country_id'] : $this->get_default_country_id( $countries );
+
 		return rest_ensure_response( [
 			'values' => [
-				'country_id' => $third_party->data['country_id'] ??  0,
+				'country_id' => $country_id,
 				'address'    => $third_party->data['address'] ?? '',
 				'zip'        => $third_party->data['zip'] ?? '',
 				'town'       => $third_party->data['town'] ?? '',
@@ -336,6 +338,38 @@ class Checkout extends Singleton_Util {
 			'fields'      => array_merge( $fields['contact'], $fields['third_party'] ),
 			'countries'   => $countries,
 		] );
+	}
+
+	/**
+	 * Country preselected in the checkout form when the customer has none: the country of
+	 * the site language (fr_FR → France). Without it the form displayed the first country
+	 * of the list while sending no country.
+	 *
+	 * @since 2.7.0
+	 *
+	 * @param array $countries Countries (see get_countries()).
+	 *
+	 * @return int Dolibarr country id, 0 if not found.
+	 */
+	public function get_default_country_id( $countries ) {
+		$locale = determine_locale();
+		$code   = strtoupper( substr( $locale, strpos( $locale, '_' ) !== false ? strpos( $locale, '_' ) + 1 : 0, 2 ) );
+		$id     = 0;
+
+		foreach ( $countries as $country ) {
+			if ( ! empty( $country['code'] ) && $code === $country['code'] ) {
+				$id = (int) $country['id'];
+				break;
+			}
+		}
+
+		/**
+		 * Filters the country preselected in the checkout form.
+		 *
+		 * @param int    $id   Dolibarr country id (0 = none).
+		 * @param string $code ISO code deduced from the site language.
+		 */
+		return (int) apply_filters( 'wps_checkout_default_country_id', $id, $code );
 	}
 
 }

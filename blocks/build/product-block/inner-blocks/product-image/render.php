@@ -17,7 +17,9 @@ $product    = Product::g()->get( array( 'id' => $product_id ), true );
 $is_current = is_singular() && (int) get_queried_object_id() === (int) $product_id;
 $with_link  = ( ! isset( $attributes['isLink'] ) || $attributes['isLink'] ) && ! $is_current;
 
-$thumbnail = wp_get_attachment_image_src( $product->data['thumbnail_id'], 'wps-product-thumbnail' );
+// Thumbnail size in a loop (catalogue), larger image on the single product.
+$image_size = isset( $block->context['queryId'] ) ? 'wps-product-thumbnail' : 'large';
+$thumbnail  = wp_get_attachment_image_src( $product->data['thumbnail_id'], $image_size );
 
 if ( empty( $thumbnail ) ) {
 	$thumbnail = home_url( 'wp-content/plugins/wpshop/core/asset/image/default-product-thumbnail.jpg' );
