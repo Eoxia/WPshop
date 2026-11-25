@@ -3081,3 +3081,9 @@ msgid "This product is no longer available and has been removed from your cart: 
 msgid_plural "These products are no longer available and have been removed from your cart: %s. Please check your cart before ordering."
 msgstr[0] "Ce produit n’est plus disponible et a été retiré de votre panier : %s. Vérifiez votre panier avant de commander."
 msgstr[1] "Ces produits ne sont plus disponibles et ont été retirés de votre panier : %s. Vérifiez votre panier avant de commander."
+
+msgid "Your order has been recorded, but the online payment could not be started. Please contact us to finalise it, or try again later from %s."
+msgstr "Votre commande est enregistrée, mais le paiement en ligne n’a pas pu démarrer. Contactez-nous pour la finaliser, ou réessayez plus tard depuis %s."
+
+msgid "your account"
+msgstr "votre compte"

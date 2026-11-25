@@ -235,7 +235,7 @@ class Checkout_Action {
 	 * @since 2.7.0
 	 */
 	private function refuse_unavailable_products() {
-		if ( empty( Cart::g()->remove_unavailable_products() ) ) {
+		if ( empty( Cart::g()->remove_unavailable_products( true ) ) ) {
 			return;
 		}
 

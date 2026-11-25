@@ -45,7 +45,7 @@ class Pages_Filter extends Singleton_Util {
 
 		if ( $page_ids_options['checkout_id'] && is_page( $page_ids_options['checkout_id'] ) && ! in_array( 'received', $wp->query_vars ) ) {
 			// Products deleted from Dolibarr: back to the cart page, which names them.
-			$removed       = Cart::g()->remove_unavailable_products();
+			$removed       = Cart::g()->remove_unavailable_products( true );
 			$cart_contents = Cart_Session::g()->cart_contents;
 
 			if ( empty( $cart_contents ) || ! empty( $removed ) ) {

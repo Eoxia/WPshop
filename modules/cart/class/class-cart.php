@@ -115,9 +115,11 @@ class Cart extends Singleton_Util {
 	 *
 	 * @since 2.7.0
 	 *
+	 * @param bool $fresh Ask Dolibarr even for the products whose state is cached (checkout).
+	 *
 	 * @return string[] Titles of the products removed now.
 	 */
-	public function remove_unavailable_products() {
+	public function remove_unavailable_products( $fresh = false ) {
 		$lines = (array) Cart_Session::g()->cart_contents;
 
 		if ( empty( $lines ) || ! Settings::g()->dolibarr_is_active() ) {
@@ -127,7 +129,7 @@ class Cart extends Singleton_Util {
 		// One Dolibarr request for all the lines whose state is not cached.
 		$doli_ids = array();
 		foreach ( $lines as $line ) {
-			if ( ! empty( $line['id'] ) && false === get_transient( 'wps_doli_product_state_' . (int) $line['id'] ) ) {
+			if ( ! empty( $line['id'] ) && ( $fresh || false === get_transient( Doli_Products::STATE_CACHE_PREFIX . (int) $line['id'] ) ) ) {
 				$doli_ids[] = (int) get_post_meta( (int) $line['id'], '_external_id', true );
 			}
 		}
@@ -135,7 +137,7 @@ class Cart extends Singleton_Util {
 
 		$titles = array();
 		foreach ( $lines as $line ) {
-			if ( ! empty( $line['id'] ) && ! Doli_Products::g()->is_purchasable( $line['id'] ) ) {
+			if ( ! empty( $line['id'] ) && ! Doli_Products::g()->is_purchasable( $line['id'], $fresh ) ) {
 				$titles[] = ! empty( $line['title'] ) ? $line['title'] : get_the_title( $line['id'] );
 				Cart_Session::g()->remove_product( $line['id'] );
 			}

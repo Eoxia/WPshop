@@ -316,6 +316,13 @@ class Doli_Products extends Singleton_Util {
 	const MISSING_META = '_wps_dolibarr_missing';
 
 	/**
+	 * Transient prefix of the cached Dolibarr state of a product (linked or missing, 5 minutes).
+	 *
+	 * @since 2.7.0
+	 */
+	const STATE_CACHE_PREFIX = 'wps_doli_product_state_';
+
+	/**
 	 * Keeps the last known Dolibarr state of a product (an unknown state changes nothing).
 	 *
 	 * @since 2.7.0
@@ -324,6 +331,10 @@ class Doli_Products extends Singleton_Util {
 	 * @param string $state   linked or missing.
 	 */
 	private function remember_state( $post_id, $state ) {
+		// Every answer from Dolibarr (hourly check, admin list, cart) updates the cached state:
+		// a cached "linked" must never hide a deletion found since.
+		set_transient( self::STATE_CACHE_PREFIX . (int) $post_id, $state, 5 * MINUTE_IN_SECONDS );
+
 		if ( 'missing' === $state && ! $this->is_missing( $post_id ) ) {
 			update_post_meta( (int) $post_id, self::MISSING_META, time() );
 		} elseif ( 'linked' === $state && $this->is_missing( $post_id ) ) {
@@ -346,25 +357,23 @@ class Doli_Products extends Singleton_Util {
 
 	/**
 	 * Whether the product can be added to the cart and ordered: it must still exist in Dolibarr.
-	 * Asks Dolibarr (answer cached 5 minutes); when Dolibarr does not answer, the last known state is used.
+	 * Asks Dolibarr (answer cached 5 minutes, unless $fresh); when Dolibarr does not answer, the last
+	 * known state is used.
 	 *
 	 * @since 2.7.0
 	 *
-	 * @param int $post_id Product post ID.
+	 * @param int  $post_id Product post ID.
+	 * @param bool $fresh   Ask Dolibarr even if an answer is cached (checkout: right before ordering).
 	 *
 	 * @return bool
 	 */
-	public function is_purchasable( $post_id ) {
-		$post_id   = (int) $post_id;
-		$cache_key = 'wps_doli_product_state_' . $post_id;
-		$state     = get_transient( $cache_key );
+	public function is_purchasable( $post_id, $fresh = false ) {
+		$post_id = (int) $post_id;
+		$state   = $fresh ? false : get_transient( self::STATE_CACHE_PREFIX . $post_id );
 
 		if ( false === $state ) {
+			// Also refreshes the cache (remember_state()).
 			$state = $this->get_dolibarr_state( $post_id );
-
-			if ( in_array( $state, array( 'linked', 'missing' ), true ) ) {
-				set_transient( $cache_key, $state, 5 * MINUTE_IN_SECONDS );
-			}
 		}
 
 		if ( 'unknown' === $state ) {
