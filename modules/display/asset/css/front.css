@@ -910,3 +910,68 @@
 		grid-column: 1 / -1;
 	}
 }
+
+/* Account details: read-only information displayed as a card (not as disabled fields). */
+.wp-block-wpshop-account-details:is(.wpeo-form, #wps-front) {
+	padding: 1.5rem;
+	border: 1px solid var(--wps-border);
+	border-radius: var(--wps-radius);
+}
+
+.wp-block-wpshop-account-details:is(.wpeo-form, #wps-front) .gridlayout {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 0 1.5rem;
+	margin: 0;
+}
+
+.wp-block-wpshop-account-details:is(.wpeo-form, #wps-front) .gridlayout.grid-3 {
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.wp-block-wpshop-account-details:is(.wpeo-form, #wps-front) .form-element {
+	width: auto;
+	margin: 0;
+	padding: 0.75rem 0;
+	border-bottom: 1px solid var(--wps-border);
+}
+
+.wp-block-wpshop-account-details:is(.wpeo-form, #wps-front) > .form-element:last-child,
+.wp-block-wpshop-account-details:is(.wpeo-form, #wps-front) > .gridlayout:last-child .form-element {
+	border-bottom: 0;
+}
+
+.wp-block-wpshop-account-details:is(.wpeo-form, #wps-front) .form-label {
+	margin: 0 0 0.2rem;
+	color: var(--wps-muted);
+	font-size: 0.8rem;
+	font-weight: 500;
+	text-transform: none;
+}
+
+.wp-block-wpshop-account-details:is(.wpeo-form, #wps-front) .form-field-container {
+	display: block;
+	background: none;
+	box-shadow: none;
+}
+
+.wp-block-wpshop-account-details:is(.wpeo-form, #wps-front) input[readonly] {
+	width: 100%;
+	min-height: 0;
+	padding: 0;
+	border: 0;
+	border-radius: 0;
+	background: transparent;
+	color: inherit;
+	font-size: 1rem;
+	font-weight: 500;
+	box-shadow: none;
+	pointer-events: none;
+}
+
+@media (max-width: 600px) {
+	.wp-block-wpshop-account-details:is(.wpeo-form, #wps-front) .gridlayout,
+	.wp-block-wpshop-account-details:is(.wpeo-form, #wps-front) .gridlayout.grid-3 {
+		grid-template-columns: minmax(0, 1fr);
+	}
+}

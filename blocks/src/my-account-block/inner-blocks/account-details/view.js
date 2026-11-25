@@ -130,7 +130,7 @@ const AccountDetails = (props) => {
                     <span class="form-label">{ __( 'Country', 'wpshop' ) }</span>
                     <label class="form-field-container">
                         <input type="text" class={`form-field ${isLoading ? 'animate-pulse' : ''}`} name="email" value={countries.find(
-                            (country) => country.id === (third_party ? third_party.country : 0)
+                            ( country ) => String( country.id ) === String( third_party?.country_id ?? third_party?.country ?? 0 )
                         )?.label} readonly/>
                     </label>
                 </div>
