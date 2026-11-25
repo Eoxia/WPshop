@@ -20,7 +20,7 @@
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-metadata/#view-script
  */
  
-import { render, formatPrice, formatAmount } from '../../../utils';
+import { render, formatPrice, formatAmount, formatDate } from '../../../utils';
 import { __ } from '@wordpress/i18n';
 import { useEffect, useState } from '@wordpress/element';
 
@@ -93,7 +93,7 @@ const AccountOrders = () => {
                         <div class="wps-order wps-box" key={ index }>
                             <div class="wps-box-resume">
                                 <div class="wps-box-primary">
-                                    <div class="wps-box-title">{ order.data.datec }</div>
+                                    <div class="wps-box-title">{ formatDate( order.data.datec ) }</div>
                                     <ul class="wps-box-attributes">
                                         <li class="wps-box-subtitle-item"><i class="wps-box-subtitle-icon fas fa-shopping-cart"></i> { order.data.title }</li>
                                     </ul>
@@ -124,16 +124,16 @@ const AccountOrders = () => {
                                         <div class="wps-product-content">
                                             <div itemprop="name" class="wps-product-title">{ product.libelle }</div>
                                             <ul class="wps-product-attributes">
-                                                <li class="wps-product-attributes-item">{ __( 'Unit price:', 'wpshop' ) } {formatPrice(product.subprice)}</li>
+                                                <li class="wps-product-attributes-item">{ __( 'Unit price:', 'wpshop' ) } {formatPrice(product.total_ttc / product.qty)}</li>
                                             </ul>
                                             <div class="wps-product-footer">
                                                 <div class="wps-product-quantity">
                                                     <span class="qty">{product.qty}</span>
                                                 </div>
                     
-                                                {product.subprice && (
+                                                {product.total_ttc && (
                                                     <div itemprop="offers" itemscope itemtype="https://schema.org/Offer" class="wps-product-price">
-                                                        <span itemprop="price" content={(product.subprice * product.qty).toFixed(2)}>{formatAmount(product.subprice * product.qty)}</span>{" "}
+                                                        <span itemprop="price" content={Number(product.total_ttc).toFixed(2)}>{formatAmount(product.total_ttc)}</span>{" "}
                                                         <span itemprop="priceCurrency" content="EUR">€</span>
                                                     </div>
                                                 )}
