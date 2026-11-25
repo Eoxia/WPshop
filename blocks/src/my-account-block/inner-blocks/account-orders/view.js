@@ -108,7 +108,7 @@ const AccountOrders = () => {
                                 </div>
                                 <div class="wps-box-action">
                                     { order.data.pay_url && (
-                                        <a href={ order.data.pay_url } class="wpeo-button button-primary wps-order-pay">
+                                        <a href={ order.data.pay_url } target="_blank" rel="noopener" class="wpeo-button button-primary wps-order-pay">
                                             <i class="button-icon fas fa-credit-card" aria-hidden="true"></i>
                                             <span>{ __( 'Pay', 'wpshop' ) }</span>
                                         </a>
