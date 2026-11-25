@@ -31,6 +31,47 @@ class Doli_Products_Action extends Singleton_Util {
 	protected function construct() {
 		add_action( 'admin_notices', array( $this, 'admin_notices' ) );
 		add_filter( 'map_meta_cap', array( $this, 'map_delete_post_cap' ), 10, 4 );
+
+		// Products deleted from Dolibarr: hourly check, and never added to the cart.
+		add_action( 'init', array( $this, 'schedule_products_check' ) );
+		add_action( self::CHECK_HOOK, array( Doli_Products::g(), 'check_all_products' ) );
+		add_filter( 'wps_add_to_cart_product', array( $this, 'refuse_missing_product' ), 10, 2 );
+	}
+
+	/**
+	 * WP-Cron hook of the hourly check of the products against Dolibarr.
+	 *
+	 * @since 2.7.0
+	 */
+	const CHECK_HOOK = 'wps_check_dolibarr_products';
+
+	/**
+	 * Schedules the hourly check of the products against Dolibarr.
+	 *
+	 * @since 2.7.0
+	 */
+	public function schedule_products_check() {
+		if ( ! wp_next_scheduled( self::CHECK_HOOK ) ) {
+			wp_schedule_event( time() + MINUTE_IN_SECONDS, 'hourly', self::CHECK_HOOK );
+		}
+	}
+
+	/**
+	 * Legacy add to cart (Cart::add_to_cart()): refuses the products deleted from Dolibarr.
+	 *
+	 * @since 2.7.0
+	 *
+	 * @param bool    $can_add Whether the product can be added.
+	 * @param Product $product Product.
+	 *
+	 * @return bool
+	 */
+	public function refuse_missing_product( $can_add, $product ) {
+		if ( ! $can_add || empty( $product->data['id'] ) ) {
+			return $can_add;
+		}
+
+		return Doli_Products::g()->is_purchasable( $product->data['id'] );
 	}
 
 	/**

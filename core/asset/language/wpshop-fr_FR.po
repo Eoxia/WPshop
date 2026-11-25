@@ -3073,3 +3073,11 @@ msgstr "La facture de cette commande n’est pas encore disponible. Contactez-no
 
 msgid "Back to my account"
 msgstr "Retour à mon compte"
+
+msgid "This product is no longer available."
+msgstr "Ce produit n’est plus disponible."
+
+msgid "This product is no longer available and has been removed from your cart: %s. Please check your cart before ordering."
+msgid_plural "These products are no longer available and have been removed from your cart: %s. Please check your cart before ordering."
+msgstr[0] "Ce produit n’est plus disponible et a été retiré de votre panier : %s. Vérifiez votre panier avant de commander."
+msgstr[1] "Ces produits ne sont plus disponibles et ont été retirés de votre panier : %s. Vérifiez votre panier avant de commander."

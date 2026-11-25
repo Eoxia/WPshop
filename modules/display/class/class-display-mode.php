@@ -456,6 +456,11 @@ class Display_Mode extends Singleton_Util {
 				'value'   => 0,
 				'compare' => '!=',
 			);
+			// Deleted from Dolibarr (see Doli_Products::check_all_products()).
+			$vars['meta_query'][] = array(
+				'key'     => Doli_Products::MISSING_META,
+				'compare' => 'NOT EXISTS',
+			);
 		}
 
 		/**

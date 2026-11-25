@@ -301,7 +301,118 @@ class Doli_Products extends Singleton_Util {
 			return 'unknown';
 		}
 
-		return $this->doli_exists[ $doli_id ] ? 'linked' : 'missing';
+		$state = $this->doli_exists[ $doli_id ] ? 'linked' : 'missing';
+		$this->remember_state( $post_id, $state );
+
+		return $state;
+	}
+
+	/**
+	 * Post meta set (timestamp) on a product whose Dolibarr product was deleted: hidden from the
+	 * catalogues and not purchasable. Removed as soon as Dolibarr finds the product again.
+	 *
+	 * @since 2.7.0
+	 */
+	const MISSING_META = '_wps_dolibarr_missing';
+
+	/**
+	 * Keeps the last known Dolibarr state of a product (an unknown state changes nothing).
+	 *
+	 * @since 2.7.0
+	 *
+	 * @param int    $post_id Product post ID.
+	 * @param string $state   linked or missing.
+	 */
+	private function remember_state( $post_id, $state ) {
+		if ( 'missing' === $state && ! $this->is_missing( $post_id ) ) {
+			update_post_meta( (int) $post_id, self::MISSING_META, time() );
+		} elseif ( 'linked' === $state && $this->is_missing( $post_id ) ) {
+			delete_post_meta( (int) $post_id, self::MISSING_META );
+		}
+	}
+
+	/**
+	 * Whether the product was found deleted from Dolibarr at the last check (no request).
+	 *
+	 * @since 2.7.0
+	 *
+	 * @param int $post_id Product post ID.
+	 *
+	 * @return bool
+	 */
+	public function is_missing( $post_id ) {
+		return (bool) get_post_meta( (int) $post_id, self::MISSING_META, true );
+	}
+
+	/**
+	 * Whether the product can be added to the cart and ordered: it must still exist in Dolibarr.
+	 * Asks Dolibarr (answer cached 5 minutes); when Dolibarr does not answer, the last known state is used.
+	 *
+	 * @since 2.7.0
+	 *
+	 * @param int $post_id Product post ID.
+	 *
+	 * @return bool
+	 */
+	public function is_purchasable( $post_id ) {
+		$post_id   = (int) $post_id;
+		$cache_key = 'wps_doli_product_state_' . $post_id;
+		$state     = get_transient( $cache_key );
+
+		if ( false === $state ) {
+			$state = $this->get_dolibarr_state( $post_id );
+
+			if ( in_array( $state, array( 'linked', 'missing' ), true ) ) {
+				set_transient( $cache_key, $state, 5 * MINUTE_IN_SECONDS );
+			}
+		}
+
+		if ( 'unknown' === $state ) {
+			$purchasable = ! $this->is_missing( $post_id );
+		} else {
+			$purchasable = 'linked' === $state;
+		}
+
+		/**
+		 * Filters whether a product can be added to the cart and ordered.
+		 *
+		 * @param bool   $purchasable Whether the product can be bought.
+		 * @param int    $post_id     Product post ID.
+		 * @param string $state       not_linked, linked, missing or unknown.
+		 */
+		return (bool) apply_filters( 'wps_product_is_purchasable', $purchasable, $post_id, $state );
+	}
+
+	/**
+	 * Checks every linked product against Dolibarr (one request per 100 products) and updates
+	 * the "deleted from Dolibarr" marks. Run hourly by WP-Cron.
+	 *
+	 * @since 2.7.0
+	 */
+	public function check_all_products() {
+		if ( ! Settings::g()->dolibarr_is_active() ) {
+			return;
+		}
+
+		$post_ids = get_posts( array(
+			'post_type'      => 'wps-product',
+			'post_status'    => array( 'publish', 'draft', 'pending', 'private', 'future' ),
+			'posts_per_page' => -1,
+			'fields'         => 'ids',
+			'meta_key'       => '_external_id', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
+			'no_found_rows'  => true,
+		) );
+
+		$doli_ids = array();
+		foreach ( $post_ids as $post_id ) {
+			$doli_ids[ $post_id ] = (int) get_post_meta( $post_id, '_external_id', true );
+		}
+
+		$this->prefetch_existence( array_values( $doli_ids ) );
+
+		foreach ( array_keys( $doli_ids ) as $post_id ) {
+			$this->get_dolibarr_state( $post_id );
+		}
 	}
 
 	/**

@@ -147,6 +147,11 @@ class Cart extends Singleton_Util {
 		$id = (int) $data['id'];
 		$qty = (int) $data['qty'];
 
+		// Not a product, or deleted from Dolibarr: it could not be ordered.
+		if ( Product::g()->get_type() !== get_post_type( $id ) || ! Doli_Products::g()->is_purchasable( $id ) ) {
+			return new \WP_Error( 'wps_product_unavailable', __( 'This product is no longer available.', 'wpshop' ), array( 'status' => 409 ) );
+		}
+
 		Cart_Session::g()->increment_product( $id, $qty );
 
 		return rest_ensure_response( $this->get_cart() );
