@@ -101,7 +101,91 @@ class Cart extends Singleton_Util {
 	 *
 	 * @return array Le contenu du panier.
 	 */
+	/**
+	 * Session key of the products removed from the cart because they are no longer
+	 * available, until the cart page shows them.
+	 *
+	 * @since 2.7.0
+	 */
+	const UNAVAILABLE_SESSION_KEY = 'wps_unavailable_products';
+
+	/**
+	 * Removes from the cart the products that can no longer be bought (deleted from Dolibarr),
+	 * and keeps their titles for the cart page message.
+	 *
+	 * @since 2.7.0
+	 *
+	 * @return string[] Titles of the products removed now.
+	 */
+	public function remove_unavailable_products() {
+		$lines = (array) Cart_Session::g()->cart_contents;
+
+		if ( empty( $lines ) || ! Settings::g()->dolibarr_is_active() ) {
+			return array();
+		}
+
+		// One Dolibarr request for all the lines whose state is not cached.
+		$doli_ids = array();
+		foreach ( $lines as $line ) {
+			if ( ! empty( $line['id'] ) && false === get_transient( 'wps_doli_product_state_' . (int) $line['id'] ) ) {
+				$doli_ids[] = (int) get_post_meta( (int) $line['id'], '_external_id', true );
+			}
+		}
+		Doli_Products::g()->prefetch_existence( $doli_ids );
+
+		$titles = array();
+		foreach ( $lines as $line ) {
+			if ( ! empty( $line['id'] ) && ! Doli_Products::g()->is_purchasable( $line['id'] ) ) {
+				$titles[] = ! empty( $line['title'] ) ? $line['title'] : get_the_title( $line['id'] );
+				Cart_Session::g()->remove_product( $line['id'] );
+			}
+		}
+
+		if ( ! empty( $titles ) ) {
+			// Totals of the legacy views and of the checkout.
+			do_action( 'wps_calculate_totals' );
+		}
+
+		if ( ! empty( $titles ) && isset( $_SESSION ) ) {
+			$pending = isset( $_SESSION[ self::UNAVAILABLE_SESSION_KEY ] ) ? (array) $_SESSION[ self::UNAVAILABLE_SESSION_KEY ] : array();
+
+			$_SESSION[ self::UNAVAILABLE_SESSION_KEY ] = array_values( array_unique( array_merge( $pending, $titles ) ) );
+		}
+
+		return $titles;
+	}
+
+	/**
+	 * Message about the products removed from the cart since the last display, then forgets them.
+	 *
+	 * @since 2.7.0
+	 *
+	 * @return string Translated message, empty when nothing was removed.
+	 */
+	public function take_unavailable_message() {
+		if ( empty( $_SESSION[ self::UNAVAILABLE_SESSION_KEY ] ) ) {
+			return '';
+		}
+
+		$titles = (array) $_SESSION[ self::UNAVAILABLE_SESSION_KEY ];
+		unset( $_SESSION[ self::UNAVAILABLE_SESSION_KEY ] );
+
+		return sprintf(
+			/* translators: %s: product titles, comma separated. */
+			_n(
+				'This product is no longer available and has been removed from your cart: %s. Please check your cart before ordering.',
+				'These products are no longer available and have been removed from your cart: %s. Please check your cart before ordering.',
+				count( $titles ),
+				'wpshop'
+			),
+			implode( ', ', $titles )
+		);
+	}
+
 	public function get_cart() {
+		// Products deleted from Dolibarr since they were added: removed (the cart page tells which).
+		$this->remove_unavailable_products();
+
 		$cart            = [];
 		$products        = Cart_Session::g()->cart_contents;
 		$dolibarr_option = get_option( 'wps_dolibarr', Settings::g()->default_settings );

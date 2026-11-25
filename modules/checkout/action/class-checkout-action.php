@@ -229,46 +229,22 @@ class Checkout_Action {
 
 	/**
 	 * Before anything is created in Dolibarr: removes from the cart the products deleted from
-	 * Dolibarr since they were added, and stops the order with a message naming them.
+	 * Dolibarr since they were added, and sends the customer back to the cart page, which
+	 * names them (Cart::take_unavailable_message()).
 	 *
 	 * @since 2.7.0
 	 */
 	private function refuse_unavailable_products() {
-		$titles = array();
-
-		foreach ( (array) Cart_Session::g()->cart_contents as $line ) {
-			if ( ! empty( $line['id'] ) && ! Doli_Products::g()->is_purchasable( $line['id'] ) ) {
-				$titles[] = ! empty( $line['title'] ) ? $line['title'] : get_the_title( $line['id'] );
-				Cart_Session::g()->remove_product( $line['id'] );
-			}
-		}
-
-		if ( empty( $titles ) ) {
+		if ( empty( Cart::g()->remove_unavailable_products() ) ) {
 			return;
 		}
 
-		$errors = new \WP_Error();
-		$errors->add( 'wps-product-unavailable', sprintf(
-			/* translators: %s: product titles, comma separated. */
-			_n(
-				'This product is no longer available and has been removed from your cart: %s. Please check your cart before ordering.',
-				'These products are no longer available and have been removed from your cart: %s. Please check your cart before ordering.',
-				count( $titles ),
-				'wpshop'
-			),
-			implode( ', ', $titles )
-		) );
-
-		ob_start();
-		include Template_Util::get_template_part( 'checkout', 'notice-error' );
-		$template = ob_get_clean();
-
+		// Block checkout button (response.data.url) and legacy checkout ("redirect" callback).
 		wp_send_json_success( array(
 			'namespace'        => 'wpshopFrontend',
 			'module'           => 'checkout',
-			'callback_success' => 'checkoutErrors',
-			'errors'           => $errors,
-			'template'         => $template,
+			'callback_success' => 'redirect',
+			'url'              => Pages::g()->get_cart_link(),
 		) );
 	}
 
