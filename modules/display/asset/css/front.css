@@ -31,7 +31,7 @@
  * Buttons
  * ---------------------------------------------------------------------- */
 
-:is(.wp-block-wpshop-product-add-cart, .wp-block-wpshop-cart-checkout-button, .wp-block-wpshop-checkout-button-block, .wp-block-wpshop-connection-block, .wp-block-wpshop-my-account-block, #wps-front) :is(.wpeo-button, .submit-button, .wps-button-add-to-cart) {
+:is(.wp-block-wpshop-product-add-cart, .wp-block-wpshop-cart-checkout-button, .wp-block-wpshop-checkout-button-block, .wp-block-wpshop-connection-block, .wp-block-wpshop-account-details, #wps-front) :is(.wpeo-button, .submit-button, .wps-button-add-to-cart) {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -53,21 +53,21 @@
 	transition: filter 0.2s ease, transform 0.1s ease;
 }
 
-:is(.wp-block-wpshop-product-add-cart, .wp-block-wpshop-cart-checkout-button, .wp-block-wpshop-checkout-button-block, .wp-block-wpshop-connection-block, .wp-block-wpshop-my-account-block, #wps-front) :is(.wpeo-button, .submit-button, .wps-button-add-to-cart):hover {
+:is(.wp-block-wpshop-product-add-cart, .wp-block-wpshop-cart-checkout-button, .wp-block-wpshop-checkout-button-block, .wp-block-wpshop-connection-block, .wp-block-wpshop-account-details, #wps-front) :is(.wpeo-button, .submit-button, .wps-button-add-to-cart):hover {
 	filter: brightness(0.9);
 	color: var(--wps-accent-text);
 }
 
-:is(.wp-block-wpshop-product-add-cart, .wp-block-wpshop-cart-checkout-button, .wp-block-wpshop-checkout-button-block, .wp-block-wpshop-connection-block, .wp-block-wpshop-my-account-block, #wps-front) :is(.wpeo-button, .submit-button, .wps-button-add-to-cart):focus-visible {
+:is(.wp-block-wpshop-product-add-cart, .wp-block-wpshop-cart-checkout-button, .wp-block-wpshop-checkout-button-block, .wp-block-wpshop-connection-block, .wp-block-wpshop-account-details, #wps-front) :is(.wpeo-button, .submit-button, .wps-button-add-to-cart):focus-visible {
 	outline: none;
 	box-shadow: var(--wps-focus);
 }
 
-:is(.wp-block-wpshop-product-add-cart, .wp-block-wpshop-cart-checkout-button, .wp-block-wpshop-checkout-button-block, .wp-block-wpshop-connection-block, .wp-block-wpshop-my-account-block, #wps-front) :is(.wpeo-button, .submit-button, .wps-button-add-to-cart):active {
+:is(.wp-block-wpshop-product-add-cart, .wp-block-wpshop-cart-checkout-button, .wp-block-wpshop-checkout-button-block, .wp-block-wpshop-connection-block, .wp-block-wpshop-account-details, #wps-front) :is(.wpeo-button, .submit-button, .wps-button-add-to-cart):active {
 	transform: translateY(1px);
 }
 
-:is(.wp-block-wpshop-product-add-cart, .wp-block-wpshop-cart-checkout-button, .wp-block-wpshop-checkout-button-block, .wp-block-wpshop-connection-block, .wp-block-wpshop-my-account-block, #wps-front) :is(.wpeo-button, .submit-button, .wps-button-add-to-cart):disabled {
+:is(.wp-block-wpshop-product-add-cart, .wp-block-wpshop-cart-checkout-button, .wp-block-wpshop-checkout-button-block, .wp-block-wpshop-connection-block, .wp-block-wpshop-account-details, #wps-front) :is(.wpeo-button, .submit-button, .wps-button-add-to-cart):disabled {
 	opacity: 0.6;
 	cursor: default;
 	filter: none;
@@ -77,7 +77,7 @@
  * Form fields (checkout, connection, account)
  * ---------------------------------------------------------------------- */
 
-:is(.wp-block-wpshop-checkout-form-block, .wp-block-wpshop-connection-block, .wp-block-wpshop-my-account-block, #wps-front) :is(input[type="text"], input[type="email"], input[type="tel"], input[type="password"], input[type="number"], select, textarea) {
+:is(.wp-block-wpshop-checkout-form-block, .wp-block-wpshop-connection-block, .wp-block-wpshop-account-details, #wps-front) :is(input[type="text"], input[type="email"], input[type="tel"], input[type="password"], input[type="number"], select, textarea) {
 	box-sizing: border-box;
 	width: 100%;
 	min-height: 3rem;
@@ -94,18 +94,18 @@
 	transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-:is(.wp-block-wpshop-checkout-form-block, .wp-block-wpshop-connection-block, .wp-block-wpshop-my-account-block, #wps-front) :is(input, select, textarea):hover {
+:is(.wp-block-wpshop-checkout-form-block, .wp-block-wpshop-connection-block, .wp-block-wpshop-account-details, #wps-front) :is(input, select, textarea):hover {
 	border-color: color-mix(in srgb, currentColor 40%, transparent);
 	box-shadow: none;
 }
 
-:is(.wp-block-wpshop-checkout-form-block, .wp-block-wpshop-connection-block, .wp-block-wpshop-my-account-block, #wps-front) :is(input, select, textarea):focus {
+:is(.wp-block-wpshop-checkout-form-block, .wp-block-wpshop-connection-block, .wp-block-wpshop-account-details, #wps-front) :is(input, select, textarea):focus {
 	border-color: var(--wps-accent);
 	box-shadow: var(--wps-focus);
 	outline: none;
 }
 
-:is(.wp-block-wpshop-checkout-form-block, .wp-block-wpshop-checkout-acceptance-block, .wp-block-wpshop-connection-block, .wp-block-wpshop-my-account-block, #wps-front) input[type="checkbox"] {
+:is(.wp-block-wpshop-checkout-form-block, .wp-block-wpshop-checkout-acceptance-block, .wp-block-wpshop-connection-block, .wp-block-wpshop-account-details, #wps-front) input[type="checkbox"] {
 	width: 1.15em;
 	height: 1.15em;
 	margin: 0;
@@ -114,7 +114,7 @@
 	cursor: pointer;
 }
 
-:is(.wp-block-wpshop-checkout-form-block, .wp-block-wpshop-connection-block, .wp-block-wpshop-my-account-block, #wps-front) :is(.form-label, .form-group > label) {
+:is(.wp-block-wpshop-checkout-form-block, .wp-block-wpshop-connection-block, .wp-block-wpshop-account-details, #wps-front) :is(.form-label, .form-group > label) {
 	display: block;
 	margin: 0 0 0.4em;
 	color: inherit;
@@ -650,7 +650,7 @@
 }
 
 /* Step numbers of the checkout ("01.", "02.") in the accent colour. */
-:is(.wp-block-column, .wp-block-wpshop-my-account-block, #wps-front) .wps-checkout-subtitle::before {
+:is(.wp-block-column, .wp-block-wpshop-account-details, #wps-front) .wps-checkout-subtitle::before {
 	color: var(--wps-accent);
 }
 
@@ -951,6 +951,7 @@
 
 .wp-block-wpshop-account-details:is(.wpeo-form, #wps-front) .form-field-container {
 	display: block;
+	opacity: 1;
 	background: none;
 	box-shadow: none;
 }
