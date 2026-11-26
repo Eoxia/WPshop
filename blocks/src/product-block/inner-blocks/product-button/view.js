@@ -35,6 +35,33 @@ const showNotification = ( title, cartUrl ) => {
 	setTimeout( () => notification.remove(), 5000 );
 };
 
+/**
+ * Error message (e.g. product deleted from Dolibarr: "This product is no longer available.").
+ *
+ * @param {string} message Message.
+ */
+const showError = ( message ) => {
+	const notification = document.createElement( 'div' );
+	notification.className = 'wpeo-notification notification-active notification-add-to-cart notification-red';
+	notification.style.opacity = '1';
+	notification.style.background = 'rgba(255,255,255,1)';
+	notification.setAttribute( 'role', 'alert' );
+
+	const content = document.createElement( 'div' );
+	content.className = 'notification-title';
+	content.textContent = message;
+
+	const close = document.createElement( 'div' );
+	close.className = 'notification-close';
+	close.innerHTML = '<i class="fas fa-times"></i>';
+	close.addEventListener( 'click', () => notification.remove() );
+
+	notification.append( content, close );
+	document.body.appendChild( notification );
+
+	setTimeout( () => notification.remove(), 6000 );
+};
+
 document.addEventListener( 'click', ( event ) => {
 	const button = event.target.closest( '.wp-block-wpshop-product-button .wps-button-add-to-cart' );
 
@@ -62,7 +89,10 @@ document.addEventListener( 'click', ( event ) => {
 				showNotification( button.dataset.productTitle, button.dataset.cartUrl );
 			}
 		} )
-		.catch( ( error ) => console.error( 'WPshop: add to cart failed', error ) ) // eslint-disable-line no-console
+		.catch( ( error ) => {
+			showError( error?.message || __( 'The product could not be added to the cart.', 'wpshop' ) );
+			console.error( 'WPshop: add to cart failed', error ); // eslint-disable-line no-console
+		} )
 		.finally( () => {
 			button.disabled = false;
 			button.classList.remove( 'button-load' );

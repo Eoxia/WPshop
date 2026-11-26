@@ -1048,3 +1048,13 @@
 		grid-template-columns: minmax(0, 1fr);
 	}
 }
+
+/* Product deleted from Dolibarr, or add to cart refused (Doli_Products::is_purchasable()). */
+.wps-product-unavailable {
+	margin: 0.5rem 0 0;
+	padding: 0.75rem 1rem;
+	border-left: 3px solid var(--wps-danger, #d63638);
+	border-radius: var(--wps-radius-small, 8px);
+	background: color-mix(in srgb, var(--wps-danger, #d63638) 8%, transparent);
+	font-weight: 600;
+}

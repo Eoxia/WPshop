@@ -36,6 +36,7 @@ const ProductAddCart = (props) => {
     const { productId, cartUrl } = props;
 
     const [ qty, setQty ] = useState( 1 );
+    const [ error, setError ] = useState( '' );
 
     const showAddToCartNotification = (productTitle, quantity) => {
         // Create notification element
@@ -91,9 +92,13 @@ const ProductAddCart = (props) => {
                 }
                 
                 setQty(1);
+                setError('');
             } else {
                 console.error('Erreur lors de l\'incrémentation du produit:', response);
             }
+        }).catch((err) => {
+            // e.g. product deleted from Dolibarr since the page was loaded.
+            setError(err?.message || __('The product could not be added to the cart.', 'wpshop'));
         });
     }
 
@@ -116,12 +121,18 @@ const ProductAddCart = (props) => {
                 <i class="wps-button icon fas fa-shopping-cart"></i>
                 <span class="wps-button-text">{ __( 'Add to cart', 'wpshop' ) }</span>
             </button>
+            {error && <p className="wps-product-unavailable" role="alert">{error}</p>}
         </div>
     );
 }
 
-render(<ProductAddCart 
-    productId={document.querySelector('.wp-block-wpshop-product-add-cart').getAttribute('data-product-id')}
-    cartUrl={document.querySelector('.wp-block-wpshop-product-add-cart').getAttribute('data-cart-url')}
-/>, '.wp-block-wpshop-product-add-cart');
+// Products deleted from Dolibarr keep the server message ("no longer available"): no form.
+const addCartContainer = document.querySelector('.wp-block-wpshop-product-add-cart:not([data-unavailable])');
+
+if (addCartContainer) {
+    render(<ProductAddCart
+        productId={addCartContainer.getAttribute('data-product-id')}
+        cartUrl={addCartContainer.getAttribute('data-cart-url')}
+    />, '.wp-block-wpshop-product-add-cart:not([data-unavailable])');
+}
 export default ProductAddCart;

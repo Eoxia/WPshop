@@ -1,7 +1,7 @@
 {
-    "translation-revision-date": "2026-03-19T10:31:46+00:00",
+    "translation-revision-date": "2026-11-25T15:51:52+00:00",
     "generator": "WPshop",
-    "source": "blocks\/build\/product-block\/inner-blocks\/product-add-cart\/view.js",
+    "source": "blocks/build/product-block/inner-blocks/product-add-cart/view.js",
     "domain": "messages",
     "locale_data": {
         "messages": {
@@ -18,6 +18,9 @@
             ],
             "Add to cart": [
                 "Ajouter au panier"
+            ],
+            "The product could not be added to the cart.": [
+                "Le produit n’a pas pu être ajouté au panier."
             ]
         }
     }

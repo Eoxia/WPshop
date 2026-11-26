@@ -64,19 +64,34 @@ const CheckoutAcceptance = () => {
         }
     });
 
+    const [ busy, setBusy ] = useState( false );
+
+    // The message is displayed at the top of the form (checkout form block): bring it into view.
+    const showError = ( message ) => {
+        setError( message );
+        setTimeout( () => {
+            document.querySelector( '.wps-checkout-error' )?.scrollIntoView( { behavior: 'smooth', block: 'center' } );
+        }, 50 );
+    };
+
     const validateForm = () => {
 
         if (!acceptance) {
-            setError(__('Please accept the terms and conditions.', 'wpshop'));
+            showError(__('Please accept the terms and conditions.', 'wpshop'));
             return false;
         }
 
         for (let key in fields) {
             if (fields[key].required && !values[key]) {
-                setError(__('Please fill in all required fields.', 'wpshop'));
+                showError(__('Please fill in all required fields.', 'wpshop'));
                 return false;
             }
         }
+
+        if ( busy ) {
+            return false;
+        }
+        setBusy( true );
 
         apiFetch({
             'method': 'POST',
@@ -87,21 +102,29 @@ const CheckoutAcceptance = () => {
                 terms: 'true',
             }
         }).then((response) => {
-            if (response.data.url) {
-                window.location.href = response.data.url;
+            const data = response?.data || {};
+
+            if (data.url) {
+                // Payment page, or the cart page when products are no longer available.
+                window.location.href = data.url;
+                return;
             }
-            if (response.data.errors) {
-                console.log(response.data.errors.errors)
-                setError(Object.values(response.data.errors.errors)[0][0]);
-            }
-        })
+
+            setBusy( false );
+
+            const errors = data.errors?.errors ? Object.values( data.errors.errors ) : [];
+            showError( errors.length ? errors[0][0] : __( 'The order could not be completed. Please try again or contact us.', 'wpshop' ) );
+        }).catch((error) => {
+            setBusy( false );
+            showError( error?.message || __( 'The order could not be completed. Please try again or contact us.', 'wpshop' ) );
+        });
 
         return true;
     }
 
     return (
         <div className="wp-block-wpshop-checkout-button-block wps-checkout">
-            <button className="wps-process-checkout-button action-input wpeo-button" onClick={validateForm}>
+            <button className={ `wps-process-checkout-button action-input wpeo-button${ busy ? ' button-load' : '' }` } onClick={validateForm} disabled={ busy } aria-busy={ busy ? 'true' : 'false' }>
                 {__('Proceed to Checkout', 'wpshop')}
             </button>
         </div>

@@ -208,6 +208,24 @@ class Checkout extends Singleton_Util {
 				'url'              => $result,
 			) );
 		}
+
+		// No payment page (e.g. the order could not be validated in Dolibarr): the order exists,
+		// so the cart stays emptied, but the customer must be told instead of waiting forever.
+		\eoxia\LOG_Util::log( sprintf( 'No online payment URL for the order #%d', (int) $order->data['external_id'] ), 'wpshop2' );
+
+		$errors = new \WP_Error();
+		$errors->add( 'wps-payment-unavailable', sprintf(
+			/* translators: %s: link to the customer account page. */
+			__( 'Your order has been recorded, but the online payment could not be started. Please contact us to finalise it, or try again later from %s.', 'wpshop' ),
+			'<a href="' . esc_url( Pages::g()->get_account_link() ) . '">' . esc_html__( 'your account', 'wpshop' ) . '</a>'
+		) );
+
+		wp_send_json_success( array(
+			'namespace'        => 'wpshopFrontend',
+			'module'           => 'checkout',
+			'callback_success' => 'checkoutErrors',
+			'errors'           => $errors,
+		) );
 	}
 
 	/**

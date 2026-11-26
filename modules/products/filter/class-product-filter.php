@@ -217,6 +217,13 @@ class Product_Filter {
 					$args['meta_key']     = '_external_id';
 					$args['meta_compare'] = '!=';
 					$args['meta_value']   = 0;
+					// Deleted from Dolibarr (see Doli_Products::check_all_products()).
+					$args['meta_query']   = array(
+						array(
+							'key'     => Doli_Products::MISSING_META,
+							'compare' => 'NOT EXISTS',
+						),
+					);
 				}
 
 				$wps_query = new \WP_Query( $args );

@@ -46,6 +46,12 @@ class Cart_Shortcode extends Singleton_Util {
 	 * @version 2.0.0
 	 */
 	public function callback_cart() {
+		// Products removed by the checkout because deleted from Dolibarr (Cart::remove_unavailable_products()).
+		$unavailable_message = Cart::g()->take_unavailable_message();
+		if ( $unavailable_message ) {
+			echo '<p class="wps-product-unavailable wps-cart-notice" role="alert">' . esc_html( $unavailable_message ) . '</p>';
+		}
+
 		$cart_contents = Cart_Session::g()->cart_contents;
 
 		if ( ! empty( $cart_contents ) ) {

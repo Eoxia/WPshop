@@ -15,6 +15,16 @@ if ( ! $product_id || Product::g()->get_type() !== get_post_type( $product_id ) 
 	return;
 }
 
+// Deleted from Dolibarr (last check): no button.
+if ( Doli_Products::g()->is_missing( $product_id ) ) {
+	printf(
+		'<div %1$s><p class="wps-product-unavailable">%2$s</p></div>',
+		wp_kses_data( get_block_wrapper_attributes() ),
+		esc_html__( 'This product is no longer available.', 'wpshop' )
+	);
+	return;
+}
+
 ?>
 
 <div <?php echo wp_kses_data( get_block_wrapper_attributes() ); ?>>
