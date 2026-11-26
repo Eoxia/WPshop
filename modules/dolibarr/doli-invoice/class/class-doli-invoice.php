@@ -226,7 +226,7 @@ class Doli_Invoice extends Post_Class {
 		$wp_invoice->data['total_ttc']      = $doli_invoice->total_ttc;
 		$wp_invoice->data['total_ht']       = $doli_invoice->total_ht;
 		$wp_invoice->data['resteapayer']    = $doli_invoice->remaintopay;
-		$wp_invoice->data['totalpaye']      = $doli_invoice->sumpayed;
+		$wp_invoice->data['totalpaye']      = isset( $doli_invoice->totalpaid ) ? $doli_invoice->totalpaid : ( isset( $doli_invoice->sumpayed ) ? $doli_invoice->sumpayed : 0 ); // sumpayed was renamed totalpaid in Dolibarr.
 		$wp_invoice->data['paye']           = (int) $doli_invoice->paye;
 		$wp_invoice->data['third_party_id'] = Doli_Third_Parties::g()->get_wp_id_by_doli_id( $doli_invoice->socid );
 		$wp_invoice->data['payments']       = array();
@@ -290,7 +290,7 @@ class Doli_Invoice extends Post_Class {
 				switch ( $key ) {
 					case 'propal':
 						$type = new Proposals();
-						$wp_order->data['linked_objects_ids'][ 'wp_' . $key ] = array();
+						$wp_invoice->data['linked_objects_ids'][ 'wp_' . $key ] = array();
 						break;
 				}
 
@@ -305,7 +305,10 @@ class Doli_Invoice extends Post_Class {
 								'meta_value' => (int) $value,
 							), true );
 
-							$wp_invoice->data['linked_objects_ids'][ 'wp_' . $key ][] = (int) $object->data['id'];
+							// The linked object may not be synchronized on WordPress.
+							if ( ! empty( $object ) && ! empty( $object->data['id'] ) ) {
+								$wp_invoice->data['linked_objects_ids'][ 'wp_' . $key ][] = (int) $object->data['id'];
+							}
 						}
 
 						$wp_invoice->data['linked_objects_ids'][ $key ][] = (int) $value;
